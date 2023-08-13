@@ -1,0 +1,16 @@
+ # Compiled object files and binaries
+*.dll
+
+# Generated build files
+cmake-build-debug/
+cmake-build-release/
+cmake-build-debug-mingw/
+cmake-build-mingw/
+CMakeFiles/
+CMakeScripts/
+CMakeCache.txt
+Makefile
+
+# IDE-specific files
+.idea/
+.vs/
