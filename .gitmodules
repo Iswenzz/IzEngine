@@ -1,0 +1,3 @@
+[submodule "deps/minhook"]
+	path = deps/minhook
+	url = git@github.com:Iswenzz/minhook.git

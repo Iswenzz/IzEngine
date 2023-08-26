@@ -1,0 +1,5 @@
+[requires]
+minhook/1.3.3
+
+[generators]
+cmake
