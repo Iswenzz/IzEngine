@@ -1,7 +1,10 @@
 #include <iostream>
 #include <thread>
 #include <memory>
+#include <vector>
+#include <algorithm>
 #include <windows.h>
+#include <Psapi.h>
 #include <MinHook.h>
 
 const DWORD COD4XEntry = reinterpret_cast<DWORD>(GetModuleHandleA("cod4x_021.dll"));
@@ -63,15 +66,60 @@ public:
 class Memory
 {
 public:
-    static inline void Write(uintptr_t address, std::string bytes)
+    static inline void Write(uintptr_t address, std::string bytes, int size)
     {
         DWORD oldProtect;
         LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
-        int size = bytes.length();
 
         VirtualProtect(lpAddress, size, PAGE_EXECUTE_READWRITE, &oldProtect);
         memcpy(lpAddress, reinterpret_cast<const void*>(bytes.c_str()), size);
         VirtualProtect(lpAddress, size, oldProtect, NULL);
+    }
+
+    static inline uintptr_t Scan(std::string moduleName, std::string bytes, size_t size)
+    {
+        std::vector<uintptr_t> addresses = ScanAll(moduleName, bytes, size, true);
+        return addresses.size() ? addresses.back() : 0;
+    }
+
+    static inline std::vector<uintptr_t> ScanAll(std::string moduleName, std::string bytes, size_t size, bool first)
+    {
+        std::vector<uintptr_t> addresses;
+        HMODULE hModule = GetModuleHandleA(moduleName.c_str());
+
+        if (!hModule) return addresses;
+
+        MODULEINFO moduleInfo;
+        GetModuleInformation(GetCurrentProcess(), hModule, &moduleInfo, sizeof(moduleInfo));
+
+        uintptr_t moduleBase = reinterpret_cast<uintptr_t>(moduleInfo.lpBaseOfDll);
+        uintptr_t moduleEnd = moduleBase + moduleInfo.SizeOfImage;
+
+        std::vector<unsigned char> buffer(moduleInfo.SizeOfImage);
+        ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(moduleBase),
+            &buffer[0], moduleInfo.SizeOfImage, NULL);
+
+        for (uintptr_t address = moduleBase; address < moduleEnd - size; ++address)
+        {
+            if (!memcmp(&buffer[address - moduleBase], bytes.c_str(), size))
+            {
+                addresses.push_back(address);
+                if (first) return addresses;
+            }
+        }
+        return addresses;
+    }
+
+    static inline void NOP(uintptr_t address)
+    {
+        Write(address, "\x90", 1);
+    }
+
+    static inline void JMP(uintptr_t address, uintptr_t to)
+    {
+        std::string bytes = "\xEA";
+        bytes.append(reinterpret_cast<char*>(to), 4);
+        Write(address, bytes, 5);
     }
 };
 
@@ -120,9 +168,9 @@ void Init()
     uintptr_t aimAssist = 0x452BFA;
     uintptr_t localTagMatrix = 0x434200;
 
-    Memory::Write(antiHook, "\xC3");
-    Memory::Write(aimAssist, "\xE8\xA1\xF9\xFA\xFF");
-    Memory::Write(localTagMatrix, "\x51\x53\x8B\x5C\x24");
+    Memory::Write(antiHook, "\xC3", 1);
+    Memory::Write(aimAssist, "\xE8\xA1\xF9\xFA\xFF", 5);
+    Memory::Write(localTagMatrix, "\x51\x53\x8B\x5C\x24", 5);
 
     while (true)
         Sleep(500);
