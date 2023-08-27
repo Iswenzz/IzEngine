@@ -7,8 +7,7 @@
 
 ## Building (Linux)
 _Pre-Requisites:_
-1. [Visual Studio](https://visualstudio.microsoft.com/)
-2. [CMake](https://cmake.org/) and [Conan](https://conan.io/).
+1. [CMake](https://cmake.org/) and [Conan](https://conan.io/).
 
     sudo dpkg --add-architecture i386
     sudo apt-get update
