@@ -110,16 +110,36 @@ public:
         return addresses;
     }
 
-    static inline void NOP(uintptr_t address)
+    static inline void NOP(uintptr_t address, int size)
     {
-        Write(address, "\x90", 1);
+        std::string bytes(size, '\x90');
+        Write(address, bytes, size);
     }
 
-    static inline void JMP(uintptr_t address, uintptr_t to)
+    static inline void JMP(uintptr_t address, uintptr_t to, int size = 5)
     {
-        std::string bytes = "\xEA";
-        bytes.append(reinterpret_cast<char*>(to), 4);
+        std::string bytes = "\xE9";
+        uintptr_t nearAddress = to - (address + 5);
+        bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
+
+        NOP(address, size);
         Write(address, bytes, 5);
+    }
+
+    static inline uintptr_t LE(uintptr_t value)
+    {
+        uintptr_t result = 0;
+        for (int i = 0; i < sizeof(value); ++i)
+            result |= ((value >> (i * 8)) & 0xFF) << (24 - i * 8);
+        return result;
+    }
+
+    static inline uintptr_t BE(uintptr_t value)
+    {
+        uintptr_t result = 0;
+        for (int i = 0; i < sizeof(value); ++i)
+            result |= ((value >> (24 - i * 8)) & 0xFF) << (i * 8);
+        return result;
     }
 };
 
@@ -160,6 +180,7 @@ void Shutdown()
 
 void Init()
 {
+    Sleep(2000);
     MH_Initialize();
 
     std::unique_ptr<Console> console = std::make_unique<Console>();
