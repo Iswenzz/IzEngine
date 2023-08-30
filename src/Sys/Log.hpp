@@ -16,10 +16,6 @@ namespace IW3SR
 		/// Initialize a new logger.
 		/// </summary>
 		Log();
-
-		/// <summary>
-		/// Release logger.
-		/// </summary>
 		~Log() = default;
 	};
 }

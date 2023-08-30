@@ -8,6 +8,16 @@ namespace IW3SR
 {
     Console::Console()
     {
+        Initialize();
+    }
+
+    Console::~Console()
+    {
+        Shutdown();
+    }
+
+    void Console::Initialize()
+    {
         AllocConsole();
 
         freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
@@ -15,7 +25,7 @@ namespace IW3SR
         freopen_s(reinterpret_cast<FILE**>(stderr), "CONOUT$", "w", stderr);
     }
 
-    Console::~Console()
+    void Console::Shutdown()
     {
         FreeConsole();
     }

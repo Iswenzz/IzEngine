@@ -1,21 +1,29 @@
 #pragma once
+#include "Modules/Module.hpp"
 
 namespace IW3SR
 {
     /// <summary>
     /// Display an external console.
     /// </summary>
-    class Console
+    class Console : public Module
     {
+        MODULE_INFO("sr.sys.console", "External Console");
     public:
         /// <summary>
-        /// Initialize a new console.
+        /// Initialize the console.
         /// </summary>
         Console();
+        ~Console();
 
         /// <summary>
-        /// Release console.
+        /// Initialize the module.
         /// </summary>
-        ~Console();
+        void Initialize() override;
+
+        /// <summary>
+        /// Shutdown the module.
+        /// </summary>
+        void Shutdown() override;
     };
 }

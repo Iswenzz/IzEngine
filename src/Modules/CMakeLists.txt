@@ -3,4 +3,6 @@ add_subdirectory(Sys)
 
 target_sources(IW3SR PRIVATE
 	Module.hpp
-	Module.cpp)
+	Module.cpp
+	Modules.hpp
+	Modules.cpp)

@@ -8,6 +8,9 @@ namespace IW3SR
 	Game::Game()
 	{
 		MH_Initialize();
+
+		Log = std::make_unique<class Log>();
+		Modules = std::make_unique<class Modules>();
 	}
 
 	Game::~Game()
