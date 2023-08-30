@@ -8,7 +8,6 @@ namespace IW3SR
     /// </summary>
     class Console : public Module
     {
-        MODULE_INFO("sr.sys.console", "External Console");
     public:
         /// <summary>
         /// Initialize the console.

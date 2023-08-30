@@ -2,12 +2,14 @@
 
 #include <Windows.h>
 #include <iostream>
-#include "Console.hpp"
 
 namespace IW3SR
 {
     Console::Console()
     {
+        ID = "sr.sys.console";
+        Name = "External Console";
+
         Initialize();
     }
 

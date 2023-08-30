@@ -1,9 +1,6 @@
 #pragma once
 #include <string>
 
-#define MODULE_INFO(id, name) public: std::string ID = id; std::string Name = name;
-#define MODULE_DEFAULT(state) public: bool IsEnabled = state;
-
 namespace IW3SR
 {
 	/// <summary>
@@ -11,9 +8,11 @@ namespace IW3SR
 	/// </summary>
 	class Module
 	{
-		MODULE_INFO("id", "name");
-		MODULE_DEFAULT(true);
 	public:
+		std::string ID;
+		std::string Name;
+		bool IsEnabled = true;
+
 		/// <summary>
 		/// Initialize the module.
 		/// </summary>
