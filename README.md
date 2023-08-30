@@ -5,32 +5,14 @@
 [![CodeCov](https://img.shields.io/codecov/c/github/Iswenzz/IW3SR?label=codecov&logo=codecov)](https://codecov.io/gh/Iswenzz/IW3SR)
 [![License](https://img.shields.io/github/license/Iswenzz/IW3SR?color=blue&logo=gitbook&logoColor=white)](https://github.com/Iswenzz/IW3SR/blob/master/LICENSE)
 
-## Building (Linux)
-_Pre-Requisites:_
-1. [CMake](https://cmake.org/) and [Conan](https://conan.io/).
-
-    sudo dpkg --add-architecture i386
-    sudo apt-get update
-    sudo apt-get install nasm:i386 build-essential gcc-multilib g++-multilib
-
-_Build Command:_
-
-    mkdir build && cd build
-    conan install .. --build missing --profile ../.conan/linux.conf
-    cmake ..
-    cmake --build .
-
-## Building (Windows)
+## Building
 _Pre-Requisites:_
 1. [Visual Studio](https://visualstudio.microsoft.com/)
 2. [CMake](https://cmake.org/) and [Conan](https://conan.io/).
 
 _Build Command:_
 
-    mkdir build && cd build
-    conan install .. --build missing --profile ../.conan/windows.conf
-    cmake .. -A Win32
-    cmake --build .
+    ./install.sh
 
 ### [Download](https://github.com/Iswenzz/IW3SR/releases)
 

@@ -1,14 +1,6 @@
 #pragma once
+#include "Game/Definitions.hpp"
 #include "Sys/Hook.hpp"
-
-// @TODO Move to Game/Definitions.hpp
-#define C_EXTERN extern "C"
-using namespace IW3SR;
-typedef void (*Com_PrintMessage_t)(int channel, const char* msg, int type);
-C_EXTERN
-{
-	void Com_PrintMessage(int channel, const char* msg, int type);
-}
 
 namespace IW3SR
 {

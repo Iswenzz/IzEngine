@@ -12,9 +12,9 @@ namespace IW3SR
     class Hook
     {
     public:
-        uintptr_t Address = 0;
-        uintptr_t Detour = 0;
-        uintptr_t Trampoline = 0;
+        uint32_t Address = 0;
+        uint32_t Detour = 0;
+        uint32_t Trampoline = 0;
 
         /// <summary>
         /// Initialize a new Hook instance.
@@ -26,10 +26,10 @@ namespace IW3SR
         /// </summary>
         /// <param name="address">The address of the target.</param>
         /// <param name="detour">The detour function.</param>
-        Hook(uintptr_t address, T detour)
+        Hook(uint32_t address, T detour)
         {
             Address = address;
-            Detour = reinterpret_cast<uintptr_t>(detour);
+            Detour = reinterpret_cast<uint32_t>(detour);
 
             Install();
         }
@@ -47,7 +47,7 @@ namespace IW3SR
             MH_CreateHook(lpAddress, lpDetour, &lpTrampoline);
             Enable();
 
-            Trampoline = reinterpret_cast<uintptr_t>(lpTrampoline);
+            Trampoline = reinterpret_cast<uint32_t>(lpTrampoline);
             return reinterpret_cast<T>(lpTrampoline);
         }
 

@@ -1,5 +1,7 @@
 [requires]
 minhook/1.3.3
+imgui/1.89.8
+glm/0.9.9.8
 
 [generators]
 cmake

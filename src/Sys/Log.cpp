@@ -9,11 +9,8 @@ namespace IW3SR
 	}
 }
 
-C_EXTERN
+void Com_PrintMessage(int channel, const char* msg, int type)
 {
-	void Com_PrintMessage(int channel, const char *msg, int type)
-	{
-		std::cout << msg;
-		Log::Com_PrintMessage_h.Call(channel, msg, type);
-	}
+	std::cout << msg;
+	Log::Com_PrintMessage_h.Call(channel, msg, type);
 }

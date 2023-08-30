@@ -16,7 +16,7 @@ namespace IW3SR
         /// <param name="address">The target address.</param>
         /// <param name="bytes">The bytes to write.</param>
         /// <param name="size">The size of the bytes.</param>
-        static void Write(uintptr_t address, std::string bytes, int size);
+        static void Write(uint32_t address, std::string bytes, int size);
 
         /// <summary>
         /// Memory scan.
@@ -25,7 +25,7 @@ namespace IW3SR
         /// <param name="bytes">The bytes to scan.</param>
         /// <param name="size">The bytes size.</param>
         /// <returns></returns>
-        static uintptr_t Scan(std::string moduleName, std::string bytes, size_t size);
+        static uint32_t Scan(std::string moduleName, std::string bytes, size_t size);
 
         /// <summary>
         /// Memory scan all results.
@@ -35,14 +35,14 @@ namespace IW3SR
         /// <param name="size">The bytes size.</param>
         /// <param name="first">Should only scan until the first result.</param>
         /// <returns></returns>
-        static std::vector<uintptr_t> ScanAll(std::string moduleName, std::string bytes, size_t size, bool first);
+        static std::vector<uint32_t> ScanAll(std::string moduleName, std::string bytes, size_t size, bool first);
 
         /// <summary>
         /// NOP instruction.
         /// </summary>
         /// <param name="address"></param>
         /// <param name="size"></param>
-        static void NOP(uintptr_t address, int size);
+        static void NOP(uint32_t address, int size);
 
         /// <summary>
         /// JMP instruction.
@@ -50,20 +50,20 @@ namespace IW3SR
         /// <param name="address">The target address.</param>
         /// <param name="to">The detour address.</param>
         /// <param name="size">The bytes size.</param>
-        static void JMP(uintptr_t address, uintptr_t to, int size = 5);
+        static void JMP(uint32_t address, uint32_t to, int size = 5);
 
         /// <summary>
         /// Convert to little endian.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        static uintptr_t LE(uintptr_t value);
+        static uint32_t LE(uint32_t value);
 
         /// <summary>
         /// Convert to big endian.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        static uintptr_t BE(uintptr_t value);
+        static uint32_t BE(uint32_t value);
     };
 }
