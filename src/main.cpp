@@ -4,8 +4,9 @@
 #include <memory>
 #include <Windows.h>
 
-std::atomic<bool> Running = true;
 std::unique_ptr<Game> SR = nullptr;
+std::atomic<bool> Running = true;
+std::thread Thread;
 
 void Init()
 {
@@ -20,7 +21,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
     switch (dwReason) 
     {
         case DLL_PROCESS_ATTACH:
-            std::thread(Init).detach();
+            Thread = std::thread(Init);
             break;
         case DLL_THREAD_ATTACH:
             break;
@@ -28,6 +29,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
             break;
         case DLL_PROCESS_DETACH:
             Running = false;
+            Thread.join();
             break;
         default: 
             break;
