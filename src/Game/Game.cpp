@@ -1,14 +1,10 @@
 #include "Game.hpp"
 #include "Sys/Memory.hpp"
 
-#include <MinHook.h>
-
 namespace IW3SR
 {
 	Game::Game()
 	{
-		MH_Initialize();
-
 		Log = std::make_unique<class Log>();
 		Render = std::make_unique<class Render>();
 		Modules = std::make_unique<class Modules>();
@@ -16,18 +12,15 @@ namespace IW3SR
 		Patch();
 	}
 
-	Game::~Game()
-	{
-		MH_Uninitialize();
-	}
+	Game::~Game() { }
 
 	void Game::Patch()
 	{
 		if (!COD4X) return;
 
-		uint32_t antiHook = COD4X + 0x43580;
-		uint32_t aimAssist = 0x452BFA;
-		uint32_t localTagMatrix = 0x434200;
+		uintptr_t antiHook = COD4X + 0x43580;
+		uintptr_t aimAssist = 0x452BFA;
+		uintptr_t localTagMatrix = 0x434200;
 
 		Memory::Write(antiHook, "\xC3", 1);
 		Memory::Write(aimAssist, "\xE8\xA1\xF9\xFA\xFF", 5);

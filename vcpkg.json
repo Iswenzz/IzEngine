@@ -10,12 +10,12 @@
 		}
 	},
 	"dependencies": [
-		"minhook",
+		"polyhook2",
 		"imgui",
 		"glm"
 	],
 	"overrides": [
-        { "name": "minhook", "version": "1.3.3#4" },
+        { "name": "polyhook2", "version": "2023-08-11" },
         { "name": "imgui", "version": "1.89.9" },
         { "name": "glm", "version": "2023-06-08" },
         { "name": "gtest", "version": "1.13.0" }

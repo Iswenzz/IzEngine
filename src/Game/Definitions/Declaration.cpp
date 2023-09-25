@@ -1,8 +1,8 @@
 #include "Declaration.hpp"
 
 // Modules
-const uint32_t IW3MP = reinterpret_cast<uint32_t>(GetModuleHandleA("iw3mp.exe"));
-const uint32_t COD4X = reinterpret_cast<uint32_t>(GetModuleHandleA("cod4x_021.dll"));
+const uintptr_t IW3MP = reinterpret_cast<uintptr_t>(GetModuleHandleA("iw3mp.exe"));
+const uintptr_t COD4X = reinterpret_cast<uintptr_t>(GetModuleHandleA("cod4x_021.dll"));
 
 // Game
 CmdArgs* cmd_args = reinterpret_cast<CmdArgs*>(0x1410B40);
@@ -47,7 +47,7 @@ clientDebugLineInfo_t* clientDebugLineInfo_client = reinterpret_cast<clientDebug
 clientDebugLineInfo_t* clientDebugLineInfo_server = reinterpret_cast<clientDebugLineInfo_t*>(0xC5B074);
 
 // UI
-uint32_t* ui_white_material = reinterpret_cast<uint32_t*>(0xCAF06F0);
+uintptr_t* ui_white_material = reinterpret_cast<uintptr_t*>(0xCAF06F0);
 UiContext* ui_cg_dc = reinterpret_cast<UiContext*>(0x746FA8);
 UiContext* ui_context = reinterpret_cast<UiContext*>(0xCAEE200);
 WinMouseVars_t* s_wmv = reinterpret_cast<WinMouseVars_t*>(0xCC147C4);
@@ -59,8 +59,8 @@ int* map_nameEnum = reinterpret_cast<int*>(0xCAF2330);
 int* g_typeEnum = reinterpret_cast<int*>(0xCAF1820);
 
 // GSC
-uint32_t* gScrMemTreePub = reinterpret_cast<uint32_t*>(0x14E8A04);
-uint32_t* scrVarPub = reinterpret_cast<uint32_t*>(0x15CA61C);
+uintptr_t* gScrMemTreePub = reinterpret_cast<uintptr_t*>(0x14E8A04);
+uintptr_t* scrVarPub = reinterpret_cast<uintptr_t*>(0x15CA61C);
 int* scrVarPub_p4 = reinterpret_cast<int*>(0x15CA620);
 char* error_message = reinterpret_cast<char*>(0x1798378);
 char* error_type = reinterpret_cast<char*>(0x1798777);

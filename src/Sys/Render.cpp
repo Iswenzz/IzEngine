@@ -3,11 +3,6 @@
 
 namespace IW3SR
 {
-	Render::Render()
-	{
-		//RB_EndSceneRendering_h = Hook<RB_EndSceneRendering_t>(0x6496EC, RB_EndSceneRendering);
-	}
-
 	void Render::Frame()
 	{
 		Log::WriteLine("xd");
@@ -17,9 +12,4 @@ namespace IW3SR
 	{
 
 	}
-}
-
-void RB_EndSceneRendering(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
-{
-	SR->Render->Frame();
 }

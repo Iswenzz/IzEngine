@@ -13,7 +13,7 @@ include(CPack)
 # Dependencies
 find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
-find_package(minhook CONFIG REQUIRED)
+find_package(PolyHook_2 CONFIG REQUIRED)
 
 # Tests
 if(BUILD_TESTING)
@@ -46,4 +46,4 @@ add_subdirectory(src)
 target_link_libraries(IW3SR PUBLIC
 	imgui::imgui
 	glm::glm
-	minhook::minhook)
+	PolyHook_2::PolyHook_2)

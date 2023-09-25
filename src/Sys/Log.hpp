@@ -1,7 +1,4 @@
 #pragma once
-#include "Sys/Hook.hpp"
-#include "Game/Definitions.hpp"
-
 #include <format>
 #include <string>
 #include <iostream>
@@ -14,13 +11,10 @@ namespace IW3SR
 	class Log
 	{
 	public:
-		Hook<Com_PrintMessage_t> Com_PrintMessage_h;
-		Hook<Com_PrintMessage_t> Com_PrintMessage2_h;
-
 		/// <summary>
 		/// Initialize a new logger.
 		/// </summary>
-		Log();
+		Log() = default;
 		~Log() = default;
 
 		/// <summary>

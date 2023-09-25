@@ -5,8 +5,8 @@
 #include <Windows.h>
 
 // Modules
-extern const uint32_t IW3MP;
-extern const uint32_t COD4X;
+extern const uintptr_t IW3MP;
+extern const uintptr_t COD4X;
 
 // Game
 extern CmdArgs* cmd_args;
@@ -51,7 +51,7 @@ extern clientDebugLineInfo_t* clientDebugLineInfo_client;
 extern clientDebugLineInfo_t* clientDebugLineInfo_server;
 
 // UI
-extern uint32_t* ui_white_material;
+extern uintptr_t* ui_white_material;
 extern int* g_typeEnum;
 extern int* map_nameEnum;
 extern UiContext* ui_cg_dc;
@@ -63,8 +63,8 @@ extern ScreenPlacement* scr_place;
 extern ScreenPlacement* scr_placeFull;
 
 // GSC
-extern uint32_t* gScrMemTreePub;
-extern uint32_t* scrVarPub;
+extern uintptr_t* gScrMemTreePub;
+extern uintptr_t* scrVarPub;
 extern int* scrVarPub_p4;
 extern char* errorMessage;
 extern char* errorType;

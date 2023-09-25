@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include <Windows.h>
-#include <MinHook.h>
+#include <polyhook2/Detour/x86Detour.hpp>
 
 namespace IW3SR
 {
@@ -13,28 +13,30 @@ namespace IW3SR
     /// </summary>
     /// <typeparam name="T">The hook function definition type.</typeparam>
     template <typename T>
-    class Hook
+    class Hook : public PLH::x86Detour
     {
     public:
-        uint32_t Target = 0;
-        uint32_t Address = 0;
-        uint32_t Trampoline = 0;
+        uintptr_t Address = 0;
+        uintptr_t Trampoline = 0;
         T Detour = 0;
 
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
         Hook() = default;
-        ~Hook() = default;
+        virtual ~Hook() = default;
 
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
         /// <param name="target">The target address.</param>
         /// <param name="detour">The detour function.</param>
-        Hook(uint32_t target, T detour)
+        Hook(uintptr_t target, T detour) : PLH::x86Detour(
+            static_cast<uint64_t>(target), 
+            reinterpret_cast<uint64_t>(detour),
+            reinterpret_cast<uint64_t*>(&Trampoline))
         {
-            Target = target;
+            Address = target;
             Detour = detour;
 
             Install();
@@ -46,22 +48,7 @@ namespace IW3SR
         /// <returns></returns>
         void Install()
         {
-            auto it = Table.find(Target);
-            std::vector<Hook<T>> hooks = it != Table.end() ? it->second : std::vector<Hook<T>>{ };
-
-            Address = hooks.empty() ? Target : hooks.front().Trampoline;
-
-            LPVOID lpAddress = reinterpret_cast<LPVOID>(Address);
-            LPVOID lpDetour = reinterpret_cast<LPVOID>(Detour);
-            LPVOID lpTrampoline = nullptr;
-
-            MH_CreateHook(lpAddress, lpDetour, &lpTrampoline);
-            MH_EnableHook(lpAddress);
-
-            Trampoline = reinterpret_cast<uint32_t>(lpTrampoline);
-
-            hooks.push_back(*this);
-            Table[Target] = hooks;
+            hook();
         }
 
         /// <summary>
@@ -69,31 +56,7 @@ namespace IW3SR
         /// </summary>
         void Remove()
         {
-            auto it = Table.find(Target);
-            if (it == Table.end())
-                return;
-
-            std::vector<Hook<T>> hooks = it->second;
-            for (auto it = hooks.rbegin(); it != hooks.rend(); ++it)
-            {
-                LPVOID lpAddress = reinterpret_cast<LPVOID>(it->Address);
-                MH_DisableHook(lpAddress);
-                MH_RemoveHook(lpAddress);
-            }
-
-            std::erase_if(hooks, [this](const Hook<T>& hook) { return hook.Address == Address; });
-            if (hooks.empty())
-            {
-                Table.erase(Target);
-                return;
-            }
-
-            it->second = { };
-            for (Hook<T>& hook : hooks)
-            {
-                hook.Address = hook.Target;
-                hook.Install();
-            }
+            unHook();
         }
 
         /// <summary>
@@ -108,8 +71,5 @@ namespace IW3SR
         {
             return reinterpret_cast<T>(Trampoline)(args...);
         }
-
-    private:
-        static inline std::map<uint32_t, std::vector<Hook<T>>> Table;
     };
 }
