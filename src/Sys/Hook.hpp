@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
-#include <map>
-#include <cstdint>
-
-#include <Windows.h>
+#include <functional>
 #include <polyhook2/Detour/x86Detour.hpp>
 
 namespace IW3SR
@@ -11,14 +7,15 @@ namespace IW3SR
     /// <summary>
     /// Hook class.
     /// </summary>
-    /// <typeparam name="T">The hook function definition type.</typeparam>
+    /// <typeparam name="T">The hook function definition.</typeparam>
     template <typename T>
     class Hook : public PLH::x86Detour
     {
+        using R = typename std::function<T>::result_type;
     public:
         uintptr_t Address = 0;
-        uintptr_t Trampoline = 0;
-        T Detour = 0;
+        std::function<T> Detour = nullptr;
+        std::function<T> Trampoline = nullptr;
 
         /// <summary>
         /// Initialize a new Hook instance.
@@ -37,7 +34,7 @@ namespace IW3SR
             reinterpret_cast<uint64_t*>(&Trampoline))
         {
             Address = target;
-            Detour = detour;
+            Detour = std::function<T>(reinterpret_cast<T*>(detour));
 
             Install();
         }
@@ -62,14 +59,13 @@ namespace IW3SR
         /// <summary>
         /// Call the trampoline function.
         /// </summary>
-        /// <typeparam name="R">The return type.</typeparam>
-        /// <typeparam name="...Args">The function args type.</typeparam>
+        /// <typeparam name="...Args">The function args.</typeparam>
         /// <param name="...args">The function args.</param>
         /// <returns></returns>
-        template <typename R = void, typename ...Args>
-        R Call(const Args... args)
+        template <typename ...Args>
+        R operator()(Args&& ...args)
         {
-            return reinterpret_cast<T>(Trampoline)(args...);
+            return Trampoline(args...);
         }
     };
 }
