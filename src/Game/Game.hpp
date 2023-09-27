@@ -30,6 +30,11 @@ namespace IW3SR
 		void Patch();
 
 		/// <summary>
+		/// Install hooks.
+		/// </summary>
+		void Hooks();
+
+		/// <summary>
 		/// Game frame.
 		/// </summary>
 		void Frame();

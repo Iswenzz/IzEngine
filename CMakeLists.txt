@@ -4,6 +4,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 # CPack
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
@@ -19,11 +23,6 @@ find_package(PolyHook_2 CONFIG REQUIRED)
 if(BUILD_TESTING)
 	include(CTest)
 	find_package(GTest CONFIG REQUIRED)
-
-	if(MSVC)
-		set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	endif()
-
 	add_library(IW3SR.Lib STATIC)
 	add_executable(IW3SR.Tests)
 

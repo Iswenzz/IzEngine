@@ -7,8 +7,6 @@ namespace IW3SR
 {
     Console::Console()
     {
-        Sleep(5000);
-
         ID = "sr.sys.console";
         Name = "External Console";
 

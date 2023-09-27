@@ -9,34 +9,30 @@ namespace IW3SR
     /// </summary>
     /// <typeparam name="T">The hook function definition.</typeparam>
     template <typename T>
-    class Hook : public PLH::x86Detour
+    class Hook
     {
         using R = typename std::function<T>::result_type;
     public:
-        uintptr_t Address = 0;
-        std::function<T> Detour = nullptr;
+        uint64_t Address = 0;
+        uint64_t Callback = 0;
         std::function<T> Trampoline = nullptr;
+        std::unique_ptr<PLH::x86Detour> Detour;
 
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
         Hook() = default;
-        virtual ~Hook() = default;
+        ~Hook() = default;
 
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
         /// <param name="target">The target address.</param>
-        /// <param name="detour">The detour function.</param>
-        Hook(uintptr_t target, T detour) : PLH::x86Detour(
-            static_cast<uint64_t>(target), 
-            reinterpret_cast<uint64_t>(detour),
-            reinterpret_cast<uint64_t*>(&Trampoline))
+        /// <param name="callback">The callback function.</param>
+        Hook(uintptr_t target, T callback)
         {
             Address = target;
-            Detour = std::function<T>(reinterpret_cast<T*>(detour));
-
-            Install();
+            Callback = reinterpret_cast<uint64_t>(callback);
         }
 
         /// <summary>
@@ -45,7 +41,10 @@ namespace IW3SR
         /// <returns></returns>
         void Install()
         {
-            hook();
+            uint64_t trampoline = 0;
+            Detour = std::make_unique<PLH::x86Detour>(Address, Callback, &trampoline);
+            Detour->hook();
+            Trampoline = std::function<T>(reinterpret_cast<T*>(trampoline));
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace IW3SR
         /// </summary>
         void Remove()
         {
-            unHook();
+            Detour->unHook();
         }
 
         /// <summary>

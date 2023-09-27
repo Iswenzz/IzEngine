@@ -14,11 +14,15 @@ namespace IW3SR
 		static inline std::filesystem::path IW3SRDirectory;
 		static inline std::filesystem::path PluginsDirectory;
 		static inline std::filesystem::path RessourcesDirectory;
-		static inline std::filesystem::path ModDirectory;
 
 		/// <summary>
 		/// Build the environment.
 		/// </summary>
 		static void Build();
+
+		/// <summary>
+		/// Build the process path.
+		/// </summary>
+		static void BuildProcessPath();
 	};
 }
