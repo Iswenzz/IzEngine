@@ -1,6 +1,8 @@
 #pragma once
 #include "Game/Definitions.hpp"
+
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace IW3SR
 {
@@ -24,9 +26,12 @@ namespace IW3SR
 		/// <summary>
 		/// Draw a line.
 		/// </summary>
-		/// <param name="from">Point A.</param>
-		/// <param name="to">Point B.</param>
+		/// <param name="start">Point A.</param>
+		/// <param name="end">Point B.</param>
 		/// <param name="color">Line color.</param>
-		void DrawLine(glm::vec3 from, glm::vec3 to, glm::vec4 color);
+		/// <param name="depthTest">Depth test.</param>
+		/// <param name="verts">The verts.</param>
+		int DrawLine(glm::vec3 start, glm::vec3 end, glm::vec4 color, bool depthTest,
+			std::vector<GfxPointVertex> verts);
 	};
 }

@@ -17,7 +17,6 @@ namespace IW3SR
 	{
 		TCHAR buffer[MAX_PATH];
 		DWORD bufferLength = GetModuleFileName(NULL, buffer, MAX_PATH);
-
 		BaseDirectory = std::filesystem::path(buffer).parent_path();
 	}
 }

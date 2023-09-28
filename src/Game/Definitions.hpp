@@ -15,6 +15,10 @@ using namespace IW3SR;
 #define STDCALL __stdcall
 #endif
 
+#ifndef FASTCALL
+#define FASTCALL __fastcall
+#endif
+
 #define C_EXTERN extern "C"
 #define CPP_EXTERN extern "C++"
 #define EXPORT C_EXTERN __declspec(dllexport)
