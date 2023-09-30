@@ -16,8 +16,7 @@ void Com_PrintMessage(int channel, const char* msg, int type)
 
 void RB_EndSceneRendering(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
 {
-	// RB_DrawDebug(viewParms);
-	RB_EndSceneRendering_h(input, viewInfo, src, buf);
+	RB_DrawDebug(viewParms);
 }
 
 IDirect3D9* STDCALL R_Direct3DCreate9(UINT sdk)
