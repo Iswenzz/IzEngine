@@ -1,5 +1,6 @@
 #include "Render.hpp"
 #include "Game/Game.hpp"
+#include "Game/Render/Draw.hpp"
 #include "Sys/Memory.hpp"
 #include "Utils/Math.hpp"
 
@@ -20,6 +21,7 @@ namespace IW3SR
 
 	void Render::Frame() 
 	{
+		Draw::Frame();
 		ModuleCallback(OnFrame);
 	}
 }

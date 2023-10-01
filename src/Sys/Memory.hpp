@@ -38,6 +38,18 @@ namespace IW3SR
         static std::vector<uintptr_t> ScanAll(std::string moduleName, std::string bytes, size_t size, bool first);
 
         /// <summary>
+        /// Reinterpret set bytes.
+        /// </summary>
+        /// <typeparam name="T">The type to set.</typeparam>
+        /// <param name="dst">The destination.</param>
+        /// <param name="src">The source.</param>
+        template <typename R, typename T>
+        static void Reinterpret(T dst, T src)
+        {
+            *reinterpret_cast<R*>(dst) = *reinterpret_cast<R*>(src);
+        }
+
+        /// <summary>
         /// Set bytes.
         /// </summary>
         /// <typeparam name="T">The type to set.</typeparam>

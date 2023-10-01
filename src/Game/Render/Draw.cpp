@@ -1,27 +1,27 @@
 #include "Draw.hpp"
-#include "Utils/Math.hpp"
+#include "Sys/Memory.hpp"
 
 namespace IW3SR
 {
-	int Draw::Line(glm::vec3 start, glm::vec3 end, glm::vec4 color, bool depthTest, 
-		std::vector<GfxPointVertex> verts)
-	{
+    void Draw::Line(glm::vec3 start, glm::vec3 end, glm::vec4 color)
+    {
 		float colorArray[4];
-		int vertsCount = verts.size();
-		const int vertsLimit = 2725;
 
-		if (vertsCount + 2 > vertsLimit)
-		{
-			RB_DrawLines3D(vertsCount / 2, 1, verts.data(), depthTest);
-			vertsCount = 0;
-		}
+		if (LinesCount + 2 > 2735)
+			LinesCount = 0;
 		glm::set_float4(colorArray, color);
-		R_ConvertColorToBytes(colorArray, verts[vertsCount].color);
-		*reinterpret_cast<int*>(verts[vertsCount + 1].color) = *reinterpret_cast<int*>(verts[vertsCount].color);
+		R_ConvertColorToBytes(colorArray, LinesVerts[LinesCount].color);
+		Memory::Reinterpret<int>(LinesVerts[LinesCount + 1].color, LinesVerts[LinesCount].color);
 
-		glm::set_float3(verts[vertsCount].xyz, start);
-		glm::set_float3(verts[vertsCount + 1].xyz, end);
+		glm::set_float3(LinesVerts[LinesCount].xyz, start);
+		glm::set_float3(LinesVerts[LinesCount + 1].xyz, end);
 
-		return vertsCount + 2;
+		LinesCount += 2;
+    }
+
+	void Draw::Frame()
+	{
+		RB_DrawLines3D(LinesCount / 2, LinesWidth, LinesVerts.data(), LinesDepthTest);
+		LinesCount = 0;
 	}
 }
