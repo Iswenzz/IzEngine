@@ -31,7 +31,7 @@ namespace IW3SR
 		/// <param name="start">The start point.</param>
 		/// <param name="end">The end point.</param>
 		/// <param name="color">The color.</param>
-		void Add(glm::vec3 start, glm::vec3 end, glm::vec4 color);
+		void Add(const vec3& start, const vec3& end, const vec4& color);
 
 		/// <summary>
 		/// Draw frame.

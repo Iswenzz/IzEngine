@@ -1,6 +1,6 @@
 #pragma once
 #include "Modules/Module.hpp"
-#include <glm/glm.hpp>
+#include "Game/Render/Draw.hpp"
 
 namespace IW3SR
 {
@@ -10,7 +10,8 @@ namespace IW3SR
     class ESP : public Module
     {
     public:
-        glm::vec4 Color;
+        vec4 Color;
+        std::unique_ptr<class Lines> Lines;
 
         /// <summary>
         /// Initialize the module.
@@ -21,6 +22,6 @@ namespace IW3SR
         /// <summary>
         /// Draw callback.
         /// </summary>
-        void OnDraw() override;
+        void OnFrame() override;
     };
 }

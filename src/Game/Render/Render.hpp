@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Utils/Math.hpp"
 
-#include <glm/glm.hpp>
 #include <vector>
 
 namespace IW3SR

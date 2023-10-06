@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Render/Draw/Lines.hpp"
 #include "Utils/Math.hpp"
 
 #include <array>
@@ -23,17 +24,17 @@ namespace IW3SR
 		/// <param name="start">The start point.</param>
 		/// <param name="end">The end point.</param>
 		/// <param name="color">The color.</param>
-		static void Line(glm::vec3 start, glm::vec3 end, glm::vec4 color);
+		static void Line(const vec3& start, const vec3& end, const vec4& color);
 
 		/// <summary>
 		/// Draw a 2D Rect.
 		/// </summary>
-		/// <param name="color">The color.</param>
 		/// <param name="x">The X coord.</param>
 		/// <param name="y">The Y coord.</param>
 		/// <param name="w">The width.</param>
 		/// <param name="h">The height.</param>
-		static void Rect2D(glm::vec4 color, float x, float y, float w, float h);
+		/// <param name="color">The color.</param>
+		static void Rect2D(float x, float y, float w, float h, const vec4& color);
 
 		/// <summary>
 		/// Draw frame.

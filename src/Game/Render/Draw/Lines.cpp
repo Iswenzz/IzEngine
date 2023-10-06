@@ -12,18 +12,17 @@ namespace IW3SR
 		Verts.resize(limit);
 	}
 
-	void Lines::Add(glm::vec3 start, glm::vec3 end, glm::vec4 color)
-	{
-		float colorArray[4];
+	void test(float *a) {}
 
+	void Lines::Add(const vec3& start, const vec3& end, const vec4& color)
+	{
 		if (Count + 2 > Limit)
 			Count = 0;
-		glm::set_float4(colorArray, color);
-		R_ConvertColorToBytes(colorArray, Verts[Count].color);
-		Memory::Reinterpret<int>(Verts[Count + 1].color, Verts[Count].color);
 
-		glm::set_float3(Verts[Count].xyz, start);
-		glm::set_float3(Verts[Count + 1].xyz, end);
+		R_ConvertColorToBytes(color, Verts[Count].color);
+		Memory::Reinterpret<int>(Verts[Count + 1].color, Verts[Count].color);
+		Memory::Reinterpret<float*>(Verts[Count].xyz, start);
+		Memory::Reinterpret<float*>(Verts[Count + 1].xyz, start);
 
 		Count += 2;
 	}

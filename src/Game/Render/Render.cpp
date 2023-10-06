@@ -2,7 +2,6 @@
 #include "Game/Game.hpp"
 #include "Game/Render/Draw.hpp"
 #include "Sys/Memory.hpp"
-#include "Utils/Math.hpp"
 
 namespace IW3SR
 {

@@ -8,14 +8,7 @@ using namespace IW3SR;
 void Com_PrintMessage(int channel, const char* msg, int type);
 void RB_EndSceneRendering(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf);
 IDirect3D9* STDCALL R_Direct3DCreate9(UINT sdk);
-void CG_AdjustFrom640(float* x, float* y, float* w, float* h);
-void CG_FillRect(float x, float y, float w, float h, float color[4]);
-void CG_FillAngleYaw(float start, float end, float yaw, float y, float h, float color[4]);
-void CG_DrawLineYaw(float angle, float yaw, float y, float w, float h, float color[4]);
 void CG_DrawCrosshair(bool isScoreboardVisible);
-bool AngleInFov(float angle);
-float AngleScreenProjection(float angle);
-range_t AnglesToRange(float start, float end, float yaw);
 
 static Function<dvar_s*(const char* name)> 
 	Dvar_FindVar = 0x56B5D0;
