@@ -367,7 +367,11 @@ namespace IW3SR
 
 	HRESULT D3D9Device::EndScene()
 	{
-		SR->Render->Frame();
+		GUI::Initialize();
+
+		if (GUI::Active)
+			SR->Render->Frame();
+
 		return pIDirect3DDevice9->EndScene();
 	}
 

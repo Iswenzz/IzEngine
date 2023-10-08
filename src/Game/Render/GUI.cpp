@@ -41,6 +41,8 @@ namespace IW3SR
 		ImGui_ImplWin32_Shutdown();
 
 		ResetMouse();
+
+		Active = false;
 	}
 
 	void GUI::ResetMouse()

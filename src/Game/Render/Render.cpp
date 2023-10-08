@@ -32,7 +32,6 @@ namespace IW3SR
 
 	void Render::Frame()
 	{
-		GUI::Initialize();
 		GUI::Begin();
 		ModuleCallback(OnFrame);
 		GUI::End();
