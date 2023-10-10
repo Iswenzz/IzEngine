@@ -1,27 +1,8 @@
 #include "Draw.hpp"
-#include "Sys/Memory.hpp"
 
 namespace IW3SR
 {
-    void Draw::Line(const vec3& start, const vec3& end, const vec4& color)
-    {
-		if (LinesCount + 2 > 2735)
-			LinesCount = 0;
-
-		R_ConvertColorToBytes(color, LinesVerts[LinesCount].color);
-		Memory::Assign<int>(LinesVerts[LinesCount + 1].color, LinesVerts[LinesCount].color);
-		Memory::Assign<3, float>(LinesVerts[LinesCount].xyz, start);
-		Memory::Assign<3, float>(LinesVerts[LinesCount + 1].xyz, end);
-
-		LinesCount += 2;
-    }
-
-	void Draw::HUD(float x, float y, float w, float h, const vec4& color)
-	{
-		FillRect(x, y, w, h, color);
-	}
-
-    void Draw::Box2D(const vec3& position, const vec3& size, const vec4& color, int thickness)
+    void Draw::Box(const vec3& position, const vec3& size, const vec4& color, int thickness)
     {
         ImDrawList* draw = ImGui::GetBackgroundDrawList();
 
@@ -60,10 +41,4 @@ namespace IW3SR
         draw->AddLine(bfr, tfr, color, thickness);
         draw->AddLine(bfl, tfl, color, thickness);
     }
-
-	void Draw::Frame()
-	{
-		RB_DrawLines3D(LinesCount / 2, LinesWidth, LinesVerts.data(), LinesDepthTest);
-		LinesCount = 0;
-	}
 }

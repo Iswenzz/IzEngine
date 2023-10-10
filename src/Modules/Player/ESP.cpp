@@ -13,6 +13,11 @@ namespace IW3SR
         Size = 1;
     }
 
+    void ESP::OnDraw2D()
+    {
+        //Draw::Text()
+    }
+
     void ESP::OnFrame()
     {
         ImDrawList* draw = ImGui::GetBackgroundDrawList();
@@ -35,7 +40,7 @@ namespace IW3SR
                 continue;
 
             draw->AddLine(center, position, Color, Size);
-            Draw::Box2D(origin, Box, Color, Size);
+            Draw::Box(origin, Box, Color, Size);
         }
     }
 }
