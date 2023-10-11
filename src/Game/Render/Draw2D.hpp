@@ -52,10 +52,8 @@ namespace IW3SR
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <param name="font">The font.</param>
-		/// <param name="x">X-coordinate.</param>
-		/// <param name="y">Y-coordinate.</param>
-		/// <param name="size">Font size.</param>
-		/// <param name="color">The color.</param>
-		static void Text(std::string text, Font_s* font, float x, float y, float size, const vec4& color);
+		/// <param name="pos">XY-coordinates of screen.</param>
+		/// <param name="size">Text/Font size.</param>
+		static void Text(std::string text, Font_s* font, const vec2& pos, const vec2& size);
 	};
 }

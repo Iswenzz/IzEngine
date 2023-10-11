@@ -1,6 +1,7 @@
 #include "Modules.hpp"
 #include "Modules/Sys/Console.hpp"
 #include "Modules/Player/ESP.hpp"
+#include "Modules/Player/Velocity.hpp"
 
 namespace IW3SR
 {
@@ -8,6 +9,7 @@ namespace IW3SR
 	{
 		Load<Console>();
 		Load<ESP>();
+		Load<Velocity>();
 
 		LoadDynamic();
 	}

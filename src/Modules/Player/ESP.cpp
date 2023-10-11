@@ -13,12 +13,6 @@ namespace IW3SR
         Size = 1;
     }
 
-    void ESP::OnDraw2D()
-    {
-        Draw2D::Rect("white", 100, 100, 100, 20, Color);
-        Draw2D::Text("Test", g_fonts->normalFont, 100, 100, 1.6, Color);
-    }
-
     void ESP::OnFrame()
     {
         ImDrawList* draw = ImGui::GetBackgroundDrawList();

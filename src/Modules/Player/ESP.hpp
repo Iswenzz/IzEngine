@@ -21,11 +21,6 @@ namespace IW3SR
         virtual ~ESP() = default;
 
         /// <summary>
-        /// Draw 2D.
-        /// </summary>
-        void OnDraw2D() override;
-
-        /// <summary>
         /// Frame callback.
         /// </summary>
         void OnFrame() override;
