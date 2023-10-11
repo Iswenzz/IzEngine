@@ -1,4 +1,5 @@
 add_library(IW3SR SHARED)
+add_library(IW3SR.ASM STATIC)
 
 add_subdirectory(Commands)
 add_subdirectory(Game)

@@ -36,6 +36,6 @@ namespace IW3SR
     {
 		float w = size, h = size;
 		ScrPlace_ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
-        R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, font, x, y, w, h, 0, 0);
+        R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, font, x, y, w, h, 0, 0, color);
     }
 }
