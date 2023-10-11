@@ -1,18 +1,18 @@
 #pragma once
-
 #include "Modules/Module.hpp"
 #include "Game/Render/Draw.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
-	/// Draw current Velocity using engine renderer.
+	/// Draw current velocity.
 	/// </summary>
 	class Velocity : public Module
 	{
 	public:
 		vec2 Pos;
 		vec2 Size;
+		vec4 Color;
 
 		/// <summary>
 		/// Initialize the module.

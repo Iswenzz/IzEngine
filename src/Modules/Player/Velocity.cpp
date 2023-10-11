@@ -6,18 +6,19 @@ namespace IW3SR
 {
 	Velocity::Velocity()
 	{
-		ID = "sr.player.draw_velocity";
+		ID = "sr.player.velocity";
 		Name = "Velocity";
 
-		Pos = { 320, 240 };
-		Size = { 2, 2 };
+		Pos = { -20, 20 };
+		Size = { 0.6, 0.6 };
+		Color = { 0, 1, 1, 1 };
 	}
 
 	void Velocity::OnDraw2D()
 	{
 		const int velocity = vec2(pmove->ps->velocity).Length();
-		const std::string velocityString = std::to_string(velocity);
 
-		Draw2D::Text(velocityString, g_fonts->objectiveFont, Pos, Size, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
+		Draw2D::Text(std::to_string(velocity), g_fonts->objectiveFont, Pos, Size, 
+			HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP, Color);
 	}
 }
