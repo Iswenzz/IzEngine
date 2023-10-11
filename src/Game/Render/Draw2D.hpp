@@ -55,5 +55,16 @@ namespace IW3SR
 		/// <param name="pos">XY-coordinates of screen.</param>
 		/// <param name="size">Text/Font size.</param>
 		static void Text(std::string text, Font_s* font, const vec2& pos, const vec2& size);
+
+		/// <summary>
+		/// Draw a text.
+		/// </summary>
+		/// <param name="text">The text.</param>
+		/// <param name="font">The font.</param>
+		/// <param name="x">X-coordinate.</param>
+		/// <param name="y">Y-coordinate.</param>
+		/// <param name="size">Text/Font size.</param>
+		/// <param name="color">The color.</param>
+		static void Text(std::string text, Font_s* font, float x, float y, float size);
 	};
 }
