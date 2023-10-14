@@ -2,6 +2,7 @@
 #include "Modules/Sys/Console.hpp"
 #include "Modules/Player/ESP.hpp"
 #include "Modules/Player/Velocity.hpp"
+#include "Modules/Player/FPS.hpp"
 
 namespace IW3SR
 {
@@ -10,6 +11,7 @@ namespace IW3SR
 		Load<Console>();
 		Load<ESP>();
 		Load<Velocity>();
+		Load<FPS>();
 
 		LoadDynamic();
 	}

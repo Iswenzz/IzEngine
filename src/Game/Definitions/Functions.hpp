@@ -61,5 +61,5 @@ void SetDvar(const std::string& name, const T& value)
 		throw std::runtime_error("Dvar not found.");
 		return;
 	}
-	//Memory::Assign<T>(dvar->current.value, value);
+	*reinterpret_cast<T*>(&dvar->current.value) = value;
 }
