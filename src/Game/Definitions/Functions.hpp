@@ -9,11 +9,10 @@ static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest
 	RB_DrawLines3D = 0x613040;
 static Function<void FASTCALL(const float* colorFloat, char* colorBytes)> 
 	R_ConvertColorToBytes = 0x493530;
-static Function<char(Material* material, float x, float y, float w, float h, float s0,
-	float t0, int s1, int t1, float* color)> 
-	R_AddCmdDrawStretchPic = 0x5F65F0;
-static Function<Material*(const char* fontName, int fontSize)>
+static Function<Material*(const char* material, int size)>
 	Material_RegisterHandle = 0x5F2A80;
+static Function<Font_s*(const char* font, int size)>
+	R_RegisterFont = 0x5F1EC0;
 
 extern Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 	DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -30,7 +29,13 @@ extern Hook<void(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceSt
 extern Hook<IDirect3D9* STDCALL(UINT sdk)> 
 	R_Direct3DCreate9_h;
 
-EXTERN_C const char* R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
-	float xScale, float yScale, float rotation, int style, float* color);
-void ScrPlace_ApplyRect(float& x, float& y, float& w, float& h,
-	RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+EXTERN_C
+{
+	void ScrPlace_ApplyRect(float& x, float& y, float& w, float& h,
+		RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+	void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
+		float xScale, float yScale, float rotation, int style, float* color);
+	void R_AddCmdDrawStretchPic(Material* material, float x, float y, float w, float h, 
+		float null1, float null2, float null3, float null4, float* color);
+	int R_TextWidth(const char* text, int maxChars, Font_s* font);
+}

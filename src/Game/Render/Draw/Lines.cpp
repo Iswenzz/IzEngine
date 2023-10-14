@@ -25,7 +25,7 @@ namespace IW3SR
 		Count += 2;
 	}
 
-	void Lines::Frame()
+	void Lines::Render()
 	{
 		RB_DrawLines3D(Count / 2, Width, Verts.data(), DepthTest);
 		Count = 0;

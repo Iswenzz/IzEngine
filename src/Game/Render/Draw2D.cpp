@@ -34,23 +34,10 @@ namespace IW3SR
 		Rect(material, x - w / 2, y, w, h, color);
 	}
 
-	void Draw2D::Text(const std::string& text, Font_s* font, const vec2& pos, const vec2& size,
-		RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color)
-	{
-		Text(text, font, pos.x, pos.y, size.x, size.y, horizontal, vertical, color);
-	}
-
-	void Draw2D::Text(const std::string& text, Font_s* font, float x, float y, float size,
-		RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color)
+	void Draw2D::Text(const std::string& text, Font_s* font, float x, float y, float size, const vec4& color)
 	{
 		float w = size, h = size;
-		Text(text, font, x, y, w, h, horizontal, vertical, color);
-	}
-
-	void Draw2D::Text(const std::string& text, Font_s* font, float x, float y, float w, float h,
-		RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color)
-	{
-		ScrPlace_ApplyRect(x, y, w, h, horizontal, vertical);
+		ScrPlace_ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
 		R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, font, x, y, w, h, 0, 0, color);
 	}
 }

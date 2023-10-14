@@ -48,45 +48,15 @@ namespace IW3SR
 			float w, float h, const vec4& color);
 
 		/// <summary>
-        /// Draw text overload.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="font">The font.</param>
-        /// <param name="pos">XY-coordinates of screen.</param>
-        /// <param name="size">Font size.</param>
-		/// <param name="horizonal">Horizontal screen rect alignment.</param>
-		/// <param name="vertical">Vertical screen rect alignment.</param>
-		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, Font_s* font, const vec2& pos, const vec2& size, 
-			RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color);
-
-		/// <summary>
-		/// Draw text overload.
+		/// Draw text.
 		/// </summary>
 		/// <param name="text">The text.</param>
 		/// <param name="font">The font.</param>
 		/// <param name="x">X-coordinate.</param>
 		/// <param name="y">Y-coordinate.</param>
 		/// <param name="size">Font size.</param>
-		/// <param name="horizonal">Horizontal screen rect alignment.</param>
-		/// <param name="vertical">Vertical screen rect alignment.</param>
 		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, Font_s* font, float x, float y, float size,
-			RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color);
-
-		/// <summary>
-		/// Draw text.
-		/// </summary>
-		/// <param name="text">The text.</param>
-		/// <param name="font">The font.</param>
-		/// <param name="x">X-coordinate of screen.</param>
-		/// <param name="y">Y-coordinate of screen.</param>
-		/// <param name="w">Text width.</param>
-		/// <param name="h">Horizontal text size.</param>
-		/// <param name="horizonal">Horizontal screen rect alignment.</param>
-		/// <param name="vertical">Vertical screen rect alignment.</param>
-		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, Font_s* font, float x, float y, float w, float h,
-			RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical, const vec4& color);
+		static void Text(const std::string& text, Font_s* font, float x, float y, 
+			float size, const vec4& color);
 	};
 }

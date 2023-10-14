@@ -248,6 +248,16 @@ typedef enum RectAlignVertical_t
 	VERTICAL_ALIGN_CENTER_SAFEAREA		// Center of the save area.
 } RectAlignVertical_t;
 
+typedef enum 
+{
+	HUDALIGN_TOP = 0,
+	HUDALIGN_LEFT = 0,
+	HUDALIGN_MIDDLE = 1,
+	HUDALIGN_BOTTOM = 2,
+	HUDALIGN_CENTER = 4,
+	HUDALIGN_RIGHT = 8
+} hudalign_t;
+
 enum XAssetType
 {
 	ASSET_TYPE_XMODELPIECES = 0x0,

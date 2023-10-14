@@ -9,16 +9,17 @@ namespace IW3SR
 		ID = "sr.player.velocity";
 		Name = "Velocity";
 
-		Pos = { -20, 20 };
-		Size = { 0.6, 0.6 };
 		Color = { 0, 1, 1, 1 };
+
+		VelocityText = Text("0", FONT_OBJECTIVE, 0, 2, 0.6, Color);
+		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}
 
 	void Velocity::OnDraw2D()
 	{
 		const int velocity = vec2(pmove->ps->velocity).Length();
-
-		Draw2D::Text(std::to_string(velocity), g_fonts->objectiveFont, Pos, Size, 
-			HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP, Color);
+		VelocityText.Value = std::to_string(velocity);
+		VelocityText.Render();
 	}
 }

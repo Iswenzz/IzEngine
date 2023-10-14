@@ -36,6 +36,6 @@ namespace IW3SR
 		/// <summary>
 		/// Draw frame.
 		/// </summary>
-		void Frame();
+		void Render();
 	};
 }

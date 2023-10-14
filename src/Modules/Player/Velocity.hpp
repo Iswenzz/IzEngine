@@ -1,6 +1,6 @@
 #pragma once
 #include "Modules/Module.hpp"
-#include "Game/Render/Draw.hpp"
+#include "Game/Render/Draw/Text.hpp"
 
 namespace IW3SR
 {
@@ -10,8 +10,7 @@ namespace IW3SR
 	class Velocity : public Module
 	{
 	public:
-		vec2 Pos;
-		vec2 Size;
+		Text VelocityText;
 		vec4 Color;
 
 		/// <summary>
