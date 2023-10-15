@@ -9,8 +9,11 @@ namespace IW3SR
 	{
 		BuildProcessPath();
 		IW3SRDirectory = BaseDirectory / "iw3sr";
+		ModulesDirectory = IW3SRDirectory / "modules";
 		PluginsDirectory = IW3SRDirectory / "plugins";
 		RessourcesDirectory = IW3SRDirectory / "ressources";
+		FontsDirectory = RessourcesDirectory / "fonts";
+		ImagesDirectory = RessourcesDirectory / "images";
 	}
 
 	void Environment::BuildProcessPath()

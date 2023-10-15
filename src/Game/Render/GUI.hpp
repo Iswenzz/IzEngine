@@ -31,6 +31,11 @@ namespace IW3SR
 		static void Initialize();
 
 		/// <summary>
+		/// GUI theme.
+		/// </summary>
+		static void Theme();
+
+		/// <summary>
 		/// Reset ImGUI.
 		/// </summary>
 		static void Reset();
@@ -49,6 +54,11 @@ namespace IW3SR
 		/// End frame.
 		/// </summary>
 		static void End();
+
+		/// <summary>
+		/// Render frame.
+		/// </summary>
+		static void Frame();
 
 		/// <summary>
 		/// Creates the main window.

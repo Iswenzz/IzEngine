@@ -1,3 +1,4 @@
+add_subdirectory(Fonts)
 add_subdirectory(Render)
 
 target_sources(IW3SR PRIVATE
