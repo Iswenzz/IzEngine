@@ -39,28 +39,3 @@ EXTERN_C
 		float null1, float null2, float null3, float null4, float* color);
 	int R_TextWidth(const char* text, int maxChars, Font_s* font);
 }
-
-template <typename T>
-T GetDvar(const std::string& name)
-{
-	dvar_s* dvar = Dvar_FindVar(name.c_str());
-	if (!dvar)
-	{
-		throw std::runtime_error("Dvar not found.");
-		return 0;
-	}
-	return *reinterpret_cast<T*>(&dvar->current.value);
-}
-
-template <typename T>
-void SetDvar(const std::string& name, const T& value)
-{
-	dvar_s* dvar = Dvar_FindVar(name.c_str());
-	if (!dvar)
-	{
-		throw std::runtime_error("Dvar not found.");
-		return;
-	}
-	Memory::Assign<T>(dvar->current.value, value);
-	Memory::Assign<T>(dvar->latched.value, value);
-}
