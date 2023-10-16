@@ -8,6 +8,7 @@ namespace IW3SR
 	{
 		ID = "sr.player.velocity";
 		Name = "Velocity";
+		MenuSize = { 400, 100 };
 
 		Color = { 0, 1, 1, 1 };
 
@@ -16,10 +17,16 @@ namespace IW3SR
 		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}
 
+	void Velocity::OnMenu()
+	{
+		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
+	}
+
 	void Velocity::OnDraw2D()
 	{
 		const int velocity = vec2(pmove->ps->velocity).Length();
 		VelocityText.Value = std::to_string(velocity);
+		VelocityText.Color = Color;
 		VelocityText.Render();
 	}
 }

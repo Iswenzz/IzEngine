@@ -10,6 +10,7 @@ namespace IW3SR
 
 	void Module::Initialize() { }
 	void Module::Shutdown() { }
+	void Module::OnMenu() { }
 	void Module::OnDraw3D() { }
 	void Module::OnDraw2D() { }
 	void Module::OnFrame() { }

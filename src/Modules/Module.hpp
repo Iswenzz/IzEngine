@@ -1,4 +1,6 @@
 #pragma once
+#include "Utils/Math.hpp"
+
 #include <string>
 #include <memory>
 
@@ -13,6 +15,8 @@ namespace IW3SR
 		std::string ID;
 		std::string Name;
 		bool IsEnabled;
+		bool MenuOpen;
+		vec2 MenuSize = { 400, 200 };
 
 		/// <summary>
 		/// Release the module.
@@ -28,6 +32,11 @@ namespace IW3SR
 		/// Shutdown the module.
 		/// </summary>
 		virtual void Shutdown();
+
+		/// <summary>
+		/// Menu drawing.
+		/// </summary>
+		virtual void OnMenu();
 
 		/// <summary>
 		/// Draw 3D callback.

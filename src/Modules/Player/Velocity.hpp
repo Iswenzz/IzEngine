@@ -20,6 +20,11 @@ namespace IW3SR
 		virtual ~Velocity() = default;
 
 		/// <summary>
+		/// Menu drawing.
+		/// </summary>
+		void OnMenu() override;
+
+		/// <summary>
 		/// Draw 2D.
 		/// </summary>
 		void OnDraw2D() override;

@@ -175,16 +175,27 @@ namespace IW3SR
 	{
 		if (!Open) return;
 
+		ImGui::SetNextWindowSize({ 400, 300 }, ImGuiCond_FirstUseEver);
 		ImGui::Begin("Modules", &Open);
 		const float frameWidth = ImGui::GetContentRegionAvail().x - 16;
 
 		for (const auto& [_, entry] : SR->Modules->Entries)
 		{
+			const char* name = entry->Name.c_str();
+
 			ImGui::Button(ICON_FA_TOGGLE_ON);
 			ImGui::SameLine();
-			ImGui::Text(entry->Name.c_str());
+			ImGui::Text(name);
 			ImGui::SameLine(frameWidth);
-			ImGui::Button(ICON_FA_GEAR);
+
+			if (ImGui::Button(ICON_FA_GEAR) || entry->MenuOpen)
+			{
+				entry->MenuOpen = true;
+				ImGui::SetNextWindowSize(entry->MenuSize, ImGuiCond_FirstUseEver);
+				ImGui::Begin(name, &entry->MenuOpen);
+				entry->OnMenu();
+				ImGui::End();
+			}
 		}
 		ImGui::End();
 	}
