@@ -12,7 +12,7 @@ namespace IW3SR
 		Color = { 1, 1, 1, 1 };
 		Pos = { 0, 20 };
 
-		FPSText = Text("0", "0", Pos, 1, Color);
+		FPSText = Text("0", FONT_BIG_DEV, Pos, 1, Color);
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}

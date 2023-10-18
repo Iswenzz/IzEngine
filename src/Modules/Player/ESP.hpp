@@ -21,6 +21,11 @@ namespace IW3SR
         virtual ~ESP() = default;
 
         /// <summary>
+        /// Menu drawing.
+        /// </summary>
+        void OnMenu() override;
+
+        /// <summary>
         /// Frame callback.
         /// </summary>
         void OnFrame() override;

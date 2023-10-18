@@ -13,6 +13,11 @@ namespace IW3SR
         Size = 1;
     }
 
+    void ESP::OnMenu()
+    {
+        ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
+    }
+
     void ESP::OnFrame()
     {
         ImDrawList* draw = ImGui::GetBackgroundDrawList();
