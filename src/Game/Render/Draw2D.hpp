@@ -10,6 +10,9 @@ namespace IW3SR
 	class Draw2D
 	{
 	public:
+		static inline std::vector<const char*> Fonts = { FONT_NORMAL, FONT_OBJECTIVE, FONT_CONSOLE,
+			FONT_SMALL, FONT_SMALL_DEV, FONT_BIG, FONT_BIG_DEV, FONT_BOLD };
+
 		/// <summary>
 		/// Draw a rectangle with the specified color.
 		/// </summary>

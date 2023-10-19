@@ -1,5 +1,6 @@
 #include "FPS.hpp"
 #include "Game/Dvar.hpp"
+#include "Game/Render/Draw2D.hpp"
 
 namespace IW3SR
 {
@@ -20,11 +21,10 @@ namespace IW3SR
 	void FPS::OnMenu()
 	{	
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
-		
 		ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.35f);
 
-		if (ImGui::Combo("FPS font", &currentFont, fonts.data(), 8))
-			FPSText.SetFont(fonts[currentFont]);
+		if (ImGui::Combo("FPS font", &FPSText.FontIndex, Draw2D::Fonts.data(), Draw2D::Fonts.size()))
+			FPSText.SetFont(Draw2D::Fonts[FPSText.FontIndex]);
 	}
 
 	void FPS::OnDraw2D()

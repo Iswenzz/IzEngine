@@ -178,16 +178,19 @@ namespace IW3SR
 		ImGui::Begin("Modules", &Open);
 		ImGui::SetWindowSize({ 400, 300 }, ImGuiCond_FirstUseEver);
 		const float frameWidth = ImGui::GetContentRegionAvail().x - 16;
-		static bool v = false;
 
 		for (const auto& [_, entry] : SR->Modules->Entries)
 		{
 			const char* name = entry->Name.c_str();
-			ImGui::ToggleButton(entry->ID + "toggle", 20.f, &v);
+
+			// Enable/Disable module
+			if (ImGui::ToggleButton(entry->ID + "toggle", 20, &entry->IsEnabled))
+				entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
 			ImGui::SameLine();
 			ImGui::Text(name);
 			ImGui::SameLine(frameWidth);
 
+			// Draw module menus
 			if (ImGui::ButtonId(ICON_FA_GEAR, entry->ID + "menu") || entry->MenuOpen)
 			{
 				entry->MenuOpen = true;

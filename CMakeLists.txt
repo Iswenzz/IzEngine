@@ -52,7 +52,7 @@ endif()
 add_subdirectory(src)
 
 set_target_properties(IW3SR PROPERTIES
-	OUTPUT_NAME mssIW3SR
+	OUTPUT_NAME IW3SR
 	SUFFIX ".asi")
 
 target_link_libraries(IW3SR PUBLIC
