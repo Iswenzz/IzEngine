@@ -70,7 +70,10 @@ namespace IW3SR
 		void Callback(Func callback)
 		{
 			for (const auto& [_, entry] : Entries)
-				callback(entry);
+			{
+				if (entry->IsEnabled)
+					callback(entry);
+			}
 		}
 	};
 }

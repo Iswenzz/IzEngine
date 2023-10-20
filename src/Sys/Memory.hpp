@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <bit>
 
 namespace IW3SR
 {
@@ -48,7 +49,7 @@ namespace IW3SR
         template <typename R, typename T, typename U>
         static inline void Assign(T& dst, U& src)
         {
-            *(R*)&dst = *(R*)&src;
+            *reinterpret_cast<R*>(&dst) = *reinterpret_cast<R*>(&src);
         }
 
         /// <summary>
