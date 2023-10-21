@@ -55,7 +55,6 @@ namespace IW3SR
 		/// </summary>
 		virtual void OnFrame();
 
-		NLOHMANN_DEFINE_POLY_BASE();
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Module, IsEnabled, MenuSize, MenuPosition);
+		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, MenuSize, MenuPosition);
 	};
 }

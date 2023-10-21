@@ -44,13 +44,9 @@ namespace IW3SR
 			entry->IsEnabled = initialize;
 			if (isSerialized)
 			{
-				try 
-				{
-					nlohmann::from_json(Serialized[entry->ID], entry);
-				}
+				try { entry->Deserialize(Serialized[entry->ID]); }
 				catch (...) { }
 			}
-			Log::WriteLine("[{}] {} ({}, {})", entry->ID, entry->IsEnabled, entry->MenuSize.x, entry->MenuSize.y);
 			if (entry->IsEnabled)
 				entry->Initialize();
 

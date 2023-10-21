@@ -30,7 +30,6 @@ namespace IW3SR
         /// </summary>
         void OnFrame() override;
 
-        NLOHMANN_DEFINE_POLY(Module);
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(ESP, Color, Box, Size);
+        NLOHMANN_DEFINE_POLY(ESP, Module, Color, Box, Size);
     };
 }

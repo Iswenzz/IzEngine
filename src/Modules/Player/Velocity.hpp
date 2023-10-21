@@ -29,7 +29,6 @@ namespace IW3SR
 		/// </summary>
 		void OnDraw2D() override;
 
-		NLOHMANN_DEFINE_POLY(Module);
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Velocity, VelocityText, Color);
+		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText, Color);
 	};
 }
