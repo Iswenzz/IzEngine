@@ -45,4 +45,22 @@ namespace ImGui
 
         return clicked;
     }
+
+    void SetWindowVirtual(vec2& position, vec2& size, RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical)
+    {
+        ScrPlace_ApplyRect(position.x, position.y, size.x, size.y, horizontal, vertical);
+    }
+
+    void SetWindowAlignment(vec2& position, const vec2& size, hudalign_t horizontal, hudalign_t vertical)
+    {
+        if (horizontal & HUDALIGN_CENTER)
+            position.x += -(size.x / 2);
+        else if (horizontal & HUDALIGN_RIGHT)
+            position.x += -size.x;
+
+        if (vertical & HUDALIGN_MIDDLE)
+            position.y += size.y / 2;
+        else if (vertical & HUDALIGN_BOTTOM)
+            position.y += size.y;
+    }
 }

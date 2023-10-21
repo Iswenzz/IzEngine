@@ -31,7 +31,7 @@ namespace IW3SR
 		if (AlignX & HUDALIGN_CENTER)
 			x += -(Size.x / 2);
 		else if (AlignX & HUDALIGN_RIGHT)
-			x += Size.x;
+			x += -Size.x;
 
 		if (AlignY & HUDALIGN_MIDDLE)
 			y += Size.y / 2;

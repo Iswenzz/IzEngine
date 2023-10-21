@@ -37,6 +37,8 @@ namespace IW3SR
 		ImGuiStyle& style = ImGui::GetStyle();
 		ImVec4* colors = style.Colors;
 
+		io.IniFilename = nullptr;
+
 		const float fontSize = 18;
 		const float iconSize = fontSize * 2.f / 3.f;
 
@@ -175,11 +177,14 @@ namespace IW3SR
 	{
 		if (!Open) return;
 
-		const vec2 menuSize = { 400, 300 };
-		const vec2 menuPos = { 50, 50 };
+		vec2 menuPos = { -20, 20 };
+		vec2 menuSize = { 200, 100 };
 		ImGui::Begin("Modules", &Open);
+		ImGui::SetWindowAlignment(menuPos, menuSize, HUDALIGN_RIGHT, HUDALIGN_TOP);
+		ImGui::SetWindowVirtual(menuPos, menuSize, HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
+		ImGui::SetWindowPos(menuPos, ImGuiCond_FirstUseEver);
 		ImGui::SetWindowSize(menuSize, ImGuiCond_FirstUseEver);
-		const float frameWidth = ImGui::GetContentRegionAvail().x - 16;
+		const float frameWidth = menuSize.x - 30;
 
 		for (const auto& [_, entry] : SR->Modules->Entries)
 		{

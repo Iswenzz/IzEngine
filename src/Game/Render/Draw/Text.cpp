@@ -23,7 +23,7 @@ namespace IW3SR
 		if (AlignX & HUDALIGN_CENTER)
 			x += -(textWidth / 2);
 		else if (AlignX & HUDALIGN_RIGHT)
-			x += textWidth;
+			x += -textWidth;
 
 		if (AlignY & HUDALIGN_MIDDLE)
 			y += textHeight / 2;
