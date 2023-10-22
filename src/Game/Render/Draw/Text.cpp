@@ -9,7 +9,7 @@ namespace IW3SR
 		Value = text;
 		Font = nullptr;
 		FontName = font;
-		FontIndex = 0;
+		FontIndex = std::distance(Draw2D::Fonts.begin(), std::ranges::find(Draw2D::Fonts, font));
 	}
 
 	Text::Text(const std::string& text, const std::string& font, const vec2& pos, float size, const vec4& color) :

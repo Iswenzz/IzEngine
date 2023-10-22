@@ -59,6 +59,6 @@ namespace IW3SR
 		/// </summary>
 		void Render() override;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, FontName);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, FontName, FontIndex);
 	};
 }
