@@ -19,7 +19,7 @@ namespace IW3SR
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 		ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.35f);
 
-		if (ImGui::Combo("FPS font", &FPSText.FontIndex, Draw2D::Fonts.data(), Draw2D::Fonts.size()))
+		if (ImGui::Combo("Font", &FPSText.FontIndex, Draw2D::Fonts.data(), Draw2D::Fonts.size()))
 			FPSText.SetFont(Draw2D::Fonts[FPSText.FontIndex]);
 	}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Render/Draw/Window.hpp"
 
 #include <imgui.h>
 #include <imgui_impl_dx9.h>
@@ -18,6 +19,7 @@ namespace IW3SR
 		static inline HWND MainWindow = nullptr;
 		static inline bool Active = false;
 		static inline bool Open = false;
+		static inline Window ToolbarWindow = Window();
 
 		/// <summary>
 		/// Initialize ImGUI.
@@ -59,6 +61,11 @@ namespace IW3SR
 		/// End frame.
 		/// </summary>
 		static void End();
+
+		/// <summary>
+		/// Toolbar.
+		/// </summary>
+		static void Toolbar();
 
 		/// <summary>
 		/// Render frame.

@@ -18,9 +18,9 @@ namespace IW3SR
 		Size = { w, h };
 	}
 
-	void Window::Begin()
+	void Window::Begin(ImGuiWindowFlags flags)
 	{
-		ImGui::Begin(Name.c_str(), &Open);
+		ImGui::Begin(Name.c_str(), &Open, flags);
 
 		const vec2 space = vec2(scr_place->scaleVirtualToFull);
 		vec2 position = Position * space;

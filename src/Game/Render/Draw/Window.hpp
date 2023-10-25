@@ -45,7 +45,7 @@ namespace IW3SR
 		/// <summary>
 		/// Begin drawing.
 		/// </summary>
-		void Begin();
+		void Begin(ImGuiWindowFlags flags = 0);
 
 		/// <summary>
 		/// End drawing.
