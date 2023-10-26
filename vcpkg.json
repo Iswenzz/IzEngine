@@ -11,13 +11,15 @@
 	},
 	"dependencies": [
 		{ "name": "imgui", "features": ["dx9-binding", "win32-binding"] },
+		"directxsdk",
 		"polyhook2",
 		"nlohmann-json",
 		"glm"
 	],
 	"overrides": [
-        { "name": "polyhook2", "version": "2023-08-11" },
         { "name": "imgui", "version": "1.89.9" },
+        { "name": "directxsdk", "version-string": "jun10#7" },
+        { "name": "polyhook2", "version": "2023-08-11" },
         { "name": "nlohmann-json", "version": "3.11.2" },
         { "name": "glm", "version": "2023-06-08" },
         { "name": "gtest", "version": "1.13.0" }

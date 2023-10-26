@@ -4,6 +4,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# CMake
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 if(MSVC)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
@@ -24,6 +26,7 @@ set(CPACK_GENERATOR 7Z)
 include(CPack)
 
 # Dependencies
+find_package(DirectXSDK REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
@@ -58,11 +61,11 @@ set_target_properties(IW3SR.DLL PROPERTIES
 
 target_link_libraries(IW3SR PUBLIC
 	$<TARGET_OBJECTS:IW3SR.ASM>
+	DirectX::SDK
 	imgui::imgui
 	nlohmann_json::nlohmann_json
 	glm::glm
-	PolyHook_2::PolyHook_2
-	d3d9)
+	PolyHook_2::PolyHook_2)
 
 if(PRIVATE)
 	add_subdirectory(private)
