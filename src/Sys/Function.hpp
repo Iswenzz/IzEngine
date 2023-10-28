@@ -49,5 +49,13 @@ namespace IW3SR
 		{
 			return Func(args...);
 		}
+
+		/// <summary>
+		/// Is function defined.
+		/// </summary>
+		operator bool() const
+		{
+			return Address;
+		}
 	};
 }

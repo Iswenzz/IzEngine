@@ -42,7 +42,10 @@ namespace IW3SR
 	void Modules::RefreshDynamicModules()
 	{
 		for (const auto& [_, dll] : DLLs)
-			dll->GUI();
+		{
+			if (dll->GUI)
+				dll->GUI();
+		}
 	}
 
 	void Modules::Enable(const std::string& id)

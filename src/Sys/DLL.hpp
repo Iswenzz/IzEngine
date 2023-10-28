@@ -1,5 +1,6 @@
 #pragma once
 #include "Sys/Function.hpp"
+#include "Utils/Macros.hpp"
 
 #include <Windows.h>
 #include <memory>

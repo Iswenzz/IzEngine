@@ -18,11 +18,10 @@ namespace IW3SR
 		GUI = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "GUI"));
 		Shutdown = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Shutdown"));
 
-		if (!Initialize.Address || !Shutdown.Address || !GUI.Address)
-			throw std::runtime_error("DLL is missing Initialize or Shutdown functions.");
+		if (!Initialize)
+			throw std::runtime_error("DLL is missing Initialize function.");
 
 		Initialize(this);
-		Log::WriteLine("[{}] Initialized", Name);
 	}
 
 	DLL::~DLL()
@@ -30,8 +29,8 @@ namespace IW3SR
 		if (Mode == DLLMode::PERSISTED)
 			return;
 
-		Log::WriteLine("[{}] Shutdown", Name);
-		Shutdown();
+		if (Shutdown)
+			Shutdown();
 
 		FreeLibrary(Instance);
 	}
