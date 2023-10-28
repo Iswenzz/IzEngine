@@ -8,7 +8,7 @@ namespace IW3SR
 		ID = id;
 		Name = name;
 		Menu = Window(name);
-		Menu.SetRect(0, 0, 180, 80);
+		Menu.SetRect(20, 20, 180, 80);
 	}
 
 	Module::~Module()

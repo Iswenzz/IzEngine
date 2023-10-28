@@ -8,7 +8,7 @@ namespace IW3SR
 	Modules::Modules()
 	{
 		Menu = Window("Modules");
-		Menu.SetRect(-20, 20, 200, 100);
+		Menu.SetRect(470, 20, 150, 100);
 
 		Deserialize();
 	}

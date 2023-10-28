@@ -53,6 +53,8 @@ add_subdirectory(src)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/private")
     add_subdirectory(private)
+	add_compile_definitions(PRIVATE)
+	install(TARGETS IW3SR.Private RUNTIME DESTINATION ${COD4}/iw3sr/plugins)
 endif()
 
 set_target_properties(IW3SR.DLL PROPERTIES
@@ -66,12 +68,6 @@ target_link_libraries(IW3SR PUBLIC
 	nlohmann_json::nlohmann_json
 	glm::glm
 	PolyHook_2::PolyHook_2)
-
-if(PRIVATE)
-	add_subdirectory(private)
-	add_compile_definitions(IW3SR_PRIVATE)
-	install(TARGETS IW3SR.Private RUNTIME DESTINATION ${COD4}/iw3sr/plugins)
-endif()
 
 # Install
 install(TARGETS IW3SR.DLL RUNTIME DESTINATION ${COD4}/miles)

@@ -5,6 +5,8 @@ target_sources(IW3SR PRIVATE
 	Macros.hpp
 	Math.hpp
 	Math.cpp
+	Utils.hpp
+	Utils.cpp
 	Matrix3.hpp
 	Vector2.hpp
 	Vector3.hpp
