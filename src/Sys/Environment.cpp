@@ -8,7 +8,7 @@ namespace IW3SR
 	void Environment::Load()
 	{
 		TCHAR buffer[MAX_PATH];
-		DWORD bufferLength = GetModuleFileName(NULL, buffer, MAX_PATH);
+		GetModuleFileName(NULL, buffer, MAX_PATH);
 		BaseDirectory = std::filesystem::path(buffer).parent_path();
 
 		IW3SRDirectory = BaseDirectory / "iw3sr";
