@@ -4,6 +4,8 @@
 #include "Sys/Function.hpp"
 #include "Sys/Memory.hpp"
 
+static Function<void(int localClientNum, int controllerIndex, const char* text)> 
+	Cmd_ExecuteSingleCommand = 0x4F9AB0;
 static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)> 
 	RB_DrawLines3D = 0x613040;
 static Function<void FASTCALL(const float* colorFloat, char* colorBytes)> 
