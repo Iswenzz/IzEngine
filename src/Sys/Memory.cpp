@@ -67,6 +67,16 @@ namespace IW3SR
         Write(address, bytes.c_str(), 5);
     }
 
+    void Memory::CALL(uintptr_t address, uintptr_t to, int size)
+    {
+        std::string bytes = "\xE8";
+        uintptr_t nearAddress = to - (address + 5);
+        bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
+
+        NOP(address, size);
+        Write(address, bytes.c_str(), 5);
+    }
+
     uintptr_t Memory::LE(uintptr_t value)
     {
         uintptr_t result = 0;

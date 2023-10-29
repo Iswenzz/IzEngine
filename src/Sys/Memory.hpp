@@ -93,9 +93,17 @@ namespace IW3SR
         /// JMP instruction.
         /// </summary>
         /// <param name="address">The target address.</param>
-        /// <param name="to">The detour address.</param>
+        /// <param name="to">The jmp address.</param>
         /// <param name="size">The bytes size.</param>
         static void JMP(uintptr_t address, uintptr_t to, int size = 5);
+
+        /// <summary>
+        /// CALL instruction.
+        /// </summary>
+        /// <param name="address">The target address.</param>
+        /// <param name="to">The call address.</param>
+        /// <param name="size">The bytes size.</param>
+        static void CALL(uintptr_t address, uintptr_t to, int size = 5);
 
         /// <summary>
         /// Convert to little endian.
