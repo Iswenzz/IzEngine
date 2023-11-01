@@ -1,7 +1,5 @@
-#include <string>
 #include "Velocity.hpp"
 #include "Game/Game.hpp"
-#include "Game/Render/Draw2D.hpp"
 
 namespace IW3SR
 {
@@ -17,7 +15,7 @@ namespace IW3SR
 	void Velocity::OnMenu()
 	{
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
-		
+
 		if (ImGui::Combo("Font", &VelocityText.FontIndex, Draw2D::Fonts.data(), Draw2D::Fonts.size()))
 			VelocityText.SetFont(Draw2D::Fonts[VelocityText.FontIndex]);
 	}

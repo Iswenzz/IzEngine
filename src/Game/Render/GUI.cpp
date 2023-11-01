@@ -24,7 +24,7 @@ namespace IW3SR
 		ImGui_ImplDX9_Init(dx->device);
 		Theme();
 
-		SR->Modules->SetDynamicModulesRenderer();
+		SR->Modules->SetRenderer();
 
 		Active = true;
 	}
@@ -97,7 +97,7 @@ namespace IW3SR
 		{
 			bool reload = false;
 			if (ImGui::ButtonId(ICON_FA_ROTATE_RIGHT, "Reload", &reload, buttonSize))
-				SR->Modules->ReloadDynamicModules();
+				SR->Modules->Reload();
 			ImGui::SameLine();
 		}
 

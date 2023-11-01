@@ -6,7 +6,7 @@ namespace IW3SR
 	/// <summary>
 	/// Text element.
 	/// </summary>
-	class Text : public HUD
+	class API Text : public HUD
 	{
 	public:
 		std::string Value;

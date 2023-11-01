@@ -7,7 +7,7 @@ namespace IW3SR
 	/// <summary>
 	/// HUD element.
 	/// </summary>
-	class HUD
+	class API HUD
 	{
 	public:
 		vec2 Position = vec2::Zero;

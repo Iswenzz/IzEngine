@@ -7,7 +7,7 @@ namespace IW3SR
 	/// <summary>
 	/// Lines class.
 	/// </summary>
-	class Lines
+	class API Lines
 	{
 	public:
 		std::vector<GfxPointVertex> Verts{ };

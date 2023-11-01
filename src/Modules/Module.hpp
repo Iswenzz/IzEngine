@@ -2,7 +2,15 @@
 #include "Utils/Macros.hpp"
 #include "Utils/Math.hpp"
 #include "Utils/ImGUI.hpp"
+
+#include "Game/Render/Draw.hpp"
+#include "Game/Render/Draw2D.hpp"
+#include "Game/Render/Draw3D.hpp"
+#include "Game/Render/Draw/HUD.hpp"
+#include "Game/Render/Draw/Text.hpp"
+#include "Game/Render/Draw/Lines.hpp"
 #include "Game/Render/Draw/Window.hpp"
+
 #include "Sys/Environment.hpp"
 
 #include <string>

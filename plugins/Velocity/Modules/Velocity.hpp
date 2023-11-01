@@ -1,6 +1,5 @@
 #pragma once
 #include "Modules/Module.hpp"
-#include "Game/Render/Draw/Text.hpp"
 
 namespace IW3SR
 {

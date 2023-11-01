@@ -33,7 +33,12 @@ namespace IW3SR
 		/// <summary>
 		/// Initialize the modules.
 		/// </summary>
-		void Initialize();
+		static void Initialize();
+
+		/// <summary>
+		/// Reload the modules.
+		/// </summary>
+		void Reload();
 
 		/// <summary>
 		/// Load a module.
@@ -44,7 +49,7 @@ namespace IW3SR
 		{
 			std::unique_ptr<M> entry = std::make_unique<M>();
 			bool isSerialized = Serialized.contains(entry->ID);
-			
+
 			entry->IsEnabled = initialize;
 			if (isSerialized)
 			{
@@ -58,19 +63,9 @@ namespace IW3SR
 		}
 
 		/// <summary>
-		/// Load dynamic modules.
-		/// </summary>
-		void LoadDynamicModules();
-
-		/// <summary>
 		/// Set the dynamic modules renderer.
 		/// </summary>
-		void SetDynamicModulesRenderer();
-
-		/// <summary>
-		/// Reload the dynamic modules.
-		/// </summary>
-		void ReloadDynamicModules();
+		void SetRenderer();
 
 		/// <summary>
 		/// Enable a module.

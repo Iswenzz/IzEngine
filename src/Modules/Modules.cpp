@@ -1,7 +1,4 @@
 #include "Modules.hpp"
-#include "Modules/Sys/Console.hpp"
-#include "Modules/Player/FPS.hpp"
-#include "Modules/Player/Velocity.hpp"
 
 namespace IW3SR
 {
@@ -20,15 +17,6 @@ namespace IW3SR
 
 	void Modules::Initialize()
 	{
-		Load<Console>();
-		Load<FPS>();
-		Load<Velocity>();
-
-		LoadDynamicModules();
-	}
-
-	void Modules::LoadDynamicModules()
-	{
 		if (!std::filesystem::is_directory(Environment::PluginsDirectory))
 			return;
 
@@ -39,13 +27,7 @@ namespace IW3SR
 		}
 	}
 
-	void Modules::SetDynamicModulesRenderer()
-	{
-		for (const auto& [_, dll] : DLLs)
-			dll->SetRenderer();
-	}
-
-	void Modules::ReloadDynamicModules()
+	void Modules::Reload()
 	{
 		DLLs.clear();
 
@@ -54,7 +36,13 @@ namespace IW3SR
 			constexpr auto command = R"(cd "{}" && cmake --build . --config Debug --target Install)";
 			system(std::format(command, CMAKE_BINARY_DIR).c_str());
 		}
-		LoadDynamicModules();
+		Initialize();
+	}
+
+	void Modules::SetRenderer()
+	{
+		for (const auto& [_, dll] : DLLs)
+			dll->SetRenderer();
 	}
 
 	void Modules::Enable(const std::string& id)

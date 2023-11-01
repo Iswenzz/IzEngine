@@ -6,7 +6,7 @@ namespace IW3SR
 	/// <summary>
 	/// Window drawing.
 	/// </summary>
-	class Window
+	class API Window
 	{
 	public:
 		std::string Name;

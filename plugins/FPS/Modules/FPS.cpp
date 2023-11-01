@@ -1,6 +1,5 @@
 #include "FPS.hpp"
 #include "Game/Dvar.hpp"
-#include "Game/Render/Draw2D.hpp"
 
 namespace IW3SR
 {
