@@ -29,7 +29,7 @@ namespace IW3SR
 
 	void Modules::Reload()
 	{
-		if (IsReloading) false;
+		if (IsReloading) return;
 		IsReloading = true;
 
 		DLLs.clear();
