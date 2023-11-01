@@ -50,8 +50,10 @@ namespace IW3SR
 		DLLs.clear();
 
 		if (std::filesystem::exists(CMAKE_BINARY_DIR))
-			system(std::format(R"(cd "{}" && cmake --build . --config Debug)", CMAKE_BINARY_DIR).c_str());
-
+		{
+			constexpr auto command = R"(cd "{}" && cmake --build . --config Debug --target Install)";
+			system(std::format(command, CMAKE_BINARY_DIR).c_str());
+		}
 		LoadDynamicModules();
 	}
 
