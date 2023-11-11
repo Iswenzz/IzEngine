@@ -7,6 +7,7 @@
 #include "Modules/Modules.hpp"
 
 #include "Sys/Log.hpp"
+#include "Sys/Assets.hpp"
 #include "Sys/Environment.hpp"
 #include "Sys/Render/D3D9EX.hpp"
 

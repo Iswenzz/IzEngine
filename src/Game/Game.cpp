@@ -23,10 +23,12 @@ namespace IW3SR
 	Game::~Game()
 	{
 		Unhook();
+		Assets::Shutdown();
 	}
 
 	void Game::Initialize()
 	{
+		Assets::Initialize();
 		Player::Initialize();
 		Modules->Initialize();
 	}
