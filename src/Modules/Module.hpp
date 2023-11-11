@@ -3,6 +3,7 @@
 #include "Utils/Macros.hpp"
 #include "Sys/Environment.hpp"
 
+#include "Game/Definitions.hpp"
 #include "Game/Render/ImGUI.hpp"
 #include "Game/Render/Drawing/Draw3D.hpp"
 #include "Game/Render/Drawing/Window.hpp"
