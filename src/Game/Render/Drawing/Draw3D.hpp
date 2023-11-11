@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Utils/ImGUI.hpp"
+#include "Math/Math.hpp"
 
 namespace IW3SR
 {
