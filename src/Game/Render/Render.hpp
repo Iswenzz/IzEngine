@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Utils/Math.hpp"
+#include "Math/Math.hpp"
 
 #include <vector>
 
@@ -25,7 +25,7 @@ namespace IW3SR
 		/// <param name="viewInfo">View information for the graphics.</param>
 		/// <param name="src">Source state for the graphics command buffer.</param>
 		/// <param name="buf">Graphics command buffer state.</param>
-		static void Draw3D(GfxCmdBufInput* input, GfxViewInfo* viewInfo, 
+		static void Draw3D(GfxCmdBufInput* input, GfxViewInfo* viewInfo,
 			GfxCmdBufSourceState* src, GfxCmdBufState* buf);
 
 		/// <summary>

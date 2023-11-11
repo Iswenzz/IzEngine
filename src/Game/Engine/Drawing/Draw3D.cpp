@@ -1,7 +1,7 @@
 #include "Draw3D.hpp"
 #include "Sys/Memory.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     void Draw3D::Line(const vec3& start, const vec3& end, const vec4& color)
     {

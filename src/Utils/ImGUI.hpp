@@ -5,14 +5,13 @@
 #include <imgui_internal.h>
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
+#include <nlohmann/json.hpp>
 
 #include "Game/Definitions.hpp"
-#include "Utils/Math.hpp"
+#include "Game/Render/Fonts/IconsFontAwesome6.hpp"
+#include "Game/Render/Fonts/IconsFontAwesome6Brands.hpp"
 
-#include "Sys/Fonts/IconsFontAwesome6.hpp"
-#include "Sys/Fonts/IconsFontAwesome6Brands.hpp"
-
-#include <nlohmann/json.hpp>
+#include "Math/Math.hpp"
 
 namespace ImGui
 {

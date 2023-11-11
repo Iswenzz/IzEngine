@@ -9,7 +9,7 @@ namespace IW3SR
     class FPS : public Module
     {
     public:
-        Text FPSText;
+        Engine::Text FPSText;
         vec4 Color;
         vec2 Position;
 

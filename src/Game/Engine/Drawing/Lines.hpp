@@ -1,8 +1,8 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Utils/Math.hpp"
+#include "Math/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Lines class.

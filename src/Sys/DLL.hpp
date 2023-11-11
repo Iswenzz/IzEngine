@@ -1,5 +1,5 @@
 #pragma once
-#include "Sys/Function.hpp"
+#include "Sys/Memory.hpp"
 #include "Utils/Macros.hpp"
 
 #include <Windows.h>
@@ -29,7 +29,7 @@ namespace IW3SR
 		/// Create a new DLL.
 		/// </summary>
 		DLL() = default;
-		
+
 		/// <summary>
 		/// Create a new DLL.
 		/// </summary>

@@ -1,7 +1,5 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Sys/Hook.hpp"
-#include "Sys/Function.hpp"
 #include "Sys/Memory.hpp"
 
 static Function<void(int localClientNum, int controllerIndex, const char* text)> 

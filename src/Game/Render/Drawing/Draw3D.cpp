@@ -1,8 +1,8 @@
-#include "Draw.hpp"
+#include "Draw3D.hpp"
 
 namespace IW3SR
 {
-    void Draw::Box(const vec3& position, const vec3& size, const vec4& color, int thickness)
+    void Draw3D::Box(const vec3& position, const vec3& size, const vec4& color, int thickness)
     {
         ImDrawList* draw = ImGui::GetBackgroundDrawList();
 

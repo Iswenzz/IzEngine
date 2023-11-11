@@ -7,7 +7,7 @@ namespace IW3SR
 	{
 		Color = { 0, 1, 1, 1 };
 
-		VelocityText = Text("0", FONT_OBJECTIVE, 0, 2, 0.6, Color);
+		VelocityText = Engine::Text("0", FONT_OBJECTIVE, 0, 2, 0.6, Color);
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}
@@ -16,8 +16,8 @@ namespace IW3SR
 	{
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 
-		if (ImGui::Combo("Font", &VelocityText.FontIndex, Draw2D::Fonts.data(), Draw2D::Fonts.size()))
-			VelocityText.SetFont(Draw2D::Fonts[VelocityText.FontIndex]);
+		if (ImGui::Combo("Font", &VelocityText.FontIndex, Engine::Draw2D::Fonts.data(), Engine::Draw2D::Fonts.size()))
+			VelocityText.SetFont(Engine::Draw2D::Fonts[VelocityText.FontIndex]);
 	}
 
 	void Velocity::OnDraw2D()

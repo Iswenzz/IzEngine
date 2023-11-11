@@ -1,6 +1,6 @@
 #include "HUD.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	HUD::HUD(const std::string& material, float x, float y, float w, float h, const vec4& color)
 	{

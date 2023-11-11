@@ -1,13 +1,13 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Draw/Lines.hpp"
+#include "Lines.hpp"
 
 #include <array>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Drawing 3D class.
+	/// Draw 3D class.
 	/// </summary>
 	class API Draw3D
 	{

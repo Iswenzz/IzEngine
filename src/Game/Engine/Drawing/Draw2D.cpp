@@ -1,6 +1,6 @@
 #include "Draw2D.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	void Draw2D::Rect(const std::string& material, float x, float y, float w, float h, const vec4& color)
 	{

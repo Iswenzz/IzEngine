@@ -1,7 +1,7 @@
 #pragma once
 #include "HUD.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Text element.

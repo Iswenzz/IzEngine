@@ -1,18 +1,18 @@
 #pragma once
 #include "Definitions.hpp"
 
+#include "Game/Render/Assets.hpp"
 #include "Game/Render/Render.hpp"
 #include "Game/Render/GUI.hpp"
-#include "Game/Player.hpp"
+#include "Game/Player/Player.hpp"
 #include "Modules/Modules.hpp"
 
 #include "Sys/Log.hpp"
-#include "Sys/Assets.hpp"
 #include "Sys/Environment.hpp"
 #include "Sys/Render/D3D9EX.hpp"
 
+#include "Math/Math.hpp"
 #include "Utils/Utils.hpp"
-#include "Utils/Math.hpp"
 #include "Utils/Macros.hpp"
 
 #include <memory>

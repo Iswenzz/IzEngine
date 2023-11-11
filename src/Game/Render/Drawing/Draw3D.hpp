@@ -1,14 +1,13 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Draw2D.hpp"
-#include "Draw3D.hpp"
+#include "Utils/ImGUI.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
-	/// Drawing class.
+	/// Draw 3D class.
 	/// </summary>
-	class API Draw
+	class API Draw3D
 	{
 	public:
 		/// <summary>

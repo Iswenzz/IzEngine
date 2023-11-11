@@ -9,7 +9,7 @@ namespace IW3SR
 	class Velocity : public Module
 	{
 	public:
-		Text VelocityText;
+		Engine::Text VelocityText;
 		vec4 Color;
 
 		/// <summary>

@@ -1,12 +1,9 @@
-add_subdirectory(Draw)
+add_subdirectory(Drawing)
+add_subdirectory(Fonts)
 
 target_sources(IW3SR PRIVATE
-	Draw.hpp
-	Draw.cpp
-	Draw2D.hpp
-	Draw2D.cpp
-	Draw3D.hpp
-	Draw3D.cpp
+	Assets.hpp
+	Assets.cpp
 	GUI.hpp
 	GUI.cpp
 	Render.hpp

@@ -16,7 +16,7 @@ namespace IW3SR
 	}
 
 	void GUI::Initialize()
-	{ 
+	{
 		if (Active || !MainWindow) return;
 
 		Context = ImGui::CreateContext();
@@ -40,7 +40,7 @@ namespace IW3SR
 
 		Active = false;
 	}
-	
+
 	void GUI::Reset()
 	{
 		if (!Active) return;
@@ -83,21 +83,21 @@ namespace IW3SR
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
 
-		Toolbar.Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | 
+		Toolbar.Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
 
 		const ImVec2 position = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 		const ImVec2 buttonSize = { 30, 30 };
 
-		draw->AddLine(position + ImVec2{ 0, size.y }, position + ImVec2{ size.x, size.y }, 
+		draw->AddLine(position + ImVec2{ 0, size.y }, position + ImVec2{ size.x, size.y },
 			ImGui::ColorConvertFloat4ToU32(Rainbow));
 
 		ImGui::ButtonId(ICON_FA_GAMEPAD, "Modules", &SR->Modules->Menu.Open, buttonSize);
 		ImGui::SameLine();
 		ImGui::ButtonId(ICON_FA_PLUG, "Plugins", &SR->Modules->Menu.Open, buttonSize);
 		ImGui::SameLine();
-		
+
 		if (Utils::IsDebug())
 		{
 			bool reload = false;

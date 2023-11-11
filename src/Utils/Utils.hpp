@@ -13,11 +13,5 @@ namespace IW3SR
 		/// </summary>
 		/// <returns></returns>
 		static bool IsDebug();
-
-		/// <summary>
-		/// Is private build.
-		/// </summary>
-		/// <returns></returns>
-		static bool IsPrivate();
 	};
 }

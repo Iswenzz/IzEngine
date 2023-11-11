@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Utils/Math.hpp"
+#include "Math/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Drawing 2D class.
+	/// Draw 2D class.
 	/// </summary>
 	class API Draw2D
 	{
@@ -59,7 +59,7 @@ namespace IW3SR
 		/// <param name="y">Y-coordinate.</param>
 		/// <param name="size">Font size.</param>
 		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, Font_s* font, float x, float y, 
+		static void Text(const std::string& text, Font_s* font, float x, float y,
 			float size, const vec4& color);
 	};
 }

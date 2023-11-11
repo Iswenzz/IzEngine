@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Game/Render/Draw/Window.hpp"
-#include "Sys/KeyListener.hpp"
+#include "Drawing/Window.hpp"
+#include "Sys/Listeners/KeyListener.hpp"
 
 namespace IW3SR
 {

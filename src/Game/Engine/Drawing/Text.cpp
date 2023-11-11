@@ -1,7 +1,7 @@
 #include "Text.hpp"
-#include "Game/Render/Draw2D.hpp"
+#include "Draw2D.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color) :
 		HUD("white", x, y, size, size, color)

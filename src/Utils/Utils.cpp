@@ -7,9 +7,4 @@ namespace IW3SR
 	{
 		return DEBUG;
 	}
-
-	bool Utils::IsPrivate()
-	{
-		return PRIVATE;
-	}
 }

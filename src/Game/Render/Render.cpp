@@ -1,6 +1,6 @@
 #include "Render.hpp"
 #include "Game/Game.hpp"
-#include "Game/Render/Draw.hpp"
+#include "Game/Engine/Drawing/Draw3D.hpp"
 #include "Sys/Memory.hpp"
 
 namespace IW3SR
@@ -18,7 +18,7 @@ namespace IW3SR
 	void Render::Draw3D(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
 	{
 		ModuleCallback(OnDraw3D);
-		Draw3D::Frame();
+		Engine::Draw3D::Frame();
 		RB_EndSceneRendering_h(input, viewInfo, src, buf);
 	}
 

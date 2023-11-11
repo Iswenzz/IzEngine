@@ -1,7 +1,7 @@
 #include "Lines.hpp"
 #include "Sys/Memory.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Lines::Lines(int width, int limit, bool depthTest)
 	{

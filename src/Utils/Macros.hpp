@@ -39,10 +39,6 @@
 #define DEBUG _DEBUG
 #endif
 
-#ifndef PRIVATE
-#define PRIVATE false
-#endif
-
 #ifndef CMAKE_BINARY_DIR
 #define CMAKE_BINARY_DIR ""
 #endif
