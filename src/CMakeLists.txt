@@ -3,7 +3,6 @@ add_library(IW3SR.API OBJECT)
 add_library(IW3SR.ASM OBJECT)
 add_library(IW3SR.DLL SHARED)
 
-add_subdirectory(Commands)
 add_subdirectory(Game)
 add_subdirectory(Math)
 add_subdirectory(Modules)
