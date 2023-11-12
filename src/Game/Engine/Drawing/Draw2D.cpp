@@ -1,7 +1,20 @@
 #include "Draw2D.hpp"
+#include "Draw2D.hpp"
 
 namespace IW3SR::Engine
 {
+	void Draw2D::Initialize()
+	{
+		if (!Fonts.empty())
+			return;
+
+		FontNames = { FONT_OBJECTIVE, FONT_NORMAL, FONT_CONSOLE,
+			FONT_SMALL, FONT_SMALL_DEV, FONT_BIG, FONT_BIG_DEV, FONT_BOLD };
+
+		for (const std::string& name : FontNames)
+			Fonts[name] = R_RegisterFont(name.c_str(), name.size());
+	}
+
 	void Draw2D::Rect(const std::string& material, float x, float y, float w, float h, const vec4& color)
 	{
 		Math::ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
@@ -34,10 +47,12 @@ namespace IW3SR::Engine
 		Rect(material, x - w / 2, y, w, h, color);
 	}
 
-	void Draw2D::Text(const std::string& text, Font_s* font, float x, float y, float size, const vec4& color)
+	void Draw2D::Text(const std::string& text, const std::string& font, 
+		float x, float y, float size, const vec4& color)
 	{
 		float w = size, h = size;
+		Font_s* f = Fonts[font];
 		Math::ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
-		R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, font, x, y, w, h, 0, 0, color);
+		R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, f, x, y, w, h, 0, 0, color);
 	}
 }

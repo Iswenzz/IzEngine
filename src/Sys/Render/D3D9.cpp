@@ -379,7 +379,7 @@ namespace IW3SR
 
 	HRESULT D3D9Device::EndScene()
 	{
-		GUI::Initialize();
+		SR->Render->Initialize();
 
 		if (GUI::Active)
 			SR->Render->Frame();

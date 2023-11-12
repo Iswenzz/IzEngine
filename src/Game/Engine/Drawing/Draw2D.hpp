@@ -10,8 +10,13 @@ namespace IW3SR::Engine
 	class API Draw2D
 	{
 	public:
-		static inline std::vector<const char*> Fonts = { FONT_OBJECTIVE, FONT_NORMAL, FONT_CONSOLE,
-			FONT_SMALL, FONT_SMALL_DEV, FONT_BIG, FONT_BIG_DEV, FONT_BOLD };
+		static inline std::unordered_map<std::string, Font_s*> Fonts;
+		static inline std::vector<const char*> FontNames;
+
+		/// <summary>
+		/// Initialize the fonts.
+		/// </summary>
+		static void Initialize();
 
 		/// <summary>
 		/// Draw a rectangle with the specified color.
@@ -59,7 +64,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y-coordinate.</param>
 		/// <param name="size">Font size.</param>
 		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, Font_s* font, float x, float y,
-			float size, const vec4& color);
+		static void Text(const std::string& text, const std::string& font, 
+			float x, float y, float size, const vec4& color);
 	};
 }

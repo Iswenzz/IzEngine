@@ -9,7 +9,7 @@ namespace IW3SR::Engine
 		Value = text;
 		Font = nullptr;
 		FontName = font;
-		FontIndex = std::distance(Draw2D::Fonts.begin(), std::ranges::find(Draw2D::Fonts, font));
+		FontIndex = 0;
 	}
 
 	Text::Text(const std::string& text, const std::string& font, const vec2& pos, float size, const vec4& color) :
@@ -17,9 +17,9 @@ namespace IW3SR::Engine
 
 	void Text::SetFont(const std::string& font)
 	{
-		Font = R_RegisterFont(font.c_str(), font.size());
+		Font = Draw2D::Fonts[font];
 		FontName = font;
-		FontIndex = std::distance(Draw2D::Fonts.begin(), std::ranges::find(Draw2D::Fonts, font));
+		FontIndex = std::distance(Draw2D::FontNames.begin(), std::ranges::find(Draw2D::FontNames, font));
 	}
 
 	void Text::ComputeAlignment(float& x, float& y)
@@ -46,7 +46,7 @@ namespace IW3SR::Engine
 		float h = Size.y;
 
 		if (!Font)
-			Font = R_RegisterFont(FontName.c_str(), FontName.size());
+			SetFont(FontName);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

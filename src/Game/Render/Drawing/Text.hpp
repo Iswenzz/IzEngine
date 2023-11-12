@@ -1,11 +1,13 @@
 #pragma once
+#include "Game/Definitions.hpp"
+#include "Math/Math.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
 	/// Text class.
 	/// </summary>
-	class Text
+	class API Text
 	{
 	public:
 		/// <summary>

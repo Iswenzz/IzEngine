@@ -17,8 +17,9 @@ namespace IW3SR
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 		ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.35f);
 
-		if (ImGui::Combo("Font", &FPSText.FontIndex, Engine::Draw2D::Fonts.data(), Engine::Draw2D::Fonts.size()))
-			FPSText.SetFont(Engine::Draw2D::Fonts[FPSText.FontIndex]);
+		const std::vector<const char*>& fonts = Engine::Draw2D::FontNames;
+		if (ImGui::Combo("Font", &FPSText.FontIndex, fonts.data(), fonts.size()))
+			FPSText.SetFont(fonts[FPSText.FontIndex]);
 	}
 
 	void FPS::OnDraw2D()

@@ -14,7 +14,7 @@ namespace IW3SR::Engine
 		Font_s* Font;
 		std::string FontName;
 		int FontIndex;
-
+		
 		/// <summary>
 		/// Initialize the Text.
 		/// </summary>
@@ -60,6 +60,6 @@ namespace IW3SR::Engine
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, FontName, FontIndex);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, FontName);
 	};
 }

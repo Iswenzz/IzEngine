@@ -16,8 +16,9 @@ namespace IW3SR
 	{
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 
-		if (ImGui::Combo("Font", &VelocityText.FontIndex, Engine::Draw2D::Fonts.data(), Engine::Draw2D::Fonts.size()))
-			VelocityText.SetFont(Engine::Draw2D::Fonts[VelocityText.FontIndex]);
+		const std::vector<const char*>& fonts = Engine::Draw2D::FontNames;
+		if (ImGui::Combo("Font", &VelocityText.FontIndex, fonts.data(), fonts.size()))
+			VelocityText.SetFont(fonts[VelocityText.FontIndex]);
 	}
 
 	void Velocity::OnDraw2D()

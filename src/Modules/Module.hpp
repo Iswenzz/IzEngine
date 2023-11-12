@@ -5,8 +5,10 @@
 
 #include "Game/Definitions.hpp"
 #include "Game/Render/ImGUI.hpp"
+#include "Game/Render/Drawing/Draw2D.hpp"
 #include "Game/Render/Drawing/Draw3D.hpp"
 #include "Game/Render/Drawing/Window.hpp"
+#include "Game/Render/Drawing/Text.hpp"
 
 #include "Game/Engine/Drawing/Draw2D.hpp"
 #include "Game/Engine/Drawing/Draw3D.hpp"

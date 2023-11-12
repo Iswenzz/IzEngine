@@ -19,6 +19,11 @@ namespace IW3SR
 		~Render() = default;
 
 		/// <summary>
+		/// Initialize the renderer.
+		/// </summary>
+		void Initialize();
+
+		/// <summary>
 		/// Draws 3D.
 		/// </summary>
 		/// <param name="input">Input commands for rendering.</param>

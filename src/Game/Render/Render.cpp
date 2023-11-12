@@ -1,6 +1,5 @@
 #include "Render.hpp"
 #include "Game/Game.hpp"
-#include "Game/Engine/Drawing/Draw3D.hpp"
 
 namespace IW3SR
 {
@@ -12,6 +11,13 @@ namespace IW3SR
 		// Increase fps cap to 125 for menus and loadscreen
 		Memory::Set<char>(0x500176, 8);
 		Memory::Set<char>(0x500179, 8);
+	}
+
+	void Render::Initialize()
+	{
+		GUI::Initialize();
+		//Draw2D::Initialize();
+		Engine::Draw2D::Initialize();
 	}
 
 	void Render::Draw3D(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
