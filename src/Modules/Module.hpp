@@ -64,17 +64,17 @@ namespace IW3SR
 		virtual void OnMenu();
 
 		/// <summary>
-		/// Draw 3D callback.
+		/// Engine 3D.
 		/// </summary>
 		virtual void OnDraw3D();
 
 		/// <summary>
-		/// Draw 2D callback.
+		/// Engine 2D.
 		/// </summary>
 		virtual void OnDraw2D();
 
 		/// <summary>
-		/// Render frame callback.
+		/// Render frame.
 		/// </summary>
 		virtual void OnFrame();
 

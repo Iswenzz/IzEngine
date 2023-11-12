@@ -35,6 +35,11 @@ namespace IW3SR
 		return SR->Players[index];
 	}
 
+	bool Player::CanRender()
+	{
+		return cgs->predictedPlayerState.groundEntityNum;
+	}
+
 	Player::operator bool() const
 	{
 		return c;

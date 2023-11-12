@@ -46,7 +46,8 @@ namespace IW3SR
 	void Render::Frame()
 	{
 		GUI::Begin();
-		ModuleCallback(OnFrame);
+		if (Player::CanRender())
+			ModuleCallback(OnFrame);
 		GUI::End();
 	}
 }
