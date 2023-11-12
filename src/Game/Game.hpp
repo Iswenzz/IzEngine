@@ -1,7 +1,6 @@
 #pragma once
 #include "Definitions.hpp"
 
-#include "Game/Render/Assets.hpp"
 #include "Game/Render/Render.hpp"
 #include "Game/Render/GUI.hpp"
 #include "Game/Player/Player.hpp"
@@ -26,7 +25,6 @@ namespace IW3SR
 	class Game
 	{
 	public:
-		std::unique_ptr<class Assets> Assets;
 		std::unique_ptr<class Log> Log;
 		std::unique_ptr<class Render> Render;
 		std::unique_ptr<class Modules> Modules;

@@ -15,11 +15,19 @@ namespace IW3SR
 
 	void Render::Initialize()
 	{
-		if (Initialized) return;
-		Initialized = true;
+		if (Active) return;
+		Active = true;
 
-		Draw2D::Initialize();
-		Engine::Draw2D::Initialize();
+		Assets::Initialize();
+		Engine::Assets::Initialize();
+	}
+
+	void Render::Shutdown()
+	{
+		Active = false;
+
+		Assets::Shutdown();
+		Engine::Assets::Shutdown();
 	}
 
 	void Render::Draw3D(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)

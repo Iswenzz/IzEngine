@@ -2,27 +2,13 @@
 
 namespace IW3SR
 {
-	void Draw2D::Initialize()
-	{
-        HDC hdc = GetDC(NULL);
-        
-        auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
-        {
-            ID3DXFont* pFont;
-            D3DXCreateFont(dx->device, lpelf->lfHeight, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
-                OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, lpelf->lfFaceName, &pFont);
-
-            Fonts[lpelf->lfFaceName] = pFont;
-            FontNames.push_back(lpelf->lfFaceName);
-            return 1;
-        };
-        EnumFontFamilies(hdc, NULL, callback, NULL);
-        ReleaseDC(NULL, hdc);
-	}
-
     void Draw2D::Text(const std::string& text, const std::string& font, 
         float x, float y, float size, const vec4& color)
     {
-        
+        float w = size, h = size;
+        ID3DXFont* f = Assets::Fonts[font];
+        Math::ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
+        RECT rect = { x, y, 0, 0 };
+        f->DrawTextA(NULL, text.c_str(), -1, &rect, DT_NOCLIP, color);
     }
 }

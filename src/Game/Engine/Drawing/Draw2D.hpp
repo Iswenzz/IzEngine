@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Engine/Assets.hpp"
 #include "Math/Math.hpp"
 
 namespace IW3SR::Engine
@@ -10,14 +11,6 @@ namespace IW3SR::Engine
 	class API Draw2D
 	{
 	public:
-		static inline std::unordered_map<std::string, Font_s*> Fonts;
-		static inline std::vector<const char*> FontNames;
-
-		/// <summary>
-		/// Initialize the fonts.
-		/// </summary>
-		static void Initialize();
-
 		/// <summary>
 		/// Draw a rectangle with the specified color.
 		/// </summary>

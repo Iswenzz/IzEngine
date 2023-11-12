@@ -1,8 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Render/Assets.hpp"
 #include "Math/Math.hpp"
-
-#include <d3dx9.h>
 
 namespace IW3SR
 {
@@ -12,14 +11,6 @@ namespace IW3SR
 	class API Draw2D
 	{
 	public:
-		static inline std::unordered_map<std::string, ID3DXFont*> Fonts;
-		static inline std::vector<const char*> FontNames;
-
-		/// <summary>
-		/// Initialize the fonts.
-		/// </summary>
-		static void Initialize();
-
 		/// <summary>
 		/// Draw text.
 		/// </summary>

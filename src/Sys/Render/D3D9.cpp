@@ -213,6 +213,7 @@ namespace IW3SR
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
+		SR->Render->Shutdown();
 		if (GUI::Active)
 		{
 			ImGui_ImplDX9_InvalidateDeviceObjects();

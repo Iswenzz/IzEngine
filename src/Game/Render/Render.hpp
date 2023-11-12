@@ -12,7 +12,7 @@ namespace IW3SR
 	class Render
 	{
 	public:
-		bool Initialized = false;
+		bool Active = false;
 
 		/// <summary>
 		/// Initialize the rendering class.
@@ -24,6 +24,11 @@ namespace IW3SR
 		/// Initialize the renderer.
 		/// </summary>
 		void Initialize();
+
+		/// <summary>
+		/// Shutdown the renderer.
+		/// </summary>
+		void Shutdown();
 
 		/// <summary>
 		/// Draws 3D.

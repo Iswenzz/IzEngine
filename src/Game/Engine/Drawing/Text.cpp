@@ -17,9 +17,9 @@ namespace IW3SR::Engine
 
 	void Text::SetFont(const std::string& font)
 	{
-		Font = Draw2D::Fonts[font];
+		Font = Assets::Fonts[font];
 		FontName = font;
-		FontIndex = std::distance(Draw2D::FontNames.begin(), std::ranges::find(Draw2D::FontNames, font));
+		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, font));
 	}
 
 	void Text::ComputeAlignment(float& x, float& y)

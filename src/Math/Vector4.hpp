@@ -190,6 +190,14 @@ namespace IW3SR
         }
 
         /// <summary>
+        /// Convert to D3D color.
+        /// </summary>
+        operator D3DCOLOR() const
+        {
+            return operator ImU32();
+        }
+
+        /// <summary>
         /// Vector is not zero.
         /// </summary>
         operator bool() const

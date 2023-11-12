@@ -17,7 +17,7 @@ namespace IW3SR
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 		ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.35f);
 
-		const std::vector<const char*>& fonts = Engine::Draw2D::FontNames;
+		const std::vector<const char*>& fonts = Engine::Assets::FontNames;
 		if (ImGui::Combo("Font", &FPSText.FontIndex, fonts.data(), fonts.size()))
 			FPSText.SetFont(fonts[FPSText.FontIndex]);
 	}
