@@ -1,7 +1,6 @@
 #include "Render.hpp"
 #include "Game/Game.hpp"
 #include "Game/Engine/Drawing/Draw3D.hpp"
-#include "Sys/Memory.hpp"
 
 namespace IW3SR
 {
