@@ -32,6 +32,7 @@ namespace IW3SR
 		if (IsReloading) return;
 		IsReloading = true;
 
+		Serialize();
 		DLLs.clear();
 		std::thread([this] { Compile(); }).detach();
 	}

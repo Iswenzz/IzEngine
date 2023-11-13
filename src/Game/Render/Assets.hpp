@@ -16,7 +16,7 @@ namespace IW3SR
 	{
 	public:
 		static inline std::map<std::string, IDirect3DTexture9*> Textures;
-		static inline std::unordered_map<std::string, ID3DXFont*> Fonts;
+		static inline std::vector<ID3DXFont*> Fonts;
 		static inline std::vector<const char*> FontNames;
 
 		/// <summary>
@@ -30,11 +30,6 @@ namespace IW3SR
 		static void Shutdown();
 
 		/// <summary>
-		/// Load fonts.
-		/// </summary>
-		static void LoadFonts();
-
-		/// <summary>
 		/// Load a font.
 		/// </summary>
 		/// <param name="name">The font name.</param>
@@ -43,9 +38,21 @@ namespace IW3SR
 		static ID3DXFont* LoadFont(const std::string& name, int height);
 
 		/// <summary>
+		/// Unload a font.
+		/// </summary>
+		/// <param name="font">The font.</param>
+		static void UnloadFont(ID3DXFont* font);
+
+		/// <summary>
 		/// Load image.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
 		static IDirect3DTexture9* LoadTexture(const std::string& filePath);
+
+	private:
+		/// <summary>
+		/// Load fonts.
+		/// </summary>
+		static void LoadFonts();
 	};
 }

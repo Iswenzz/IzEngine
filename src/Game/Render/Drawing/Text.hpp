@@ -1,12 +1,13 @@
 #pragma once
-#include "HUD.hpp"
+#include "Game/Definitions.hpp"
+#include "Math/Math.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
 	/// Text element.
 	/// </summary>
-	class API Text : public HUD
+	class API Text
 	{
 	public:
 		std::string Value;

@@ -1,8 +1,4 @@
 #pragma once
-#include "Math/Math.hpp"
-#include "Utils/Macros.hpp"
-#include "Sys/Environment.hpp"
-
 #include "Game/Definitions.hpp"
 #include "Game/Render/Assets.hpp"
 #include "Game/Render/Drawing/Draw2D.hpp"
@@ -20,6 +16,10 @@
 #include "Game/Engine/Drawing/Lines.hpp"
 
 #include "Game/Sys/Dvar.hpp"
+
+#include "Math/Math.hpp"
+#include "Utils/Macros.hpp"
+#include "Sys/Environment.hpp"
 
 #include <string>
 #include <memory>

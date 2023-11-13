@@ -181,7 +181,7 @@ namespace IW3SR
         /// </summary>
         operator ImU32() const
         {
-            return D3DCOLOR_COLORVALUE(this->y, this->x, this->z, this->w);
+            return D3DCOLOR_COLORVALUE(this->z, this->y, this->x, this->w);
         }
 
         /// <summary>

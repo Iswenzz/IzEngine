@@ -1,12 +1,18 @@
 #include "Text.hpp"
 #include "Draw2D.hpp"
 
+#include "Sys/Log.hpp"
+
 namespace IW3SR
 {
-	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color) :
-		HUD("white", x, y, size, size, color)
+	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{
+		float fontSize = scr_place->scaleVirtualToReal[0] * size * 14.f;
+
 		Value = text;
+		Position = { x, y };
+		Size = { fontSize, fontSize };
+		Color = color;
 		Font = nullptr;
 		FontName = font;
 		FontIndex = 0;
@@ -29,7 +35,8 @@ namespace IW3SR
 
 	void Text::SetFont(const std::string& font)
 	{
-		Font = Assets::Fonts[font];
+		if (Font) Assets::UnloadFont(Font);
+		Font = Assets::LoadFont(font, Size.y);
 		FontName = font;
 		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, font));
 	}
@@ -39,8 +46,8 @@ namespace IW3SR
 		RECT textRect = { 0, 0, 0, 0 };
 		Font->DrawTextA(NULL, Value.c_str(), -1, &textRect, DT_CALCRECT, 0);
 
-		int textWidth = (textRect.right - textRect.left) * Size.x;
-		int textHeight = (textRect.bottom - textRect.top) * Size.y;
+		int textWidth = textRect.right - textRect.left;
+		int textHeight = textRect.bottom - textRect.top;
 
 		if (AlignX & HUDALIGN_CENTER)
 			x += -(textWidth / 2.f);
@@ -62,6 +69,9 @@ namespace IW3SR
 
 		if (!Font)
 			SetFont(FontName);
+
+		// @TODO
+		Log::WriteLine("{} {}", w, h);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

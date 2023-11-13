@@ -6,6 +6,9 @@ namespace IW3SR::Engine
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{
 		Value = text;
+		Position = { x, y };
+		Size = { size, size };
+		Color = color;
 		Font = nullptr;
 		FontName = font;
 		FontIndex = 0;

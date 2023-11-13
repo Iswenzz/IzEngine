@@ -7,7 +7,7 @@ namespace IW3SR
 	{
 		Color = { 0, 1, 1, 1 };
 
-		VelocityText = Text("0", "Arial", 0, 2, 0.6, Color);
+		VelocityText = Text("0", "Arial", 0, 2, 3, Color);
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}

@@ -12,20 +12,16 @@ namespace IW3SR
 	{
 		for (const auto& [name, texture] : Textures)
 			texture->Release();
-		for (const auto& [name, font] : Fonts)
+		for (const auto& font : Fonts)
 			font->Release();
 	}
 
 	void Assets::LoadFonts()
 	{
 		HDC hdc = GetDC(NULL);
+		LoadFont("Arial", 22);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
-			ID3DXFont* font;
-			D3DXCreateFont(dx->device, lpelf->lfHeight, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
-				OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, lpelf->lfFaceName, &font);
-
-			Fonts[lpelf->lfFaceName] = font;
 			FontNames.push_back(lpelf->lfFaceName);
 			return 1;
 		};
@@ -39,8 +35,17 @@ namespace IW3SR
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font);
 
-		FontNames.push_back(name.c_str());
-		return Fonts[name] = font;
+		if (std::find(FontNames.begin(), FontNames.end(), name) == FontNames.end())
+			FontNames.push_back(name.c_str());
+		Fonts.push_back(font);
+		return font;
+	}
+
+	void Assets::UnloadFont(ID3DXFont* font)
+	{
+		auto it = std::find(Fonts.begin(), Fonts.end(), font);
+		font->Release();
+		Fonts.erase(it);
 	}
 
 	IDirect3DTexture9* Assets::LoadTexture(const std::string& filePath)

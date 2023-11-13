@@ -28,15 +28,16 @@ namespace IW3SR::Engine
 		static void Shutdown();
 
 		/// <summary>
-		/// Load fonts.
-		/// </summary>
-		static void LoadFonts();
-
-		/// <summary>
 		/// Load a font.
 		/// </summary>
 		/// <param name="name">The font name.</param>
 		/// <returns></returns>
 		static Font_s* LoadFont(const std::string& name);
+
+	private:
+		/// <summary>
+		/// Load fonts.
+		/// </summary>
+		static void LoadFonts();
 	};
 }
