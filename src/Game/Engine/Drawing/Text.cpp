@@ -3,8 +3,7 @@
 
 namespace IW3SR::Engine
 {
-	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color) :
-		HUD("white", x, y, size, size, color)
+	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{
 		Value = text;
 		Font = nullptr;
@@ -14,6 +13,18 @@ namespace IW3SR::Engine
 
 	Text::Text(const std::string& text, const std::string& font, const vec2& pos, float size, const vec4& color) :
 		Text(text, font, pos.x, pos.y, size, color) { }
+
+	void Text::SetRectAlignment(RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical)
+	{
+		HorizontalAlign = horizontal;
+		VerticalAlign = vertical;
+	}
+
+	void Text::SetAlignment(hudalign_t horizontal, hudalign_t vertical)
+	{
+		AlignX = horizontal;
+		AlignY = vertical;
+	}
 
 	void Text::SetFont(const std::string& font)
 	{
@@ -28,12 +39,12 @@ namespace IW3SR::Engine
 		float textHeight = Font->pixelHeight * Size.y;
 
 		if (AlignX & HUDALIGN_CENTER)
-			x += -(textWidth / 2);
+			x += -(textWidth / 2.f);
 		else if (AlignX & HUDALIGN_RIGHT)
 			x += -textWidth;
 
 		if (AlignY & HUDALIGN_MIDDLE)
-			y += textHeight / 2;
+			y += textHeight / 2.f;
 		else if (AlignY & HUDALIGN_BOTTOM)
 			y += textHeight;
 	}

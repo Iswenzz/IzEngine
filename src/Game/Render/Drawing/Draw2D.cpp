@@ -8,7 +8,7 @@ namespace IW3SR
         float w = size, h = size;
         ID3DXFont* f = Assets::Fonts[font];
         Math::ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
-        RECT rect = { x, y, 0, 0 };
+        RECT rect = { static_cast<int>(x), static_cast<int>(y), 0, 0 };
         f->DrawTextA(NULL, text.c_str(), -1, &rect, DT_NOCLIP, color);
     }
 }

@@ -15,7 +15,7 @@ namespace IW3SR
 	class API Assets
 	{
 	public:
-		static inline std::map<std::string, IDirect3DTexture9*> Images;
+		static inline std::map<std::string, IDirect3DTexture9*> Textures;
 		static inline std::unordered_map<std::string, ID3DXFont*> Fonts;
 		static inline std::vector<const char*> FontNames;
 

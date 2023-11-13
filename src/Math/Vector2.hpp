@@ -17,8 +17,8 @@ namespace IW3SR
     public:
         static Vector2<float> Zero;
         static Vector2<float> One;
-        static Vector2<float> X;
-        static Vector2<float> Y;
+        static Vector2<float> UnitX;
+        static Vector2<float> UnitY;
 
         /// <summary>
         /// Initialize vector.
@@ -192,6 +192,6 @@ namespace IW3SR
 
     vec2f vec2f::Zero = (0, 0);
     vec2f vec2f::One = (1, 1);
-    vec2f vec2f::X = (1, 0);
-    vec2f vec2f::Y = (0, 1);
+    vec2f vec2f::UnitX = (1, 0);
+    vec2f vec2f::UnitY = (0, 1);
 }

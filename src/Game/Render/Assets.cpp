@@ -10,8 +10,8 @@ namespace IW3SR
 
 	void Assets::Shutdown()
 	{
-		for (const auto& [name, image] : Images)
-			image->Release();
+		for (const auto& [name, texture] : Textures)
+			texture->Release();
 		for (const auto& [name, font] : Fonts)
 			font->Release();
 	}
@@ -50,6 +50,6 @@ namespace IW3SR
 
 		IDirect3DTexture9* texture;
 		D3DXCreateTextureFromFile(dx->device, filePath.c_str(), &texture);
-		return Images[filePath] = texture;
+		return Textures[filePath] = texture;
 	}
 }

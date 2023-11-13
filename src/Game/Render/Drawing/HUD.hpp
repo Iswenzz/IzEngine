@@ -1,15 +1,15 @@
 #pragma once
-#include "HUD.hpp"
+#include "Game/Definitions.hpp"
+#include "Math/Math.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
-	/// Text element.
+	/// HUD element.
 	/// </summary>
-	class API Text : public HUD
+	class API HUD
 	{
 	public:
-		std::string Value;
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::One;
 		vec4 Color = vec4::One;
@@ -18,36 +18,35 @@ namespace IW3SR
 		hudalign_t AlignX = HUDALIGN_LEFT;
 		hudalign_t AlignY = HUDALIGN_TOP;
 
-		ID3DXFont* Font;
-		std::string FontName;
-		int FontIndex;
+		IDirect3DTexture9* Texture;
+		IDirect3DSurface9* TextureSurface;
+		std::string TexturePath;
+		
+		/// <summary>
+		/// Initialize the HUD.
+		/// </summary>
+		HUD() = default;
+		virtual ~HUD() = default;
 
 		/// <summary>
-		/// Initialize the Text.
+		/// Initialize the HUD.
 		/// </summary>
-		Text() = default;
-		virtual ~Text() = default;
-
-		/// <summary>
-		/// Initialize the Text.
-		/// </summary>
-		/// <param name="text">The text.</param>
-		/// <param name="font">The font.</param>
-		/// <param name="x">X value.</param>
-		/// <param name="y">Y value.</param>
-		/// <param name="size">Font size.</param>
+		/// <param name="texture">The texture path.</param>
+		/// <param name="x">X position.</param>
+		/// <param name="y">Y position.</param>
+		/// <param name="w">The width.</param>
+		/// <param name="h">The height.</param>
 		/// <param name="color">The color.</param>
-		Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color);
+		HUD(const std::string& texture, float x, float y, float w, float h, const vec4& color);
 
 		/// <summary>
-		/// Initialize the Text.
+		/// Initialize the HUD.
 		/// </summary>
-		/// <param name="text">The text.</param>
-		/// <param name="font">The font.</param>
-		/// <param name="pos">XY-coordinates of screen.</param>
-		/// <param name="size">Font size.</param>
+		/// <param name="texture">The texture path.</param>
+		/// <param name="pos">XY position.</param>
+		/// <param name="size">WH size.</param>
 		/// <param name="color">The color.</param>
-		Text(const std::string& text, const std::string& font, const vec2& pos, float size, const vec4& color);
+		HUD(const std::string& texture, const vec2& pos, const vec2& size, const vec4& color);
 
 		/// <summary>
 		/// Set the rect alignment.
@@ -64,24 +63,25 @@ namespace IW3SR
 		void SetAlignment(hudalign_t horizontal, hudalign_t vertical);
 
 		/// <summary>
-		/// Set/update font.
+		/// Set the texture.
 		/// </summary>
-		void SetFont(const std::string& font);
+		/// <param name="texture">The texture path.</param>
+		void SetTexture(const std::string& texture);
 
 		/// <summary>
-		/// Render text.
+		/// Render HUD.
 		/// </summary>
 		virtual void Render();
 
 	private:
 		/// <summary>
-		/// Compute the text alignment.
+		/// Compute the element alignment.
 		/// </summary>
 		/// <param name="x">X position.</param>
 		/// <param name="y">Y position.</param>
-		void ComputeAlignment(float& x, float& y);
+		virtual void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, Position, Size, Color,
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HUD, Position, Size, Color, 
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, TexturePath);
 	};
 }

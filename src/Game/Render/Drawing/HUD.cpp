@@ -1,11 +1,12 @@
 #include "HUD.hpp"
+#include "Draw2D.hpp"
 
-namespace IW3SR::Engine
+namespace IW3SR
 {
-	HUD::HUD(const std::string& material, float x, float y, float w, float h, const vec4& color)
+	HUD::HUD(const std::string& texture, float x, float y, float w, float h, const vec4& color)
 	{
-		Material = nullptr;
-		MaterialName = material;
+		Texture = nullptr;
+		TexturePath = texture;
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
@@ -26,10 +27,11 @@ namespace IW3SR::Engine
 		AlignY = vertical;
 	}
 
-	void HUD::SetMaterial(const std::string& material)
+	void HUD::SetTexture(const std::string& texture)
 	{
-		Material = Material_RegisterHandle(material.c_str(), 3);
-		MaterialName = material;
+		TexturePath = texture;
+		Texture = Assets::Textures[texture];
+		Texture->GetSurfaceLevel(0, &TextureSurface);
 	}
 
 	void HUD::ComputeAlignment(float& x, float& y)
@@ -52,11 +54,12 @@ namespace IW3SR::Engine
 		float w = Size.x;
 		float h = Size.y;
 
-		if (!Material)
-			SetMaterial(MaterialName);
+		if (!Texture)
+			SetTexture(TexturePath);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);
-		R_AddCmdDrawStretchPic(Material, x, y, w, h, 0.f, 0.f, 0.f, 0.f, Color);
+		RECT rect = { static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h) };
+		dx->device->StretchRect(TextureSurface, NULL, NULL, &rect, D3DTEXF_NONE);
 	}
 }

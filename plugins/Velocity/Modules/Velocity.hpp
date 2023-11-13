@@ -9,7 +9,7 @@ namespace IW3SR
 	class Velocity : public Module
 	{
 	public:
-		Engine::Text VelocityText;
+		Text VelocityText;
 		vec4 Color;
 
 		/// <summary>
@@ -24,9 +24,9 @@ namespace IW3SR
 		void OnMenu() override;
 
 		/// <summary>
-		/// Draw 2D.
+		/// Render frame.
 		/// </summary>
-		void OnDraw2D() override;
+		void OnFrame() override;
 
 		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText, Color);
 	};

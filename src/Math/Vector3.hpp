@@ -15,9 +15,9 @@ namespace IW3SR
 	public:
 		static Vector3<float> Zero;
 		static Vector3<float> One;
-		static Vector3<float> X;
-		static Vector3<float> Y;
-		static Vector3<float> Z;
+		static Vector3<float> UnitX;
+		static Vector3<float> UnitY;
+		static Vector3<float> UnitZ;
 		static Vector3<float> Up;
 		static Vector3<float> Down;
 		static Vector3<float> Left;
@@ -199,9 +199,9 @@ namespace IW3SR
 
 	vec3f vec3f::Zero = (0, 0, 0);
 	vec3f vec3f::One = (1, 1, 1);
-	vec3f vec3f::X = (1, 0, 0);
-	vec3f vec3f::Y = (0, 1, 0);
-	vec3f vec3f::Z = (0, 0, 1);
+	vec3f vec3f::UnitX = (1, 0, 0);
+	vec3f vec3f::UnitY = (0, 1, 0);
+	vec3f vec3f::UnitZ = (0, 0, 1);
 	vec3f vec3f::Up = (0, 1, 0);
 	vec3f vec3f::Down = (0, -1, 0);
 	vec3f vec3f::Left = (-1, 0, 0);

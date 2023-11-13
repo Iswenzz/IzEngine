@@ -62,6 +62,12 @@ namespace IW3SR::Engine
 		void SetAlignment(hudalign_t horizontal, hudalign_t vertical);
 
 		/// <summary>
+		/// Set the material.
+		/// </summary>
+		/// <param name="material">The material name.</param>
+		void SetMaterial(const std::string& material);
+
+		/// <summary>
 		/// Render HUD.
 		/// </summary>
 		virtual void Render();
@@ -74,6 +80,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y position.</param>
 		virtual void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HUD, Position, Size, Color, HorizontalAlign, VerticalAlign, AlignX, AlignY);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HUD, Position, Size, Color, 
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName);
 	};
 }

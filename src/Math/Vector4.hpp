@@ -17,10 +17,10 @@ namespace IW3SR
     public:
         static Vector4<float> Zero;
         static Vector4<float> One;
-        static Vector4<float> X;
-        static Vector4<float> Y;
-        static Vector4<float> Z;
-        static Vector4<float> W;
+        static Vector4<float> UnitX;
+        static Vector4<float> UnitY;
+        static Vector4<float> UnitZ;
+        static Vector4<float> UnitW;
 
         /// <summary>
         /// Initialize vector.
@@ -177,24 +177,19 @@ namespace IW3SR
         }
 
         /// <summary>
-        /// Convert to imgui data.
+        /// Convert to imgui color.
         /// </summary>
         operator ImU32() const
         {
-            ImU32 u32 = 0;
-            u32 |= (static_cast<ImU32>(this->x * 255) & 0xFF) << 0;
-            u32 |= (static_cast<ImU32>(this->y * 255) & 0xFF) << 8;
-            u32 |= (static_cast<ImU32>(this->z * 255) & 0xFF) << 16;
-            u32 |= (static_cast<ImU32>(this->w * 255) & 0xFF) << 24;
-            return u32;
+            return D3DCOLOR_COLORVALUE(this->y, this->x, this->z, this->w);
         }
 
         /// <summary>
-        /// Convert to D3D color.
+        /// Convert to DX color.
         /// </summary>
         operator D3DCOLOR() const
         {
-            return operator ImU32();
+            return D3DCOLOR_COLORVALUE(this->x, this->y, this->z, this->w);
         }
 
         /// <summary>
@@ -219,8 +214,8 @@ namespace IW3SR
 
     vec4f vec4f::Zero = (0, 0, 0, 0);
     vec4f vec4f::One = (1, 1, 1, 1);
-    vec4f vec4f::X = (1, 0, 0, 0);
-    vec4f vec4f::Y = (0, 1, 0, 0);
-    vec4f vec4f::Z = (0, 0, 1, 0);
-    vec4f vec4f::W = (0, 0, 0, 1);
+    vec4f vec4f::UnitX = (1, 0, 0, 0);
+    vec4f vec4f::UnitY = (0, 1, 0, 0);
+    vec4f vec4f::UnitZ = (0, 0, 1, 0);
+    vec4f vec4f::UnitW = (0, 0, 0, 1);
 }

@@ -8,6 +8,7 @@
 #include "Game/Render/Drawing/Draw2D.hpp"
 #include "Game/Render/Drawing/Draw3D.hpp"
 #include "Game/Render/Drawing/Window.hpp"
+#include "Game/Render/Drawing/HUD.hpp"
 #include "Game/Render/Drawing/Text.hpp"
 #include "Game/Render/ImGUI.hpp"
 
