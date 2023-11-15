@@ -7,10 +7,10 @@ namespace IW3SR::Engine
 	{
 		Value = text;
 		Position = { x, y };
-		Size = { size, size };
 		Color = color;
 		Font = nullptr;
 		FontName = font;
+		FontSize = size;
 		FontIndex = 0;
 	}
 
@@ -38,8 +38,8 @@ namespace IW3SR::Engine
 
 	void Text::ComputeAlignment(float& x, float& y)
 	{
-		float textWidth = R_TextWidth(Value.c_str(), Value.size(), Font) * Size.x;
-		float textHeight = Font->pixelHeight * Size.y;
+		float textWidth = R_TextWidth(Value.c_str(), Value.size(), Font);
+		float textHeight = Font->pixelHeight;
 
 		if (AlignX & HUDALIGN_CENTER)
 			x += -(textWidth / 2.f);
@@ -56,14 +56,12 @@ namespace IW3SR::Engine
 	{
 		float x = Position.x;
 		float y = Position.y;
-		float w = Size.x;
-		float h = Size.y;
 
 		if (!Font)
 			SetFont(FontName);
 
 		ComputeAlignment(x, y);
-		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);
-		R_AddCmdDrawText(Value.c_str(), 0x7FFFFFFF, Font, x, y, w, h, 0, 0, Color);
+		Math::ApplyRect(x, y, HorizontalAlign, VerticalAlign);
+		R_AddCmdDrawText(Value.c_str(), 0x7FFFFFFF, Font, x, y, FontSize, FontSize, 0, 0, Color);
 	}
 }

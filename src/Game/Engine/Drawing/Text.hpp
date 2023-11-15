@@ -12,7 +12,6 @@ namespace IW3SR::Engine
 	public:
 		std::string Value;
 		vec2 Position = vec2::Zero;
-		vec2 Size = vec2::One;
 		vec4 Color = vec4::One;
 		RectAlignHorizontal_t HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical_t VerticalAlign = VERTICAL_ALIGN_TOP;
@@ -21,6 +20,7 @@ namespace IW3SR::Engine
 
 		Font_s* Font;
 		std::string FontName;
+		float FontSize;
 		int FontIndex;
 		
 		/// <summary>
@@ -82,7 +82,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, Position, Size, Color, 
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, Position, Color, 
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize);
 	};
 }

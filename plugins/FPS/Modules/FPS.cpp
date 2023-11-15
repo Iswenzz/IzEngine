@@ -7,7 +7,7 @@ namespace IW3SR
 		Color = { 1, 1, 1, 1 };
 		Position = { 0, 20 };
 
-		FPSText = Engine::Text("0", FONT_BIG_DEV, Position, 1, Color);
+		FPSText = Engine::Text("0", FONT_OBJECTIVE, Position, 1.4, Color);
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 	}

@@ -130,6 +130,15 @@ namespace IW3SR
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
+        /// <param name="horizontal">Horizontal aligment.</param>
+        /// <param name="vertical">Vertical aligment.</param>
+        static void ApplyRect(float& x, float& y, RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+
+        /// <summary>
+        /// Virtual screen to real screen with rect aligment.
+        /// </summary>
+        /// <param name="x">X value.</param>
+        /// <param name="y">Y value.</param>
         /// <param name="w">The witdth.</param>
         /// <param name="h">The height.</param>
         /// <param name="horizontal">Horizontal aligment.</param>

@@ -37,9 +37,8 @@ namespace IW3SR::Engine
 	void Draw2D::Text(const std::string& text, const std::string& font, 
 		float x, float y, float size, const vec4& color)
 	{
-		float w = size, h = size;
 		Font_s* f = Assets::Fonts[font];
-		Math::ApplyRect(x, y, w, h, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
-		R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, f, x, y, w, h, 0, 0, color);
+		Math::ApplyRect(x, y, HORIZONTAL_ALIGN_LEFT, VERTICAL_ALIGN_TOP);
+		R_AddCmdDrawText(text.c_str(), 0x7FFFFFFF, f, x, y, size, size, 0, 0, color);
 	}
 }
