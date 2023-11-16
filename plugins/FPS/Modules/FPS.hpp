@@ -9,9 +9,7 @@ namespace IW3SR
     class FPS : public Module
     {
     public:
-        Engine::Text FPSText;
-        vec4 Color;
-        vec2 Position;
+        Text FPSText;
 
         /// <summary>
         /// Initialize the module.
@@ -29,6 +27,6 @@ namespace IW3SR
         /// </summary>
         void OnDraw2D() override;
 
-        NLOHMANN_DEFINE_POLY(FPS, Module, FPSText, Color, Position);
+        NLOHMANN_DEFINE_POLY(FPS, Module, FPSText);
     };
 }

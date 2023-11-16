@@ -10,7 +10,6 @@ namespace IW3SR
 	{
 	public:
 		Text VelocityText;
-		vec4 Color;
 
 		/// <summary>
 		/// Initialize the module.
@@ -28,6 +27,6 @@ namespace IW3SR
 		/// </summary>
 		void OnFrame() override;
 
-		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText, Color);
+		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText);
 	};
 }
