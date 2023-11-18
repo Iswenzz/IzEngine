@@ -14,6 +14,9 @@
 #define	YAW		1
 #define	ROLL	2
 
+#define ANGLE2SHORT( x )  ( (int)( ( x ) * 65536 / 360 ) & 65535 )
+#define SHORT2ANGLE( x )  ( ( x ) * ( 360.0f / 65536 ) )
+
 namespace IW3SR
 {
     /// <summary>
@@ -30,6 +33,22 @@ namespace IW3SR
         static vec2 WorldToScreen(const vec3& worldPosition);
 
         /// <summary>
+        /// Sets the clients yaw to the target.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="Angles"></param>
+        /// <param name="target"></param>
+        static void SetPlayerYaw(usercmd_s* cmd, float* Angles, const vec3& target);
+
+        /// <summary>
+        /// Sets the clients pitch to the target.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="Angles"></param>
+        /// <param name="target"></param>
+        static void SetPlayerPitch(usercmd_s* cmd, float* Angles, const vec3& target);
+
+        /// <summary>
         /// Converts radians to degrees.
         /// </summary>
         /// <param name="radians">Radians value.</param>
@@ -44,11 +63,26 @@ namespace IW3SR
         static float DegToRad(const float degrees);
 
         /// <summary>
+        /// Normalizes an angle to the range of 0 to 360 degrees.
+        /// </summary>
+        /// <param name="angle">Angle in degrees.</param>
+        /// <returns></returns>
+        static float AngleNormalize360(float angle);
+
+        /// <summary>
         /// Normalizes an angle to the range of -180 to 180 degrees.
         /// </summary>
         /// <param name="angle">Angle in degrees.</param>
         /// <returns>Normalized angle in degrees.</returns>
-        static float AngleNormalize180(const float angle);
+        static float AngleNormalize180(float angle);
+
+        /// <summary>
+        /// Gets the delta angle of 2 angles.
+        /// </summary>
+        /// <param name="angle1">The first angle.</param>
+        /// <param name="angle2">The second angle.</param>
+        /// <returns></returns>
+        static float AngleDelta(float angle1, float angle2);
 
         /// <summary>
         /// Normalizes an angle to the range of -PI to PI radians.

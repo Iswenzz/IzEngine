@@ -27,6 +27,8 @@ namespace IW3SR
 
 		SR->Modules->SetRenderer();
 
+		BhopLogo = Assets::LoadTexture("C:\\Games\\Call of Duty 4\\iw3sr\\resources\\images\\Bhop.jpg");
+
 		Active = true;
 	}
 

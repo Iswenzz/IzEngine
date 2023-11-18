@@ -34,6 +34,7 @@ namespace IW3SR
 	public:
 		std::string ID;
 		std::string Name;
+		std::string Group;
 		Window Menu;
 		bool IsEnabled;
 
@@ -42,7 +43,7 @@ namespace IW3SR
 		/// </summary>
 		/// <param name="id">The module ID.</param>
 		/// <param name="name">The module name.</param>
-		Module(const std::string& id, const std::string& name);
+		Module(const std::string& id, const std::string& name, const std::string& group);
 
 		/// <summary>
 		/// Release the module.
@@ -78,6 +79,12 @@ namespace IW3SR
 		/// Render frame.
 		/// </summary>
 		virtual void OnFrame();
+
+		/// <summary>
+		/// usercmd_s creation.
+		/// </summary>
+		/// <param name="cmd"></param>
+		virtual void OnFinishMove(usercmd_s* cmd);
 
 		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, Menu);
 	};

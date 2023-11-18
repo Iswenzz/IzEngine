@@ -107,20 +107,27 @@ namespace IW3SR
 		{
 			const char* name = entry->Name.c_str();
 
-			// Enable/Disable module
-			if (ImGui::ToggleButton(entry->ID + "toggle", 20, &entry->IsEnabled))
-				entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
-			ImGui::SameLine();
-			ImGui::Text(name);
-			ImGui::SameLine(frameWidth);
-
-			// Draw module menu
-			ImGui::ButtonId(ICON_FA_GEAR, entry->ID + "menu", &entry->Menu.Open);
-			if (entry->Menu.Open)
+			if (entry->Group == "Cheat")
 			{
-				entry->Menu.Begin();
-				entry->OnMenu();
-				entry->Menu.End();
+				ImGui::BeginGroupBox("Cheats", ImVec2{ ImGui::GetWindowWidth() / 2 - ImGui::GetStyle().ItemSpacing.x / 2, 210 }, ImColor{ 50, 50, 50 });
+
+				//Enable/disable module
+				if (ImGui::ToggleButton(entry->ID + "toggle", 20, &entry->IsEnabled))
+					entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
+				ImGui::SameLine();
+				ImGui::Text(name);
+				ImGui::SameLine(frameWidth);
+
+				// Draw module menu
+				ImGui::ButtonId(ICON_FA_GEAR, entry->ID + "menu", &entry->Menu.Open);
+				if (entry->Menu.Open)
+				{
+					entry->Menu.Begin();
+					entry->OnMenu();
+					entry->Menu.End();
+				}
+
+				ImGui::EndGroupBox();
 			}
 		}
 		Menu.End();

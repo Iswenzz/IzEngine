@@ -12,6 +12,10 @@ static Function<Material*(const char* material, int size)>
 	Material_RegisterHandle = 0x5F2A80;
 static Function<Font_s*(const char* font, int size)>
 	R_RegisterFont = 0x5F1EC0;
+static Function<int(const char* name)>
+    BG_FindWeaponIndexByName = 0x416610;
+static Function<void(trace_t* result, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int skipEntity, int tracemask)>
+    CG_Trace = 0x45A230;
 
 extern Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 	DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -27,6 +31,8 @@ extern Hook<void(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceSt
 	RB_EndSceneRendering_h;
 extern Hook<IDirect3D9* STDCALL(UINT sdk)> 
 	R_Direct3DCreate9_h;
+extern Hook<void(usercmd_s* cmd)>
+    CL_FinishMove_h;
 
 EXTERN_C
 {

@@ -51,6 +51,7 @@ namespace IW3SR
 		CG_DrawCrosshair_h.Install();
 		R_Direct3DCreate9_h.Install();
 		RB_EndSceneRendering_h.Install();
+		CL_FinishMove_h.Install();
 	}
 
 	void Game::Unhook()
@@ -62,5 +63,6 @@ namespace IW3SR
 		CG_DrawCrosshair_h.Remove();
 		R_Direct3DCreate9_h.Remove();
 		RB_EndSceneRendering_h.Remove();
+		CL_FinishMove_h.Remove();
 	}
 }

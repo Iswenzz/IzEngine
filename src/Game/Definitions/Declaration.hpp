@@ -16,6 +16,7 @@ API extern clientStatic_t* cls;
 API extern clientConnection_t& clc;
 API extern cg_s* cgs;
 API extern centity_s* cg_entities;
+extern serverStatic_t* svs;
 extern GfxBuffers* gfx_buf;
 extern GfxWorld* gfx_world;
 extern GfxScene* scene;

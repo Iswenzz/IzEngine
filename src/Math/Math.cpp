@@ -30,6 +30,30 @@ namespace IW3SR
         };
     }
 
+    void Math::SetPlayerYaw(usercmd_s* cmd, float* Angles, const vec3& target)
+    {
+        float cmdAngle = SHORT2ANGLE(cmd->angles[1]);
+
+        float delta = AngleDelta(Angles[1], cmdAngle);
+        float realDelta = AngleDelta(delta, Angles[1]);
+        float final = AngleDelta(Angles[1], target.y);
+
+        clients->viewangles[1] += realDelta - final;
+        cmd->angles[1] += ANGLE2SHORT(realDelta - final);
+    }
+
+    void Math::SetPlayerPitch(usercmd_s* cmd, float* Angles, const vec3& target)
+    {
+        float cmdAngle = SHORT2ANGLE(cmd->angles[0]);
+
+        float delta = AngleDelta(Angles[0], cmdAngle);
+        float realDelta = AngleDelta(delta, Angles[0]);
+        float final = AngleDelta(Angles[0], target.x);
+
+        clients->viewangles[0] += realDelta - final;
+        cmd->angles[0] += ANGLE2SHORT(realDelta - final);
+    }
+
     float Math::RadToDeg(const float radians)
     {
         return radians * (180.0f / M_PI);
@@ -40,9 +64,23 @@ namespace IW3SR
         return degrees * M_PI / 180.0f;
     }
 
-    float Math::AngleNormalize180(const float angle)
+    float Math::AngleNormalize360(float angle)
     {
-        return (angle * 0.0027777778f - floorf(angle * 0.0027777778f + 0.5f)) * 360.0f;
+        return (360.0f / 65536) * ((int)(angle * (65536 / 360.0f)) & 65535);
+    }
+
+    float Math::AngleNormalize180(float angle)
+    {
+        angle = AngleNormalize360(angle);
+        if (angle > 180.0) {
+            angle -= 360.0;
+        }
+        return angle;
+    }
+
+    float Math::AngleDelta(float angle1, float angle2)
+    {
+        return AngleNormalize180(angle1 - angle2);
     }
 
     float Math::AngleNormalizePi(const float angle)

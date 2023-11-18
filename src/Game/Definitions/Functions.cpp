@@ -1,5 +1,6 @@
 #include "Functions.hpp"
 #include "Game/Game.hpp"
+#include "Game/Player/PMove.hpp"
 
 Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 	DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -20,3 +21,6 @@ Hook<void(GfxCmdBufInput* input, GfxViewInfo* viewInfo, GfxCmdBufSourceState* sr
 
 Hook<IDirect3D9* STDCALL(UINT sdk)> 
 	R_Direct3DCreate9_h(0x670284, D3D9::Direct3DCreate9);
+
+Hook<void(usercmd_s* cmd)>
+    CL_FinishMove_h(0x463A60, PMove::FinishMove);

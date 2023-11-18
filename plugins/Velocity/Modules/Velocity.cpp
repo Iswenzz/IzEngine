@@ -3,7 +3,7 @@
 
 namespace IW3SR
 {
-	Velocity::Velocity() : Module("sr.player.velocity", "Velocity")
+	Velocity::Velocity() : Module("sr.player.velocity", "Velocity", "Player")
 	{
 		Color = { 0, 1, 1, 1 };
 

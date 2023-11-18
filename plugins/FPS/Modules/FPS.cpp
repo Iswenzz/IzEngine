@@ -2,7 +2,7 @@
 
 namespace IW3SR
 {
-	FPS::FPS() : Module("sr.player.fps", "FPS")
+	FPS::FPS() : Module("sr.player.fps", "FPS", "Player")
 	{
 		Color = { 1, 1, 1, 1 };
 		Position = { 0, 20 };

@@ -3,6 +3,8 @@ target_sources(IW3SR PRIVATE
 	Math.hpp
 	Math.cpp
 	Matrix3.hpp
+        Trace.hpp
+        Trace.cpp
 	Vector2.hpp
 	Vector3.hpp
 	Vector4.hpp)

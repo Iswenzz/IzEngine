@@ -34,6 +34,20 @@ namespace ImGui
 	/// <param name="v">Toggle state.</param>
 	/// <return></returns>
 	API bool ToggleButton(const std::string& id, float size, bool* v);
+
+	/// <summary>
+	/// Creates a box group.
+	/// </summary>
+	/// <param name="name">The name of the box.</param>
+	/// <param name="size">The size of the box.</param>
+	/// <returns></returns>
+	API void BeginGroupBox(const std::string& name, const ImVec2& size, const ImColor& color);
+
+	/// <summary>
+	/// Ends the group box.
+	/// </summary>
+	/// <returns></returns>
+	API void EndGroupBox();
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

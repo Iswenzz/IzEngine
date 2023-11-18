@@ -3,10 +3,11 @@
 
 namespace IW3SR
 {
-	Module::Module(const std::string& id, const std::string& name)
+	Module::Module(const std::string& id, const std::string& name, const std::string& group)
 	{
 		ID = id;
 		Name = name;
+		Group = group;
 		Menu = Window(name);
 		Menu.SetRect(20, 20, 180, 80);
 	}
@@ -22,4 +23,5 @@ namespace IW3SR
 	void Module::OnDraw3D() { }
 	void Module::OnDraw2D() { }
 	void Module::OnFrame() { }
+	void Module::OnFinishMove(usercmd_s* cmd) { }
 }

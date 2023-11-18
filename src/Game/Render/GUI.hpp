@@ -14,6 +14,7 @@ namespace IW3SR
 		static inline ImGuiContext* Context = nullptr;
 		static inline ImGuiMemAllocFunc Allocator = nullptr;
 		static inline ImGuiMemFreeFunc Free = nullptr;
+		static inline IDirect3DTexture9* BhopLogo = nullptr;
 		static inline void* Data = nullptr;
 
 		static inline HWND MainWindow = nullptr;

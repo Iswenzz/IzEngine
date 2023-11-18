@@ -12,6 +12,7 @@ clientStatic_t* cls = reinterpret_cast<clientStatic_t*>(0x956D80);
 clientConnection_t& clc = *reinterpret_cast<clientConnection_t*>(0x8F4CE0);
 cg_s* cgs = reinterpret_cast<cg_s*>(0x74E338);
 centity_s* cg_entities = reinterpret_cast<centity_s*>(0x84F2D8);
+serverStatic_t* svs = reinterpret_cast<serverStatic_t*>(0x0185C480);
 GfxBuffers* gfx_buf = reinterpret_cast<GfxBuffers*>(0xD2B0840);
 GfxWorld* gfx_world = reinterpret_cast<GfxWorld*>(0xD0701E0);
 GfxScene* scene = reinterpret_cast<GfxScene*>(0xCF10280);
@@ -30,7 +31,7 @@ int* client_activeNumber = reinterpret_cast<int*>(0xCC5FF8);
 XZone* g_zones = reinterpret_cast<XZone*>(0xFFEFD0);
 XAssetEntry* g_assetEntryPool = reinterpret_cast<XAssetEntry*>(0xF0D640);
 infoParm_t* info_params = reinterpret_cast<infoParm_t*>(0x71FBD0);
-WeaponDef** bg_weaponNames = reinterpret_cast<WeaponDef**>(0x736DB8);
+WeaponDef** bg_weaponNames = reinterpret_cast<WeaponDef**>(COD4X + 0x443DDE0);
 
 // Render
 DxGlobals* dx = reinterpret_cast<DxGlobals*>(0xCC9A400);

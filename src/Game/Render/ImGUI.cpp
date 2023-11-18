@@ -1,4 +1,5 @@
 #include "ImGUI.hpp"
+#include "Game/Render/GUI.hpp"
 
 namespace ImGui
 {
@@ -43,5 +44,33 @@ namespace ImGui
             radius - 1.5f, IM_COL32(255, 255, 255, 255));
 
         return clicked;
+    }
+
+    void BeginGroupBox(const std::string& name, const ImVec2& size, const ImColor& color)
+    {
+        ImDrawList* draw = GetWindowDrawList();
+        ImGuiWindow* window = GetCurrentWindow();
+        ImVec2 pos = window->DC.CursorPos;
+
+        BeginChild(std::string(name).append(".main").c_str(), size, false, ImGuiWindowFlags_NoScrollbar);
+
+        draw->AddRectFilled(pos + ImVec2{ 0, 20 }, pos + size, color, 6);
+        draw->AddText(pos + ImVec2{ 12, -5 }, GetColorU32(ImGuiCol_Text, 1), name.c_str());
+
+        SetCursorPos(ImVec2(12, 21));
+        PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 10 });
+        BeginChild(name.c_str(), {size.x - 24, size.y - 21}, 0, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+        BeginGroup();
+
+        PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 8, 10 });
+    }
+
+    void EndGroupBox()
+    {
+        PopStyleVar(2);
+        EndGroup();
+        EndChild();
+        EndChild();
     }
 }
