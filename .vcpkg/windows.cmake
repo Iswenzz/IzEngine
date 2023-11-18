@@ -1,4 +1,4 @@
-set(VCPKG_TARGET_TRIPLET x86-windows-static)
+set(VCPKG_TARGET_TRIPLET x86-windows)
 
 option(BUILD_TESTING "Build tests" OFF)
 if(BUILD_TESTING)

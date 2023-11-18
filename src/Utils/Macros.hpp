@@ -36,7 +36,10 @@
 #endif
 
 #ifndef DEBUG
-#define DEBUG _DEBUG
+	#ifndef _DEBUG
+		#define _DEBUG 0
+	#endif
+	#define DEBUG _DEBUG
 #endif
 
 #ifndef CMAKE_BINARY_DIR
