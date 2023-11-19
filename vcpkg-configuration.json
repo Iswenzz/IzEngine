@@ -8,7 +8,7 @@
         {
             "kind": "git",
             "repository": "https://github.com/Iswenzz/vcpkg-registry",
-			"packages": [],
+			"packages": ["imgui"],
             "baseline": "c12eb749ee43da80e9951717c334059a50bbdf5b"
         }
     ]

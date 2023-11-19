@@ -12,8 +12,6 @@ namespace IW3SR
 	{
 	public:
 		static inline ImGuiContext* Context = nullptr;
-		static inline ImGuiMemAllocFunc Allocator = nullptr;
-		static inline ImGuiMemFreeFunc Free = nullptr;
 		static inline void* Data = nullptr;
 
 		static inline HWND MainWindow = nullptr;
@@ -94,6 +92,21 @@ namespace IW3SR
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The result of processing the message.</returns>
 		static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+
+		/// <summary>
+		/// ImGUI allocator.
+		/// </summary>
+		/// <param name="size">The size.</param>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		static void* Allocator(size_t size, void* data);
+
+		/// <summary>
+		/// ImGUI free.
+		/// </summary>
+		/// <param name="ptr">The pointer.</param>
+		/// <param name="data">The data.</param>
+		static void Free(void* ptr, void* data);
 
 	private:
 		/// <summary>

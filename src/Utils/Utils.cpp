@@ -5,6 +5,10 @@ namespace IW3SR
 {
 	bool Utils::IsDebug()
 	{
-		return DEBUG;
+		#ifdef NDEBUG
+			return true;
+		#else
+			return false;
+		#endif
 	}
 }

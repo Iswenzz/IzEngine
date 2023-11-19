@@ -35,13 +35,6 @@
 #define ENTRY C_EXTERN EXPORT
 #endif
 
-#ifndef DEBUG
-	#ifndef _DEBUG
-		#define _DEBUG 0
-	#endif
-	#define DEBUG _DEBUG
-#endif
-
 #ifndef CMAKE_BINARY_DIR
 #define CMAKE_BINARY_DIR ""
 #endif

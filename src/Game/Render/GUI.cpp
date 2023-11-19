@@ -18,27 +18,25 @@ namespace IW3SR
 	void GUI::Initialize()
 	{
 		if (Active || !MainWindow) return;
+		Active = true;
 
+		ImGui::SetAllocatorFunctions(&Allocator, &Free, &Data);
 		Context = ImGui::CreateContext();
-		ImGui::GetAllocatorFunctions(&Allocator, &Free, &Data);
 		ImGui_ImplWin32_Init(MainWindow);
 		ImGui_ImplDX9_Init(dx->device);
 		Theme();
 
 		SR->Modules->SetRenderer();
-
-		Active = true;
 	}
 
 	void GUI::Shutdown()
 	{
 		if (!Active) return;
+		Active = false;
 
 		ImGui_ImplDX9_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext(Context);
-
-		Active = false;
 	}
 
 	void GUI::Reset()
@@ -278,5 +276,15 @@ namespace IW3SR
 		}
 		io.MouseDrawCursor = false;
 		return MainWndProc_h(hWnd, Msg, wParam, lParam);
+	}
+
+	void* GUI::Allocator(size_t size, void* data)
+	{
+		return malloc(size);
+	}
+
+	void GUI::Free(void* ptr, void* data)
+	{
+		free(ptr);
 	}
 }
