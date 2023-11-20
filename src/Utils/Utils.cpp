@@ -21,7 +21,7 @@ namespace IW3SR
 
 	bool Utils::IsDebug()
 	{
-		#ifdef NDEBUG
+		#ifdef _DEBUG
 			return true;
 		#else
 			return false;

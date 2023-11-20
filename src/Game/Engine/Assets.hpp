@@ -15,7 +15,7 @@ namespace IW3SR::Engine
 	{
 	public:
 		static inline std::unordered_map<std::string, Font_s*> Fonts;
-		static inline std::vector<const char*> FontNames;
+		static inline std::vector<std::string> FontNames;
 
 		/// <summary>
 		/// Initialize the assets.

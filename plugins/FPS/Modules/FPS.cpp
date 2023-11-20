@@ -12,14 +12,13 @@ namespace IW3SR
 	void FPS::OnMenu()
 	{	
 		ImGui::ColorEdit4("Color", FPSText.Color, ImGuiColorEditFlags_Float);
-		ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.35f);
 
-		const std::vector<const char*>& fonts = Engine::Assets::FontNames;
-		if (ImGui::Combo("Font", &FPSText.FontIndex, fonts.data(), fonts.size()))
+		const std::vector<std::string>& fonts = Assets::FontNames;
+		if (ImGui::Combo("Font", &FPSText.FontIndex, fonts))
 			FPSText.SetFont(fonts[FPSText.FontIndex]);
 	}
 
-	void FPS::OnDraw2D()
+	void FPS::OnFrame()
 	{
 		int FPS = Dvar::Get<int>("com_maxfps");
 		FPSText.Value = std::to_string(FPS);

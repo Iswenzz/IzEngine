@@ -6,6 +6,7 @@ namespace IW3SR
 	void Assets::Initialize()
 	{
 		LoadFonts();
+		LoadFont("Arial", 22);
 	}
 
 	void Assets::Shutdown()
@@ -19,13 +20,12 @@ namespace IW3SR
 	void Assets::LoadFonts()
 	{
 		HDC hdc = GetDC(NULL);
-		LoadFont("Arial", 22);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
 			FontNames.push_back(lpelf->lfFaceName);
-			return 1;
+			return TRUE;
 		};
-		EnumFontFamilies(hdc, NULL, callback, NULL);
+		EnumFontFamilies(hdc, NULL, static_cast<FONTENUMPROC>(callback), NULL);
 		ReleaseDC(NULL, hdc);
 	}
 

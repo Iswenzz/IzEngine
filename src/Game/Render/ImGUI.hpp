@@ -34,6 +34,17 @@ namespace ImGui
 	/// <param name="v">Toggle state.</param>
 	/// <return></returns>
 	API bool ToggleButton(const std::string& id, float size, bool* v);
+
+	/// <summary>
+	/// Combo box.
+	/// </summary>
+	/// <param name="label">The label.</param>
+	/// <param name="item">The selected item.</param>
+	/// <param name="items">The items.</param>
+	/// <param name="maxHeightInItems">Max height in items popup.</param>
+	/// <returns></returns>
+	API bool Combo(const std::string& label, int* item, const std::vector<std::string>& items, 
+		int maxHeightInItems = -1);
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

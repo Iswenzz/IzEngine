@@ -23,9 +23,9 @@ namespace IW3SR
         void OnMenu() override;
 
         /// <summary>
-        /// Draw 2D.
+        /// Render frame.
         /// </summary>
-        void OnDraw2D() override;
+        void OnFrame() override;
 
         NLOHMANN_DEFINE_POLY(FPS, Module, FPSText);
     };

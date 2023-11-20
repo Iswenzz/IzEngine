@@ -44,4 +44,13 @@ namespace ImGui
 
         return clicked;
     }
+
+    bool Combo(const std::string& label, int* item, const std::vector<std::string>& items, int maxHeightInItems)
+    {
+        std::vector<const char*> list;
+        for (const auto& item : items)
+            list.push_back(item.c_str());
+
+        return Combo(label.c_str(), item, list.data(), list.size(), maxHeightInItems);
+    }
 }

@@ -14,8 +14,8 @@ namespace IW3SR
 	{
 		ImGui::ColorEdit4("Color", VelocityText.Color, ImGuiColorEditFlags_Float);
 
-		const std::vector<const char*>& fonts = Assets::FontNames;
-		if (ImGui::Combo("Font", &VelocityText.FontIndex, fonts.data(), fonts.size()))
+		const std::vector<std::string>& fonts = Assets::FontNames;
+		if (ImGui::Combo("Font", &VelocityText.FontIndex, fonts))
 			VelocityText.SetFont(fonts[VelocityText.FontIndex]);
 	}
 

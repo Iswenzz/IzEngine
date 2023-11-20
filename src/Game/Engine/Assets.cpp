@@ -10,9 +10,16 @@ namespace IW3SR::Engine
 
 	void Assets::LoadFonts()
 	{
-		FontNames = { FONT_OBJECTIVE, FONT_NORMAL, FONT_CONSOLE,
-			FONT_SMALL, FONT_SMALL_DEV, FONT_BIG, FONT_BIG_DEV, FONT_BOLD };
-
+		FontNames = { 
+			FONT_OBJECTIVE, 
+			FONT_NORMAL, 
+			FONT_CONSOLE,
+			FONT_SMALL, 
+			FONT_SMALL_DEV, 
+			FONT_BIG, 
+			FONT_BIG_DEV, 
+			FONT_BOLD 
+		};
 		for (const std::string& name : FontNames)
 			LoadFont(name);
 	}

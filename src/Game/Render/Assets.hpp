@@ -17,7 +17,7 @@ namespace IW3SR
 	public:
 		static inline std::map<std::string, IDirect3DTexture9*> Textures;
 		static inline std::vector<ID3DXFont*> Fonts;
-		static inline std::vector<const char*> FontNames;
+		static inline std::vector<std::string> FontNames;
 
 		/// <summary>
 		/// Initialize the assets.
