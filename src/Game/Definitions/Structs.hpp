@@ -4654,7 +4654,7 @@ namespace IW3SR
 		int vertCount;
 	};
 
-	struct __declspec(align(4)) GfxCmdDrawText2D
+	struct GfxCmdDrawText2D
 	{
 		GfxCmdHeader header;
 		float x;

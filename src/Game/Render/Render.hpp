@@ -36,12 +36,6 @@ namespace IW3SR
 		void Shutdown();
 
 		/// <summary>
-		/// Text renderer.
-		/// </summary>
-		/// <param name="cmd">Render command.</param>
-		static void Text(GfxCmdDrawText2D* cmd);
-
-		/// <summary>
 		/// Draws 3D.
 		/// </summary>
 		/// <param name="cmd">Render command.</param>

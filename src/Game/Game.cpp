@@ -37,6 +37,8 @@ namespace IW3SR
 		COD4X_BIN = cod4x.filename().string();
 		COD4X = reinterpret_cast<uintptr_t>(GetModuleHandle(COD4X_BIN.c_str()));
 
+		if (!COD4X) return;
+
 		uintptr_t antiHook = COD4X + 0x43580;
 		uintptr_t aimAssist = 0x452BFA;
 		uintptr_t localTagMatrix = 0x434200;
