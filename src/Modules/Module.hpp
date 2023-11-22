@@ -1,5 +1,10 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Sys/Dvar.hpp"
+
+#include "Game/Player/Player.hpp"
+#include "Game/Player/PMove.hpp"
+
 #include "Game/Render/Assets.hpp"
 #include "Game/Render/Drawing/Draw2D.hpp"
 #include "Game/Render/Drawing/Draw3D.hpp"
@@ -15,14 +20,11 @@
 #include "Game/Engine/Drawing/Text.hpp"
 #include "Game/Engine/Drawing/Lines.hpp"
 
-#include "Game/Sys/Dvar.hpp"
-
 #include "Math/Math.hpp"
 #include "Utils/Macros.hpp"
-#include "Sys/Environment.hpp"
 
-#include <string>
-#include <memory>
+#include "Sys/Environment.hpp"
+#include "Sys/Listeners/KeyListener.hpp"
 
 namespace IW3SR
 {
@@ -34,6 +36,7 @@ namespace IW3SR
 	public:
 		std::string ID;
 		std::string Name;
+		std::string Group;
 		Window Menu;
 		bool IsEnabled;
 
@@ -42,7 +45,7 @@ namespace IW3SR
 		/// </summary>
 		/// <param name="id">The module ID.</param>
 		/// <param name="name">The module name.</param>
-		Module(const std::string& id, const std::string& name);
+		Module(const std::string& id, const std::string& name, const std::string& group);
 
 		/// <summary>
 		/// Release the module.
@@ -78,6 +81,12 @@ namespace IW3SR
 		/// Render frame.
 		/// </summary>
 		virtual void OnFrame();
+
+		/// <summary>
+		/// Finish moving.
+		/// </summary>
+		/// <param name="cmd">The user command.</param>
+		virtual void OnFinishMove(usercmd_s* cmd);
 
 		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, Menu);
 	};

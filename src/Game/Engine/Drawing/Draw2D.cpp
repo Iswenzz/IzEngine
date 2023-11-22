@@ -25,7 +25,7 @@ namespace IW3SR::Engine
 	void Draw2D::LineYaw(const std::string& material, float angle, float yaw, 
 		float y, float w, float h, const vec4& color)
 	{
-		angle = Math::AngleNormalizePi(angle - yaw);
+		angle = Math::AngleNormalizePI(angle - yaw);
 
 		if (!Math::AngleInFov(angle))
 			return;

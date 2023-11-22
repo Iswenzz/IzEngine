@@ -14,6 +14,9 @@
 #define	YAW		1
 #define	ROLL	2
 
+#define ANGLE2SHORT(x)	(static_cast<int>((x) * 65536 / 360) & 65535)
+#define SHORT2ANGLE(x)	(x * (360.0f / 65536))
+
 namespace IW3SR
 {
     /// <summary>
@@ -43,19 +46,34 @@ namespace IW3SR
         /// <returns>Radians value.</returns>
         static float DegToRad(const float degrees);
 
-        /// <summary>
+		/// <summary>
         /// Normalizes an angle to the range of -180 to 180 degrees.
         /// </summary>
         /// <param name="angle">Angle in degrees.</param>
-        /// <returns>Normalized angle in degrees.</returns>
-        static float AngleNormalize180(const float angle);
+        /// <returns></returns>
+        static float AngleNormalize180(float angle);
+
+        /// <summary>
+        /// Normalizes an angle to the range of 0 to 360 degrees.
+        /// </summary>
+        /// <param name="angle">Angle in degrees.</param>
+        /// <returns></returns>
+        static float AngleNormalize360(float angle);
 
         /// <summary>
         /// Normalizes an angle to the range of -PI to PI radians.
         /// </summary>
         /// <param name="angle">Angle in radians.</param>
         /// <returns>Normalized angle in radians.</returns>
-        static float AngleNormalizePi(const float angle);
+        static float AngleNormalizePI(const float angle);
+
+        /// <summary>
+        /// Gets the delta angle of 2 angles.
+        /// </summary>
+        /// <param name="angle1">The first angle.</param>
+        /// <param name="angle2">The second angle.</param>
+        /// <returns></returns>
+        static float AngleDelta(float angle1, float angle2);
 
         /// <summary>
         /// Converts Euler angles to a forward, right, and up vector.

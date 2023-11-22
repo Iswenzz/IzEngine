@@ -4,20 +4,23 @@
 
 namespace IW3SR
 {
+	static Function<int(const char* name)>
+		BG_FindWeaponIndexByName = 0x416610;
+
 	static Function<void(int localClientNum, int controllerIndex, const char* text)>
 		Cmd_ExecuteSingleCommand = 0x4F9AB0;
-
-	static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)>
-		RB_DrawLines3D = 0x613040;
-
-	static Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
-		R_ConvertColorToBytes = 0x493530;
 
 	static Function<Material* (const char* material, int size)>
 		Material_RegisterHandle = 0x5F2A80;
 
+	static Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
+		R_ConvertColorToBytes = 0x493530;
+
 	static Function<Font_s* (const char* font, int size)>
 		R_RegisterFont = 0x5F1EC0;
+
+	static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)>
+		RB_DrawLines3D = 0x613040;
 
 	extern Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 		DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -32,6 +35,9 @@ namespace IW3SR
 
 	extern Hook<void(bool scoreboard)>
 		CG_DrawCrosshair_h;
+
+	extern Hook<void(usercmd_s* cmd)>
+		CL_FinishMove_h;
 
 	extern Hook<IDirect3D9* STDCALL(UINT sdk)>
 		R_Direct3DCreate9_h;

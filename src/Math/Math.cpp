@@ -40,15 +40,28 @@ namespace IW3SR
         return degrees * M_PI / 180.0f;
     }
 
-    float Math::AngleNormalize180(const float angle)
+	float Math::AngleNormalize180(float angle)
     {
-        return (angle * 0.0027777778f - floorf(angle * 0.0027777778f + 0.5f)) * 360.0f;
+        angle = AngleNormalize360(angle);
+        if (angle > 180.0)
+            angle -= 360.0;
+        return angle;
     }
 
-    float Math::AngleNormalizePi(const float angle)
+    float Math::AngleNormalize360(float angle)
+    {
+        return (360.0f / 65536) * (static_cast<int>(angle * (65536 / 360.0f)) & 65535);
+    }
+
+    float Math::AngleNormalizePI(const float angle)
     {
         const float tAngle = fmodf(angle + M_PI, 2 * M_PI);
         return tAngle < 0 ? tAngle + M_PI : tAngle - M_PI;
+    }
+
+    float Math::AngleDelta(float angle1, float angle2)
+    {
+        return AngleNormalize180(angle1 - angle2);
     }
 
     void Math::AngleVectors(const vec3& angles, vec3& forward, vec3& right, vec3& up)
@@ -273,8 +286,8 @@ namespace IW3SR
 			return { 0, SCREEN_WIDTH, false };
 		bool split = end > start;
 
-		start = AngleNormalizePi(start - yaw);
-		end = AngleNormalizePi(end - yaw);
+		start = AngleNormalizePI(start - yaw);
+		end = AngleNormalizePI(end - yaw);
 
 		if (end > start)
 		{
