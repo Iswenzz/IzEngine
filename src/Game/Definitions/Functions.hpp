@@ -45,6 +45,9 @@ namespace IW3SR
 	extern Hook<void(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)>
 		RB_EndSceneRendering_h;
 
+	ASM void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
+		const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask);
+
 	ASM dvar_s* Dvar_FindVar(const char* name);
 
 	ASM void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,

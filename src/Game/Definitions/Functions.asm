@@ -1,10 +1,31 @@
 ; Exports
+	global CG_TracePoint
 	global Dvar_FindVar
 	global R_AddCmdDrawText
 	global R_AddCmdDrawStretchPic
 	global R_TextWidth
 
 SECTION .text
+
+; void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
+;	const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask);
+CG_TracePoint:
+	push	ebp
+	mov		ebp, esp
+	push	esi
+	push	dword [ebp + 24h]		; contentMask
+	push	dword [ebp + 20h]		; passEntityNum
+	push	dword [ebp + 1Ch]		; end
+	push	dword [ebp + 18h]		; maxs
+	push	dword [ebp + 14h]		; mins
+	push	dword [ebp + 10h]		; start
+	push	dword [ebp + 0Ch]		; trace
+	mov		esi, dword [ebp + 8]	; pm
+	call	dword [CG_TracePoint_a]
+	add		esp, 1Ch
+	pop		esi
+	pop		ebp
+	ret
 
 ; dvar_s* Dvar_FindVar(const char* name);
 Dvar_FindVar:
@@ -92,6 +113,7 @@ R_TextWidth:
 
 SECTION .rdata
 
+	CG_TracePoint_a: dd 20A3E1CCh
     Dvar_FindVar_a: dd 56B5D0h
     R_AddCmdDrawText_a: dd 5F6B00h
     R_AddCmdDrawStretchPic_a: dd 5F65F0h

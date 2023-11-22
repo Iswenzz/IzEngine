@@ -26,22 +26,3 @@ namespace IW3SR
 	Hook<void(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)>
 		RB_EndSceneRendering_h(0x6496EC, Render::Draw3D);
 }
-
-void CG_TracePoint(pmove_t* pm, trace_t* results, const float* start,
-	const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask)
-{
-	const static uint32_t address = 0x40E160;
-	__asm
-	{
-		push	contentMask;
-		push	passEntityNum;
-		push	[end];
-		push	[maxs];
-		push	[mins];
-		push	[start];
-		push	results;
-		mov		esi, pm;
-		call	address;
-		add     esp, 1Ch;
-	}
-}
