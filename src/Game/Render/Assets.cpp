@@ -6,7 +6,6 @@ namespace IW3SR
 	void Assets::Initialize()
 	{
 		LoadFonts();
-		LoadFont("Arial", 22);
 	}
 
 	void Assets::Shutdown()
@@ -15,10 +14,15 @@ namespace IW3SR
 			texture->Release();
 		for (const auto& [name, font] : Fonts)
 			font->Release();
+
+		Textures.clear();
+		Fonts.clear();
+		FontNames.clear();
 	}
 
 	void Assets::LoadFonts()
 	{
+		LoadFont(Environment::FontsDirectory / "OpenSans-Regular.ttf", 22);
 		HDC hdc = GetDC(NULL);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
@@ -31,6 +35,22 @@ namespace IW3SR
 
 	ID3DXFont* Assets::LoadFont(const std::string& name, int height)
 	{
+		std::string id = std::format("{}_{}", name, height);
+		if (auto cache = Fonts.find(id); cache != Fonts.end())
+			return cache->second;
+
+		ID3DXFont* font;
+		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font);
+
+		if (std::ranges::find(FontNames, name) == FontNames.end())
+			FontNames.push_back(name.c_str());
+		return Fonts[id] = font;
+	}
+
+	ID3DXFont* Assets::LoadFont(const std::filesystem::path& path, int height)
+	{
+		std::string name = path.stem().filename().string();
 		std::string id = std::format("{}_{}", name, height);
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;

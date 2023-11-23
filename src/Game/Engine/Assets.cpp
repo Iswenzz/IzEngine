@@ -6,7 +6,12 @@ namespace IW3SR::Engine
 	{
 		LoadFonts();
 	}
-	void Assets::Shutdown() { }
+
+	void Assets::Shutdown() 
+	{
+		Fonts.clear();
+		FontNames.clear();
+	}
 
 	void Assets::LoadFonts()
 	{

@@ -38,6 +38,14 @@ namespace IW3SR
 		static ID3DXFont* LoadFont(const std::string& name, int height);
 
 		/// <summary>
+		/// Load a font.
+		/// </summary>
+		/// <param name="name">The font name.</param>
+		/// <param name="height">The font height.</param>
+		/// <returns></returns>
+		static ID3DXFont* LoadFont(const std::filesystem::path& path, int height);
+
+		/// <summary>
 		/// Load image.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
