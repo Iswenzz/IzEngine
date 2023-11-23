@@ -31,8 +31,7 @@ namespace IW3SR
 
 	void Text::SetFont(const std::string& font)
 	{
-		float fontSize = scr_place->scaleVirtualToReal[0] * FontSize * 14.f;
-		if (Font) Assets::UnloadFont(Font);
+		int fontSize = std::floor(scr_place->scaleVirtualToReal[0] * FontSize * 14.f);
 		Font = Assets::LoadFont(font, fontSize);
 		FontName = font;
 		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, font));

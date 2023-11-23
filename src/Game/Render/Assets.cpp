@@ -13,7 +13,7 @@ namespace IW3SR
 	{
 		for (const auto& [name, texture] : Textures)
 			texture->Release();
-		for (const auto& font : Fonts)
+		for (const auto& [name, font] : Fonts)
 			font->Release();
 	}
 
@@ -31,21 +31,17 @@ namespace IW3SR
 
 	ID3DXFont* Assets::LoadFont(const std::string& name, int height)
 	{
+		std::string id = std::format("{}_{}", name, height);
+		if (auto cache = Fonts.find(id); cache != Fonts.end())
+			return cache->second;
+
 		ID3DXFont* font;
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font);
 
 		if (std::ranges::find(FontNames, name) == FontNames.end())
 			FontNames.push_back(name.c_str());
-		Fonts.push_back(font);
-		return font;
-	}
-
-	void Assets::UnloadFont(ID3DXFont* font)
-	{
-		auto it = std::ranges::find(Fonts, font);
-		font->Release();
-		Fonts.erase(it);
+		return Fonts[id] = font;
 	}
 
 	IDirect3DTexture9* Assets::LoadTexture(const std::string& filePath)

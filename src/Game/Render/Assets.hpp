@@ -15,8 +15,8 @@ namespace IW3SR
 	class API Assets
 	{
 	public:
-		static inline std::map<std::string, IDirect3DTexture9*> Textures;
-		static inline std::vector<ID3DXFont*> Fonts;
+		static inline std::unordered_map<std::string, IDirect3DTexture9*> Textures;
+		static inline std::unordered_map<std::string, ID3DXFont*> Fonts;
 		static inline std::vector<std::string> FontNames;
 
 		/// <summary>
@@ -36,12 +36,6 @@ namespace IW3SR
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
 		static ID3DXFont* LoadFont(const std::string& name, int height);
-
-		/// <summary>
-		/// Unload a font.
-		/// </summary>
-		/// <param name="font">The font.</param>
-		static void UnloadFont(ID3DXFont* font);
 
 		/// <summary>
 		/// Load image.
