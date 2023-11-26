@@ -32,7 +32,13 @@ namespace IW3SR
 		int fontSize = std::floor(scr_place->scaleVirtualToReal[0] * FontSize * 14.f);
 		Font = Assets::LoadFont(font, fontSize);
 		FontName = font;
-		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, font));
+		
+		if (!Font)
+		{
+			FontName = "Arial";
+			Font = Assets::Fonts[FontName];
+		}
+		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, FontName));
 	}
 
 	void Text::ComputeAlignment(float& x, float& y)
