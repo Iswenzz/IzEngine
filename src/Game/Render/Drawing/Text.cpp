@@ -5,6 +5,7 @@ namespace IW3SR
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{
+		ID = Utils::UUID();
 		Value = text;
 		Position = { x, y };
 		Color = color;
@@ -39,21 +40,15 @@ namespace IW3SR
 
 	void Text::ComputeAlignment(float& x, float& y)
 	{
-		RECT textRect = { 0, 0, 0, 0 };
-		Font->DrawTextA(NULL, Value.c_str(), -1, &textRect, DT_CALCRECT, 0);
-
-		int textWidth = scr_place->scaleRealToVirtual[0] * (textRect.right - textRect.left);
-		int textHeight = scr_place->scaleRealToVirtual[1] * (textRect.bottom - textRect.top);
-
 		if (AlignX & HUDALIGN_CENTER)
-			x += -(textWidth / 2.f);
+			x += -(Size.x / 2.f);
 		else if (AlignX & HUDALIGN_RIGHT)
-			x += -textWidth;
+			x += -Size.x;
 
 		if (AlignY & HUDALIGN_MIDDLE)
-			y += textHeight / 2.f;
+			y += Size.y / 2.f;
 		else if (AlignY & HUDALIGN_BOTTOM)
-			y += textHeight;
+			y += Size.y;
 	}
 
 	void Text::Render()
@@ -64,9 +59,18 @@ namespace IW3SR
 		if (!Font)
 			SetFont(FontName);
 
+		RECT textRect = { 0 };
+		Font->DrawTextA(NULL, Value.c_str(), -1, &textRect, DT_CALCRECT, 0);
+		RenderSize = { static_cast<float>(textRect.right - textRect.left), 
+			static_cast<float>(textRect.bottom - textRect.top) };
+		Size = vec2(scr_place->scaleRealToVirtual) * RenderSize;
+
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, HorizontalAlign, VerticalAlign);
 		RECT rect = { static_cast<int>(x), static_cast<int>(y), 0, 0 };
+		RenderPosition = { x, y };
+
+		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
 		Font->DrawTextA(NULL, Value.c_str(), -1, &rect, DT_NOCLIP, Color);
 	}
 }

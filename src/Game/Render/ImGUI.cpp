@@ -1,19 +1,38 @@
 #include "ImGUI.hpp"
+#include "GUI.hpp"
 
 namespace ImGui
 {
-	bool ButtonId(const std::string& label, const std::string& id, bool* v, const ImVec2& size)
+	bool Button(const std::string& label, const std::string& id, bool* v, const ImVec2& size)
 	{
 		PushID(id.c_str());
 		Button(label.c_str(), size);
 		PopID();
 
-        bool clicked = ImGui::IsItemClicked();
+        bool clicked = IsItemClicked();
         if (clicked) *v = !*v;
 		return clicked;
 	}
 
-    bool ToggleButton(const std::string& id, float size, bool* v)
+    bool ButtonToggle(const std::string& label, const std::string& id, bool* v, const ImVec2& size)
+    {
+        if (*v) 
+        {
+            PushStyleColor(ImGuiCol_Button, GetStyleColorVec4(ImGuiCol_ButtonActive));
+            PushStyleColor(ImGuiCol_ButtonHovered, GetStyleColorVec4(ImGuiCol_ButtonActive));
+        }
+        PushID(id.c_str());
+        Button(label.c_str(), size);
+        PopID();
+
+        if (*v) PopStyleColor(2);
+
+        bool clicked = IsItemClicked();
+        if (clicked) *v = !*v;
+        return clicked;
+    }
+
+    bool Toggle(const std::string& id, float size, bool* v)
     {
         ImVec2 p = GetCursorScreenPos();
         ImDrawList* draw = GetWindowDrawList();
@@ -23,7 +42,7 @@ namespace ImGui
         float radius = size * 0.50f;
 
         InvisibleButton(id.c_str(), ImVec2(width, size));
-        bool clicked = ImGui::IsItemClicked();
+        bool clicked = IsItemClicked();
         if (clicked) *v = !*v;
 
         float t = *v ? 1.0f : 0.0f;
@@ -52,5 +71,50 @@ namespace ImGui
             list.push_back(item.c_str());
 
         return Combo(label.c_str(), item, list.data(), list.size(), maxHeightInItems);
+    }
+
+    void Tooltip(const std::string& text)
+    {
+        if (!IsItemHovered())
+            return;
+
+        ImVec2 size = GetItemRectSize();
+        ImVec2 position = GetItemRectMin();
+        position.y += size.y + 2;
+
+        SetNextWindowPos(position);
+        PushStyleVar(ImGuiStyleVar_WindowPadding, { 6, 6 });
+
+        BeginTooltip();
+        Text(text.c_str());
+        EndTooltip();
+
+        PopStyleVar();
+    }
+
+    void Movable(const std::string& label, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize)
+    {
+        if (!GUI::DesignMode) return;
+
+        SetNextWindowBgAlpha(0.2f);
+        PushStyleColor(ImGuiCol_Border, { 0.2, 0.2, 0.2, 0.2 });
+        Begin(label.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar);
+
+        if (IsWindowHovered() && IsMouseDragging(ImGuiMouseButton_Left))
+        {
+            renderPosition = GetWindowPos();
+            renderSize = GetWindowSize();
+           
+            position += vec2(scr_place->scaleRealToVirtual) * vec2(GetMouseDragDelta());
+            size = vec2(scr_place->scaleRealToVirtual) * renderSize;
+            ResetMouseDragDelta();
+        }
+        else
+        {
+            SetWindowPos(renderPosition);
+            SetWindowSize(renderSize);
+        }
+        End();
+        PopStyleColor();
     }
 }

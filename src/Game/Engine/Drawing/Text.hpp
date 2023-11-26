@@ -12,6 +12,7 @@ namespace IW3SR::Engine
 	public:
 		std::string Value;
 		vec2 Position = vec2::Zero;
+		vec2 Size = vec2::Zero;
 		vec4 Color = vec4::One;
 		RectAlignHorizontal_t HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical_t VerticalAlign = VERTICAL_ALIGN_TOP;

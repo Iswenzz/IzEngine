@@ -92,26 +92,32 @@ namespace IW3SR
 		const ImVec2 position = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 		const ImVec2 buttonSize = { 30, 30 };
+		bool todo = false;
 
 		draw->AddLine(position + ImVec2{ 0, size.y }, position + ImVec2{ size.x, size.y },
 			ImGui::ColorConvertFloat4ToU32(Rainbow));
 
-		ImGui::ButtonId(ICON_FA_GAMEPAD, "Modules", &SR->Modules->Menu.Open, buttonSize);
-		ImGui::SameLine();
-		ImGui::ButtonId(ICON_FA_PLUG, "Plugins", &SR->Modules->Menu.Open, buttonSize);
+		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &SR->Modules->Menu.Open, buttonSize);
+		ImGui::Tooltip("Modules");
 		ImGui::SameLine();
 
 		if (Utils::IsDebug())
 		{
 			bool reload = false;
-			if (ImGui::ButtonId(ICON_FA_ROTATE_RIGHT, "Reload", &reload, buttonSize))
+			if (ImGui::Button(ICON_FA_ROTATE_RIGHT, "Reload", &reload, buttonSize))
 				SR->Modules->Reload();
+			ImGui::Tooltip("Reload plugins");
 			ImGui::SameLine();
 		}
 
-		ImGui::ButtonId(ICON_FA_CIRCLE_INFO, "About", &SR->Modules->Menu.Open, buttonSize);
+		ImGui::ButtonToggle(ICON_FA_PAINTBRUSH, "Design", &DesignMode, buttonSize);
+		ImGui::Tooltip("Design mode");
 		ImGui::SameLine();
-		ImGui::ButtonId(ICON_FA_GEAR, "Settings", &SR->Modules->Menu.Open, buttonSize);
+		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &todo, buttonSize);
+		ImGui::Tooltip("About");
+		ImGui::SameLine();
+		ImGui::Button(ICON_FA_GEAR, "Settings", &todo, buttonSize);
+		ImGui::Tooltip("Settings");
 
 		Toolbar.End();
 		ImGui::PopStyleVar(2);

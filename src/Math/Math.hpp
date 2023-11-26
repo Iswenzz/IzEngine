@@ -153,7 +153,7 @@ namespace IW3SR
         static void ApplyRect(float& x, float& y, RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
 
         /// <summary>
-        /// Virtual screen to real screen with rect aligment.
+        /// Virtual screen to real screen with rect alignment.
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>

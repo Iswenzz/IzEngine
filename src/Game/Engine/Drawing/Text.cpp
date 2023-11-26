@@ -1,8 +1,6 @@
 #include "Text.hpp"
 #include "Draw2D.hpp"
 
-#define RESCALE 0.4f
-
 namespace IW3SR::Engine
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
@@ -40,32 +38,29 @@ namespace IW3SR::Engine
 
 	void Text::ComputeAlignment(float& x, float& y)
 	{
-		float textWidth = R_TextWidth(Value.c_str(), Value.size(), Font) * FontSize * RESCALE;
-		float textHeight = Font->pixelHeight * FontSize * RESCALE;
-
 		if (AlignX & HUDALIGN_CENTER)
-			x += -(textWidth / 2.f);
+			x += -(Size.x / 2.f);
 		else if (AlignX & HUDALIGN_RIGHT)
-			x += -textWidth;
+			x += -Size.x;
 
 		if (AlignY & HUDALIGN_MIDDLE)
-			y += textHeight / 2.f;
+			y += Size.y / 2.f;
 		else if (AlignY & HUDALIGN_BOTTOM)
-			y += textHeight;
+			y += Size.y;
 	}
 
 	void Text::Render()
 	{
 		float x = Position.x;
 		float y = Position.y;
-		float w = FontSize * RESCALE;
-		float h = FontSize * RESCALE;
 
 		if (!Font)
 			SetFont(FontName);
 
+		Size = { R_TextWidth(Value.c_str(), Value.size(), Font) * FontSize, Font->pixelHeight * FontSize };
+
 		ComputeAlignment(x, y);
-		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);
-		R_AddCmdDrawText(Value.c_str(), 0x7FFFFFFF, Font, x, y, w, h, 0, 0, Color);
+		Math::ApplyRect(x, y, HorizontalAlign, VerticalAlign);
+		R_AddCmdDrawText(Value.c_str(), 0x7FFFFFFF, Font, x, y, FontSize, FontSize, 0, 0, Color);
 	}
 }

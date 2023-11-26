@@ -10,8 +10,11 @@ namespace IW3SR
 	class API HUD
 	{
 	public:
+		std::string ID;
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::One;
+		vec2 RenderPosition = vec2::Zero;
+		vec2 RenderSize = vec2::One;
 		vec4 Color = vec4::One;
 		RectAlignHorizontal_t HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical_t VerticalAlign = VERTICAL_ALIGN_TOP;

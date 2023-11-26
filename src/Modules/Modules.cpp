@@ -102,25 +102,37 @@ namespace IW3SR
 
 		Menu.Begin();
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
+		std::set<std::string> groups;
 
-		for (const auto& [_, entry] : Entries)
+		for (const auto& [_, current] : Entries)
 		{
-			const char* name = entry->Name.c_str();
+			if (std::ranges::find(groups, current->Group) != groups.end())
+				continue;
 
-			// Enable/Disable module
-			if (ImGui::ToggleButton(entry->ID + "toggle", 20, &entry->IsEnabled))
-				entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
-			ImGui::SameLine();
-			ImGui::Text(name);
-			ImGui::SameLine(frameWidth);
-
-			// Draw module menu
-			ImGui::ButtonId(ICON_FA_GEAR, entry->ID + "menu", &entry->Menu.Open);
-			if (entry->Menu.Open)
+			groups.insert(current->Group);
+			if (ImGui::CollapsingHeader(current->Group.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				entry->Menu.Begin();
-				entry->OnMenu();
-				entry->Menu.End();
+				for (const auto& [_, entry] : Entries)
+				{
+					if (current->Group != entry->Group)
+						continue;
+
+					// Enable/Disable module
+					if (ImGui::Toggle(entry->ID + "toggle", 20, &entry->IsEnabled))
+						entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
+					ImGui::SameLine();
+					ImGui::Text(entry->Name.c_str());
+					ImGui::SameLine(frameWidth);
+
+					// Draw module menu
+					ImGui::Button(ICON_FA_GEAR, entry->ID + "menu", &entry->Menu.Open);
+					if (entry->Menu.Open)
+					{
+						entry->Menu.Begin();
+						entry->OnMenu();
+						entry->Menu.End();
+					}
+				}
 			}
 		}
 		Menu.End();

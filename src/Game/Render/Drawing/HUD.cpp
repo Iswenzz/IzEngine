@@ -5,11 +5,12 @@ namespace IW3SR
 {
 	HUD::HUD(const std::string& texture, float x, float y, float w, float h, const vec4& color)
 	{
-		Texture = nullptr;
-		TexturePath = texture;
+		ID = Utils::UUID();
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
+		Texture = nullptr;
+		TexturePath = texture;
 	}
 
 	HUD::HUD(const std::string& material, const vec2& pos, const vec2& size, const vec4& color) :
@@ -60,6 +61,10 @@ namespace IW3SR
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);
 		RECT rect = { static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h) };
+		RenderPosition = { x, y };
+		RenderSize = { w, h };
+
+		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
 		dx->device->StretchRect(TextureSurface, NULL, NULL, &rect, D3DTEXF_NONE);
 	}
 }

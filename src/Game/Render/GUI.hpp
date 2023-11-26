@@ -19,6 +19,7 @@ namespace IW3SR
 		static inline KeyListener OpenKey;
 		static inline bool Active = false;
 		static inline bool Open = false;
+		static inline bool DesignMode = false;
 
 		static inline ImVec4 Rainbow;
 

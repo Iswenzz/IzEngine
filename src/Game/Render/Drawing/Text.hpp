@@ -10,8 +10,13 @@ namespace IW3SR
 	class API Text
 	{
 	public:
+		std::string ID;
 		std::string Value;
 		vec2 Position = vec2::Zero;
+		vec2 Size = vec2::Zero;
+		vec2 Scale = vec2::One;
+		vec2 RenderPosition = vec2::Zero;
+		vec2 RenderSize = vec2::Zero;
 		vec4 Color = vec4::One;
 		RectAlignHorizontal_t HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical_t VerticalAlign = VERTICAL_ALIGN_TOP;

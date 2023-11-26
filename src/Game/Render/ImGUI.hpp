@@ -17,14 +17,25 @@
 namespace ImGui
 {
 	/// <summary>
-	/// Create a button with a specific id.
+	/// Create a button.
 	/// </summary>
 	/// <param name="label">The button label.</param>
 	/// <param name="id">The unique id.</param>
 	/// <param name="v">Toggle state.</param>
 	/// <param name="size">The button size.</param>
 	/// <returns></returns>
-	API bool ButtonId(const std::string& label, const std::string& id, bool* v,
+	API bool Button(const std::string& label, const std::string& id, bool* v,
+		const ImVec2& size = ImVec2(0, 0));
+
+	/// <summary>
+	/// Create a toggle button.
+	/// </summary>
+	/// <param name="label">The button label.</param>
+	/// <param name="id">The unique id.</param>
+	/// <param name="v">Toggle state.</param>
+	/// <param name="size">The button size.</param>
+	/// <returns></returns>
+	API bool ButtonToggle(const std::string& label, const std::string& id, bool* v,
 		const ImVec2& size = ImVec2(0, 0));
 
 	/// <summary>
@@ -33,7 +44,7 @@ namespace ImGui
 	/// <param name="id">The ID.</param>
 	/// <param name="v">Toggle state.</param>
 	/// <return></returns>
-	API bool ToggleButton(const std::string& id, float size, bool* v);
+	API bool Toggle(const std::string& id, float size, bool* v);
 
 	/// <summary>
 	/// Combo box.
@@ -45,6 +56,24 @@ namespace ImGui
 	/// <returns></returns>
 	API bool Combo(const std::string& label, int* item, const std::vector<std::string>& items, 
 		int maxHeightInItems = -1);
+
+	/// <summary>
+	/// Creates a tooltip.
+	/// </summary>
+	/// <param name="text">The tooltip text.</param>
+	/// <returns></returns>
+	API void Tooltip(const std::string& text);
+
+	/// <summary>
+	/// Movable frame.
+	/// </summary>
+	/// <param name="label">The label.</param>
+	/// <param name="position">The position.</param>
+	/// <param name="size">The size.</param>
+	/// <param name="renderPosition">The render position.</param>
+	/// <param name="renderSize">The render size.</param>
+	/// <returns></returns>
+	API void Movable(const std::string& label, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize);
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

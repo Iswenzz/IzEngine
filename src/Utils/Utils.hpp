@@ -22,6 +22,12 @@ namespace IW3SR
 			const std::string& prefix = "", const std::string& extension = "");
 
 		/// <summary>
+		/// Generate a unique id.
+		/// </summary>
+		/// <returns></returns>
+		static std::string UUID();
+
+		/// <summary>
 		/// Is debug build.
 		/// </summary>
 		/// <returns></returns>

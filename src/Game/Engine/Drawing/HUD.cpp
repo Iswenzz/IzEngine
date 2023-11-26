@@ -4,11 +4,11 @@ namespace IW3SR::Engine
 {
 	HUD::HUD(const std::string& material, float x, float y, float w, float h, const vec4& color)
 	{
-		Material = nullptr;
-		MaterialName = material;
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
+		Material = nullptr;
+		MaterialName = material;
 	}
 
 	HUD::HUD(const std::string& material, const vec2& pos, const vec2& size, const vec4& color) :

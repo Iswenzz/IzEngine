@@ -6,6 +6,8 @@
 
 #include <string>
 #include <map>
+#include <unordered_map>
+#include <set>
 #include <memory>
 
 #define ModuleCallback(method, ...) \
