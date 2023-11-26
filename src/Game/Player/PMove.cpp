@@ -5,8 +5,8 @@ namespace IW3SR
 {
 	void PMove::FinishMove(usercmd_s* cmd)
 	{
+        CL_FinishMove_h(cmd);
 		ModuleCallback(OnFinishMove, cmd);
-		CL_FinishMove_h(cmd);
 	}
 
 	void PMove::SetYaw(usercmd_s* cmd, float* angles, const vec3& target)
