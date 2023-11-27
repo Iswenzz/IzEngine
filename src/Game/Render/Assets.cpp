@@ -22,7 +22,9 @@ namespace IW3SR
 
 	void Assets::LoadFonts()
 	{
-		LoadFont(Environment::FontsDirectory / "OpenSans-Regular.ttf", 22);
+		auto openSans = Environment::FontsDirectory / "OpenSans-Regular.ttf";
+		AddFontResource(openSans.string().c_str());
+
 		HDC hdc = GetDC(NULL);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
