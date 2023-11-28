@@ -92,6 +92,48 @@ namespace ImGui
         PopStyleVar();
     }
 
+    void Keybind(const std::string& label, int* key, const ImVec2& size)
+    {
+        char keyLabel[100];
+        const int keyLabelSize = 100;
+        const auto id = GetID(label.c_str());
+
+        ImGui::KeepAliveID(id);
+        PushID(id);
+
+        DWORD code = MapVirtualKey(*key, MAPVK_VK_TO_VSC);
+        GetKeyNameText(code << 16, keyLabel, keyLabelSize);
+        CharUpperBuff(keyLabel, keyLabelSize);
+
+        if (GetActiveID() == id) 
+        {
+            int k = 0;
+            ImGuiIO& io = ImGui::GetIO();
+
+            PushStyleColor(ImGuiCol_Button, GetColorU32(ImGuiCol_ButtonActive));
+            Button("...", size);
+            PopStyleColor();
+
+            for (; k < ImGuiKey_COUNT; k++)
+            {
+                if (ImGui::IsKeyPressed(static_cast<ImGuiKey>(k)))
+                {
+                    *key = k;
+                    break;
+                }
+            }
+            if (k != ImGuiKey_COUNT || (!IsItemHovered() && IsMouseClicked(ImGuiMouseButton_Left)))
+                ClearActiveID();
+        }
+        else if (Button(keyLabel, size))
+            SetActiveID(id, GetCurrentWindow());
+
+        SameLine();
+        Text(label.c_str());
+
+        PopID();
+    }
+
     void Movable(const std::string& label, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize)
     {
         if (!GUI::Open || !GUI::DesignMode) return;

@@ -65,6 +65,15 @@ namespace ImGui
 	API void Tooltip(const std::string& text);
 
 	/// <summary>
+	/// Keybind component.
+	/// </summary>
+	/// <param name="label">The description.</param>
+	/// <param name="key">The out key.</param>
+	/// <param name="size">The button size.</param>
+	/// <returns></returns>
+	API void Keybind(const std::string& label, int* key, const ImVec2& size = ImVec2(0, 0));
+
+	/// <summary>
 	/// Movable frame.
 	/// </summary>
 	/// <param name="label">The label.</param>
