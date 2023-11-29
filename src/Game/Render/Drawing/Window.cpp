@@ -29,8 +29,11 @@ namespace IW3SR
 		ImGui::SetWindowPos(position, ImGuiCond_FirstUseEver);
 		ImGui::SetWindowSize(size, ImGuiCond_FirstUseEver);
 
-		Position = vec2(ImGui::GetWindowPos()) / space;
-		Size = vec2(ImGui::GetWindowSize()) / space;
+		RenderPosition = ImGui::GetWindowPos();
+		RenderSize = ImGui::GetWindowSize();
+
+		Position = RenderPosition / space;
+		Size = RenderSize / space;
 	}
 
 	void Window::End()

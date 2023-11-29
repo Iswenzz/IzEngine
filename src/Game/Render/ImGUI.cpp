@@ -164,7 +164,7 @@ namespace ImGui
     {
         ImDrawList* draw = ImGui::GetForegroundDrawList();
 
-        const auto& [rainbow1, rainbow2] = GUI::Rainbow;
+        const auto& [rainbow1, rainbow2] = GUI::ColorRainbow;
         draw->AddRectFilledMultiColor(position, size, rainbow1, rainbow2, rainbow2, rainbow1);
     }
 }

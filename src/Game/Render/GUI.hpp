@@ -3,6 +3,12 @@
 #include "Drawing/Window.hpp"
 #include "Sys/Listeners/KeyListener.hpp"
 
+#include "UI/About.hpp"
+#include "UI/Binds.hpp"
+#include "UI/Settings.hpp"
+#include "UI/Themes.hpp"
+#include "UI/Toolbar.hpp"
+
 #include <tuple>
 
 namespace IW3SR
@@ -17,13 +23,13 @@ namespace IW3SR
 		static inline void* Data = nullptr;
 
 		static inline HWND MainWindow = nullptr;
-		static inline Window Toolbar;
+		static inline Toolbar Toolbar;
 		static inline KeyListener OpenKey;
 		static inline bool Active = false;
 		static inline bool Open = false;
 		static inline bool DesignMode = false;
 
-		static inline std::tuple<ImColor, ImColor> Rainbow;
+		static inline std::tuple<ImColor, ImColor> ColorRainbow;
 
 		/// <summary>
 		/// Initialize ImGUI.
@@ -118,14 +124,9 @@ namespace IW3SR
 
 	private:
 		/// <summary>
-		/// Draw toolbar.
-		/// </summary>
-		static void DrawToolbar();
-
-		/// <summary>
 		/// Compute the rainbow effect.
 		/// </summary>
-		static void ComputeRainbow();
+		static void Rainbow();
 
 		/// <summary>
 		/// GUI theme.

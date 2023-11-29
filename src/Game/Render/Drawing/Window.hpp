@@ -12,6 +12,8 @@ namespace IW3SR
 		std::string Name;
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::One;
+		vec2 RenderPosition = vec2::Zero;
+		vec2 RenderSize = vec2::Zero;
 		bool Open = false;
 
 		/// <summary>

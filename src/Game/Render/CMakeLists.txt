@@ -1,3 +1,4 @@
+add_subdirectory(UI)
 add_subdirectory(Drawing)
 add_subdirectory(Fonts)
 
