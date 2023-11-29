@@ -23,11 +23,16 @@ namespace IW3SR
 		static inline void* Data = nullptr;
 
 		static inline HWND MainWindow = nullptr;
-		static inline Toolbar Toolbar;
 		static inline KeyListener OpenKey;
 		static inline bool Active = false;
 		static inline bool Open = false;
 		static inline bool DesignMode = false;
+
+		static inline About About;
+		static inline Binds Binds;
+		static inline Settings Settings;
+		static inline Themes Themes;
+		static inline Toolbar Toolbar;
 
 		static inline std::tuple<ImColor, ImColor> ColorRainbow;
 

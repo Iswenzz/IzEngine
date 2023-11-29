@@ -6,7 +6,13 @@ namespace IW3SR
 	GUI::GUI()
 	{
 		Patch();
+
 		Toolbar = class Toolbar();
+		About = class About();
+		Binds = class Binds();
+		Settings = class Settings();
+		Themes = class Themes();
+
 		OpenKey = KeyListener(VK_F10);
 	}
 
@@ -68,6 +74,8 @@ namespace IW3SR
 		ImGui_ImplDX9_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
+
+		Rainbow();
 		Frame();
 	}
 
@@ -77,6 +85,19 @@ namespace IW3SR
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 		KeyListener::Reset();
+	}
+
+	void GUI::Frame()
+	{
+		if (!Open) return;
+
+		About.Frame();
+		Binds.Frame();
+		Settings.Frame();
+		Themes.Frame();
+		Toolbar.Frame();
+
+		SR->Modules->Frame();
 	}
 
 	void GUI::Rainbow()
@@ -89,15 +110,6 @@ namespace IW3SR
 			ImColor::HSV(fmod(offset + 0.33f, 1.0f), 1.0f, 1.0f)
 		);
 		offset += speed * ImGui::GetIO().DeltaTime;
-	}
-
-	void GUI::Frame()
-	{
-		if (!Open) return;
-
-		Rainbow();
-		Toolbar.Frame();
-		SR->Modules->Frame();
 	}
 
 	void GUI::Theme()

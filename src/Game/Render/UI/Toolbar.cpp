@@ -39,14 +39,14 @@ namespace IW3SR
 		{
 			static bool debug = false;
 			ImGui::Button(ICON_FA_TERMINAL, "Debug", &debug, buttonSize);
-			if (debug) ImGui::ShowDebugLogWindow(&debug);
 			ImGui::Tooltip("Debug");
 			ImGui::SameLine();
+			if (debug) ImGui::ShowDebugLogWindow(&debug);
 		}
-		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", nullptr, buttonSize);
+		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &GUI::About.Open, buttonSize);
 		ImGui::Tooltip("About");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_GEAR, "Settings", nullptr, buttonSize);
+		ImGui::Button(ICON_FA_GEAR, "Settings", &GUI::Settings.Open, buttonSize);
 		ImGui::Tooltip("Settings");
 
 		End();
