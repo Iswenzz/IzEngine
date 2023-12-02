@@ -209,7 +209,7 @@ namespace IW3SR
             return !operator bool();
         }
 
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(vec4, x, y, z, w);
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(vec4, x, y, z, w)
     };
 
     vec4f vec4f::Zero = (0, 0, 0, 0);

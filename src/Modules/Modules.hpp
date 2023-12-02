@@ -123,6 +123,6 @@ namespace IW3SR
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Modules, Menu);
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Modules, Menu)
 	};
 }

@@ -34,8 +34,6 @@ namespace IW3SR
 		static inline Themes Themes;
 		static inline Toolbar Toolbar;
 
-		static inline std::tuple<ImColor, ImColor> ColorRainbow;
-
 		/// <summary>
 		/// Initialize ImGUI.
 		/// </summary>
@@ -126,16 +124,5 @@ namespace IW3SR
 		/// <param name="ptr">The pointer.</param>
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
-
-	private:
-		/// <summary>
-		/// Compute the rainbow effect.
-		/// </summary>
-		static void Rainbow();
-
-		/// <summary>
-		/// GUI theme.
-		/// </summary>
-		static void Theme();
 	};
 }

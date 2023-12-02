@@ -103,3 +103,17 @@ namespace ImGui
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ImVec2, x, y)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ImVec4, x, y, z, w)
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ImGuiStyle, Alpha, DisabledAlpha, WindowPadding, WindowRounding,
+	WindowBorderSize, WindowMinSize, WindowTitleAlign, WindowMenuButtonPosition, ChildRounding,
+	ChildBorderSize, PopupRounding, PopupBorderSize, FramePadding, FrameRounding, FrameBorderSize,
+	ItemSpacing, ItemInnerSpacing, CellPadding, TouchExtraPadding, IndentSpacing, ColumnsMinSpacing,
+	ScrollbarSize, ScrollbarRounding, GrabMinSize, GrabRounding, LogSliderDeadzone, TabRounding,
+	TabBorderSize, TabMinWidthForCloseButton, ColorButtonPosition, ButtonTextAlign, SelectableTextAlign,
+	SeparatorTextBorderSize, SeparatorTextAlign, SeparatorTextPadding, DisplayWindowPadding,
+	DisplaySafeAreaPadding, MouseCursorScale, AntiAliasedLines, AntiAliasedLinesUseTex, AntiAliasedFill,
+	CurveTessellationTol, CircleTessellationMaxError, Colors, HoverStationaryDelay, HoverDelayShort,
+	HoverDelayNormal, HoverFlagsForTooltipMouse, HoverFlagsForTooltipNav)

@@ -88,6 +88,6 @@ namespace IW3SR
 		/// <param name="cmd">The user command.</param>
 		virtual void OnFinishMove(usercmd_s* cmd);
 
-		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, Menu);
+		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, Menu)
 	};
 }

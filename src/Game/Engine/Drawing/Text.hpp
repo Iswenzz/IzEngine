@@ -81,6 +81,6 @@ namespace IW3SR::Engine
 		void ComputeAlignment(float& x, float& y);
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, Position, Color, 
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize);
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize)
 	};
 }

@@ -27,6 +27,6 @@ namespace IW3SR
 		/// </summary>
 		void OnFrame() override;
 
-		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText);
+		NLOHMANN_DEFINE_POLY(Velocity, Module, VelocityText)
 	};
 }

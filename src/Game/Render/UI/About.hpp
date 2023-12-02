@@ -20,6 +20,6 @@ namespace IW3SR
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_EMPTY(About, Window);
+		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_EMPTY(About, Window)
 	};
 }

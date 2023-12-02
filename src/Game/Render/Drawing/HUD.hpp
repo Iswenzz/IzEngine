@@ -83,6 +83,6 @@ namespace IW3SR
 		virtual void ComputeAlignment(float& x, float& y);
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HUD, Position, Size, Color, 
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, TexturePath);
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, TexturePath)
 	};
 }

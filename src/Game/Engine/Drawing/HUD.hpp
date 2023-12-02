@@ -79,6 +79,6 @@ namespace IW3SR::Engine
 		virtual void ComputeAlignment(float& x, float& y);
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(HUD, Position, Size, Color, 
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName);
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName)
 	};
 }
