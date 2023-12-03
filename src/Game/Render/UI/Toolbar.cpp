@@ -1,6 +1,6 @@
 #include "Toolbar.hpp"
 
-namespace IW3SR
+namespace IW3SR::UI
 {
 	Toolbar::Toolbar() : Window("Toolbar")
 	{
@@ -20,14 +20,17 @@ namespace IW3SR
 		const ImVec2 buttonSize = { 30, 30 };
 
 		ImGui::Rainbow(position + ImVec2{ 0, size.y }, position + ImVec2{ size.x, size.y + 2 });
-		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &SR->Modules->Menu.Open, buttonSize);
+		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &GUI::Modules.Open, buttonSize);
 		ImGui::Tooltip("Modules");
 		ImGui::SameLine();
 
 		if (Utils::IsDebug())
 		{
 			if (ImGui::Button(ICON_FA_ROTATE_RIGHT, "Reload", nullptr, buttonSize))
-				SR->Modules->Reload();
+			{
+				SR->Modules->Serialize();
+				SR->DLLS->Reload();
+			}
 			ImGui::Tooltip("Reload plugins");
 			ImGui::SameLine();
 		}

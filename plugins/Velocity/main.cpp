@@ -1,5 +1,4 @@
-#include "Sys/DLL.hpp"
-#include "Modules/Modules.hpp"
+#include "Game/Modules.hpp"
 #include "Modules/Velocity.hpp"
 
 PLUGIN void Initialize(DLL* entry)

@@ -5,7 +5,6 @@ add_library(IW3SR.DLL SHARED)
 
 add_subdirectory(Game)
 add_subdirectory(Math)
-add_subdirectory(Modules)
 add_subdirectory(Sys)
 add_subdirectory(Utils)
 

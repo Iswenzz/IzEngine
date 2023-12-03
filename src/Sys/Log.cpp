@@ -15,6 +15,10 @@ namespace IW3SR
 
 	Log::~Log()
 	{
+		fclose(stdin);
+		fclose(stdout);
+		fclose(stderr);
+
 		FreeConsole();
 	}
 
@@ -26,6 +30,7 @@ namespace IW3SR
 	void Log::Write(int channel, const char* msg, int type)
 	{
 		std::cout << msg;
-		Com_PrintMessage_h(channel, msg, type);
+		if (Com_PrintMessage_h)
+			Com_PrintMessage_h(channel, msg, type);
 	}
 }

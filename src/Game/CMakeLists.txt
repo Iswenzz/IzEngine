@@ -6,9 +6,11 @@ add_subdirectory(Sys)
 
 target_precompile_headers(IW3SR PRIVATE
 	Definitions.hpp
-	Game.hpp)
+	Game.hpp
+	Modules.hpp)
 
 target_sources(IW3SR PRIVATE
 	Definitions.hpp
 	Game.hpp
-	Game.cpp)
+	Game.cpp
+	Modules.hpp)

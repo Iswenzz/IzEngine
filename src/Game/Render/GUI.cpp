@@ -7,11 +7,12 @@ namespace IW3SR
 	{
 		Patch();
 
-		Toolbar = class Toolbar();
-		About = class About();
-		Binds = class Binds();
-		Settings = class Settings();
-		Themes = class Themes();
+		Toolbar = class UI::Toolbar();
+		About = class UI::About();
+		Binds = class UI::Binds();
+		Modules = class UI::Modules();
+		Settings = class UI::Settings();
+		Themes = class UI::Themes();
 
 		OpenKey = KeyListener(VK_F10);
 	}
@@ -36,7 +37,7 @@ namespace IW3SR
 		ImGui_ImplDX9_Init(dx->device);
 		Themes.Initialize();
 
-		SR->Modules->SetRenderer();
+		SR->DLLS->SetRenderer();
 	}
 
 	void GUI::Shutdown()
@@ -93,11 +94,10 @@ namespace IW3SR
 
 		About.Frame();
 		Binds.Frame();
+		Modules.Frame();
 		Settings.Frame();
 		Themes.Frame();
 		Toolbar.Frame();
-
-		SR->Modules->Frame();
 	}
 
 	HWND GUI::CreateMainWindow(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
@@ -112,8 +112,7 @@ namespace IW3SR
 			return hwnd;
 
 		Reset();
-		MainWindow = hwnd;
-		return MainWindow;
+		return MainWindow = hwnd;
 	}
 
 	LRESULT GUI::MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)

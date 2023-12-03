@@ -5,11 +5,10 @@
 
 #include "UI/About.hpp"
 #include "UI/Binds.hpp"
+#include "UI/Modules.hpp"
 #include "UI/Settings.hpp"
 #include "UI/Themes.hpp"
 #include "UI/Toolbar.hpp"
-
-#include <tuple>
 
 namespace IW3SR
 {
@@ -28,11 +27,12 @@ namespace IW3SR
 		static inline bool Open = false;
 		static inline bool DesignMode = false;
 
-		static inline About About;
-		static inline Binds Binds;
-		static inline Settings Settings;
-		static inline Themes Themes;
-		static inline Toolbar Toolbar;
+		static inline UI::About About;
+		static inline UI::Binds Binds;
+		static inline UI::Modules Modules;
+		static inline UI::Settings Settings;
+		static inline UI::Themes Themes;
+		static inline UI::Toolbar Toolbar;
 
 		/// <summary>
 		/// Initialize ImGUI.

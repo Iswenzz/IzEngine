@@ -140,6 +140,7 @@ namespace IW3SR
 
 	ULONG D3D9Device::Release()
 	{
+		SR->Render->Shutdown();
 		ULONG count = pIDirect3DDevice9->Release();
 		if (!count) delete this;
 		return count;
@@ -213,7 +214,6 @@ namespace IW3SR
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
-		SR->Render->Shutdown();
 		if (GUI::Active)
 		{
 			ImGui_ImplDX9_InvalidateDeviceObjects();

@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Render/GUI.hpp"
 
-namespace IW3SR
+namespace IW3SR::UI
 {
 	/// <summary>
 	/// Themes window.

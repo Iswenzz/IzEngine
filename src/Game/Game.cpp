@@ -1,7 +1,4 @@
 #include "Game.hpp"
-#include <array>
-
-Game* SR = nullptr;
 
 namespace IW3SR
 {
@@ -10,28 +7,37 @@ namespace IW3SR
 		Environment::Load();
 		CoD4X();
 
-		Log = std::make_unique<class Log>();
-		Render = std::make_unique<class Render>();
+		DLLS = std::make_unique<class DLLS>();
+		Features = std::make_unique<class Features>();
 		Modules = std::make_unique<class Modules>();
 		GUI = std::make_unique<class GUI>();
+		Render = std::make_unique<class Render>();
+		Log = std::make_unique<class Log>();
 
 		Hook();
 	}
 
 	Game::~Game()
 	{
+		DLLS.reset();
+		Features.reset();
+		Modules.reset();
+		GUI.reset();
+		Render.reset();
+		Log.reset();
+
 		Unhook();
 	}
 
 	void Game::Initialize()
 	{
+		DLLS->Initialize();
 		Player::Allocates();
-		Modules->Initialize();
 	}
 
 	void Game::CoD4X()
 	{
-		auto cod4x = std::ranges::find_if(Environment::Modules, 
+		auto cod4x = std::ranges::find_if(Environment::Modules,
 			[](const auto& m) { return m.find("cod4x_") != std::string::npos; });
 
 		if (cod4x == Environment::Modules.end())
@@ -75,3 +81,5 @@ namespace IW3SR
 		RB_EndSceneRendering_h.Remove();
 	}
 }
+
+Game* SR = nullptr;

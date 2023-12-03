@@ -11,7 +11,7 @@ using namespace IW3SR;
 namespace IW3SR
 {
 	/// <summary>
-	/// Dynamic link library.
+	/// Dynamic Link Library.
 	/// </summary>
 	class API DLL
 	{

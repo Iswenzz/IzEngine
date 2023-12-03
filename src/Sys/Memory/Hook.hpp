@@ -17,6 +17,7 @@ namespace IW3SR
         uint64_t Callback = 0;
         std::function<T> Trampoline = nullptr;
         std::unique_ptr<PLH::x86Detour> Detour;
+        bool IsEnabled = false;
 
         /// <summary>
         /// Initialize a new Hook instance.
@@ -48,8 +49,8 @@ namespace IW3SR
         /// <returns></returns>
         void Install()
         {
-            if (Detour && Detour->isHooked())
-                return;
+            if (IsEnabled) return;
+            IsEnabled = true;
 
             uint64_t trampoline = 0;
             Detour = std::make_unique<PLH::x86Detour>(Address, Callback, &trampoline);
@@ -62,8 +63,8 @@ namespace IW3SR
         /// </summary>
         void Remove()
         {
-            if (!Detour || !Detour->isHooked())
-                return;
+            if (!IsEnabled) return;
+            IsEnabled = false;
 
             Detour->unHook();
         }
@@ -78,6 +79,14 @@ namespace IW3SR
         R operator()(Args&& ...args)
         {
             return Trampoline(args...);
+        }
+
+        /// <summary>
+        /// Is hook enabled.
+        /// </summary>
+        operator bool() const
+        {
+            return IsEnabled;
         }
     };
 }
