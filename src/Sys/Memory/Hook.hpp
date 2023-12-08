@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include <polyhook2/Detour/x86Detour.hpp>
+#include <polyhook2/Detour/NatDetour.hpp>
 
 namespace IW3SR
 {
@@ -15,15 +15,10 @@ namespace IW3SR
     public:
         uint64_t Address = 0;
         uint64_t Callback = 0;
-        std::function<T> Trampoline = nullptr;
-        std::unique_ptr<PLH::x86Detour> Detour;
+        uint64_t Trampoline = 0;
+        std::function<T> Original = nullptr;
+        std::unique_ptr<PLH::NatDetour> Detour = nullptr;
         bool IsEnabled = false;
-
-        /// <summary>
-        /// Initialize a new Hook instance.
-        /// </summary>
-        Hook() = default;
-        ~Hook() = default;
 
         /// <summary>
         /// Initialize a new Hook instance.
@@ -52,10 +47,9 @@ namespace IW3SR
             if (IsEnabled) return;
             IsEnabled = true;
 
-            uint64_t trampoline = 0;
-            Detour = std::make_unique<PLH::x86Detour>(Address, Callback, &trampoline);
+            Detour = std::make_unique<PLH::NatDetour>(Address, Callback, &Trampoline);
             Detour->hook();
-            Trampoline = std::function<T>(reinterpret_cast<T*>(trampoline));
+            Original = std::function<T>(reinterpret_cast<T*>(Trampoline));
         }
 
         /// <summary>
@@ -67,6 +61,7 @@ namespace IW3SR
             IsEnabled = false;
 
             Detour->unHook();
+            Detour.reset();
         }
 
         /// <summary>
@@ -78,7 +73,7 @@ namespace IW3SR
         template <typename ...Args>
         R operator()(Args&& ...args)
         {
-            return Trampoline(args...);
+            return Original(args...);
         }
 
         /// <summary>
