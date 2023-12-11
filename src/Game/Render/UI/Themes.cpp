@@ -2,7 +2,11 @@
 
 namespace IW3SR::UI
 {
-	Themes::Themes() : Window("Themes") { }
+	Themes::Themes() : Window("Themes") 
+	{
+		Index = std::distance(Styles.begin(), Styles.find(Theme));
+		Names = Styles | std::views::keys | std::ranges::to<std::vector<std::string>>();
+	}
 	
 	void Themes::Initialize()
 	{
@@ -111,6 +115,9 @@ namespace IW3SR::UI
 		style.GrabRounding = 0;
 		style.LogSliderDeadzone = 4;
 		style.TabRounding = 0;
+
+		Theme = "IW3SR";
+		Names = { Theme };
 	}
 
 	void Themes::ComputeRainbow()
@@ -125,11 +132,18 @@ namespace IW3SR::UI
 		offset += speed * ImGui::GetIO().DeltaTime;
 	}
 
-	void Themes::Frame() 
+	void Themes::Frame()
 	{
 		if (!Open) return;
 
 		Begin();
+
+		if (ImGui::Combo("Themes", &Index, Names))
+		{
+			Theme = Names[Index];
+			ImGuiStyle& style = ImGui::GetStyle();
+			style = Styles[Theme];
+		}
 		ImGui::ShowStyleEditor();
 		End();
 	}

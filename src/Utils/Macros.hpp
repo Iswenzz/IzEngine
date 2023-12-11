@@ -52,7 +52,7 @@
 		NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM, __VA_ARGS__)); \
 	}
 
-#define NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_EMPTY(Type, BaseType, ...) \
+#define NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_EMPTY(Type, BaseType) \
     friend void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) \
 	{ \
 		nlohmann::to_json(nlohmann_json_j, static_cast<const BaseType &>(nlohmann_json_t)); \
