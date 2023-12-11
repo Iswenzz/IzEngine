@@ -4,16 +4,15 @@ namespace IW3SR::UI
 {
 	Themes::Themes() : Window("Themes") 
 	{
-		Index = std::distance(Styles.begin(), Styles.find(Theme));
-		Names = Styles | std::views::keys | std::ranges::to<std::vector<std::string>>();
+		Current = "IW3SR";
+		Default();
 	}
 	
 	void Themes::Initialize()
 	{
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuiStyle& style = ImGui::GetStyle();
-		ImVec4* colors = style.Colors;
+		Index = std::distance(Styles.begin(), Styles.find(Current));
 
+		ImGuiIO& io = ImGui::GetIO();
 		io.IniFilename = nullptr;
 
 		const float fontSize = 22;
@@ -36,6 +35,12 @@ namespace IW3SR::UI
 		io.Fonts->AddFontFromFileTTF(faRegular.string().c_str(), iconSize, &config, rangesFa);
 		io.Fonts->AddFontFromFileTTF(faSolid.string().c_str(), iconSize, &config, rangesFa);
 		io.Fonts->AddFontFromFileTTF(faBrands.string().c_str(), iconSize, &config, rangesFab);
+	}
+
+	void Themes::Default()
+	{
+		ImGuiStyle& style = Styles[Current];
+		ImVec4* colors = style.Colors;
 
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(0.52f, 0.54f, 0.59f, 0.80f);
@@ -115,9 +120,6 @@ namespace IW3SR::UI
 		style.GrabRounding = 0;
 		style.LogSliderDeadzone = 4;
 		style.TabRounding = 0;
-
-		Theme = "IW3SR";
-		Names = { Theme };
 	}
 
 	void Themes::ComputeRainbow()
@@ -136,14 +138,46 @@ namespace IW3SR::UI
 	{
 		if (!Open) return;
 
-		Begin();
+		ImGuiStyle& style = ImGui::GetStyle();
+		auto names = Styles | std::views::keys | std::ranges::to<std::vector<std::string>>();
+		std::string name;
 
-		if (ImGui::Combo("Themes", &Index, Names))
+		Begin();
+		if (ImGui::Combo("Themes", &Index, names))
 		{
-			Theme = Names[Index];
-			ImGuiStyle& style = ImGui::GetStyle();
-			style = Styles[Theme];
+			auto it = Styles.begin();
+			std::advance(it, Index);
+
+			Current = it->first;
+			style = Styles[Current];
 		}
+		if (ImGui::InputText("Name", &name))
+		{
+			Styles[name] = Styles[Current];
+			Styles.erase(Current);
+			Current = name;
+		}
+		if (ImGui::Button("New"))
+		{
+			Current = std::format("Theme {}", ++Index + 1);
+			Default();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Delete") && Styles.size() > 1)
+		{
+			auto it = Styles.begin();
+			std::advance(it, --Index);
+
+			Styles.erase(Current);
+			Current = it->first;
+			style = Styles[Current];
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Default"))
+			Default();
+		ImGui::SameLine();
+
+		ImGui::Separator();
 		ImGui::ShowStyleEditor();
 		End();
 	}

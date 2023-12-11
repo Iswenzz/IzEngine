@@ -9,6 +9,8 @@ namespace IW3SR::UI
 		if (!Open) return;
 
 		Begin();
+		ImGui::Text("IW3SR (c) 2023-2024");
+		ImGui::Text("https://github.com/Iswenzz/IW3SR");
 		End();
 	}
 }

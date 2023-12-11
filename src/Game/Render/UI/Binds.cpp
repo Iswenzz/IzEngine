@@ -9,6 +9,7 @@ namespace IW3SR::UI
 		if (!Open) return;
 
 		Begin();
+		ImGui::Keybind("Menu", &GUI::OpenKey.Key);
 		End();
 	}
 }
