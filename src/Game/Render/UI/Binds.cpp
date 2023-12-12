@@ -9,7 +9,8 @@ namespace IW3SR::UI
 		if (!Open) return;
 
 		Begin();
-		ImGui::Keybind("Menu", &GUI::OpenKey.Key);
+		if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen))
+			ImGui::Keybind("Menu", &GUI::OpenKey.Key);
 		End();
 	}
 }

@@ -43,7 +43,7 @@ namespace IW3SR
 		static void Remove(const std::string& id);
 
 		/// <summary>
-		/// Deserialize the features.
+		/// Load the features.
 		/// </summary>
 		void Deserialize();
 

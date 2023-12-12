@@ -24,9 +24,9 @@ namespace IW3SR
 		static inline std::filesystem::path ImagesDirectory;
 
 		/// <summary>
-		/// Load the environment.
+		/// Initialize the environment.
 		/// </summary>
-		static void Load();
+		static void Initialize();
 
 		/// <summary>
 		/// Save environment.
@@ -34,31 +34,26 @@ namespace IW3SR
 		static void Save();
 
 		/// <summary>
-		/// Deserialize settings.
-		/// </summary>
-		static void Deserialize();
-
-		/// <summary>
-		/// Get the settings.
+		/// Deserialize the settings.
 		/// </summary>
 		/// <typeparam name="T">The class implementing serialization.</typeparam>
 		/// <param name="id">The settings id.</param>
 		/// <param name="instance">The class instance.</param>
 		template <typename T>
-		static void GetSettings(const std::string& id, T& instance)
+		static void Deserialize(const std::string& id, T& instance)
 		{
 			if (Settings.contains(id))
 				nlohmann::from_json(Settings[id], instance);
 		}
 
 		/// <summary>
-		/// Set the settings.
+		/// Serialize the settings.
 		/// </summary>
 		/// <typeparam name="T">The class implementing serialization.</typeparam>
 		/// <param name="id">The settings id.</param>
 		/// <param name="instance">The class instance.</param>
 		template <typename T>
-		static void SetSettings(const std::string& id, const T& instance)
+		static void Serialize(const std::string& id, const T& instance)
 		{
 			nlohmann::to_json(Settings[id], instance);
 		}
@@ -73,5 +68,10 @@ namespace IW3SR
 		/// Build the modules list.
 		/// </summary>
 		static void BuildModulesList();
+
+		/// <summary>
+		/// Load settings.
+		/// </summary>
+		static void Load();
 	};
 }

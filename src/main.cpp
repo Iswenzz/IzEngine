@@ -9,7 +9,6 @@ void Init()
 void Shutdown()
 {
     delete SR;
-    Environment::Save();
 }
 
 ENTRY BOOL STDCALL RIB_Main(HANDLE handle, INT upDown)

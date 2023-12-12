@@ -6,7 +6,7 @@
 
 namespace IW3SR
 {
-	void Environment::Load()
+	void Environment::Initialize()
 	{
 		Build();
 		BuildModulesList();
@@ -17,7 +17,7 @@ namespace IW3SR
 		FontsDirectory = ResourcesDirectory / "fonts";
 		ImagesDirectory = ResourcesDirectory / "images";
 
-		Deserialize();
+		Load();
 	}
 
 	void Environment::Build()
@@ -54,7 +54,7 @@ namespace IW3SR
 		file.close();
 	}
 
-	void Environment::Deserialize()
+	void Environment::Load()
 	{
 		std::fstream file(Environment::IW3SRDirectory / "settings.json", std::ios::in | std::ios::out | std::ios::app);
 		if (file.peek() != std::ifstream::traits_type::eof())

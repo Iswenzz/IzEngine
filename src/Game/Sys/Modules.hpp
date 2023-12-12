@@ -77,7 +77,7 @@ namespace IW3SR
 		}
 
 		/// <summary>
-		/// Deserialize the modules.
+		/// Load the modules.
 		/// </summary>
 		void Deserialize();
 

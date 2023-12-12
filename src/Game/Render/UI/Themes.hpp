@@ -9,10 +9,8 @@ namespace IW3SR::UI
 	class Themes : public Window
 	{
 	public:
-		std::string Current;
-		std::unordered_map<std::string, ImGuiStyle> Styles;
+		ImGuiStyle Style;
 		std::tuple<ImColor, ImColor> Rainbow;
-		int Index = 0;
 
 		/// <summary>
 		/// Initialize the themes window.
@@ -40,6 +38,6 @@ namespace IW3SR::UI
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE(Themes, Window, Current, Styles)
+		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE(Themes, Window, Style)
 	};
 }

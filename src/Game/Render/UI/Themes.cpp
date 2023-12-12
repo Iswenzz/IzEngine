@@ -2,18 +2,18 @@
 
 namespace IW3SR::UI
 {
-	Themes::Themes() : Window("Themes") 
+	Themes::Themes() : Window("Themes")
 	{
-		Current = "IW3SR";
 		Default();
 	}
 	
 	void Themes::Initialize()
 	{
-		Index = std::distance(Styles.begin(), Styles.find(Current));
-
 		ImGuiIO& io = ImGui::GetIO();
 		io.IniFilename = nullptr;
+
+		ImGuiStyle& style = ImGui::GetStyle();
+		style = Style;
 
 		const float fontSize = 22;
 		const float iconSize = fontSize * 2.f / 3.f;
@@ -39,7 +39,7 @@ namespace IW3SR::UI
 
 	void Themes::Default()
 	{
-		ImGuiStyle& style = Styles[Current];
+		ImGuiStyle& style = Style;
 		ImVec4* colors = style.Colors;
 
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -138,47 +138,14 @@ namespace IW3SR::UI
 	{
 		if (!Open) return;
 
-		ImGuiStyle& style = ImGui::GetStyle();
-		auto names = Styles | std::views::keys | std::ranges::to<std::vector<std::string>>();
-		std::string name;
+		Style = ImGui::GetStyle();
 
 		Begin();
-		if (ImGui::Combo("Themes", &Index, names))
-		{
-			auto it = Styles.begin();
-			std::advance(it, Index);
-
-			Current = it->first;
-			style = Styles[Current];
-		}
-		if (ImGui::InputText("Name", &name))
-		{
-			Styles[name] = Styles[Current];
-			Styles.erase(Current);
-			Current = name;
-		}
-		if (ImGui::Button("New"))
-		{
-			Current = std::format("Theme {}", ++Index + 1);
-			Default();
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Delete") && Styles.size() > 1)
-		{
-			auto it = Styles.begin();
-			std::advance(it, --Index);
-
-			Styles.erase(Current);
-			Current = it->first;
-			style = Styles[Current];
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Default"))
-			Default();
-		ImGui::SameLine();
-
 		ImGui::Separator();
 		ImGui::ShowStyleEditor();
+
+		if (ImGui::Button("Default"))
+			Default();
 		End();
 	}
 }

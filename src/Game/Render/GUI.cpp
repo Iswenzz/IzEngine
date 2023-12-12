@@ -6,6 +6,7 @@ namespace IW3SR
 	GUI::GUI()
 	{
 		Patch();
+		OpenKey = KeyListener(VK_F10);
 
 		Toolbar = class UI::Toolbar();
 		About = class UI::About();
@@ -14,7 +15,12 @@ namespace IW3SR
 		Settings = class UI::Settings();
 		Themes = class UI::Themes();
 
-		OpenKey = KeyListener(VK_F10);
+		Environment::Deserialize("GUI", *this);
+	}
+
+	GUI::~GUI()
+	{
+		Environment::Serialize("GUI", *this);
 	}
 
 	void GUI::Patch()

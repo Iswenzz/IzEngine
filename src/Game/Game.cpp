@@ -4,7 +4,7 @@ namespace IW3SR
 {
 	Game::Game()
 	{
-		Environment::Load();
+		Environment::Initialize();
 		CoD4X();
 
 		DLLS = std::make_unique<class DLLS>();
@@ -19,13 +19,14 @@ namespace IW3SR
 
 	Game::~Game()
 	{
-		DLLS.reset();
-		Features.reset();
-		Modules.reset();
-		GUI.reset();
-		Render.reset();
 		Log.reset();
+		Render.reset();
+		GUI.reset();
+		Modules.reset();
+		Features.reset();
+		DLLS.reset();
 
+		Environment::Save();
 		Unhook();
 	}
 
