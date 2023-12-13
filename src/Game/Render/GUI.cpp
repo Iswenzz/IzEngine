@@ -7,7 +7,6 @@ namespace IW3SR
 	{
 		Patch();
 		OpenKey = KeyListener(VK_F10);
-		CloseKey = KeyListener(VK_ESCAPE);
 
 		Toolbar = class UI::Toolbar();
 		About = class UI::About();
@@ -132,7 +131,7 @@ namespace IW3SR
 		ImGuiIO& io = ImGui::GetIO();
 		if (Open)
 		{
-			if (CloseKey.IsPressed())
+			if (KeyListener::IsPressed(VK_ESCAPE))
 				Open = false;
 			ImGui_ImplWin32_WndProcHandler(hWnd, Msg, wParam, lParam);
 			io.MouseDrawCursor = true;

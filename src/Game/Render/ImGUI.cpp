@@ -101,21 +101,6 @@ namespace ImGui
         PopStyleVar();
     }
 
-    bool IsKeyUp(int vk)
-    {
-        return KeyListener(vk).IsUp();
-    }
-
-    bool IsKeyDown(int vk)
-    {
-        return KeyListener(vk).IsDown();
-    }
-
-    bool IsKeyPressed(int vk)
-    {
-        return KeyListener(vk).IsPressed();
-    }
-
     void Keybind(const std::string& label, int* key, const ImVec2& size)
     {
         char keyLabel[100];
@@ -138,7 +123,7 @@ namespace ImGui
             int k = 0;
             for (; k < ImGuiKey_COUNT; k++)
             {
-                if (IsKeyPressed(k))
+                if (KeyListener::IsPressed(k))
                 {
                     *key = k;
                     break;

@@ -75,27 +75,6 @@ namespace ImGui
 	API void Tooltip(const std::string& text);
 
 	/// <summary>
-	/// Is key up.
-	/// </summary>
-	/// <param name="vk">The vk code.</param>
-	/// <returns></returns>
-	API bool IsKeyUp(int vk);
-
-	/// <summary>
-	/// Is key down.
-	/// </summary>
-	/// <param name="vk">The vk code.</param>
-	/// <returns></returns>
-	API bool IsKeyDown(int vk);
-
-	/// <summary>
-	/// Is key pressed.
-	/// </summary>
-	/// <param name="vk">The vk code.</param>
-	/// <returns></returns>
-	API bool IsKeyPressed(int vk);
-
-	/// <summary>
 	/// Keybind component.
 	/// </summary>
 	/// <param name="label">The description.</param>

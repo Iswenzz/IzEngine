@@ -22,6 +22,21 @@ namespace IW3SR
 		return Keys[Key].PrevState == 0 && IsDown();
 	}
 
+	bool KeyListener::IsUp(int vk)
+	{
+		return KeyListener(vk).IsUp();
+	}
+
+	bool KeyListener::IsDown(int vk)
+	{
+		return KeyListener(vk).IsDown();
+	}
+
+	bool KeyListener::IsPressed(int vk)
+	{
+		return KeyListener(vk).IsPressed();
+	}
+
 	void KeyListener::Process(UINT Msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (Msg)

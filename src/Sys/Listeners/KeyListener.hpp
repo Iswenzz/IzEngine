@@ -56,6 +56,27 @@ namespace IW3SR
 		bool IsPressed();
 
 		/// <summary>
+		/// Is key up.
+		/// </summary>
+		/// <param name="vk">The vk code.</param>
+		/// <returns></returns>
+		static bool IsUp(int vk);
+
+		/// <summary>
+		/// Is key down.
+		/// </summary>
+		/// <param name="vk">The vk code.</param>
+		/// <returns></returns>
+		static bool IsDown(int vk);
+
+		/// <summary>
+		/// Is key pressed.
+		/// </summary>
+		/// <param name="vk">The vk code.</param>
+		/// <returns></returns>
+		static bool IsPressed(int vk);
+
+		/// <summary>
 		/// Process keys.
 		/// </summary>
 		/// <param name="Msg">The message code.</param>

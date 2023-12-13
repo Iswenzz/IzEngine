@@ -11,10 +11,7 @@ namespace IW3SR::UI
 
 		Begin();
 		if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen))
-		{
 			ImGui::Keybind("Menu", &GUI::OpenKey.Key, size);
-			ImGui::Keybind("Close", &GUI::CloseKey.Key, size);
-		}
 		End();
 	}
 }

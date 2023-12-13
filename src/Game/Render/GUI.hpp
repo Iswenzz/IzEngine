@@ -23,7 +23,6 @@ namespace IW3SR
 
 		static inline HWND MainWindow = nullptr;
 		static inline KeyListener OpenKey;
-		static inline KeyListener CloseKey;
 		static inline bool Active = false;
 		static inline bool Open = false;
 		static inline bool DesignMode = false;
@@ -126,6 +125,6 @@ namespace IW3SR
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GUI, About, Binds, Modules, Settings, Themes, OpenKey, CloseKey)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GUI, About, Binds, Modules, Settings, Themes, OpenKey)
 	};
 }
