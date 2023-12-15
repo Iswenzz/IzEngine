@@ -174,4 +174,9 @@ namespace ImGui
         const auto& [rainbow1, rainbow2] = GUI::Themes.Rainbow;
         draw->AddRectFilledMultiColor(position, size, rainbow1, rainbow2, rainbow2, rainbow1);
     }
+
+    void Markdown(const std::string& markdown)
+    {
+        Markdown(markdown.c_str(), markdown.size(), GUI::Themes.Markdown);
+    }
 }

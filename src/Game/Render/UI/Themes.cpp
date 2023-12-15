@@ -35,6 +35,20 @@ namespace IW3SR::UI
 		io.Fonts->AddFontFromFileTTF(faRegular.string().c_str(), iconSize, &config, rangesFa);
 		io.Fonts->AddFontFromFileTTF(faSolid.string().c_str(), iconSize, &config, rangesFa);
 		io.Fonts->AddFontFromFileTTF(faBrands.string().c_str(), iconSize, &config, rangesFab);
+
+		H1 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.5);
+		H2 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.25);
+		H3 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.125);
+
+		Markdown.linkIcon = ICON_FA_LINK;
+		Markdown.linkCallback = MarkdownLink;
+		Markdown.imageCallback = MarkdownImage;
+		Markdown.formatCallback = MarkdownFormat;
+		Markdown.tooltipCallback = nullptr;
+		Markdown.headingFormats[0] = { H1, true };
+		Markdown.headingFormats[1] = { H2, true };
+		Markdown.headingFormats[2] = { H3, false };
+		Markdown.userData = nullptr;
 	}
 
 	void Themes::Default()
@@ -120,6 +134,12 @@ namespace IW3SR::UI
 		style.GrabRounding = 0;
 		style.LogSliderDeadzone = 4;
 		style.TabRounding = 0;
+
+		if (GUI::Active)
+		{
+			ImGuiStyle& current = ImGui::GetStyle();
+			current = style;
+		}
 	}
 
 	void Themes::ComputeRainbow()
@@ -134,6 +154,46 @@ namespace IW3SR::UI
 		offset += speed * ImGui::GetIO().DeltaTime;
 	}
 
+	void Themes::MarkdownLink(ImGui::MarkdownLinkCallbackData data)
+	{
+		std::string url(data.link, data.linkLength);
+		if (!data.isImage)
+			ShellExecuteA(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+	}
+
+	ImGui::MarkdownImageData Themes::MarkdownImage(ImGui::MarkdownLinkCallbackData data)
+	{
+		ImTextureID image = ImGui::GetIO().Fonts->TexID;
+		ImGui::MarkdownImageData imageData;
+		imageData.isValid = true;
+		imageData.useLinkCallback = false;
+		imageData.user_texture_id = image;
+		imageData.size = ImVec2(40.0f, 20.0f);
+
+		ImVec2 const contentSize = ImGui::GetContentRegionAvail();
+		if (imageData.size.x > contentSize.x)
+		{
+			float const ratio = imageData.size.y / imageData.size.x;
+			imageData.size.x = contentSize.x;
+			imageData.size.y = contentSize.x * ratio;
+		}
+		return imageData;
+	}
+
+	void Themes::MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start)
+	{
+		ImGui::defaultMarkdownFormatCallback(info, start);
+
+		switch (info.type)
+		{
+		case ImGui::MarkdownFormatType::LINK:
+			start
+				? ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive])
+				: ImGui::PopStyleColor();
+			break;
+		}
+	}
+
 	void Themes::Frame()
 	{
 		if (!Open) return;
@@ -144,7 +204,7 @@ namespace IW3SR::UI
 		ImGui::Separator();
 		ImGui::ShowStyleEditor();
 
-		if (ImGui::Button("Default"))
+		if (ImGui::Button("Reset to default"))
 			Default();
 		End();
 	}

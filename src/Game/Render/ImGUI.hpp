@@ -105,6 +105,13 @@ namespace ImGui
 	/// <param name="size">The size.</param>
 	/// <returns></returns>
 	API void Rainbow(const vec2& position, const vec2& size);
+
+	/// <summary>
+	/// Render markdown.
+	/// </summary>
+	/// <param name="markdown">The markdown text.</param>
+	/// <returns></returns>
+	API void Markdown(const std::string& markdown);
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
