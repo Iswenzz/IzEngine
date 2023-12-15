@@ -28,7 +28,9 @@ namespace IW3SR::UI
 	{
 		if (!Open) return;
 		int speed = Editor.Cols * 5;
-		Address += -ImGui::GetIO().MouseWheel * speed;
+		int scroll = ImGui::GetIO().MouseWheel;
+		int direction = scroll ? scroll > 0 ? 1 : -1 : 0;
+		Address += -direction * speed;
 		
 		Begin();
 		ImGui::InputInt("Address", &Address, 1, speed * speed, ImGuiInputTextFlags_CharsHexadecimal);
