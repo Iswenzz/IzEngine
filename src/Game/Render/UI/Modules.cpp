@@ -7,7 +7,7 @@ namespace IW3SR::UI
 {
 	Modules::Modules() : Window("Modules")
 	{
-		SetRect(470, 20, 150, 100);
+		SetRect(470, 20, 150, 185);
 	}
 
 	void Modules::Frame()
