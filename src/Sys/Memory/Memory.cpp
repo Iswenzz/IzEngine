@@ -7,6 +7,11 @@
 
 namespace IW3SR
 {
+    void Memory::Read(uintptr_t address, void* data, int size)
+    {
+        ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(address), data, size, nullptr);
+    }
+
     void Memory::Write(uintptr_t address, const char* bytes, int size)
     {
         DWORD oldProtect;

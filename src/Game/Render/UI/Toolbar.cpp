@@ -51,6 +51,10 @@ namespace IW3SR::UI
 			ImGui::Tooltip("Debug");
 			ImGui::SameLine();
 			if (debug) ImGui::ShowDebugLogWindow(&debug);
+
+			ImGui::Button(ICON_FA_MEMORY, "Memory", &GUI::Memory.Open, buttonSize);
+			ImGui::Tooltip("Memory");
+			ImGui::SameLine();
 		}
 		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &GUI::About.Open, buttonSize);
 		ImGui::Tooltip("About");

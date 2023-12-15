@@ -11,6 +11,7 @@ namespace IW3SR
 		Toolbar = class UI::Toolbar();
 		About = class UI::About();
 		Binds = class UI::Binds();
+		Memory = class UI::Memory();
 		Modules = class UI::Modules();
 		Settings = class UI::Settings();
 		Themes = class UI::Themes();
@@ -102,6 +103,7 @@ namespace IW3SR
 
 		About.Frame();
 		Binds.Frame();
+		Memory.Frame();
 		Modules.Frame();
 		Settings.Frame();
 		Themes.Frame();

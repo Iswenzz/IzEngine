@@ -7,6 +7,7 @@
 
 #include "UI/About.hpp"
 #include "UI/Binds.hpp"
+#include "UI/Memory.hpp"
 #include "UI/Modules.hpp"
 #include "UI/Settings.hpp"
 #include "UI/Themes.hpp"
@@ -31,6 +32,7 @@ namespace IW3SR
 
 		static inline UI::About About;
 		static inline UI::Binds Binds;
+		static inline UI::Memory Memory;
 		static inline UI::Modules Modules;
 		static inline UI::Settings Settings;
 		static inline UI::Themes Themes;
@@ -133,6 +135,6 @@ namespace IW3SR
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GUI, About, Binds, Modules, Settings, Themes, OpenKey)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GUI, About, Binds, Memory, Modules, Settings, Themes, OpenKey)
 	};
 }
