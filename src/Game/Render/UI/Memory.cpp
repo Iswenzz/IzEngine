@@ -14,7 +14,7 @@ namespace IW3SR::UI
 
 	ImU8 Memory::Read(const ImU8* data, size_t offset)
 	{
-		ImU8 byte = '?';
+		ImU8 byte = 0;
 		::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
 		return byte;
 	}
