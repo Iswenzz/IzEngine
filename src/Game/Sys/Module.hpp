@@ -25,6 +25,7 @@
 
 #include "Sys/Environment.hpp"
 #include "Sys/Listeners/KeyListener.hpp"
+#include "Sys/Log.hpp"
 
 namespace IW3SR
 {

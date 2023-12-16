@@ -43,8 +43,6 @@ namespace IW3SR::UI
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_SERIALIZE_DERIVED(Themes, Window, Style)
-
 	private:
 		/// <summary>
 		/// Markdown link callback.
@@ -65,5 +63,7 @@ namespace IW3SR::UI
 		/// <param name="info">The format info.</param>
 		/// <param name="start">Is the start of the token.</param>
 		static void MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start);
+
+		NLOHMANN_SERIALIZE_DERIVED(Themes, Window, Style)
 	};
 }
