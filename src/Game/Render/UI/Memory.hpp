@@ -40,6 +40,6 @@ namespace IW3SR::UI
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE(Memory, Window, Address)
+		NLOHMANN_SERIALIZE_DERIVED(Memory, Window, Address)
 	};
 }

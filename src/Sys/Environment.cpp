@@ -16,8 +16,6 @@ namespace IW3SR
 		ResourcesDirectory = IW3SRDirectory / "resources";
 		FontsDirectory = ResourcesDirectory / "fonts";
 		ImagesDirectory = ResourcesDirectory / "images";
-
-		Load();
 	}
 
 	void Environment::Build()
@@ -49,6 +47,8 @@ namespace IW3SR
 
 	void Environment::Save()
 	{
+		Serialize("GUI", *SR->GUI);
+
 		std::ofstream file(Environment::IW3SRDirectory / "settings.json");
 		file << Settings.dump(4);
 		file.close();
@@ -59,5 +59,7 @@ namespace IW3SR
 		std::fstream file(Environment::IW3SRDirectory / "settings.json", std::ios::in | std::ios::out | std::ios::app);
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Settings = nlohmann::json::parse(file);
+
+		Deserialize("GUI", *SR->GUI);
 	}
 }

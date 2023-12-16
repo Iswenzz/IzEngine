@@ -19,6 +19,8 @@ namespace IW3SR
 
 	Game::~Game()
 	{
+		Environment::Save();
+
 		Log.reset();
 		Render.reset();
 		GUI.reset();
@@ -26,14 +28,14 @@ namespace IW3SR
 		Features.reset();
 		DLLS.reset();
 
-		Environment::Save();
 		Unhook();
 	}
 
 	void Game::Initialize()
 	{
-		DLLS->Initialize();
+		Environment::Load();
 		Player::Allocates();
+		DLLS->Initialize();
 	}
 
 	void Game::CoD4X()

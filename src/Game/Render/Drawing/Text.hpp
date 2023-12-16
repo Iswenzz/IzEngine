@@ -84,7 +84,7 @@ namespace IW3SR
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Text, Value, Position, Color,
+		NLOHMANN_SERIALIZE(Text, Value, Position, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize)
 	};
 }

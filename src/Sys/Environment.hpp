@@ -29,6 +29,11 @@ namespace IW3SR
 		static void Initialize();
 
 		/// <summary>
+		/// Load settings.
+		/// </summary>
+		static void Load();
+
+		/// <summary>
 		/// Save environment.
 		/// </summary>
 		static void Save();
@@ -68,10 +73,5 @@ namespace IW3SR
 		/// Build the modules list.
 		/// </summary>
 		static void BuildModulesList();
-
-		/// <summary>
-		/// Load settings.
-		/// </summary>
-		static void Load();
 	};
 }

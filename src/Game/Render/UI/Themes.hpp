@@ -43,7 +43,7 @@ namespace IW3SR::UI
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE(Themes, Window, Style)
+		NLOHMANN_SERIALIZE_DERIVED(Themes, Window, Style)
 
 	private:
 		/// <summary>

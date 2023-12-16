@@ -20,6 +20,6 @@ namespace IW3SR::UI
 		/// </summary>
 		void Frame();
 
-		NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_EMPTY(Modules, Window)
+		NLOHMANN_SERIALIZE_DERIVED_EMPTY(Modules, Window)
 	};
 }

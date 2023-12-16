@@ -42,7 +42,7 @@ namespace IW3SR
 		/// Initialize ImGUI.
 		/// </summary>
 		GUI();
-		~GUI();
+		~GUI() = default;
 
 		/// <summary>
 		/// Patch the game.
@@ -135,6 +135,6 @@ namespace IW3SR
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GUI, About, Binds, Memory, Modules, Settings, Themes, OpenKey)
+		NLOHMANN_SERIALIZE(GUI, About, Binds, Memory, Modules, Settings, Themes, OpenKey)
 	};
 }

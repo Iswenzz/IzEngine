@@ -30,6 +30,11 @@ namespace IW3SR
 		/// <summary>
 		/// Initialize the feature.
 		/// </summary>
+		Feature() = default;
+
+		/// <summary>
+		/// Initialize the feature.
+		/// </summary>
 		/// <param name="id">The feature ID.</param>
 		/// <param name="name">The feature name.</param>
 		Feature(const std::string& id, const std::string& name, const std::string& group);
@@ -54,6 +59,6 @@ namespace IW3SR
 		/// </summary>
 		virtual void OnMenu();
 
-		NLOHMANN_DEFINE_POLY_BASE(Feature, Menu)
+		NLOHMANN_SERIALIZE_POLY_BASE(Feature, Menu)
 	};
 }

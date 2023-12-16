@@ -43,6 +43,11 @@ namespace IW3SR
 		/// <summary>
 		/// Initialize the module.
 		/// </summary>
+		Module() = default;
+
+		/// <summary>
+		/// Initialize the module.
+		/// </summary>
 		/// <param name="id">The module ID.</param>
 		/// <param name="name">The module name.</param>
 		Module(const std::string& id, const std::string& name, const std::string& group);
@@ -88,6 +93,6 @@ namespace IW3SR
 		/// <param name="cmd">The user command.</param>
 		virtual void OnFinishMove(usercmd_s* cmd);
 
-		NLOHMANN_DEFINE_POLY_BASE(Module, IsEnabled, Menu)
+		NLOHMANN_SERIALIZE_POLY_BASE(Module, IsEnabled, Menu)
 	};
 }

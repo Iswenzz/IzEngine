@@ -54,6 +54,6 @@ namespace IW3SR
 		/// </summary>
 		void End();
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Window, Name, Position, Size, Open)
+		NLOHMANN_SERIALIZE(Window, Name, Position, Size, Open)
 	};
 }

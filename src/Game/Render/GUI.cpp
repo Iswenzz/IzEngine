@@ -15,13 +15,6 @@ namespace IW3SR
 		Modules = class UI::Modules();
 		Settings = class UI::Settings();
 		Themes = class UI::Themes();
-
-		Environment::Deserialize("GUI", *this);
-	}
-
-	GUI::~GUI()
-	{
-		Environment::Serialize("GUI", *this);
 	}
 
 	void GUI::Patch()

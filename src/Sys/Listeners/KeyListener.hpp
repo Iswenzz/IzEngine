@@ -89,6 +89,6 @@ namespace IW3SR
 		/// </summary>
 		static void Reset();
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(KeyListener, Key)
+		NLOHMANN_SERIALIZE(KeyListener, Key)
 	};
 }
