@@ -9,20 +9,43 @@ namespace IW3SR
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
 
+		MaxVelocityText = Text("0", "Arial", 0, 20, 1.4, { 1, 0, 0, 1 });
+		MaxVelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		MaxVelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
+
+		ResetKey = KeyListener('R');
+
+		ShowMaxVelocity = true;
 		DrawVelocityPlot = false;
 	}
 
 	void Velocity::OnMenu()
 	{
 		ImGui::Checkbox("Draw velocity plot", &DrawVelocityPlot);
-		VelocityText.Menu("Text", true);
+		ImGui::Checkbox("Show max velocity", &ShowMaxVelocity);
+
+		if (ShowMaxVelocity)
+			ImGui::Keybind("Reset key", &ResetKey.Key, { 150, 0 });
+
+		VelocityText.Menu("Text");
+		MaxVelocityText.Menu("Text");
 	}
 
 	void Velocity::OnFrame()
 	{
 		const int velocity = vec2(pmove->ps->velocity).Length();
+		static int maxVelocity;
+
+		if (velocity > maxVelocity)
+			maxVelocity = velocity;
+		if (ResetKey.IsPressed())
+			maxVelocity = 0;
+
 		VelocityText.Value = std::to_string(velocity);
+		MaxVelocityText.Value = std::to_string(maxVelocity);
 		VelocityText.Render();
+		if (ShowMaxVelocity)
+			MaxVelocityText.Render();
 
 		if (!DrawVelocityPlot)
 			return;

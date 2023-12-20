@@ -4,27 +4,27 @@ namespace IW3SR
 {
 	Graphics::Graphics() : Feature("sr.feature.graphics", "Graphics", "Feature")
 	{
-		DrawSpecular = true;// r_specular
-		DrawFog = false;// r_fog
-		DrawDecals = true;// r_drawDecals
-		WaterAnimation = false;// r_drawWater
-		DrawTweaks = false;// r_filmTweakEnable
-		DrawGlow = false;// r_glow
-		DrawSun = false;// r_drawSun
+		DrawSpecular = true;
+		DrawFog = false;
+		DrawDecals = true;
+		WaterAnimation = false;
+		DrawTweaks = false;
+		DrawGlow = false;
+		DrawSun = false;
 
-		SunIntensity = 1;// r_envMapSunIntensity
-		SpecularColorScale = 1;// r_specularColorScale
-		TweakBrightness = 0;// r_filmTweakBrightness
-		TweakDesaturation = 0.2;// r_filmTweakDesaturation
-		GlowRadius = 5;// r_glowTweakRadius0
-		GlowBloomDesaturation = 0;// r_glowTweakBloomDesaturation
-		GlowBloomIntensity = 1;// r_glowTweakBloomIntensity
-		GlowBloomCutoff = 0.5;// r_glowTweakBloomCutoff
+		SunIntensity = 1;
+		SpecularColorScale = 1;
+		TweakBrightness = 0;
+		TweakDesaturation = 0.2;
+		GlowRadius = 5;
+		GlowBloomDesaturation = 0;
+		GlowBloomIntensity = 1;
+		GlowBloomCutoff = 0.5;
 
-		SunColor = { 1, 0.749, 0, 1 };// r_lightTweakSunColor
-		SunDirection = { 0, 0, 0 };// r_lightTweakSunDirection
-		TweakLightTint = { 1.1, 1.05, 0.85 };// r_filmTweakLightTint
-		TweakDarkTint = { 0.7, 0.85, 1 };// r_filmTweakDarkTint
+		SunColor = { 1, 0.749, 0, 1 };
+		SunDirection = { 0, 0, 0 };
+		TweakLightTint = { 1.1, 1.05, 0.85 };
+		TweakDarkTint = { 0.7, 0.85, 1 };
 	}
 
 	void Graphics::OnMenu()
@@ -63,7 +63,7 @@ namespace IW3SR
 		if (ImGui::CollapsingHeader("Glow"))
 		{
 			ImGui::Toggle("glow", 20, &DrawGlow);
-			ImGui::SameLine();
+			ImGui::SameLine(); 
 			ImGui::Text("Enabled");
 			ImGui::SliderFloat("Radius", &GlowRadius, 0, 32);
 			ImGui::SliderFloat("Bloom desaturation", &GlowBloomDesaturation, 0, 1);

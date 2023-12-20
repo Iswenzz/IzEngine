@@ -10,6 +10,9 @@ namespace IW3SR
 	{
 	public:
 		Text VelocityText;
+		Text MaxVelocityText;
+		KeyListener ResetKey;
+		bool ShowMaxVelocity;
 		bool DrawVelocityPlot;
 
 		/// <summary>
@@ -28,6 +31,6 @@ namespace IW3SR
 		/// </summary>
 		void OnFrame() override;
 
-		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText)
+		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, MaxVelocityText, ResetKey, ShowMaxVelocity, DrawVelocityPlot)
 	};
 }
