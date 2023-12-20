@@ -8,13 +8,13 @@ namespace IW3SR
 		Patch();
 		OpenKey = KeyListener(VK_F10);
 
-		Toolbar = class UI::Toolbar();
-		About = class UI::About();
-		Binds = class UI::Binds();
-		Memory = class UI::Memory();
-		Modules = class UI::Modules();
-		Settings = class UI::Settings();
-		Themes = class UI::Themes();
+		Toolbar = UI::Toolbar();
+		About = UI::About();
+		Binds = UI::Binds();
+		Memory = UI::Memory();
+		Modules = UI::Modules();
+		Settings = UI::Settings();
+		Themes = UI::Themes();
 	}
 
 	void GUI::Patch()

@@ -1,4 +1,5 @@
 #pragma once
+#include <nlohmann/json.hpp>
 
 #ifndef CDECL
 #define CDECL __cdecl
@@ -40,13 +41,17 @@
 #define CMAKE_BINARY_DIR ""
 #endif
 
+#ifdef NLOHMANN_JSON_FROM
+#undef NLOHMANN_JSON_FROM
+#define NLOHMANN_JSON_FROM(v1) \
+	if (nlohmann_json_j.contains(#v1)) \
+		nlohmann_json_j.at(#v1).get_to(nlohmann_json_t.v1);
+#endif
+
 #define NLOHMANN_SERIALIZE(Type, ...) \
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Type, __VA_ARGS__)
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Type, __VA_ARGS__)
 
 #define NLOHMANN_SERIALIZE_NON_INTRUSIVE(Type, ...) \
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Type, __VA_ARGS__)
-
-#define NLOHMANN_SERIALIZE_NON_INTRUSIVE_RAW(Type, ...) \
 	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Type, __VA_ARGS__)
 
 #define NLOHMANN_SERIALIZE_DERIVED(Type, BaseType, ...) \
@@ -57,9 +62,8 @@
 	} \
     friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) \
 	{ \
-		Type nlohmann_json_default_obj; \
 		nlohmann::from_json(nlohmann_json_j, static_cast<BaseType&>(nlohmann_json_t)); \
-		NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM_WITH_DEFAULT, __VA_ARGS__)); \
+		NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM, __VA_ARGS__)); \
 	}
 
 #define NLOHMANN_SERIALIZE_DERIVED_EMPTY(Type, BaseType) \
@@ -83,7 +87,7 @@
 		BaseType::Deserialize(nlohmann_json_j); \
 		from_json(nlohmann_json_j, *this); \
 	} \
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Type, __VA_ARGS__);
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Type, __VA_ARGS__);
 
 #define NLOHMANN_SERIALIZE_POLY_BASE(Type, ...) \
 	virtual void Serialize(nlohmann::json& nlohmann_json_j) \
@@ -94,4 +98,4 @@
 	{ \
 		from_json(nlohmann_json_j, *this); \
 	} \
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(Type, __VA_ARGS__);
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Type, __VA_ARGS__);
