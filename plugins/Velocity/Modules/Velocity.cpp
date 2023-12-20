@@ -29,14 +29,16 @@ namespace IW3SR
 
 		static std::vector<int> vel, samples;
 		vel.push_back(velocity);
-		samples.push_back(clients->serverTime);// do not use server time
+		samples.push_back(clients->serverTime);
 
-		if (ImPlot::BeginPlot("Velocity"))
+		const ImVec2 size = ImGui::GetContentRegionAvail();
+		if (ImPlot::BeginPlot("Velocity plot", nullptr, nullptr, size, ImPlotFlags_NoChild))
 		{
-			ImPlot::SetupAxis(ImAxis_X1, "Frame velocity", ImPlotAxisFlags_AutoFit);
-			ImPlot::SetupAxis(ImAxis_Y1, "Frame time");
-			ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 4000);
-			ImPlot::PlotLine("Player speed", samples.data(), vel.data(), vel.size());
+			ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4{ 0.96078431372, 0.15294117647, 0.15294117647, 1 });
+			ImPlot::SetupAxis(ImAxis_X1, "Frame time", ImPlotAxisFlags_AutoFit);
+			ImPlot::SetupAxis(ImAxis_Y1, "Velocity", ImPlotAxisFlags_AutoFit);
+			ImPlot::PlotLine("Player speed", samples.data(), vel.data(), vel.size(), ImPlotLineFlags_Shaded);
+			ImPlot::PopStyleColor();
 			ImPlot::EndPlot();
 		}
 	}
