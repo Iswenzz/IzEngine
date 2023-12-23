@@ -13,7 +13,7 @@
 #include "Sys/Render/D3D9EX.hpp"
 #include "Sys/Modules/DLLS.hpp"
 
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 #include "Utils/Utils.hpp"
 #include "Utils/Macros.hpp"
 

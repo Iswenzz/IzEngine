@@ -20,7 +20,7 @@
 #include "Game/Engine/Drawing/Text.hpp"
 #include "Game/Engine/Drawing/Lines.hpp"
 
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 #include "Utils/Macros.hpp"
 
 #include "Sys/Environment.hpp"

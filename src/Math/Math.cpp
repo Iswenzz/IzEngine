@@ -1,5 +1,10 @@
 #include "Math.hpp"
 
+#include "Matrix3.hpp"
+#include "Vector2.hpp"
+#include "Vector3.hpp"
+#include "Vector4.hpp"
+
 namespace IW3SR
 {
     vec2 Math::WorldToScreen(const vec3& worldPosition)
@@ -22,7 +27,7 @@ namespace IW3SR
         };
 
         if (transform[2] < 0.01)
-            return { };
+            return vec2::Zero;
 
         return {
             centerX * (1 - (transform[0] / cgs->refdef.tanHalfFovX / transform[2])),

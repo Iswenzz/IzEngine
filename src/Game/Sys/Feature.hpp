@@ -8,7 +8,7 @@
 #include "Game/Render/ImGUI.hpp"
 #include "Game/Engine/Assets.hpp"
 
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 #include "Utils/Macros.hpp"
 
 #include "Sys/Environment.hpp"

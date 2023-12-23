@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 
 namespace IW3SR::Engine
 {
@@ -23,7 +23,7 @@ namespace IW3SR::Engine
 		std::string FontName;
 		float FontSize;
 		int FontIndex;
-		
+
 		/// <summary>
 		/// Initialize the Text.
 		/// </summary>
@@ -80,7 +80,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(Text, Value, Position, Color, 
+		NLOHMANN_SERIALIZE(Text, Value, Position, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize)
 	};
 }

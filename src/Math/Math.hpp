@@ -3,11 +3,6 @@
 // https://github.com/xoxor4d/iw3xo-dev/blob/master/src/utils/vector.hpp
 #include "Game/Definitions.hpp"
 
-#include "Matrix3.hpp"
-#include "Vector2.hpp"
-#include "Vector3.hpp"
-#include "Vector4.hpp"
-
 #define M_PI	3.14159265358979323846f
 
 #define	PITCH	0
@@ -19,6 +14,16 @@
 
 namespace IW3SR
 {
+    template <typename T> class Vector2;
+    template <typename T> class Vector3;
+    template <typename T> class Vector4;
+    template <typename T> class Matrix3;
+
+    using vec2 = Vector2<float>;
+    using vec3 = Vector3<float>;
+    using vec4 = Vector4<float>;
+    using mat3 = Matrix3<float>;
+
     /// <summary>
     /// Math class.
     /// </summary>

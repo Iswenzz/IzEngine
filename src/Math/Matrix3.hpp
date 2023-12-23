@@ -1,5 +1,6 @@
 #pragma once
 #include "GLM.hpp"
+#include "Common.hpp"
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 
@@ -12,6 +13,8 @@ namespace IW3SR
     class Matrix3 : public gmat3<T>
     {
         using mat3 = Matrix3<T>;
+        using vec3 = Vector3<T>;
+        using vec4 = Vector4<T>;
 
     public:
         static Matrix3<float> Zero;
@@ -32,7 +35,7 @@ namespace IW3SR
         /// Initialize a 3x3 matrix with specified values.
         /// </summary>
         /// <param name="m">An array of 9 values.</param>
-        Matrix3(T x0, T y0, T z0, T x1, T y1, T z1, T x2, T y2, T z2) 
+        Matrix3(T x0, T y0, T z0, T x1, T y1, T z1, T x2, T y2, T z2)
             : gmat3<T>(x0, y0, z0, x1, y1, z1, x2, y2, z2) { }
 
         /// <summary>
@@ -114,7 +117,7 @@ namespace IW3SR
         vec3 ToEulerAnglesDeg(const mat3& matrix) const
         {
             vec3 eulerRad = ToEulerAngles(matrix);
-            return { RadToDeg(eulerRad[0]), RadToDeg(eulerRad[1]), RadToDeg(eulerRad[2]) };
+            return { Math::RadToDeg(eulerRad[0]), Math::RadToDeg(eulerRad[1]), Math::RadToDeg(eulerRad[2]) };
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace IW3SR
         mat3& AnglesToAxis(const vec3& angles)
         {
             vec3 right;
-            AngleVectors(angles, (*this)[0], right, (*this)[2]);
+            Math::AngleVectors(angles, (*this)[0], right, (*this)[2]);
 
             (*this)[1][0] = -right[0];
             (*this)[1][1] = -right[1];
@@ -138,7 +141,7 @@ namespace IW3SR
         /// <param name="angles">Euler angles in radians.</param>
         mat3& CreateRotationMatrix(const vec3& angles)
         {
-            AngleVectors(angles, (*this)[0], (*this)[1], (*this)[2]);
+            Math::AngleVectors(angles, (*this)[0], (*this)[1], (*this)[2]);
 
             (*this)[1][0] = -(*this)[1][0];
             (*this)[1][1] = -(*this)[1][1];

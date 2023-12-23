@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
 #include "Game/Render/Assets.hpp"
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 #include "Utils/Utils.hpp"
 
 namespace IW3SR

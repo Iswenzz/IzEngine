@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 
 namespace IW3SR::Engine
 {
@@ -78,7 +78,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y position.</param>
 		virtual void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(HUD, Position, Size, Color, 
+		NLOHMANN_SERIALIZE(HUD, Position, Size, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName)
 	};
 }

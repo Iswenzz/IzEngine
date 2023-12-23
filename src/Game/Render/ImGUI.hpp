@@ -17,7 +17,7 @@
 #include "Game/Render/Fonts/IconsFontAwesome6.hpp"
 #include "Game/Render/Fonts/IconsFontAwesome6Brands.hpp"
 
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 
 namespace ImGui
 {
@@ -68,7 +68,7 @@ namespace ImGui
 	/// <param name="items">The items.</param>
 	/// <param name="maxHeightInItems">Max height in items popup.</param>
 	/// <returns></returns>
-	API bool Combo(const std::string& label, int* item, const std::vector<std::string>& items, 
+	API bool Combo(const std::string& label, int* item, const std::vector<std::string>& items,
 		int maxHeightInItems = -1);
 
 	/// <summary>

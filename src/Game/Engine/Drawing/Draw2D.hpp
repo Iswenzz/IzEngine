@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
 #include "Game/Engine/Assets.hpp"
-#include "Math/Math.hpp"
+#include "Math/Common.hpp"
 
 namespace IW3SR::Engine
 {
@@ -60,7 +60,7 @@ namespace IW3SR::Engine
 		/// <param name="y">Y-coordinate.</param>
 		/// <param name="size">Font size.</param>
 		/// <param name="color">The color.</param>
-		static void Text(const std::string& text, const std::string& font, 
+		static void Text(const std::string& text, const std::string& font,
 			float x, float y, float size, const vec4& color);
 	};
 }
