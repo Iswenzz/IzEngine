@@ -19,23 +19,17 @@ namespace IW3SR
 
 	void FPS::OnFrame()
 	{
-		const int FPS = Dvar::Get<int>("com_maxfps");
-		FPSText.Value = std::to_string(FPS);
+		const int fps = Dvar::Get<int>("com_maxfps");
+		FPSText.Value = std::to_string(fps);
 		FPSText.Render();
+		Values.push_back(fps);
 
-		if (!ShowPlot)
-			return;
-
-		static std::vector<int> fps, samples;
-		fps.push_back(FPS);
-		samples.push_back(clients->serverTime);
-
-		if (ImPlot::BeginPlot("FPS"))
+		if (ShowPlot && ImPlot::BeginPlot("FPS"))
 		{
 			ImPlot::SetupAxis(ImAxis_X1, "Time", ImPlotAxisFlags_AutoFit);
 		    ImPlot::SetupAxis(ImAxis_Y1, "FPS");
 			ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1000);
-			ImPlot::PlotLine("FPS", samples.data(), fps.data(), fps.size());
+			ImPlot::PlotLine("FPS", Values.data(), Values.size(), 1, 0, ImPlotLineFlags_Shaded);
 			ImPlot::EndPlot();
 		}
 	}

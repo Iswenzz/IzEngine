@@ -37,6 +37,7 @@ namespace IW3SR
 			Max = 0;
 
 		Value = vec2(pmove->ps->velocity).Length();
+		Values.push_back(Value);
 		if (Value > Max) 
 			Max = Value;
 
@@ -47,22 +48,14 @@ namespace IW3SR
 		if (ShowMaxVelocity)
 			MaxVelocityText.Render();
 
-		if (ShowPlot)
+		if (ShowPlot && ImPlot::BeginPlot("Velocity plot"))
 		{
-			static std::vector<int> vel, samples;
-			vel.push_back(Value);
-			samples.push_back(clients->serverTime);
-
-			const ImVec2 size = ImGui::GetContentRegionAvail();
-			if (ImPlot::BeginPlot("Velocity plot", nullptr, nullptr, size, ImPlotFlags_NoChild))
-			{
-				ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4{ 0.96078431372, 0.15294117647, 0.15294117647, 1 });
-				ImPlot::SetupAxis(ImAxis_X1, "Time", ImPlotAxisFlags_AutoFit);
-				ImPlot::SetupAxis(ImAxis_Y1, "Velocity", ImPlotAxisFlags_AutoFit);
-				ImPlot::PlotLine("Player speed", samples.data(), vel.data(), vel.size(), ImPlotLineFlags_Shaded);
-				ImPlot::PopStyleColor();
-				ImPlot::EndPlot();
-			}
+			ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4{ 0.96078431372, 0.15294117647, 0.15294117647, 1 });
+			ImPlot::SetupAxis(ImAxis_X1, "Time", ImPlotAxisFlags_AutoFit);
+			ImPlot::SetupAxis(ImAxis_Y1, "Velocity", ImPlotAxisFlags_AutoFit);
+			ImPlot::PlotLine("Player speed", Values.data(), Values.size(), 1, 0, ImPlotLineFlags_Shaded);
+			ImPlot::PopStyleColor();
+			ImPlot::EndPlot();
 		}
 	}
 }

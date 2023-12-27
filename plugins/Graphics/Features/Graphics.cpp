@@ -95,7 +95,7 @@ namespace IW3SR
 			Dvar::Set<float>("r_filmTweakDesaturation", TweakDesaturation);
 			Dvar::Set<float>("r_glowTweakRadius0", GlowRadius);
 			Dvar::Set<float>("r_glowTweakBloomDesaturation", GlowBloomDesaturation);
-			//Dvar::Set<float>("r_glowTweakBloomIntensity", GlowBloomIntensity);runtime error
+			// Dvar::Set<float>("r_glowTweakBloomIntensity", GlowBloomIntensity); // runtime error
 			Dvar::Set<float>("r_glowTweakBloomCutoff", GlowBloomCutoff);
 
 			Dvar::Set<vec4>("r_lightTweakSunColor", SunColor);

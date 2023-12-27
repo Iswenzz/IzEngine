@@ -11,6 +11,8 @@ namespace IW3SR
 	public:
 		int Value;
 		int Max;
+		std::vector<int> Values;
+
 		Text VelocityText;
 		Text MaxVelocityText;
 		KeyListener ResetKey;

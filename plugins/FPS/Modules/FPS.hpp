@@ -10,6 +10,7 @@ namespace IW3SR
     {
     public:
         Text FPSText;
+        std::vector<int> Values;
         bool ShowPlot;
 
         /// <summary>

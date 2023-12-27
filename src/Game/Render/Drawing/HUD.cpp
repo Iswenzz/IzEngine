@@ -58,24 +58,21 @@ namespace IW3SR
 		ImGui::DragFloat2("Size", Size);
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
 
-		if (ImGui::CollapsingHeader("Alignment"))
-		{
-			int horizontal = HorizontalAlign - 1;
-			if (ImGui::Combo("Horizontal Alignment", &horizontal, horizontals))
-				HorizontalAlign = static_cast<RectAlignHorizontal_t>(horizontal + 1);
+		int horizontal = HorizontalAlign - 1;
+		if (ImGui::Combo("Horizontal Alignment", &horizontal, horizontals))
+			HorizontalAlign = static_cast<RectAlignHorizontal_t>(horizontal + 1);
 
-			int vertical = VerticalAlign - 1;
-			if (ImGui::Combo("Vertical Alignment", &vertical, verticals))
-				VerticalAlign = static_cast<RectAlignVertical_t>(vertical + 1);
+		int vertical = VerticalAlign - 1;
+		if (ImGui::Combo("Vertical Alignment", &vertical, verticals))
+			VerticalAlign = static_cast<RectAlignVertical_t>(vertical + 1);
 
-			int alignX = AlignX / 4;
-			if (ImGui::Combo("Align X", &alignX, horizontals))
-				AlignX = static_cast<hudalign_t>(alignX * 4);
+		int alignX = AlignX / 4;
+		if (ImGui::Combo("Align X", &alignX, horizontals))
+			AlignX = static_cast<hudalign_t>(alignX * 4);
 
-			int alignY = AlignY;
-			if (ImGui::Combo("Align Y", &alignY, verticals))
-				AlignY = static_cast<hudalign_t>(alignY);
-		}
+		int alignY = AlignY;
+		if (ImGui::Combo("Align Y", &alignY, verticals))
+			AlignY = static_cast<hudalign_t>(alignY);
 	}
 
 	void HUD::Render()
