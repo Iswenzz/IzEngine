@@ -11,7 +11,7 @@ namespace IW3SR
 	public:
 		int Value;
 		int Max;
-		std::vector<int> Values;
+		CircularBuffer<int, 1000> Values;
 
 		Text VelocityText;
 		Text MaxVelocityText;

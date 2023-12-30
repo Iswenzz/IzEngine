@@ -36,8 +36,8 @@ namespace IW3SR
 		if (ResetKey.IsPressed())
 			Max = 0;
 
+		Values.Add(Value);
 		Value = vec2(pmove->ps->velocity).Length();
-		Values.push_back(Value);
 		if (Value > Max) 
 			Max = Value;
 
@@ -48,13 +48,19 @@ namespace IW3SR
 		if (ShowMaxVelocity)
 			MaxVelocityText.Render();
 
-		Plots.Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
-		if (ShowPlot && ImPlot::BeginPlot("##NoTitle", vec2::Zero))
+		Plots.Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoScrollbar);
+		if (ImPlot::BeginPlot("##Velocity", Plots.RenderSize))
 		{
-			ImPlot::PushStyleColor(ImPlotCol_Line, ImVec4{ 0.96078431372, 0.15294117647, 0.15294117647, 1 });
-			ImPlot::SetupAxis(ImAxis_X1, nullptr);
-			ImPlot::SetupAxis(ImAxis_Y1, nullptr, ImPlotAxisFlags_AutoFit);
-			ImPlot::PlotLine("Velocity", Values.data(), Values.size(), 1, 0, ImPlotLineFlags_Shaded);
+			constexpr int axisFlags = ImPlotAxisFlags_NoTickLabels | ImPlotAxisFlags_NoTickMarks
+				| ImPlotAxisFlags_NoGridLines;
+
+			ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(VelocityText.Color));
+			ImPlot::SetupAxes(nullptr, nullptr, axisFlags, axisFlags);
+			ImPlot::SetupAxisLimits(ImAxis_X1, 0, Values.Size(), ImGuiCond_Always);
+			ImPlot::SetupAxisLimits(ImAxis_Y1, 0, Max * 1.5, ImGuiCond_Always);
+			ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
+			ImPlot::PlotShaded("Velocity", Values.Get(), Values.Size(), -INFINITY, 1, 0, 0, Values.Offset);
+			ImPlot::PlotLine("Velocity", Values.Get(), Values.Size(), 1, 0, 0, Values.Offset);
 			ImPlot::PopStyleColor();
 			ImPlot::EndPlot();
 		}
