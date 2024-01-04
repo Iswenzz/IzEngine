@@ -2,6 +2,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 
 #include <d3dx9.h>
+#include <wrl/client.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <imgui_impl_dx9.h>
@@ -19,6 +20,8 @@
 #include "Utils/CircularBuffer.hpp"
 
 #include "Math/Common.hpp"
+
+using namespace Microsoft::WRL;
 
 constexpr ImGuiWindowFlags ImGuiWindowFlags_Graph = ImGuiWindowFlags_NoTitleBar 
 	| ImGuiWindowFlags_NoScrollbar 

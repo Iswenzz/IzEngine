@@ -23,7 +23,7 @@ namespace IW3SR
 		hudalign_t AlignX = HUDALIGN_LEFT;
 		hudalign_t AlignY = HUDALIGN_TOP;
 
-		ID3DXFont* Font;
+		ComPtr<ID3DXFont> Font;
 		std::string FontName;
 		float FontSize;
 		int FontIndex;

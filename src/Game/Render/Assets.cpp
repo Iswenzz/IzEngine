@@ -10,10 +10,10 @@ namespace IW3SR
 
 	void Assets::Shutdown()
 	{
-		for (const auto& [name, texture] : Textures)
-			texture->Release();
-		for (const auto& [name, font] : Fonts)
-			font->Release();
+		for (auto& [name, texture] : Textures)
+			texture.Reset();
+		for (auto& [name, font] : Fonts)
+			font.Reset();
 
 		Textures.clear();
 		Fonts.clear();
@@ -34,22 +34,22 @@ namespace IW3SR
 		ReleaseDC(NULL, hdc);
 	}
 
-	ID3DXFont* Assets::LoadFont(const std::string& name, int height)
+	ComPtr<ID3DXFont> Assets::LoadFont(const std::string& name, int height)
 	{
 		std::string id = std::format("{}_{}", name, height);
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		ID3DXFont* font;
+		ComPtr<ID3DXFont> font;
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font);
 
 		if (std::ranges::find(FontNames, name) == FontNames.end())
 			FontNames.push_back(name.c_str());
-		return Fonts[id] = font;
+		return Fonts[id] = font.Get();
 	}
 
-	ID3DXFont* Assets::LoadFont(const std::filesystem::path& path, int height)
+	ComPtr<ID3DXFont> Assets::LoadFont(const std::filesystem::path& path, int height)
 	{
 		AddFontResource(path.string().c_str());
 
@@ -58,7 +58,7 @@ namespace IW3SR
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		ID3DXFont* font;
+		ComPtr<ID3DXFont> font;
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font);
 
@@ -67,12 +67,12 @@ namespace IW3SR
 		return Fonts[id] = font;
 	}
 
-	IDirect3DTexture9* Assets::LoadTexture(const std::string& filePath)
+	ComPtr<IDirect3DTexture9> Assets::LoadTexture(const std::string& filePath)
 	{
 		if (!std::filesystem::exists(filePath))
 			throw std::runtime_error("Couldn't find texture path.");
 
-		IDirect3DTexture9* texture;
+		ComPtr<IDirect3DTexture9> texture;
 		D3DXCreateTextureFromFile(dx->device, filePath.c_str(), &texture);
 		return Textures[filePath] = texture;
 	}

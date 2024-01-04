@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/Definitions.hpp"
+#include "Game/Render/ImGUI.hpp"
 
 #include <map>
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include <d3dx9.h>
 
 namespace IW3SR
 {
@@ -15,8 +15,8 @@ namespace IW3SR
 	class API Assets
 	{
 	public:
-		static inline std::unordered_map<std::string, IDirect3DTexture9*> Textures;
-		static inline std::unordered_map<std::string, ID3DXFont*> Fonts;
+		static inline std::unordered_map<std::string, ComPtr<IDirect3DTexture9>> Textures;
+		static inline std::unordered_map<std::string, ComPtr<ID3DXFont>> Fonts;
 		static inline std::vector<std::string> FontNames;
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace IW3SR
 		/// <param name="name">The font name.</param>
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
-		static ID3DXFont* LoadFont(const std::string& name, int height);
+		static ComPtr<ID3DXFont> LoadFont(const std::string& name, int height);
 
 		/// <summary>
 		/// Load a font.
@@ -43,13 +43,13 @@ namespace IW3SR
 		/// <param name="name">The font name.</param>
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
-		static ID3DXFont* LoadFont(const std::filesystem::path& path, int height);
+		static ComPtr<ID3DXFont> LoadFont(const std::filesystem::path& path, int height);
 
 		/// <summary>
 		/// Load image.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
-		static IDirect3DTexture9* LoadTexture(const std::string& filePath);
+		static ComPtr<IDirect3DTexture9> LoadTexture(const std::string& filePath);
 
 	private:
 		/// <summary>

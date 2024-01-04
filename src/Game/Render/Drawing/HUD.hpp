@@ -21,8 +21,8 @@ namespace IW3SR
 		hudalign_t AlignX = HUDALIGN_LEFT;
 		hudalign_t AlignY = HUDALIGN_TOP;
 
-		IDirect3DTexture9* Texture;
-		IDirect3DSurface9* TextureSurface;
+		ComPtr<IDirect3DTexture9> Texture;
+		ComPtr<IDirect3DSurface9> TextureSurface;
 		std::string TexturePath;
 
 		/// <summary>

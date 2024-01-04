@@ -92,6 +92,6 @@ namespace IW3SR
 		RenderSize = { w, h };
 
 		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
-		dx->device->StretchRect(TextureSurface, NULL, NULL, &rect, D3DTEXF_NONE);
+		dx->device->StretchRect(TextureSurface.Get(), NULL, NULL, &rect, D3DTEXF_NONE);
 	}
 }
