@@ -151,23 +151,19 @@ namespace ImGui
         SetNextWindowSize(renderSize, ImGuiCond_FirstUseEver);
         Begin(label.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
 
-        ImVec2 framePosition = GetWindowPos();
-        ImVec2 frameSize = GetWindowSize();
+        vec2 framePosition = GetWindowPos();
+        vec2 frameSize = GetWindowSize();
+        vec2 dragDelta = GetMouseDragDelta();
 
-        if (IsMouseDragging(ImGuiMouseButton_Left))
+        if (IsMouseDragging(ImGuiMouseButton_Left) && dragDelta)
         {
-            vec2 mouseDelta = GetMouseDragDelta(ImGuiMouseButton_Left);
-            if (IsWindowHovered())
+            if (IsWindowHovered() || IsWindowResizing())
             {
-                renderPosition = framePosition;
-                position += vec2(scr_place->scaleRealToVirtual) * mouseDelta;
-                ResetMouseDragDelta();
-            }
-            else if (IsWindowResizing())
-            {
+                position += vec2(scr_place->scaleRealToVirtual) * (framePosition - renderPosition);
+                size += vec2(scr_place->scaleRealToVirtual) * (frameSize - renderSize);
+
                 renderPosition = framePosition;
                 renderSize = frameSize;
-                size += vec2(scr_place->scaleRealToVirtual) * mouseDelta;
                 ResetMouseDragDelta();
             }
         }
