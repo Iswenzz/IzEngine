@@ -70,12 +70,12 @@ namespace IW3SR
 		/// </summary>
 		/// <param name="label">The label.</param>
 		/// <param name="open">Default open.</param>
-		virtual void Menu(const std::string& label, bool open = false);
+		void Menu(const std::string& label, bool open = false);
 
 		/// <summary>
 		/// Render text.
 		/// </summary>
-		virtual void Render();
+		void Render();
 
 	private:
 		/// <summary>

@@ -63,12 +63,12 @@ namespace IW3SR::Engine
 		/// </summary>
 		/// <param name="label">The label.</param>
 		/// <param name="open">Default open.</param>
-		virtual void Menu(const std::string& label, bool open = false);
+		void Menu(const std::string& label, bool open = false);
 
 		/// <summary>
 		/// Render HUD.
 		/// </summary>
-		virtual void Render();
+		void Render();
 
 	private:
 		/// <summary>
@@ -76,7 +76,7 @@ namespace IW3SR::Engine
 		/// </summary>
 		/// <param name="x">X position.</param>
 		/// <param name="y">Y position.</param>
-		virtual void ComputeAlignment(float& x, float& y);
+		void ComputeAlignment(float& x, float& y);
 
 		NLOHMANN_SERIALIZE(HUD, Position, Size, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName)
