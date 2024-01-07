@@ -12,13 +12,13 @@ namespace IW3SR::Engine
 		MaterialName = material;
 	}
 
-	void HUD::SetRectAlignment(RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical)
+	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
 	{
 		HorizontalAlign = horizontal;
 		VerticalAlign = vertical;
 	}
 
-	void HUD::SetAlignment(hudalign_t horizontal, hudalign_t vertical)
+	void HUD::SetAlignment(Alignment horizontal, Alignment vertical)
 	{
 		AlignX = horizontal;
 		AlignY = vertical;
@@ -32,14 +32,14 @@ namespace IW3SR::Engine
 
 	void HUD::ComputeAlignment(float& x, float& y)
 	{
-		if (AlignX & HUDALIGN_CENTER)
+		if (AlignX & ALIGN_CENTER)
 			x += -(Size.x / 2.f);
-		else if (AlignX & HUDALIGN_RIGHT)
+		else if (AlignX & ALIGN_RIGHT)
 			x += -Size.x;
 
-		if (AlignY & HUDALIGN_MIDDLE)
+		if (AlignY & ALIGN_MIDDLE)
 			y += Size.y / 2.f;
-		else if (AlignY & HUDALIGN_BOTTOM)
+		else if (AlignY & ALIGN_BOTTOM)
 			y += Size.y;
 	}
 
@@ -58,19 +58,19 @@ namespace IW3SR::Engine
 
 		int horizontal = HorizontalAlign - 1;
 		if (ImGui::Combo("Horizontal Alignment", &horizontal, horizontals))
-			HorizontalAlign = static_cast<RectAlignHorizontal_t>(horizontal + 1);
+			HorizontalAlign = static_cast<RectAlignHorizontal>(horizontal + 1);
 
 		int vertical = VerticalAlign - 1;
 		if (ImGui::Combo("Vertical Alignment", &vertical, verticals))
-			VerticalAlign = static_cast<RectAlignVertical_t>(vertical + 1);
+			VerticalAlign = static_cast<RectAlignVertical>(vertical + 1);
 
 		int alignX = AlignX / 4;
 		if (ImGui::Combo("Align X", &alignX, horizontals))
-			AlignX = static_cast<hudalign_t>(alignX * 4);
+			AlignX = static_cast<Alignment>(alignX * 4);
 
 		int alignY = AlignY;
 		if (ImGui::Combo("Align Y", &alignY, verticals))
-			AlignY = static_cast<hudalign_t>(alignY);
+			AlignY = static_cast<Alignment>(alignY);
 	}
 
 	void HUD::Render()

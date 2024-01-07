@@ -1,5 +1,5 @@
 #pragma once
-#include "Game/Modules.hpp"
+#include "Game/Plugin.hpp"
 
 namespace IW3SR
 {

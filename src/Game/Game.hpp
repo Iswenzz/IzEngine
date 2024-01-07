@@ -1,21 +1,19 @@
 #pragma once
 #include "Definitions.hpp"
 
-#include "Game/Render/Render.hpp"
-#include "Game/Render/GUI.hpp"
+#include "Engine/Modules/Modules.hpp"
+#include "Engine/Modules/Features.hpp"
+
+#include "Game/Engine/GUI.hpp"
+#include "Game/Engine/Assets.hpp"
+#include "Game/Engine/Render.hpp"
 #include "Game/Player/Player.hpp"
 #include "Game/Player/PMove.hpp"
-#include "Game/Sys/Features.hpp"
-#include "Game/Sys/Modules.hpp"
-
-#include "Sys/Log.hpp"
-#include "Sys/Environment.hpp"
-#include "Sys/Render/D3D9EX.hpp"
-#include "Sys/Modules/DLLS.hpp"
+#include "Game/Sys/Console.hpp"
 
 #include "Math/Common.hpp"
 #include "Utils/Utils.hpp"
-#include "Utils/Macros.hpp"
+#include "Sys/Win32.hpp"
 
 namespace IW3SR
 {
@@ -30,7 +28,7 @@ namespace IW3SR
 		std::unique_ptr<class Modules> Modules;
 		std::unique_ptr<class GUI> GUI;
 		std::unique_ptr<class Render> Render;
-		std::unique_ptr<class Log> Log;
+		std::unique_ptr<class Console> Console;
 
 		std::array<std::shared_ptr<class Player>, 64> Players;
 

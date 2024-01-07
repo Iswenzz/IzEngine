@@ -2,8 +2,6 @@
 #include "Game/Definitions.hpp"
 #include "Lines.hpp"
 
-#include <array>
-
 namespace IW3SR::Engine
 {
 	/// <summary>

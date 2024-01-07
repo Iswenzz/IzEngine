@@ -1,6 +1,7 @@
 #pragma once
 // https://github.com/id-Software/Quake-III-Arena/blob/master/code/game/q_shared.h
 // https://github.com/xoxor4d/iw3xo-dev/blob/master/src/utils/vector.hpp
+#include "API.hpp"
 #include "Game/Definitions.hpp"
 
 #define M_PI	3.14159265358979323846f
@@ -23,6 +24,34 @@ namespace IW3SR
     using vec3 = Vector3<float>;
     using vec4 = Vector4<float>;
     using mat3 = Matrix3<float>;
+
+	struct VirtualScreen
+	{
+		float scaleVirtualToReal[2];
+		float scaleVirtualToFull[2];
+		float scaleRealToVirtual[2];
+		float virtualViewableMin[2];
+		float virtualViewableMax[2];
+		float realViewportSize[2];
+		float realViewableMin[2];
+		float realViewableMax[2];
+		float subScreenLeft;
+	};
+
+	struct RefDef
+	{
+		unsigned int x;
+		unsigned int y;
+		unsigned int width;
+		unsigned int height;
+		float tanHalfFovX;
+		float tanHalfFovY;
+		float vieworg[3];
+		float viewaxis[3][3];
+		float viewOffset[3];
+		int time;
+		float zNear;
+	};
 
     /// <summary>
     /// Math class.
@@ -145,7 +174,6 @@ namespace IW3SR
         /// <param name="start">Starting angle in radians.</param>
         /// <param name="end">Ending angle in radians.</param>
         /// <param name="yaw">Yaw angle in radians.</param>
-        /// <returns>Range structure representing the angles based on yaw.</returns>
         static range_t AnglesToRange(float start, float end, float yaw);
 
         /// <summary>
@@ -155,7 +183,7 @@ namespace IW3SR
         /// <param name="y">Y value.</param>
         /// <param name="horizontal">Horizontal aligment.</param>
         /// <param name="vertical">Vertical aligment.</param>
-        static void ApplyRect(float& x, float& y, RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+        static void ApplyRect(float& x, float& y, RectAlignHorizontal horizontal, RectAlignVertical vertical);
 
         /// <summary>
         /// Virtual screen to real screen with rect alignment.
@@ -167,6 +195,6 @@ namespace IW3SR
         /// <param name="horizontal">Horizontal aligment.</param>
         /// <param name="vertical">Vertical aligment.</param>
         static void ApplyRect(float& x, float& y, float& w, float& h,
-            RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+            RectAlignHorizontal horizontal, RectAlignVertical vertical);
     };
 }

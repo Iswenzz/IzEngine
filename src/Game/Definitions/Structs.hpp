@@ -2,10 +2,7 @@
 #pragma warning(push)
 #pragma warning(disable: 4359)
 
-#include "Utils/Macros.hpp"
-
-#include <cstdint>
-#include <d3d9.h>
+#include "Engine/Backends/DX9.hpp"
 
 namespace IW3SR
 {
@@ -205,7 +202,7 @@ namespace IW3SR
 		float fontHeight;
 	};
 
-	typedef enum RectAlignHorizontal_t
+	enum RectAlignHorizontal
 	{
 		HORIZONTAL_ALIGN_SUBLEFT,			// Left edge of a 4:3 screen (safe area not included).
 		HORIZONTAL_ALIGN_LEFT,				// Left viewable (safe area) edge.
@@ -215,9 +212,9 @@ namespace IW3SR
 		HORIZONTAL_ALIGN_NOSCALE,			// Uses exact parameters.
 		HORIZONTAL_ALIGN_TO640,				// Scales a real-screen resolution x down into the 0 - 640 range.
 		HORIZONTAL_ALIGN_CENTER_SAFEAREA	// Center of the safearea.
-	} RectAlignHorizontal_t;
+	};
 
-	typedef enum RectAlignVertical_t
+	enum RectAlignVertical
 	{
 		VERTICAL_ALIGN_SUBTOP,				// Top edge of the 4:3 screen (safe area not included).
 		VERTICAL_ALIGN_TOP,					// Top viewable (safe area) edge.
@@ -227,17 +224,17 @@ namespace IW3SR
 		VERTICAL_ALIGN_NOSCALE,				// Uses exact parameters.
 		VERTICAL_ALIGN_TO480,				// Scales a real-screen resolution y down into the 0 - 480 range.
 		VERTICAL_ALIGN_CENTER_SAFEAREA		// Center of the save area.
-	} RectAlignVertical_t;
+	};
 
-	typedef enum
+	enum Alignment
 	{
-		HUDALIGN_TOP = 0,
-		HUDALIGN_LEFT = 0,
-		HUDALIGN_MIDDLE = 1,
-		HUDALIGN_BOTTOM = 2,
-		HUDALIGN_CENTER = 4,
-		HUDALIGN_RIGHT = 8
-	} hudalign_t;
+		ALIGN_TOP = 0,
+		ALIGN_LEFT = 0,
+		ALIGN_MIDDLE = 1,
+		ALIGN_BOTTOM = 2,
+		ALIGN_CENTER = 4,
+		ALIGN_RIGHT = 8
+	};
 
 	enum XAssetType
 	{

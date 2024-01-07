@@ -1,5 +1,4 @@
 #pragma once
-#include "GLM.hpp"
 #include "Common.hpp"
 #include "Vector3.hpp"
 #include "Vector4.hpp"

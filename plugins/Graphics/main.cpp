@@ -1,7 +1,5 @@
-#include "Game/Sys/Features.hpp"
+#include "Game/Plugin.hpp"
 #include "Features/Graphics.hpp"
-#include "Sys/Modules/DLL.hpp"
-#include "Game/Render/GUI.hpp"
 
 PLUGIN void Initialize(DLL* entry)
 {

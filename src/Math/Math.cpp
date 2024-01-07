@@ -305,14 +305,14 @@ namespace IW3SR
 		return { AngleScreenProjection(start), AngleScreenProjection(end), split };
 	}
 
-    void Math::ApplyRect(float& x, float& y, RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical)
+    void Math::ApplyRect(float& x, float& y, RectAlignHorizontal horizontal, RectAlignVertical vertical)
     {
         float zero = 0;
         ApplyRect(x, y, zero, zero, horizontal, vertical);
     }
 
     void Math::ApplyRect(float& x, float& y, float& w, float& h,
-        RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical)
+        RectAlignHorizontal horizontal, RectAlignVertical vertical)
     {
         switch (horizontal)
         {

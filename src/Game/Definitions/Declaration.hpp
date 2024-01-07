@@ -1,10 +1,6 @@
 #pragma once
 #include "Structs.hpp"
 
-#include <string>
-#include <cstdint>
-#include <Windows.h>
-
 namespace IW3SR
 {
 	// Binaries

@@ -12,16 +12,17 @@ namespace IW3SR
 		Modules = std::make_unique<class Modules>();
 		GUI = std::make_unique<class GUI>();
 		Render = std::make_unique<class Render>();
-		Log = std::make_unique<class Log>();
+		Console = std::make_unique<class Console>();
 
 		Hook();
 	}
 
 	Game::~Game()
 	{
+		Environment::Serialize("GUI", *GUI);
 		Environment::Save();
 
-		Log.reset();
+		Console.reset();
 		Render.reset();
 		GUI.reset();
 		Modules.reset();
@@ -34,6 +35,8 @@ namespace IW3SR
 	void Game::Initialize()
 	{
 		Environment::Load();
+		Environment::Deserialize("GUI", *GUI);
+
 		Player::Allocates();
 		DLLS->Initialize();
 	}

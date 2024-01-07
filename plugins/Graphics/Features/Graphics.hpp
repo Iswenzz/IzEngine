@@ -1,5 +1,5 @@
 #pragma once
-#include "Game/Sys/Features.hpp"
+#include "Game/Plugin.hpp"
 
 namespace IW3SR
 {
@@ -42,9 +42,9 @@ namespace IW3SR
 		/// </summary>
 		void OnMenu() override;
 
-		NLOHMANN_SERIALIZE_POLY(Graphics, Feature, DrawSpecular, DrawFog, DrawDecals, DrawTweaks, 
-			DrawGlow, DrawSun, SunIntensity, SpecularColorScale, TweakBrightness, TweakDesaturation, 
-			GlowRadius, GlowBloomDesaturation, GlowBloomIntensity, GlowBloomCutoff, SunColor, SunDirection, 
+		NLOHMANN_SERIALIZE_POLY(Graphics, Feature, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
+			DrawGlow, DrawSun, SunIntensity, SpecularColorScale, TweakBrightness, TweakDesaturation,
+			GlowRadius, GlowBloomDesaturation, GlowBloomIntensity, GlowBloomCutoff, SunColor, SunDirection,
 			TweakLightTint, TweakDarkTint)
 	};
 }

@@ -41,6 +41,9 @@
 #define CMAKE_BINARY_DIR ""
 #endif
 
+#define ModuleCallback(method, ...) \
+	SR->Modules->Callback([&](const std::unique_ptr<Module>& entry) { entry->method(__VA_ARGS__); });
+
 #ifdef NLOHMANN_JSON_FROM
 #undef NLOHMANN_JSON_FROM
 #define NLOHMANN_JSON_FROM(v1) \

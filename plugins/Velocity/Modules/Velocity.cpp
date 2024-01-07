@@ -1,5 +1,4 @@
 #include "Velocity.hpp"
-#include "Game/Game.hpp"
 
 namespace IW3SR
 {
@@ -7,15 +6,15 @@ namespace IW3SR
 	{
 		VelocityText = Text("0", "Arial", 0, 2, 1.4, { 0, 1, 1, 1 });
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
-		VelocityText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
+		VelocityText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
 		AverageText = Text("0", "Arial", 50, 2, 1.4, { 1, 1, 0, 1 });
 		AverageText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
-		AverageText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
+		AverageText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
 		MaxText = Text("0", "Arial", 100, 2, 1.4, { 1, 0, 0, 1 });
 		MaxText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
-		MaxText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
+		MaxText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
 		Graph = Window("Graph");
 		ResetKey = KeyListener('R');
@@ -48,7 +47,7 @@ namespace IW3SR
 		Average = std::accumulate(Values.Data.begin(), Values.Data.end(), 0) / Values.Size();
 		Averages.Add(Average);
 
-		if (Value > Max) 
+		if (Value > Max)
 			Max = Value;
 		Maxs.Add(Max);
 
@@ -57,9 +56,9 @@ namespace IW3SR
 		MaxText.Value = std::to_string(Max);
 
 		VelocityText.Render();
-		if (ShowAverage) 
+		if (ShowAverage)
 			AverageText.Render();
-		if (ShowMax) 
+		if (ShowMax)
 			MaxText.Render();
 
 		if (ResetKey.IsPressed())

@@ -1,5 +1,5 @@
 #pragma once
-#include "Game/Modules.hpp"
+#include "Game/Plugin.hpp"
 
 namespace IW3SR
 {
@@ -43,7 +43,7 @@ namespace IW3SR
 		/// </summary>
 		void OnFrame() override;
 
-		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, MaxText, AverageText, Graph, 
+		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, MaxText, AverageText, Graph,
 			ResetKey, ShowAverage, ShowMax, ShowGraph)
 	};
 }

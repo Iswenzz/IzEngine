@@ -6,13 +6,13 @@ namespace IW3SR
 	{
 		FPSText = Text("0", "Arial", 0, 20, 1.4, { 1, 1, 1, 1 });
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
-		FPSText.SetAlignment(HUDALIGN_CENTER, HUDALIGN_BOTTOM);
+		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
 		ShowGraph = false;
 	}
 
 	void FPS::OnMenu()
-	{	
+	{
 		ImGui::Checkbox("Display Graph", &ShowGraph);
 		FPSText.Menu("Text", true);
 	}

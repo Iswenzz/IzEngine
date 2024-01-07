@@ -16,6 +16,7 @@ using namespace IW3SR;
 #define FONT_EXTRA_BIG  "fonts/extraBigFont"
 #define FONT_OBJECTIVE  "fonts/objectiveFont"
 
-#include "Definitions/Declaration.hpp"
-#include "Definitions/Functions.hpp"
+#include "API.hpp"
 #include "Definitions/Structs.hpp"
+#include "Definitions/Functions.hpp"
+#include "Definitions/Declaration.hpp"

@@ -1,11 +1,10 @@
-add_subdirectory(Listeners)
 add_subdirectory(Memory)
-add_subdirectory(Modules)
-add_subdirectory(Render)
+add_subdirectory(Win32)
+
+target_precompile_headers(IW3SR PRIVATE
+	Win32.hpp)
 
 target_sources(IW3SR PRIVATE
-	Environment.hpp
-	Environment.cpp
+	Memory.hpp
 	Log.hpp
-	Log.cpp
-	Memory.hpp)
+	Win32.hpp)

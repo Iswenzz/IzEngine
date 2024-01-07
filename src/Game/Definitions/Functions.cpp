@@ -12,7 +12,7 @@ namespace IW3SR
 		MainWndProc_h(0x57BB20, GUI::MainWndProc);
 
 	Hook<void(int channel, const char* msg, int type)>
-		Com_PrintMessage_h(0x4FCA50, Log::Write);
+		Com_PrintMessage_h(0x4FCA50, Console::Write);
 
 	Hook<void(int localClientNum)>
 		CG_DrawCrosshair_h(0x42F6B5, Render::Draw2D);

@@ -14,10 +14,10 @@ namespace IW3SR::Engine
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::Zero;
 		vec4 Color = vec4::One;
-		RectAlignHorizontal_t HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
-		RectAlignVertical_t VerticalAlign = VERTICAL_ALIGN_TOP;
-		hudalign_t AlignX = HUDALIGN_LEFT;
-		hudalign_t AlignY = HUDALIGN_TOP;
+		RectAlignHorizontal HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
+		RectAlignVertical VerticalAlign = VERTICAL_ALIGN_TOP;
+		Alignment AlignX = ALIGN_LEFT;
+		Alignment AlignY = ALIGN_TOP;
 
 		Font_s* Font;
 		std::string FontName;
@@ -46,14 +46,14 @@ namespace IW3SR::Engine
 		/// </summary>
 		/// <param name="horizontal">Horizontal aligment.</param>
 		/// <param name="vertical">Vertical alignment.</param>
-		void SetRectAlignment(RectAlignHorizontal_t horizontal, RectAlignVertical_t vertical);
+		void SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical);
 
 		/// <summary>
 		/// Set the element alignment.
 		/// </summary>
 		/// <param name="horizontal">Horizontal aligment.</param>
 		/// <param name="vertical">Vertical aligment.</param>
-		void SetAlignment(hudalign_t horizontal, hudalign_t vertical);
+		void SetAlignment(Alignment horizontal, Alignment vertical);
 
 		/// <summary>
 		/// Set/update font.

@@ -1,6 +1,4 @@
 #pragma once
-#include "Utils/Macros.hpp"
-
 #include <format>
 #include <string>
 #include <iostream>
@@ -14,26 +12,14 @@ namespace IW3SR
 	{
 	public:
 		/// <summary>
-		/// Initialize a new logger.
-		/// </summary>
-		Log();
-		~Log();
-
-		/// <summary>
 		/// Write to the console.
 		/// </summary>
-		/// <param name="channel">The log channel.</param>
-		/// <param name="type">The error type.</param>
-		/// <param name="msg">The message.</param>
-		static void Write(int channel, int type, std::string msg);
-
-		/// <summary>
-		/// Write to the console.
-		/// </summary>
-		/// <param name="channel">The log channel.</param>
-		/// <param name="msg">The message.</param>
-		/// <param name="type">The error type.</param>
-		static void Write(int channel, const char* msg, int type);
+		/// <param name="channel">The channel.</param>
+		/// <param name="msg">The string.</param>
+		static void Write(int channel, const std::string& msg)
+		{
+			std::cout << msg;
+		}
 
 		/// <summary>
 		/// Write to the console.
@@ -44,7 +30,7 @@ namespace IW3SR
 		template <typename... Args>
 		static void Write(std::format_string<Args...> fmt, Args&&... args)
 		{
-			Write(0, 0, std::format(fmt, std::forward<Args>(args)...));
+			Write(0, std::format(fmt, std::forward<Args>(args)...));
 		}
 
 		/// <summary>
@@ -57,7 +43,7 @@ namespace IW3SR
 		template <typename... Args>
 		static void Write(int channel, std::format_string<Args...> fmt, Args&&... args)
 		{
-			Write(channel, 0, std::format(fmt, std::forward<Args>(args)...));
+			Write(channel, std::format(fmt, std::forward<Args>(args)...));
 		}
 
 		/// <summary>
@@ -69,7 +55,7 @@ namespace IW3SR
 		template <typename... Args>
 		static void WriteLine(std::format_string<Args...> fmt, Args&&... args)
 		{
-			Write(0, 0, std::format(fmt, std::forward<Args>(args)...) + "\n");
+			Write(0, std::format(fmt, std::forward<Args>(args)...) + "\n");
 		}
 
 		/// <summary>
@@ -82,7 +68,7 @@ namespace IW3SR
 		template <typename... Args>
 		static void WriteLine(int channel, std::format_string<Args...> fmt, Args&&... args)
 		{
-			Write(channel, 0, std::format(fmt, std::forward<Args>(args)...) + "\n");
+			Write(channel, std::format(fmt, std::forward<Args>(args)...) + "\n");
 		}
 	};
 }

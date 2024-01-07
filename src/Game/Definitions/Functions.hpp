@@ -1,5 +1,4 @@
 #pragma once
-#include "Game/Definitions.hpp"
 #include "Sys/Memory.hpp"
 
 namespace IW3SR

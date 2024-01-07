@@ -1,4 +1,4 @@
-#include "Game/Modules.hpp"
+#include "Game/Plugin.hpp"
 #include "Modules/FPS.hpp"
 
 PLUGIN void Initialize(DLL* entry)
