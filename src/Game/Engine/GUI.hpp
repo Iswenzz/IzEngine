@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/Definitions.hpp"
 #include "Engine/Backends/ImGUI.hpp"
-#include "Engine/UI/Memory.hpp"
 #include "Sys/Win32.hpp"
 
 #include "Game/Engine/UI/About.hpp"
 #include "Game/Engine/UI/Binds.hpp"
+#include "Game/Engine/UI/Memory.hpp"
 #include "Game/Engine/UI/Modules.hpp"
 #include "Game/Engine/UI/Settings.hpp"
 #include "Game/Engine/UI/Themes.hpp"

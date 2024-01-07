@@ -3,6 +3,8 @@ target_sources(IW3SR PRIVATE
 	About.cpp
 	Binds.hpp
 	Binds.cpp
+	Memory.hpp
+	Memory.cpp
 	Modules.cpp
 	Modules.hpp
 	Settings.hpp
