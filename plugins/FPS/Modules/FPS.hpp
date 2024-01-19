@@ -17,10 +17,15 @@ namespace IW3SR
         bool ShowGraph;
 
         /// <summary>
-        /// Initialize the module.
+        /// Create the module.
         /// </summary>
         FPS();
         virtual ~FPS() = default;
+
+        /// <summary>
+        /// Initialize the module.
+        /// </summary>
+        void Initialize() override;
 
         /// <summary>
         /// Menu drawing.
@@ -30,7 +35,7 @@ namespace IW3SR
         /// <summary>
         /// Render frame.
         /// </summary>
-        void OnFrame() override;
+        void OnRender() override;
 
         NLOHMANN_SERIALIZE_POLY(FPS, Module, FPSText)
     };

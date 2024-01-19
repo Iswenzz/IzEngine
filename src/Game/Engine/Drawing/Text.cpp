@@ -12,10 +12,8 @@ namespace IW3SR::Game
 		Value = text;
 		Position = { x, y };
 		Color = color;
-		Font = nullptr;
-		FontName = font;
-		FontSize = size;
-		FontIndex = 0;
+		
+		SetFont(font);
 	}
 
 	void Text::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -96,9 +94,6 @@ namespace IW3SR::Game
 		float y = Position.y;
 		float xScale = FontSize * RESCALE;
 		float yScale = FontSize * RESCALE;
-
-		if (!Font)
-			SetFont(FontName);
 
 		Size = { R_TextWidth(Value.c_str(), Value.size(), Font) * xScale, Font->pixelHeight * yScale };
 

@@ -6,7 +6,7 @@ namespace IW3SR
 	/// <summary>
 	/// Font class.
 	/// </summary>
-	class API Font
+	class API Font : public IObject
 	{
 	public:
 		ID3DXFont* Base;
@@ -15,11 +15,6 @@ namespace IW3SR
 		/// Initialize a new Font.
 		/// </summary>
 		Font() = default;
-		~Font() = default;
-
-		/// <summary>
-		/// Reset resources.
-		/// </summary>
-		void Reset();
+		~Font();
 	};
 }

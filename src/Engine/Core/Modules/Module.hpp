@@ -7,7 +7,7 @@ namespace IW3SR
 	/// <summary>
 	/// Game module.
 	/// </summary>
-	class API Module
+	class API Module : public IRenderable
 	{
 	public:
 		std::string ID;
@@ -41,7 +41,7 @@ namespace IW3SR
 		/// <summary>
 		/// Shutdown the module.
 		/// </summary>
-		virtual void Shutdown();
+		virtual void Release();
 
 		/// <summary>
 		/// Menu drawing.
@@ -61,7 +61,7 @@ namespace IW3SR
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		virtual void OnFrame();
+		virtual void OnRender();
 
 		/// <summary>
 		/// Finish moving.

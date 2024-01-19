@@ -4,6 +4,15 @@ namespace IW3SR
 {
 	Velocity::Velocity() : Module("sr.player.velocity", "Velocity", "Player")
 	{
+		Graph = Window("Graph");
+		ResetKey = KeyListener('R');
+		ShowAverage = false;
+		ShowMax = false;
+		ShowGraph = false;
+	}
+
+	void Velocity::Initialize()
+	{
 		VelocityText = Text("0", "Arial", 0, 2, 1.4, { 0, 1, 1, 1 });
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		VelocityText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
@@ -15,12 +24,6 @@ namespace IW3SR
 		MaxText = Text("0", "Arial", 100, 2, 1.4, { 1, 0, 0, 1 });
 		MaxText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		MaxText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
-
-		Graph = Window("Graph");
-		ResetKey = KeyListener('R');
-		ShowAverage = false;
-		ShowMax = false;
-		ShowGraph = false;
 	}
 
 	void Velocity::OnMenu()
@@ -40,7 +43,7 @@ namespace IW3SR
 		MaxText.Menu("Max Velocity");
 	}
 
-	void Velocity::OnFrame()
+	void Velocity::OnRender()
 	{
 		Value = vec2(pmove->ps->velocity).Length();
 		Values.Add(Value);

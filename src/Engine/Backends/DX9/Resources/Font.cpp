@@ -2,7 +2,7 @@
 
 namespace IW3SR
 {
-	void Font::Reset()
+	Font::~Font()
 	{
 		Base->Release();
 	}

@@ -10,8 +10,8 @@ namespace IW3SR::Game
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
-		Material = nullptr;
-		MaterialName = material;
+		
+		SetMaterial(material);
 	}
 
 	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -81,9 +81,6 @@ namespace IW3SR::Game
 		float y = Position.y;
 		float w = Size.x;
 		float h = Size.y;
-
-		if (!Material)
-			SetMaterial(MaterialName);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

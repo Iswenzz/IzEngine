@@ -1,14 +1,14 @@
 #include "Game/Plugin.hpp"
 #include "Modules/FPS.hpp"
 
-PLUGIN void Initialize(DLL* entry)
+PLUGIN void Initialize(Plugin* plugin)
 {
-	entry->SetInfos("sr.player.fps", "FPS");
+	plugin->SetInfos("sr.player.fps", "FPS");
 
 	Modules::Load<FPS>();
 }
 
-PLUGIN void GUI()
+PLUGIN void Renderer()
 {
 	GUI::ModuleContext();
 }

@@ -18,8 +18,6 @@ namespace IW3SR::UI
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		void Frame();
-
-		NLOHMANN_SERIALIZE_DERIVED_EMPTY(Settings, Window)
+		void Render();
 	};
 }

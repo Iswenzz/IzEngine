@@ -5,13 +5,11 @@ namespace IW3SR
 	GameClient::GameClient()
 	{
 		Environment::Initialize();
+		Environment::Load();
+
 		CoD4X();
 
-		DLLS = std::make_unique<class DLLS>();
-		Features = std::make_unique<class Features>();
-		Modules = std::make_unique<class Modules>();
-		GUI = std::make_unique<class GUI>();
-		Render = std::make_unique<class Render>();
+		Renderer = std::make_unique<class Renderer>();
 		Console = std::make_unique<class Console>();
 
 		Hook();
@@ -19,26 +17,19 @@ namespace IW3SR
 
 	GameClient::~GameClient()
 	{
-		Environment::Serialize("GUI", *GUI);
 		Environment::Save();
+		Plugins::Shutdown();
 
 		Console.reset();
-		Render.reset();
-		GUI.reset();
-		Modules.reset();
-		Features.reset();
-		DLLS.reset();
+		Renderer.reset();
 
 		Unhook();
 	}
 
-	void GameClient::Initialize()
+	void GameClient::Start()
 	{
-		Environment::Load();
-		Environment::Deserialize("GUI", *GUI);
-
 		Player::Allocates();
-		DLLS->Initialize();
+		Plugins::Initialize();
 	}
 
 	void GameClient::CoD4X()

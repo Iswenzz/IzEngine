@@ -2,8 +2,6 @@
 #include "Definitions.hpp"
 
 #include "Engine/Plugin.hpp"
-#include "Engine/Core/Modules.hpp"
-
 #include "Engine/Backends/DX9/Drawing/Draw2D.hpp"
 #include "Engine/Backends/DX9/Drawing/HUD.hpp"
 #include "Engine/Backends/DX9/Drawing/Text.hpp"

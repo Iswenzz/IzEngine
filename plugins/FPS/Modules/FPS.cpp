@@ -4,11 +4,14 @@ namespace IW3SR
 {
 	FPS::FPS() : Module("sr.player.fps", "FPS", "Player")
 	{
+		ShowGraph = false;
+	}
+
+	void FPS::Initialize()
+	{
 		FPSText = Text("0", "Arial", 0, 20, 1.4, { 1, 1, 1, 1 });
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
-
-		ShowGraph = false;
 	}
 
 	void FPS::OnMenu()
@@ -17,7 +20,7 @@ namespace IW3SR
 		FPSText.Menu("Text", true);
 	}
 
-	void FPS::OnFrame()
+	void FPS::OnRender()
 	{
 		Value = Dvar::Get<int>("com_maxfps");
 		Values.Add(Value);

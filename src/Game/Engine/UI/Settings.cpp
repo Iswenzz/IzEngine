@@ -10,7 +10,7 @@ namespace IW3SR::UI
 		SetRect(470, 20, 150, 100);
 	}
 
-	void Settings::Frame()
+	void Settings::Render()
 	{
 		if (!Open) return;
 
@@ -18,7 +18,7 @@ namespace IW3SR::UI
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : GC->Features->Entries)
+		for (const auto& [_, current] : GetRenderer()->Features->Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -27,7 +27,7 @@ namespace IW3SR::UI
 			if (!ImGui::CollapsingHeader(current->Group.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 				continue;
 
-			for (const auto& [_, entry] : GC->Features->Entries)
+			for (const auto& [_, entry] : GetRenderer()->Features->Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;

@@ -12,15 +12,15 @@ namespace IW3SR
 
 	Module::~Module()
 	{
-		Shutdown();
+		Release();
 	}
 
 	void Module::Initialize() { }
-	void Module::Shutdown() { }
+	void Module::Release() { }
 
 	void Module::OnMenu() { }
 	void Module::OnDraw3D() { }
 	void Module::OnDraw2D() { }
-	void Module::OnFrame() { }
+	void Module::OnRender() { }
 	void Module::OnFinishMove(usercmd_s* cmd) { }
 }

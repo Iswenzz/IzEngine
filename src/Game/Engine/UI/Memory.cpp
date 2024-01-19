@@ -2,8 +2,8 @@
 
 namespace IW3SR::UI
 {
-	Memory::Memory() : Window("Memory") 
-	{ 
+	Memory::Memory() : Window("Memory")
+	{
 		SetRect(20, 20, 240, 350);
 		Editor.OptMidColsCount = 4;
 		Editor.OptAddrDigitsCount = sizeof(uintptr_t) * 2;
@@ -24,14 +24,14 @@ namespace IW3SR::UI
 		::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value), 1);
 	}
 
-	void Memory::Frame()
+	void Memory::Render()
 	{
 		if (!Open) return;
 		int speed = Editor.Cols * 5;
 		int scroll = ImGui::GetIO().MouseWheel;
 		int direction = scroll ? scroll > 0 ? 1 : -1 : 0;
 		Address += -direction * speed;
-		
+
 		Begin();
 		ImGui::InputInt("Address", &Address, 1, speed * speed, ImGuiInputTextFlags_CharsHexadecimal);
 		Editor.DrawContents(reinterpret_cast<void*>(Address), MaxSize, Address);

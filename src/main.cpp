@@ -3,7 +3,7 @@
 void Init()
 {
     GC = new GameClient();
-    GC->Initialize();
+    GC->Start();
 }
 
 void Shutdown()

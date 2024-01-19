@@ -1,14 +1,14 @@
 #include "Game/Plugin.hpp"
 #include "Features/General.hpp"
 
-PLUGIN void Initialize(DLL* entry)
+PLUGIN void Initialize(Plugin* plugin)
 {
-	entry->SetInfos("sr.feature.graphics", "Graphics");
+	plugin->SetInfos("sr.feature.graphics", "Graphics");
 
 	Features::Load<General>();
 }
 
-PLUGIN void GUI()
+PLUGIN void Renderer()
 {
 	GUI::ModuleContext();
 }

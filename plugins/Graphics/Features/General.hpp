@@ -32,7 +32,7 @@ namespace IW3SR
 		vec3 TweakDarkTint;
 
 		/// <summary>
-		/// Initialize the feature.
+		/// Create the feature.
 		/// </summary>
 		General();
 		virtual ~General() = default;

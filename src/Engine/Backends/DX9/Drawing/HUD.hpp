@@ -8,7 +8,7 @@ namespace IW3SR
 	/// <summary>
 	/// HUD element.
 	/// </summary>
-	class API HUD
+	class API HUD : public IObject
 	{
 	public:
 		std::string ID;
@@ -82,7 +82,7 @@ namespace IW3SR
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(HUD, Position, Size, Color,
+		NLOHMANN_SERIALIZE_POLY_BASE(HUD, Position, Size, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, TextureID)
 	};
 }

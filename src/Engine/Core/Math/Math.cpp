@@ -72,7 +72,7 @@ namespace IW3SR
     void Math::AngleVectors(const vec3& angles, vec3& forward, vec3& right, vec3& up)
     {
         float angle;
-        static float sr, sp, sy, cr, cp, cy;
+        float sr, sp, sy, cr, cp, cy;
 
         angle = angles[YAW] * (M_PI * 2.0f / 360.0f);
         sy = sin(angle);
@@ -109,7 +109,7 @@ namespace IW3SR
     vec3 Math::AnglesToUp(const vec3& angles)
     {
         float angle;
-        static float sr, sp, sy, cr, cp, cy;
+        float sr, sp, sy, cr, cp, cy;
 
         angle = angles[YAW] * (M_PI * 2.0f / 360.0f);
         sy = sin(angle);
@@ -133,7 +133,7 @@ namespace IW3SR
     vec3 Math::AnglesToForward(const vec3& angles)
     {
         float angle;
-        static float sp, sy, cr, cp, cy;
+        float sp, sy, cr, cp, cy;
 
         angle = angles[YAW] * (M_PI * 2.0f / 360.0f);
         sy = sin(angle);
@@ -153,7 +153,7 @@ namespace IW3SR
     vec3 Math::AnglesToRight(const vec3& angles)
     {
         float angle;
-        static float sr, sp, sy, cr, cp, cy;
+        float sr, sp, sy, cr, cp, cy;
 
         angle = angles[YAW] * (M_PI * 2.0f / 360.0f);
         sy = sin(angle);

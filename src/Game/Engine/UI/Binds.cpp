@@ -3,15 +3,15 @@
 namespace IW3SR::UI
 {
 	Binds::Binds() : Window("Binds") { }
-	
-	void Binds::Frame() 
+
+	void Binds::Render()
 	{
 		if (!Open) return;
 		const ImVec2 size = { ImGui::CalcItemWidth(), 0 };
 
 		Begin();
 		if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen))
-			ImGui::Keybind("Menu", &GUI::OpenKey.Key, size);
+			ImGui::Keybind("Menu", &GetGUI()->OpenKey.Key, size);
 		End();
 	}
 }

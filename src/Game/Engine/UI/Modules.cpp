@@ -10,7 +10,7 @@ namespace IW3SR::UI
 		SetRect(470, 20, 150, 185);
 	}
 
-	void Modules::Frame()
+	void Modules::Render()
 	{
 		if (!Open) return;
 
@@ -18,7 +18,7 @@ namespace IW3SR::UI
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : GC->Modules->Entries)
+		for (const auto& [_, current] : GetRenderer()->Modules->Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -27,14 +27,14 @@ namespace IW3SR::UI
 			if (!ImGui::CollapsingHeader(current->Group.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 				continue;
 
-			for (const auto& [_, entry] : GC->Modules->Entries)
+			for (const auto& [_, entry] : GetRenderer()->Modules->Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;
 
 				// Enable/Disable module
 				if (ImGui::Toggle(entry->ID + "toggle", 20, &entry->IsEnabled))
-					entry->IsEnabled ? entry->Initialize() : entry->Shutdown();
+					entry->IsEnabled ? entry->Initialize() : entry->Release();
 				ImGui::SameLine();
 				ImGui::Text(entry->Name.c_str());
 				ImGui::SameLine(frameWidth);

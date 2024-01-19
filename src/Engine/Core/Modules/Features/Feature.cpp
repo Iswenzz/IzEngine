@@ -7,6 +7,6 @@ namespace IW3SR
 
 	Feature::~Feature()
 	{
-		Shutdown();
+		Release();
 	}
 }

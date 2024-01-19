@@ -28,6 +28,6 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Draw frame.
 		/// </summary>
-		static void Frame();
+		static void Render();
 	};
 }

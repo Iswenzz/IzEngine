@@ -8,7 +8,7 @@ namespace IW3SR
 	/// <summary>
 	/// Text element.
 	/// </summary>
-	class API Text
+	class API Text : public IObject
 	{
 	public:
 		std::string ID;
@@ -26,7 +26,7 @@ namespace IW3SR
 
 		std::shared_ptr<Font> Font;
 		std::string FontName;
-		float FontSize;
+		float FontSize = 1.4;
 		int FontIndex;
 
 		/// <summary>
@@ -85,7 +85,7 @@ namespace IW3SR
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(Text, Value, Position, Color,
+		NLOHMANN_SERIALIZE_POLY_BASE(Text, Value, Position, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize)
 	};
 }

@@ -9,6 +9,9 @@ namespace IW3SR::UI
 	class Toolbar : public Window
 	{
 	public:
+		bool IsReloading = false;
+		bool IsDebug = false;
+
 		/// <summary>
 		/// Initialize the Toolbar.
 		/// </summary>
@@ -16,10 +19,18 @@ namespace IW3SR::UI
 		virtual ~Toolbar() = default;
 
 		/// <summary>
+		/// Reload plugins.
+		/// </summary>
+		void Reload();
+
+		/// <summary>
+		/// Compile plugins.
+		/// </summary>
+		void Compile();
+
+		/// <summary>
 		/// Render frame.
 		/// </summary>
-		void Frame();
-
-		NLOHMANN_SERIALIZE_DERIVED_EMPTY(Toolbar, Window)
+		void Render();
 	};
 }

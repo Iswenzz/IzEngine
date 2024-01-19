@@ -7,7 +7,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// HUD element.
 	/// </summary>
-	class API HUD
+	class API HUD : public IObject
 	{
 	public:
 		vec2 Position = vec2::Zero;
@@ -78,7 +78,7 @@ namespace IW3SR::Game
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(HUD, Position, Size, Color,
+		NLOHMANN_SERIALIZE_POLY_BASE(HUD, Position, Size, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, MaterialName)
 	};
 }

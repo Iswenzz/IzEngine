@@ -13,10 +13,8 @@ namespace IW3SR
 		Value = text;
 		Position = { x, y };
 		Color = color;
-		Font = nullptr;
-		FontName = font;
-		FontSize = size;
-		FontIndex = 0;
+		
+		SetFont(font);
 	}
 
 	void Text::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -38,12 +36,6 @@ namespace IW3SR
 		int fontSize = std::floor(scr_place->scaleVirtualToFull[0] * FontSize * 10.f);
 		Font = Assets::LoadFont(font, fontSize);
 		FontName = font;
-
-		if (!Font)
-		{
-			FontName = "Arial";
-			Font = Assets::Fonts[FontName];
-		}
 		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, FontName));
 	}
 
@@ -98,9 +90,6 @@ namespace IW3SR
 	{
 		float x = Position.x;
 		float y = Position.y;
-
-		if (!Font)
-			SetFont(FontName);
 
 		RECT textRect = { 0 };
 		Font->Base->DrawTextA(NULL, Value.c_str(), -1, &textRect, DT_CALCRECT, 0);

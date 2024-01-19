@@ -1,20 +1,27 @@
 #pragma once
-#include "Game/Definitions.hpp"
+#include "GUI.hpp"
 #include "Backends/D3D9EX.hpp"
+#include "Game/Definitions.hpp"
+
+#include "Engine/Core/Modules.hpp"
 
 namespace IW3SR
 {
 	/// <summary>
-	/// Rendering class.
+	/// Renderer class.
 	/// </summary>
-	class Render
+	class Renderer
 	{
 	public:
+		std::unique_ptr<Modules> Modules;
+		std::unique_ptr<Features> Features;
+		std::unique_ptr<GUI> GUI;
+
 		/// <summary>
-		/// Initialize the rendering class.
+		/// Initialize the renderer class.
 		/// </summary>
-		Render();
-		~Render() = default;
+		Renderer();
+		~Renderer() = default;
 
 		/// <summary>
 		/// Patch the game.
@@ -51,6 +58,6 @@ namespace IW3SR
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		void Frame();
+		void Render();
 	};
 }

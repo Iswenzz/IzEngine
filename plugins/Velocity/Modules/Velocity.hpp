@@ -28,10 +28,15 @@ namespace IW3SR
 		bool ShowGraph;
 
 		/// <summary>
-		/// Initialize the module.
+		/// Create the module.
 		/// </summary>
 		Velocity();
 		virtual ~Velocity() = default;
+
+		/// <summary>
+		/// Initialize the module.
+		/// </summary>
+		void Initialize() override;
 
 		/// <summary>
 		/// Menu drawing.
@@ -41,7 +46,7 @@ namespace IW3SR
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		void OnFrame() override;
+		void OnRender() override;
 
 		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, MaxText, AverageText, Graph,
 			ResetKey, ShowAverage, ShowMax, ShowGraph)

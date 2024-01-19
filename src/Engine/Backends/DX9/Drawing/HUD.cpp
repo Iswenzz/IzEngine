@@ -13,8 +13,8 @@ namespace IW3SR
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
-		Texture = nullptr;
-		TextureID = texture;
+
+		SetTexture(texture);
 	}
 
 	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -84,9 +84,6 @@ namespace IW3SR
 		float y = Position.y;
 		float w = Size.x;
 		float h = Size.y;
-
-		if (!Texture)
-			SetTexture(TextureID);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

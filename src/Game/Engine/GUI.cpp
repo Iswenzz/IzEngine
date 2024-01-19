@@ -5,9 +5,7 @@ namespace IW3SR
 {
 	GUI::GUI()
 	{
-		Patch();
 		OpenKey = KeyListener(VK_F10);
-
 		Toolbar = UI::Toolbar();
 		About = UI::About();
 		Binds = UI::Binds();
@@ -15,6 +13,14 @@ namespace IW3SR
 		Modules = UI::Modules();
 		Settings = UI::Settings();
 		Themes = UI::Themes();
+
+		Environment::Deserialize("GUI", *this);
+		Patch();
+	}
+
+	GUI::~GUI()
+	{
+		Environment::Serialize("GUI", *this);
 	}
 
 	void GUI::Patch()
@@ -40,7 +46,7 @@ namespace IW3SR
 		ImGui_ImplDX9_Init(dx->device);
 		Themes.Initialize();
 
-		GC->DLLS->SetRenderer();
+		Plugins::SetRenderer();
 	}
 
 	void GUI::Shutdown()
@@ -73,36 +79,40 @@ namespace IW3SR
 
 	void GUI::Begin()
 	{
-		if (OpenKey.IsPressed())
-			Open = !Open;
+		if (!Active) return;
 
 		ImGui_ImplDX9_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
+		if (OpenKey.IsPressed())
+			Open = !Open;
+
 		Themes.ComputeRainbow();
-		Frame();
+		Render();
 	}
 
 	void GUI::End()
 	{
+		if (!Active) return;
+
 		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 		KeyListener::Reset();
 	}
 
-	void GUI::Frame()
+	void GUI::Render()
 	{
 		if (!Open) return;
 
-		About.Frame();
-		Binds.Frame();
-		Memory.Frame();
-		Modules.Frame();
-		Settings.Frame();
-		Themes.Frame();
-		Toolbar.Frame();
+		About.Render();
+		Binds.Render();
+		Memory.Render();
+		Modules.Render();
+		Settings.Render();
+		Themes.Render();
+		Toolbar.Render();
 	}
 
 	HWND GUI::CreateMainWindow(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
@@ -116,22 +126,22 @@ namespace IW3SR
 		if (windowName != "Call of Duty 4" && windowName != "Call of Duty 4 X")
 			return hwnd;
 
-		Reset();
-		return MainWindow = hwnd;
+		GetGUI()->Reset();
+		return GetGUI()->MainWindow = hwnd;
 	}
 
 	LRESULT GUI::MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	{
 		KeyListener::Process(Msg, wParam, lParam);
 
-		if (!Active)
+		if (!GetGUI()->Active)
 			return MainWndProc_h(hWnd, Msg, wParam, lParam);
 
 		ImGuiIO& io = ImGui::GetIO();
-		if (Open)
+		if (GetGUI()->Open)
 		{
 			if (KeyListener::IsPressed(VK_ESCAPE))
-				Open = false;
+				GetGUI()->Open = false;
 			ImGui_ImplWin32_WndProcHandler(hWnd, Msg, wParam, lParam);
 			io.MouseDrawCursor = true;
 			return true;

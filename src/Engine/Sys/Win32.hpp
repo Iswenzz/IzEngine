@@ -8,8 +8,7 @@
 #include "Log.hpp"
 #include "Memory.hpp"
 
-#include "Win32/DLL.hpp"
-#include "Win32/DLLS.hpp"
+#include "Win32/Plugins.hpp"
 #include "Win32/Environment.hpp"
 #include "Win32/KeyListener.hpp"
 #include "Win32/Memory.hpp"

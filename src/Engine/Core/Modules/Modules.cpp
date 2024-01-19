@@ -2,28 +2,21 @@
 
 namespace IW3SR
 {
-	Modules::Modules()
+	void Modules::Initialize()
 	{
+		for (const auto& [_, entry] : Entries)
+			entry->Initialize();
 		Deserialize();
-	}
-
-	Modules::~Modules()
-	{
-		Serialize();
 	}
 
 	void Modules::Enable(const std::string& id)
 	{
-		auto& entry = Entries[id];
-		entry->IsEnabled = true;
-		entry->Initialize();
+		Entries[id]->IsEnabled = true;
 	}
 
 	void Modules::Disable(const std::string& id)
 	{
-		auto& entry = Entries[id];
-		entry->IsEnabled = false;
-		entry->Shutdown();
+		Entries[id]->IsEnabled = false;
 	}
 
 	void Modules::Remove(const std::string& id)
@@ -36,8 +29,12 @@ namespace IW3SR
 	void Modules::Deserialize()
 	{
 		std::fstream file(Environment::IW3SRDirectory / "modules.json", std::ios::in | std::ios::out | std::ios::app);
+
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Serialized = nlohmann::json::parse(file);
+
+		for (const auto& [_, entry] : Entries)
+			entry->Deserialize(Serialized[entry->ID]);
 	}
 
 	void Modules::Serialize()
@@ -48,5 +45,12 @@ namespace IW3SR
 		std::ofstream file(Environment::IW3SRDirectory / "modules.json");
 		file << Serialized.dump(4);
 		file.close();
+	}
+
+	void Modules::Shutdown()
+	{
+		Serialize();
+		for (const auto& [_, entry] : Entries)
+			entry->Release();
 	}
 }

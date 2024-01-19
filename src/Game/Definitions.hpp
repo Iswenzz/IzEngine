@@ -22,5 +22,5 @@
 #define FONT_OBJECTIVE  "fonts/objectiveFont"
 
 #define GameCallback(method, ...) \
-	GC->Modules->Callback([&](const auto& entry) { entry->method(__VA_ARGS__); }); \
-	GC->Features->Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
+	Modules::Callback([&](const auto& entry) { entry->method(__VA_ARGS__); }); \
+	Features::Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });

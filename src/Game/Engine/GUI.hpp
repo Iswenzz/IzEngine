@@ -15,7 +15,7 @@
 namespace IW3SR
 {
 	/// <summary>
-	/// ImGUI class.
+	/// GUI class.
 	/// </summary>
 	class API GUI
 	{
@@ -24,25 +24,25 @@ namespace IW3SR
 		static inline ImPlotContext* PlotContext = nullptr;
 		static inline void* Data = nullptr;
 
-		static inline HWND MainWindow = nullptr;
-		static inline KeyListener OpenKey;
-		static inline bool Active = false;
-		static inline bool Open = false;
-		static inline bool DesignMode = false;
+		HWND MainWindow = nullptr;
+		bool Active = false;
+		bool Open = false;
+		bool DesignMode = false;
 
-		static inline UI::About About;
-		static inline UI::Binds Binds;
-		static inline UI::Memory Memory;
-		static inline UI::Modules Modules;
-		static inline UI::Settings Settings;
-		static inline UI::Themes Themes;
-		static inline UI::Toolbar Toolbar;
+		KeyListener OpenKey;
+		UI::About About;
+		UI::Binds Binds;
+		UI::Memory Memory;
+		UI::Modules Modules;
+		UI::Settings Settings;
+		UI::Themes Themes;
+		UI::Toolbar Toolbar;
 
 		/// <summary>
-		/// Initialize ImGUI.
+		/// Initialize
 		/// </summary>
 		GUI();
-		~GUI() = default;
+		~GUI();
 
 		/// <summary>
 		/// Patch the game.
@@ -50,39 +50,39 @@ namespace IW3SR
 		void Patch();
 
 		/// <summary>
-		/// Initialize ImGUI.
+		/// Initialize GUI.
 		/// </summary>
-		static void Initialize();
+		void Initialize();
 
 		/// <summary>
-		/// Shutdown ImGUI.
+		/// Shutdown GUI.
 		/// </summary>
-		static void Shutdown();
+		void Shutdown();
 
 		/// <summary>
-		/// Reset ImGUI.
+		/// Reset GUI.
 		/// </summary>
-		static void Reset();
+		void Reset();
 
 		/// <summary>
 		/// Reset the mouse.
 		/// </summary>
-		static void ResetMouse();
+		void ResetMouse();
 
 		/// <summary>
 		/// Begin frame.
 		/// </summary>
-		static void Begin();
+		void Begin();
 
 		/// <summary>
 		/// End frame.
 		/// </summary>
-		static void End();
+		void End();
 
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		static void Frame();
+		void Render();
 
 		/// <summary>
 		/// Creates the main window.

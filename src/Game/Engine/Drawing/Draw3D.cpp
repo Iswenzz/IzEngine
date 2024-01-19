@@ -15,7 +15,7 @@ namespace IW3SR::Game
         LinesCount += 2;
     }
 
-    void Draw3D::Frame()
+    void Draw3D::Render()
     {
         RB_DrawLines3D(LinesCount / 2, LinesWidth, LinesVerts.data(), LinesDepthTest);
         LinesCount = 0;

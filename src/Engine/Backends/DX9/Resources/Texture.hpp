@@ -6,7 +6,7 @@ namespace IW3SR
 	/// <summary>
 	/// Texture class.
 	/// </summary>
-	class API Texture
+	class API Texture : public IObject
 	{
 	public:
 		IDirect3DTexture9* Base;
@@ -16,11 +16,6 @@ namespace IW3SR
 		/// Initialize a new Texture.
 		/// </summary>
 		Texture() = default;
-		~Texture() = default;
-
-		/// <summary>
-		/// Reset resources.
-		/// </summary>
-		void Reset();
+		~Texture();
 	};
 }

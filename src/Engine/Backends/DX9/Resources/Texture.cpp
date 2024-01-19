@@ -2,7 +2,7 @@
 
 namespace IW3SR
 {
-	void Texture::Reset()
+	Texture::~Texture()
 	{
 		Base->Release();
 		BaseSurface->Release();

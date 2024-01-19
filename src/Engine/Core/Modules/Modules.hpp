@@ -6,7 +6,7 @@ namespace IW3SR
 	/// <summary>
 	/// Game modules.
 	/// </summary>
-	class API Modules
+	class API Modules : public ISerializable
 	{
 	public:
 		static inline std::map<std::string, std::unique_ptr<Module>> Entries;
@@ -15,27 +15,27 @@ namespace IW3SR
 		/// <summary>
 		/// Initialize the modules.
 		/// </summary>
-		Modules();
-		virtual ~Modules();
+		Modules() = default;
+		virtual ~Modules() = default;
+
+		/// <summary>
+		/// Initialize the modules.
+		/// </summary>
+		virtual void Initialize();
 
 		/// <summary>
 		/// Load a module.
 		/// </summary>
 		/// <typeparam name="M">The module type.</typeparam>
 		template <class M = Module>
-		static void Load(bool initialize = true)
+		static void Load(bool enabled = true)
 		{
-			std::unique_ptr<M> entry = std::make_unique<M>();
+			auto entry = std::make_unique<M>();
 			bool isSerialized = Serialized.contains(entry->ID);
 
-			entry->IsEnabled = initialize;
+			entry->IsEnabled = enabled;
 			if (isSerialized)
-			{
-				try { entry->Deserialize(Serialized[entry->ID]); }
-				catch (...) {}
-			}
-			if (entry->IsEnabled)
-				entry->Initialize();
+				entry->Deserialize(Serialized[entry->ID]);
 
 			Entries.insert({ entry->ID, std::move(entry) });
 		}
@@ -64,7 +64,7 @@ namespace IW3SR
 		/// <typeparam name="Func">The callback type.</typeparam>
 		/// <param name="callback">The function callback.</param>
 		template <typename Func>
-		void Callback(Func callback)
+		static void Callback(Func callback)
 		{
 			for (const auto& [_, entry] : Entries)
 			{
@@ -76,11 +76,16 @@ namespace IW3SR
 		/// <summary>
 		/// Load the modules.
 		/// </summary>
-		virtual void Deserialize();
+		virtual void Deserialize() override;
 
 		/// <summary>
 		/// Serialize the modules.
 		/// </summary>
-		virtual void Serialize();
+		virtual void Serialize() override;
+
+		/// <summary>
+		/// Shutdown the modules.
+		/// </summary>
+		virtual void Shutdown();
 	};
 }

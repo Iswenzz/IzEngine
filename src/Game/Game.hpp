@@ -1,13 +1,9 @@
 #pragma once
 #include "Definitions.hpp"
 
-#include "Game/Engine/GUI.hpp"
-#include "Game/Engine/Render.hpp"
+#include "Game/Engine/Renderer.hpp"
 #include "Game/Player/Player.hpp"
 #include "Game/Sys/Console.hpp"
-
-#include "Engine/Core/Modules.hpp"
-#include "Engine/Core/Math.hpp"
 
 namespace IW3SR
 {
@@ -17,13 +13,8 @@ namespace IW3SR
 	class GameClient
 	{
 	public:
-		std::unique_ptr<DLLS> DLLS;
-		std::unique_ptr<Features> Features;
-		std::unique_ptr<Modules> Modules;
-		std::unique_ptr<GUI> GUI;
-		std::unique_ptr<Render> Render;
+		std::unique_ptr<Renderer> Renderer;
 		std::unique_ptr<Console> Console;
-
 		std::array<std::shared_ptr<Player>, 64> Players;
 
 		/// <summary>
@@ -33,9 +24,9 @@ namespace IW3SR
 		~GameClient();
 
 		/// <summary>
-		/// Initialize game.
+		/// Start game.
 		/// </summary>
-		void Initialize();
+		void Start();
 
 		/// <summary>
 		/// CoD4X patch.
@@ -55,3 +46,6 @@ namespace IW3SR
 }
 
 extern GameClient* GC;
+
+#define GetRenderer()		GC->Renderer
+#define GetGUI()			GC->Renderer->GUI

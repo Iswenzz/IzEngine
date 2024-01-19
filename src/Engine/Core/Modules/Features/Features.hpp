@@ -1,6 +1,6 @@
 #pragma once
 #include "Feature.hpp"
-#include "Engine/Core/Modules.hpp"
+#include "Engine/Core/Modules/Modules.hpp"
 
 namespace IW3SR
 {
@@ -10,15 +10,15 @@ namespace IW3SR
 	class API Features : public Modules
 	{
 	public:
-		static inline std::map<std::string, std::unique_ptr<Module>> Entries;
+		static inline std::map<std::string, std::unique_ptr<Feature>> Entries;
 		static inline nlohmann::json Serialized;
 
 		/// <summary>
 		/// Initialize the features.
 		/// </summary>
-		Features();
-		virtual ~Features();
-		
+		Features() = default;
+		virtual ~Features() = default;
+
 		/// <summary>
 		/// Load a feature.
 		/// </summary>
@@ -26,14 +26,13 @@ namespace IW3SR
 		template <class F = Feature>
 		static void Load()
 		{
-			std::unique_ptr<F> entry = std::make_unique<F>();
+			auto entry = std::make_unique<F>();
 			bool isSerialized = Serialized.contains(entry->ID);
 
+			entry->IsEnabled = true;
 			if (isSerialized)
-			{
-				try { entry->Deserialize(Serialized[entry->ID]); }
-				catch (...) {}
-			}
+				entry->Deserialize(Serialized[entry->ID]);
+
 			Entries.insert({ entry->ID, std::move(entry) });
 		}
 
@@ -49,7 +48,7 @@ namespace IW3SR
 		/// <typeparam name="Func">The callback type.</typeparam>
 		/// <param name="callback">The function callback.</param>
 		template <typename Func>
-		void Callback(Func callback)
+		static void Callback(Func callback)
 		{
 			for (const auto& [_, entry] : Entries)
 			{

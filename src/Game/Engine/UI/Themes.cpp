@@ -6,7 +6,7 @@ namespace IW3SR::UI
 	{
 		Default();
 	}
-	
+
 	void Themes::Initialize()
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -192,14 +192,6 @@ namespace IW3SR::UI
 		plotStyle.Use24HourClock = false;
 		plotStyle.UseISO8601 = false;
 		plotStyle.UseLocalTime = false;
-
-		if (GUI::Active)
-		{
-			ImGuiStyle& imgui = ImGui::GetStyle();
-			imgui = style;
-			ImPlotStyle& implot = ImPlot::GetStyle();
-			implot = plotStyle;
-		}
 	}
 
 	void Themes::ComputeRainbow()
@@ -254,7 +246,7 @@ namespace IW3SR::UI
 		}
 	}
 
-	void Themes::Frame()
+	void Themes::Render()
 	{
 		if (!Open) return;
 

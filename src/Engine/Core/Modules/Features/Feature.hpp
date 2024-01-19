@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Core/Modules.hpp"
+#include "Engine/Core/Modules/Module.hpp"
 
 namespace IW3SR
 {
@@ -25,7 +25,5 @@ namespace IW3SR
 		/// Release the feature.
 		/// </summary>
 		virtual ~Feature();
-
-		NLOHMANN_SERIALIZE_POLY_BASE(Feature, Menu)
 	};
 }

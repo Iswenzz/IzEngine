@@ -38,3 +38,19 @@
 #ifndef CMAKE_BINARY_DIR
 #define CMAKE_BINARY_DIR ""
 #endif
+
+#define CLASS_DISALLOW_COPY_AND_ASSIGN(type) \
+	type(const type&) = delete; \
+	void operator=(const type&) = delete
+
+#define CLASS_SINGLETON(type) \
+public: \
+	static inline type* GetInstance() \
+	{ \
+		if (!Instance) \
+			Instance = std::make_unique<type>(); \
+		return Instance.get(); \
+	} \
+private: \
+	CLASS_DISALLOW_COPY_AND_ASSIGN(type); \
+	static inline std::unique_ptr<type> Instance;

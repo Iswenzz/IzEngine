@@ -3,8 +3,8 @@
 namespace IW3SR::UI
 {
 	About::About() : Window("About") { }
-	
-	void About::Frame() 
+
+	void About::Render()
 	{
 		if (!Open) return;
 
@@ -16,7 +16,7 @@ A Call of Duty 4 Modification.
 IW3SR (c) 2023-2024)";
 
 		Begin();
-		ImGui::PushFont(GUI::Themes.H1);
+		ImGui::PushFont(GetGUI()->Themes.H1);
 		ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize(IW3SR).x) * 0.5f);
 		ImGui::Text(IW3SR);
 		ImGui::Separator();

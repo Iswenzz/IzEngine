@@ -7,7 +7,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Text element.
 	/// </summary>
-	class API Text
+	class API Text : public IObject
 	{
 	public:
 		std::string Value;
@@ -80,7 +80,7 @@ namespace IW3SR::Game
 		/// <param name="y">Y position.</param>
 		void ComputeAlignment(float& x, float& y);
 
-		NLOHMANN_SERIALIZE(Text, Value, Position, Color,
+		NLOHMANN_SERIALIZE_POLY_BASE(Text, Value, Position, Color,
 			HorizontalAlign, VerticalAlign, AlignX, AlignY, FontName, FontSize)
 	};
 }

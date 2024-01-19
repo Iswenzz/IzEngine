@@ -15,20 +15,20 @@ namespace IW3SR
 		Com_PrintMessage_h(0x4FCA50, Console::Write);
 
 	Hook<void(int localClientNum)>
-		CG_DrawCrosshair_h(0x42F6B5, Render::Draw2D);
+		CG_DrawCrosshair_h(0x42F6B5, Renderer::Draw2D);
 
 	Hook<void(usercmd_s* cmd)>
 		CL_FinishMove_h(0x463A60, PMove::FinishMove);
 
 	Hook<void()>
-		R_Init_h(0x5F4EE0, Render::Initialize);
+		R_Init_h(0x5F4EE0, Renderer::Initialize);
 
 	Hook<void(int window)>
-		R_Shutdown_h(0x5F4F90, Render::Shutdown);
+		R_Shutdown_h(0x5F4F90, Renderer::Shutdown);
 
 	Hook<IDirect3D9* STDCALL(UINT sdk)>
 		R_Direct3DCreate9_h(0x670284, D3D9::Direct3DCreate9);
 
 	Hook<void(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)>
-		RB_EndSceneRendering_h(0x6496EC, Render::Draw3D);
+		RB_EndSceneRendering_h(0x6496EC, Renderer::Draw3D);
 }

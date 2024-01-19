@@ -2,16 +2,6 @@
 
 namespace IW3SR
 {
-	Features::Features()
-	{
-		Deserialize();
-	}
-
-	Features::~Features()
-	{
-		Serialize();
-	}
-
 	void Features::Remove(const std::string& id)
 	{
 		auto it = Entries.find(id);

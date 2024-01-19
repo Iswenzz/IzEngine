@@ -45,7 +45,7 @@ namespace IW3SR::UI
 		/// <summary>
 		/// Render frame.
 		/// </summary>
-		void Frame();
+		void Render();
 
 	private:
 		/// <summary>
@@ -68,6 +68,6 @@ namespace IW3SR::UI
 		/// <param name="start">Is the start of the token.</param>
 		static void MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start);
 
-		NLOHMANN_SERIALIZE_DERIVED(Themes, Window, Style, PlotStyle)
+		NLOHMANN_SERIALIZE_POLY(Themes, Window, Style, PlotStyle)
 	};
 }

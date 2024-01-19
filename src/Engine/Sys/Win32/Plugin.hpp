@@ -4,9 +4,9 @@
 namespace IW3SR
 {
 	/// <summary>
-	/// Dynamic Link Library.
+	/// Plugin class.
 	/// </summary>
-	class API DLL
+	class API Plugin
 	{
 	public:
 		std::string ID;
@@ -14,33 +14,33 @@ namespace IW3SR
 		std::string FilePath;
 
 		HINSTANCE Instance = nullptr;
-		Function<void(DLL* entry)> CallbackInitialize;
-		Function<void()> CallbackGUI;
+		Function<void(Plugin* plugin)> CallbackInitialize;
+		Function<void()> CallbackRenderer;
 		Function<void()> CallbackShutdown;
 
 		/// <summary>
-		/// Create a new DLL.
+		/// Create a new plugin.
 		/// </summary>
-		DLL() = default;
+		Plugin() = default;
 
 		/// <summary>
-		/// Create a new DLL.
+		/// Create a new plugin.
 		/// </summary>
-		/// <param name="filePath">The DLL file path.</param>
-		DLL(std::string filePath);
+		/// <param name="filePath">The plugin file path.</param>
+		Plugin(std::string filePath);
 
 		/// <summary>
-		/// Release the DLL.
+		/// Release the plugin.
 		/// </summary>
-		~DLL();
+		~Plugin();
 
 		/// <summary>
-		/// Set ImGUI renderer.
+		/// Set renderer.
 		/// </summary>
 		void SetRenderer();
 
 		/// <summary>
-		/// Set DLL infos.
+		/// Set plugin infos.
 		/// </summary>
 		/// <param name="id">The ID.</param>
 		/// <param name="name">The name.</param>

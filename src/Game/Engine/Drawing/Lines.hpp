@@ -7,7 +7,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Lines class.
 	/// </summary>
-	class API Lines
+	class API Lines : public IObject
 	{
 	public:
 		std::vector<GfxPointVertex> Verts{ };

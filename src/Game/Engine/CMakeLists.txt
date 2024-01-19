@@ -7,5 +7,5 @@ target_sources(IW3SR PRIVATE
 	Assets.cpp
 	GUI.hpp
 	GUI.cpp
-	Render.hpp
-	Render.cpp)
+	Renderer.hpp
+	Renderer.cpp)

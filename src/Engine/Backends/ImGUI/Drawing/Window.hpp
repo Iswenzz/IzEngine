@@ -7,7 +7,7 @@ namespace IW3SR
 	/// <summary>
 	/// Window drawing.
 	/// </summary>
-	class API Window
+	class API Window : public IObject
 	{
 	public:
 		std::string Name;
@@ -55,6 +55,6 @@ namespace IW3SR
 		/// </summary>
 		void End();
 
-		NLOHMANN_SERIALIZE(Window, Name, Position, Size, Open)
+		NLOHMANN_SERIALIZE_POLY_BASE(Window, Name, Position, Size, Open)
 	};
 }

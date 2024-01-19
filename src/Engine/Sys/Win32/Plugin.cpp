@@ -1,28 +1,28 @@
-#include "DLL.hpp"
+#include "Plugin.hpp"
 #include <stdexcept>
 
 namespace IW3SR
 {
-	DLL::DLL(std::string filePath)
+	Plugin::Plugin(std::string filePath)
 	{
 		FilePath = filePath;
 		Instance = LoadLibrary(FilePath.c_str());
 
 		if (!Instance)
-			throw std::runtime_error("Couldn't load DLL.");
+			throw std::runtime_error("Couldn't load plugin.");
 
 		CallbackInitialize = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Initialize"));
-		CallbackGUI = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "GUI"));
+		CallbackRenderer = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Renderer"));
 		CallbackShutdown = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Shutdown"));
 
 		if (!CallbackInitialize)
-			throw std::runtime_error("DLL is missing Initialize function.");
+			throw std::runtime_error("Plugin is missing Initialize function.");
 
 		SetRenderer();
 		CallbackInitialize(this);
 	}
 
-	DLL::~DLL()
+	Plugin::~Plugin()
 	{
 		if (CallbackShutdown)
 			CallbackShutdown();
@@ -31,13 +31,13 @@ namespace IW3SR
 		Instance = nullptr;
 	}
 
-	void DLL::SetRenderer()
+	void Plugin::SetRenderer()
 	{
-		if (CallbackGUI)
-			CallbackGUI();
+		if (CallbackRenderer)
+			CallbackRenderer();
 	}
 
-	void DLL::SetInfos(const std::string& id, const std::string& name)
+	void Plugin::SetInfos(const std::string& id, const std::string& name)
 	{
 		ID = id;
 		Name = name;
