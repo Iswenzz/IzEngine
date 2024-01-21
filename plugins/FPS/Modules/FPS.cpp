@@ -10,6 +10,8 @@ namespace IW3SR::Addons
 
 	void FPS::Initialize()
 	{
+		Graph = Plots();
+
 		FPSText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
@@ -31,8 +33,7 @@ namespace IW3SR::Addons
 
 		if (ShowGraph)
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
-			Graph.Begin(ImGuiWindowFlags_Graph);
+			Graph.Begin();
 			if (ImPlot::BeginPlot("##FPS", Graph.RenderSize))
 			{
 				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(FPSText.Color));
@@ -47,7 +48,6 @@ namespace IW3SR::Addons
 				ImPlot::EndPlot();
 			}
 			Graph.End();
-			ImGui::PopStyleVar();
 		}
 	}
 }

@@ -28,6 +28,7 @@ namespace IW3SR::Engine
 		ImGui::SetNextWindowPos(RenderPosition, ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(RenderSize, ImGuiCond_FirstUseEver);
 
+		ImGui::PushID(ID.c_str());
 		ImGui::Begin(Name.c_str(), &Open, flags);
 		RenderPosition = ImGui::GetWindowPos();
 		RenderSize = ImGui::GetWindowSize();
@@ -46,5 +47,6 @@ namespace IW3SR::Engine
 	void Window::End()
 	{
 		ImGui::End();
+		ImGui::PopID();
 	}
 }

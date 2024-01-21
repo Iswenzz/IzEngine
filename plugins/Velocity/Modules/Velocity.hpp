@@ -21,7 +21,7 @@ namespace IW3SR::Addons
 		Text AverageText;
 		Text MaxText;
 
-		Window Graph;
+		Plots Graph;
 		KeyListener ResetKey;
 		bool ShowMax;
 		bool ShowAverage;

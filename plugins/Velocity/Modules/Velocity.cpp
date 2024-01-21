@@ -4,7 +4,6 @@ namespace IW3SR::Addons
 {
 	Velocity::Velocity() : Module("sr.player.velocity", "Velocity", "Player")
 	{
-		Graph = Window("Graph");
 		ResetKey = KeyListener('R');
 		ShowAverage = false;
 		ShowMax = false;
@@ -13,6 +12,8 @@ namespace IW3SR::Addons
 
 	void Velocity::Initialize()
 	{
+		Graph = Plots();
+
 		VelocityText = Text("0", "Arial", 0, 2, 1.4, { 0, 1, 1, 1 });
 		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
 		VelocityText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
@@ -31,6 +32,7 @@ namespace IW3SR::Addons
 		ImGui::Checkbox("Average Velocity", &ShowAverage);
 		ImGui::SameLine();
 		ImGui::Checkbox("Max Velocity", &ShowMax);
+
 		if (ShowMax)
 		{
 			ImGui::SameLine();
@@ -76,8 +78,7 @@ namespace IW3SR::Addons
 		}
 		if (ShowGraph)
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
-			Graph.Begin(ImGuiWindowFlags_Graph);
+			Graph.Begin();
 			if (ImPlot::BeginPlot("##Velocity", Graph.RenderSize))
 			{
 				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(VelocityText.Color));
@@ -105,7 +106,6 @@ namespace IW3SR::Addons
 				ImPlot::EndPlot();
 			}
 			Graph.End();
-			ImGui::PopStyleVar();
 		}
 	}
 }

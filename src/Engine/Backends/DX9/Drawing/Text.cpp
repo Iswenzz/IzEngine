@@ -53,6 +53,8 @@ namespace IW3SR::Engine
 		if (!ImGui::CollapsingHeader(label.c_str(), open ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None))
 			return;
 
+		ImGui::PushID(ID.c_str());
+
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
 		const std::vector<std::string>& fonts = Assets::Get().FontNames;
@@ -80,6 +82,8 @@ namespace IW3SR::Engine
 		int alignY = AlignY;
 		if (ImGui::Combo("Align Y", &alignY, verticals))
 			AlignY = static_cast<Alignment>(alignY);
+
+		ImGui::PopID();
 	}
 
 	void Text::Render()
