@@ -1,6 +1,6 @@
 #include "Themes.hpp"
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	Themes::Themes() : Window("Themes")
 	{

@@ -1,7 +1,6 @@
 #include "Toolbar.hpp"
-#include "Engine/Core/Utils/Utils.hpp"
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	Toolbar::Toolbar() : Window("Toolbar")
 	{
@@ -16,12 +15,13 @@ namespace IW3SR::UI
 		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
 
+		auto& gui = GUI::Get();
 		const vec2& position = RenderPosition;
 		const vec2& size = RenderSize;
 		const vec2 buttonSize = { 30, 30 };
 
 		ImGui::Rainbow(position + vec2{ 0, size.y }, position + vec2{ size.x, size.y + 2 });
-		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &GetGUI()->Modules.Open, buttonSize);
+		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &gui.Modules.Open, buttonSize);
 		ImGui::Tooltip("Modules");
 		ImGui::SameLine();
 
@@ -32,13 +32,13 @@ namespace IW3SR::UI
 			ImGui::Tooltip("Reload plugins");
 			ImGui::SameLine();
 		}
-		ImGui::ButtonToggle(ICON_FA_GRIP, "Design", &GetGUI()->DesignMode, buttonSize);
+		ImGui::ButtonToggle(ICON_FA_GRIP, "Design", &gui.DesignMode, buttonSize);
 		ImGui::Tooltip("Design mode");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_PAINTBRUSH, "Themes", &GetGUI()->Themes.Open, buttonSize);
+		ImGui::Button(ICON_FA_PAINTBRUSH, "Themes", &gui.Themes.Open, buttonSize);
 		ImGui::Tooltip("Themes");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_KEYBOARD, "Binds", &GetGUI()->Binds.Open, buttonSize);
+		ImGui::Button(ICON_FA_KEYBOARD, "Binds", &gui.Binds.Open, buttonSize);
 		ImGui::Tooltip("Binds");
 		ImGui::SameLine();
 
@@ -53,14 +53,14 @@ namespace IW3SR::UI
 				ImGui::ShowDebugLogWindow(&IsDebug);
 				ImGui::ShowStackToolWindow(&IsDebug);
 			}
-			ImGui::Button(ICON_FA_MEMORY, "Memory", &GetGUI()->Memory.Open, buttonSize);
+			ImGui::Button(ICON_FA_MEMORY, "Memory", &gui.Memory.Open, buttonSize);
 			ImGui::Tooltip("Memory");
 			ImGui::SameLine();
 		}
-		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &GetGUI()->About.Open, buttonSize);
+		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &gui.About.Open, buttonSize);
 		ImGui::Tooltip("About");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_GEAR, "Settings", &GetGUI()->Settings.Open, buttonSize);
+		ImGui::Button(ICON_FA_GEAR, "Settings", &gui.Settings.Open, buttonSize);
 		ImGui::Tooltip("Settings");
 
 		End();
@@ -72,8 +72,8 @@ namespace IW3SR::UI
 		if (IsReloading) return;
 		IsReloading = true;
 
-		GetRenderer()->Modules->Serialize();
-		GetRenderer()->Features->Serialize();
+		Engine::Modules::Get().Serialize();
+		Engine::Features::Get().Serialize();
 
 		Plugins::Shutdown();
 		std::thread([this] { Compile(); }).detach();
@@ -88,8 +88,8 @@ namespace IW3SR::UI
 		}
 		Plugins::Initialize();
 
-		GetRenderer()->Modules->Deserialize();
-		GetRenderer()->Features->Deserialize();
+		Engine::Modules::Get().Deserialize();
+		Engine::Features::Get().Deserialize();
 
 		IsReloading = false;
 	}

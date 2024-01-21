@@ -41,16 +41,17 @@
 
 #define CLASS_DISALLOW_COPY_AND_ASSIGN(type) \
 	type(const type&) = delete; \
-	void operator=(const type&) = delete
+	void operator=(const type&) = delete;
 
 #define CLASS_SINGLETON(type) \
 public: \
-	static inline type* GetInstance() \
+	static inline type& Get() \
 	{ \
-		if (!Instance) \
-			Instance = std::make_unique<type>(); \
-		return Instance.get(); \
+		static type instance; \
+		return instance; \
 	} \
-private: \
-	CLASS_DISALLOW_COPY_AND_ASSIGN(type); \
-	static inline std::unique_ptr<type> Instance;
+	\
+	inline void Destroy() \
+	{ \
+		*this = {}; \
+	}

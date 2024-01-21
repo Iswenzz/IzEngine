@@ -1,6 +1,6 @@
 #include "D3D9EX.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	D3D9EX::D3D9EX(IDirect3D9Ex* d3d9ex) : pIDirect3D9Ex(d3d9ex) { }
 
@@ -56,7 +56,7 @@ namespace IW3SR
 		return pIDirect3D9Ex->GetAdapterDisplayMode(Adapter, pMode);
 	}
 
-	HRESULT D3D9EX::CheckDeviceType(UINT iAdapter, D3DDEVTYPE DevType, D3DFORMAT DisplayFormat, 
+	HRESULT D3D9EX::CheckDeviceType(UINT iAdapter, D3DDEVTYPE DevType, D3DFORMAT DisplayFormat,
 		D3DFORMAT BackBufferFormat, BOOL bWindowed)
 	{
 		return pIDirect3D9Ex->CheckDeviceType(iAdapter, DevType, DisplayFormat, BackBufferFormat, bWindowed);
@@ -71,14 +71,14 @@ namespace IW3SR
 	HRESULT D3D9EX::CheckDeviceMultiSampleType(UINT Adapter, D3DDEVTYPE DeviceType, D3DFORMAT SurfaceFormat,
 		BOOL Windowed, D3DMULTISAMPLE_TYPE MultiSampleType, DWORD* pQualityLevels)
 	{
-		return pIDirect3D9Ex->CheckDeviceMultiSampleType(Adapter, DeviceType, SurfaceFormat, 
+		return pIDirect3D9Ex->CheckDeviceMultiSampleType(Adapter, DeviceType, SurfaceFormat,
 			Windowed, MultiSampleType, pQualityLevels);
 	}
 
-	HRESULT D3D9EX::CheckDepthStencilMatch(UINT Adapter, D3DDEVTYPE DeviceType, D3DFORMAT AdapterFormat, 
+	HRESULT D3D9EX::CheckDepthStencilMatch(UINT Adapter, D3DDEVTYPE DeviceType, D3DFORMAT AdapterFormat,
 		D3DFORMAT RenderTargetFormat, D3DFORMAT DepthStencilFormat)
 	{
-		return pIDirect3D9Ex->CheckDepthStencilMatch(Adapter, DeviceType, AdapterFormat, 
+		return pIDirect3D9Ex->CheckDepthStencilMatch(Adapter, DeviceType, AdapterFormat,
 			RenderTargetFormat, DepthStencilFormat);
 	}
 
@@ -98,11 +98,11 @@ namespace IW3SR
 		return pIDirect3D9Ex->GetAdapterMonitor(Adapter);
 	}
 
-	HRESULT D3D9EX::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, 
-		DWORD BehaviorFlags, D3DPRESENT_PARAMETERS* pPresentationParameters, 
+	HRESULT D3D9EX::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow,
+		DWORD BehaviorFlags, D3DPRESENT_PARAMETERS* pPresentationParameters,
 		IDirect3DDevice9** ppReturnedDeviceInterface)
 	{
-		HRESULT hres = pIDirect3D9Ex->CreateDevice(Adapter, DeviceType, hFocusWindow, 
+		HRESULT hres = pIDirect3D9Ex->CreateDevice(Adapter, DeviceType, hFocusWindow,
 			BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
 
 		*ppReturnedDeviceInterface = new D3D9Device(*ppReturnedDeviceInterface);
@@ -114,7 +114,7 @@ namespace IW3SR
 		return (pIDirect3D9Ex->GetAdapterModeCountEx(Adapter, pFilter));
 	}
 
-	HRESULT D3D9EX::EnumAdapterModesEx(UINT Adapter, const D3DDISPLAYMODEFILTER* pFilter, UINT Mode, 
+	HRESULT D3D9EX::EnumAdapterModesEx(UINT Adapter, const D3DDISPLAYMODEFILTER* pFilter, UINT Mode,
 		D3DDISPLAYMODEEX* pMode)
 	{
 		return (pIDirect3D9Ex->EnumAdapterModesEx(Adapter, pFilter, Mode, pMode));
@@ -125,11 +125,11 @@ namespace IW3SR
 		return (pIDirect3D9Ex->GetAdapterDisplayModeEx(Adapter, pMode, pRotation));
 	}
 
-	HRESULT D3D9EX::CreateDeviceEx(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, 
-		DWORD BehaviorFlags, D3DPRESENT_PARAMETERS* pPresentationParameters, 
+	HRESULT D3D9EX::CreateDeviceEx(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow,
+		DWORD BehaviorFlags, D3DPRESENT_PARAMETERS* pPresentationParameters,
 		D3DDISPLAYMODEEX* pFullscreenDisplayMode, IDirect3DDevice9Ex** ppReturnedDeviceInterface)
 	{
-		return (pIDirect3D9Ex->CreateDeviceEx(Adapter, DeviceType, hFocusWindow, BehaviorFlags, 
+		return (pIDirect3D9Ex->CreateDeviceEx(Adapter, DeviceType, hFocusWindow, BehaviorFlags,
 			pPresentationParameters, pFullscreenDisplayMode, ppReturnedDeviceInterface));
 	}
 

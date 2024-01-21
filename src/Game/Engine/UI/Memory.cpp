@@ -1,6 +1,6 @@
 #include "Memory.hpp"
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	Memory::Memory() : Window("Memory")
 	{
@@ -15,13 +15,13 @@ namespace IW3SR::UI
 	ImU8 Memory::Read(const ImU8* data, size_t offset)
 	{
 		ImU8 byte = 0;
-		::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
+		Engine::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
 		return byte;
 	}
 
 	void Memory::Write(ImU8* data, size_t offset, ImU8 value)
 	{
-		::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value), 1);
+		Engine::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value), 1);
 	}
 
 	void Memory::Render()

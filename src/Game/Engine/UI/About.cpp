@@ -1,6 +1,6 @@
 #include "About.hpp"
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	About::About() : Window("About") { }
 
@@ -16,7 +16,7 @@ A Call of Duty 4 Modification.
 IW3SR (c) 2023-2024)";
 
 		Begin();
-		ImGui::PushFont(GetGUI()->Themes.H1);
+		ImGui::PushFont(GUI::Get().Themes.H1);
 		ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize(IW3SR).x) * 0.5f);
 		ImGui::Text(IW3SR);
 		ImGui::Separator();

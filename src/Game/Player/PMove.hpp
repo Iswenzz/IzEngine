@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// Player movement.

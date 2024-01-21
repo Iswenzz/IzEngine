@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Engine/GUI.hpp"
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	/// <summary>
 	/// Main toolbar.

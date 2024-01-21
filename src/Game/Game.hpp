@@ -5,7 +5,7 @@
 #include "Game/Player/Player.hpp"
 #include "Game/Sys/Console.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// Game client.
@@ -47,5 +47,5 @@ namespace IW3SR
 
 extern GameClient* GC;
 
-#define GetRenderer()		GC->Renderer
-#define GetGUI()			GC->Renderer->GUI
+#define GetRenderer()	GC->Renderer
+#define GetConsole()	GC->Console

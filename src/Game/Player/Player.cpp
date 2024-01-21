@@ -1,7 +1,7 @@
 #include "Player.hpp"
 #include "Game/Game.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	Player::Player(int index)
 	{

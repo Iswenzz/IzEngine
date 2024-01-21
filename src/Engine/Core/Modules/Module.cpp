@@ -1,6 +1,6 @@
 #include "Module.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Module::Module(const std::string& id, const std::string& name, const std::string& group)
 	{

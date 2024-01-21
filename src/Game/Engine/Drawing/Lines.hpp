@@ -10,7 +10,7 @@ namespace IW3SR::Game
 	class API Lines : public IObject
 	{
 	public:
-		std::vector<GfxPointVertex> Verts{ };
+		std::vector<GfxPointVertex> Verts;
 		int Count = 0;
 		int Width = 2;
 		int Limit = 2735;
@@ -23,7 +23,7 @@ namespace IW3SR::Game
 		/// <param name="limit">The lines size limit.</param>
 		/// <param name="depthTest">The depth test.</param>
 		Lines(int width, int limit, bool depthTest);
-		~Lines() = default;
+		virtual ~Lines() = default;
 
 		/// <summary>
 		/// Add a line.

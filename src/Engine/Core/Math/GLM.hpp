@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	template <typename T> class Matrix3;
 	template <typename T> class Vector2;

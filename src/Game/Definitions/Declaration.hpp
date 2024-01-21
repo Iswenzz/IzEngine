@@ -1,7 +1,7 @@
 #pragma once
 #include "Structs.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	// Binaries
 	API extern std::string COD4X_BIN;

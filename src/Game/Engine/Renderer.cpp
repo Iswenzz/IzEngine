@@ -5,14 +5,10 @@
 
 #include "Engine/Backends/DX9/Assets.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	Renderer::Renderer()
 	{
-		Modules = std::make_unique<class Modules>();
-		Features = std::make_unique<class Features>();
-		GUI = std::make_unique<class GUI>();
-
 		Patch();
 	}
 
@@ -24,28 +20,34 @@ namespace IW3SR
 		// Increase fps cap to 125 for menus and loadscreen
 		Memory::Set<char>(0x500176, 8);
 		Memory::Set<char>(0x500179, 8);
+
+		if (COD4X)
+		{
+			MainWndProc_h.Address = Memory::Scan(COD4X_BIN,
+				"\x55\x89\xE5\x53\x81\xEC\x84\x00\x00\x00\xC7\x04\x24\x02", 14);
+		}
 	}
 
 	void Renderer::Initialize()
 	{
 		R_Init_h();
 
-		Assets::Initialize();
-		Game::Assets::Initialize();
+		Assets::Get().Initialize();
+		Engine::Assets::Get().Initialize();
 
-		GetGUI()->Initialize();
-		GetRenderer()->Modules->Initialize();
-		GetRenderer()->Features->Initialize();
+		GUI::Get().Initialize();
+		Modules::Get().Initialize();
+		Features::Get().Initialize();
 	}
 
 	void Renderer::Shutdown(int window)
 	{
-		GetRenderer()->Features->Shutdown();
-		GetRenderer()->Modules->Shutdown();
-		GetGUI()->Shutdown();
+		Features::Get().Release();
+		Modules::Get().Release();
+		GUI::Get().Release();
 
-		Game::Assets::Shutdown();
-		Assets::Shutdown();
+		Assets::Get().Release();
+		Engine::Assets::Get().Release();
 
 		R_Shutdown_h(window);
 	}
@@ -65,9 +67,9 @@ namespace IW3SR
 
 	void Renderer::Render()
 	{
-		GUI->Begin();
+		GUI::Get().Begin();
 		if (Player::CanRender())
 			GameCallback(OnRender);
-		GUI->End();
+		GUI::Get().End();
 	}
 }

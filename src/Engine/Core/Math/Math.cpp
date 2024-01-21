@@ -5,7 +5,7 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     vec2 Math::WorldToScreen(const vec3& worldPosition)
     {
@@ -35,12 +35,12 @@ namespace IW3SR
         };
     }
 
-    float Math::RadToDeg(const float radians)
+    float Math::RadToDeg(float radians)
     {
         return radians * (180.0f / M_PI);
     }
 
-    float Math::DegToRad(const float degrees)
+    float Math::DegToRad(float degrees)
     {
         return degrees * M_PI / 180.0f;
     }

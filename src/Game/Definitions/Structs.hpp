@@ -4,7 +4,7 @@
 
 #include "Engine/Backends/DX9.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	typedef float vec_t;
 	typedef vec_t vec2_t[2];

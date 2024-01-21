@@ -1,7 +1,7 @@
 #pragma once
 #include "Serializer.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Serializable class.
@@ -12,18 +12,8 @@ namespace IW3SR
 		/// <summary>
 		/// Serialize to json.
 		/// </summary>
-		virtual void Serialize() { };
-
-		/// <summary>
-		/// Serialize to json.
-		/// </summary>
 		/// <param name="json">The json object.</param>
 		virtual void Serialize(nlohmann::json& json) { };
-
-		/// <summary>
-		/// Deserialize to json.
-		/// </summary>
-		virtual void Deserialize() { };
 
 		/// <summary>
 		/// Deserialize to json.
@@ -80,9 +70,6 @@ namespace IW3SR
 		{
 			json = value;
 		}
-
-	protected:
-		nlohmann::json Serialized;
 	};
 
 	template <class T>

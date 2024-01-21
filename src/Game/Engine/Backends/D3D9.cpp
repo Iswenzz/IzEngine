@@ -1,7 +1,7 @@
 #include "D3D9.hpp"
 #include "Game/Game.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	D3D9::D3D9(IDirect3D9* d3d9) : pIDirect3D9(d3d9) { }
 
@@ -213,7 +213,7 @@ namespace IW3SR
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
-		if (GetGUI()->Active)
+		if (GUI::Get().Active)
 		{
 			ImGui_ImplDX9_InvalidateDeviceObjects();
 			pIDirect3DDevice9->Reset(pPresentationParameters);

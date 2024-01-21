@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	GameClient::GameClient()
 	{

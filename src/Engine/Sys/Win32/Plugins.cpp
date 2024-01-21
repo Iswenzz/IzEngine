@@ -1,6 +1,6 @@
 #include "Plugins.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	void Plugins::Initialize()
 	{

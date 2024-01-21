@@ -12,8 +12,7 @@ namespace IW3SR::Game
 		Value = text;
 		Position = { x, y };
 		Color = color;
-		
-		SetFont(font);
+		FontName = font;
 	}
 
 	void Text::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -30,15 +29,10 @@ namespace IW3SR::Game
 
 	void Text::SetFont(const std::string& font)
 	{
-		Font = Assets::Fonts[font];
+		auto& assets = Assets::Get();
+		Font = assets.Fonts[font];
 		FontName = font;
-
-		if (!Font)
-		{
-			FontName = FONT_OBJECTIVE;
-			Font = Assets::Fonts[FontName];
-		}
-		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, FontName));
+		FontIndex = std::distance(assets.FontNames.begin(), std::ranges::find(assets.FontNames, FontName));
 	}
 
 	void Text::ComputeAlignment(float& x, float& y)
@@ -61,7 +55,7 @@ namespace IW3SR::Game
 
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
-		const std::vector<std::string>& fonts = Assets::FontNames;
+		const std::vector<std::string>& fonts = Assets::Get().FontNames;
 
 		ImGui::DragFloat2("Position", Position);
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
@@ -94,6 +88,9 @@ namespace IW3SR::Game
 		float y = Position.y;
 		float xScale = FontSize * RESCALE;
 		float yScale = FontSize * RESCALE;
+
+		if (!Font)
+			SetFont(FontName);
 
 		Size = { R_TextWidth(Value.c_str(), Value.size(), Font) * xScale, Font->pixelHeight * yScale };
 

@@ -14,3 +14,6 @@
 #include "Game/Engine/GUI.hpp"
 #include "Game/Player/Player.hpp"
 #include "Game/Sys/Dvar.hpp"
+
+namespace IW3SR::Addons {};
+using namespace IW3SR::Addons;

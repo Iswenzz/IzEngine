@@ -1,15 +1,15 @@
 #pragma once
 #include <functional>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Function wrapper.
 	/// </summary>
 	/// <typeparam name="T">The function definition.</typeparam>
 	template <typename T>
-	class Function 
-	{ 
+	class Function
+	{
 		using R = typename std::function<T>::result_type;
 	public:
 		int Address = 0;

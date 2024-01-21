@@ -1,7 +1,7 @@
 #include "Functions.hpp"
 #include "Game/Game.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 		DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,

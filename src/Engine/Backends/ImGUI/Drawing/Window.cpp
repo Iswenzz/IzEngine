@@ -1,7 +1,7 @@
 #include "Window.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Window::Window(std::string name)
 	{

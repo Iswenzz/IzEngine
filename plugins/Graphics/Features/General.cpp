@@ -1,6 +1,6 @@
 #include "General.hpp"
 
-namespace IW3SR
+namespace IW3SR::Addons
 {
 	General::General() : Feature("sr.feature.graphics", "Graphics", "General")
 	{

@@ -2,7 +2,7 @@
 #include "Engine/Backends/ImGUI.hpp"
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Draw 3D class.

@@ -10,8 +10,7 @@ namespace IW3SR::Game
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
-		
-		SetMaterial(material);
+		MaterialName = material;
 	}
 
 	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -52,7 +51,7 @@ namespace IW3SR::Game
 
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
-		const std::vector<std::string>& fonts = Assets::FontNames;
+		const std::vector<std::string>& fonts = Assets::Get().FontNames;
 
 		ImGui::DragFloat2("Position", Position);
 		ImGui::DragFloat2("Size", Size);
@@ -81,6 +80,9 @@ namespace IW3SR::Game
 		float y = Position.y;
 		float w = Size.x;
 		float h = Size.y;
+
+		if (!Material)
+			SetMaterial(MaterialName);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

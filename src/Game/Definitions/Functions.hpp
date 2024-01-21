@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Sys/Memory.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	static Function<int(const char* name)>
 		BG_FindWeaponIndexByName = 0x416610;

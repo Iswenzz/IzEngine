@@ -1,7 +1,7 @@
 #pragma once
 #include "D3D9.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// DirectX3D 9EX.
@@ -19,7 +19,7 @@ namespace IW3SR
 		COM_DECLSPEC_NOTHROW UINT STDCALL GetAdapterCount() override;
 		COM_DECLSPEC_NOTHROW HRESULT STDCALL GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAPTER_IDENTIFIER9* pIdentifier) override;
 		COM_DECLSPEC_NOTHROW UINT STDCALL GetAdapterModeCount(UINT Adapter, D3DFORMAT Format) override;
-		COM_DECLSPEC_NOTHROW HRESULT STDCALL EnumAdapterModes(UINT Adapter, D3DFORMAT Format, UINT Mode, D3DDISPLAYMODE* pMode) override;   
+		COM_DECLSPEC_NOTHROW HRESULT STDCALL EnumAdapterModes(UINT Adapter, D3DFORMAT Format, UINT Mode, D3DDISPLAYMODE* pMode) override;
 		COM_DECLSPEC_NOTHROW HRESULT STDCALL GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE* pMode) override;
 		COM_DECLSPEC_NOTHROW HRESULT STDCALL CheckDeviceType(UINT iAdapter, D3DDEVTYPE DevType, D3DFORMAT DisplayFormat, D3DFORMAT BackBufferFormat, BOOL bWindowed) override;
 		COM_DECLSPEC_NOTHROW HRESULT STDCALL CheckDeviceFormat(UINT Adapter, D3DDEVTYPE DeviceType, D3DFORMAT AdapterFormat, DWORD Usage, D3DRESOURCETYPE RType, D3DFORMAT CheckFormat) override;

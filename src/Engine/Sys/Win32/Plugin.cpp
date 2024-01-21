@@ -1,7 +1,7 @@
 #include "Plugin.hpp"
 #include <stdexcept>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Plugin::Plugin(std::string filePath)
 	{

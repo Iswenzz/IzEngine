@@ -2,7 +2,7 @@
 #include <functional>
 #include <polyhook2/Detour/NatDetour.hpp>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     /// <summary>
     /// Hook class.

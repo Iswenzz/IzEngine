@@ -11,33 +11,40 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Assets class.
 	/// </summary>
-	class API Assets
+	class API Assets : public IInitializable
 	{
+		CLASS_SINGLETON(Assets)
 	public:
-		static inline std::unordered_map<std::string, Font_s*> Fonts;
-		static inline std::vector<std::string> FontNames;
+		std::unordered_map<std::string, Font_s*> Fonts;
+		std::vector<std::string> FontNames;
 
 		/// <summary>
 		/// Initialize the assets.
 		/// </summary>
-		static void Initialize();
+		void Initialize();
 
 		/// <summary>
-		/// Shutdown the assets.
+		/// Release the assets.
 		/// </summary>
-		static void Shutdown();
+		void Release();
 
 		/// <summary>
 		/// Load a font.
 		/// </summary>
 		/// <param name="name">The font name.</param>
 		/// <returns></returns>
-		static Font_s* LoadFont(const std::string& name);
+		Font_s* LoadFont(const std::string& name);
 
 	private:
 		/// <summary>
+		/// Initialize assets.
+		/// </summary>
+		Assets() = default;
+		virtual ~Assets() = default;
+
+		/// <summary>
 		/// Load fonts.
 		/// </summary>
-		static void LoadFonts();
+		void LoadFonts();
 	};
 }

@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Utility class.

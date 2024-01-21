@@ -1,6 +1,7 @@
 #include "FPS.hpp"
+#include "Engine/Backends/DX9/Assets.hpp"
 
-namespace IW3SR
+namespace IW3SR::Addons
 {
 	FPS::FPS() : Module("sr.player.fps", "FPS", "Player")
 	{
@@ -9,8 +10,8 @@ namespace IW3SR
 
 	void FPS::Initialize()
 	{
-		FPSText = Text("0", "Arial", 0, 20, 1.4, { 1, 1, 1, 1 });
-		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		FPSText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
+		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 	}
 

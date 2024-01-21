@@ -19,10 +19,9 @@ namespace IW3SR::Game
 		Alignment AlignX = ALIGN_LEFT;
 		Alignment AlignY = ALIGN_TOP;
 
-		Font_s* Font;
 		std::string FontName;
-		float FontSize;
-		int FontIndex;
+		float FontSize = 1.4;
+		int FontIndex = 0;
 
 		/// <summary>
 		/// Initialize the Text.
@@ -73,6 +72,8 @@ namespace IW3SR::Game
 		void Render();
 
 	private:
+		Font_s* Font = nullptr;
+
 		/// <summary>
 		/// Compute the text alignment.
 		/// </summary>

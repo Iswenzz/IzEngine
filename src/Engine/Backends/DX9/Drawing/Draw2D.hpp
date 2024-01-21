@@ -2,7 +2,7 @@
 #include "Engine/Backends/DX9.hpp"
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Draw 2D class.

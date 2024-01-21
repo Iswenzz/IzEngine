@@ -13,12 +13,12 @@ namespace IW3SR::Game
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::One;
 		vec4 Color = vec4::One;
+
 		RectAlignHorizontal HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical VerticalAlign = VERTICAL_ALIGN_TOP;
 		Alignment AlignX = ALIGN_LEFT;
 		Alignment AlignY = ALIGN_TOP;
 
-		Material* Material;
 		std::string MaterialName;
 
 		/// <summary>
@@ -71,6 +71,8 @@ namespace IW3SR::Game
 		void Render();
 
 	private:
+		Material* Material = nullptr;
+
 		/// <summary>
 		/// Compute the element alignment.
 		/// </summary>

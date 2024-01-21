@@ -5,7 +5,7 @@
 #include <vector>
 #include <bit>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     /// <summary>
     /// Memory class.

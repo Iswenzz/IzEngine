@@ -1,6 +1,6 @@
 #include "KeyListener.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	KeyListener::KeyListener(int vk)
 	{

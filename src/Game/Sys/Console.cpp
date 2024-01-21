@@ -1,6 +1,6 @@
 #include "Console.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	Console::Console()
 	{

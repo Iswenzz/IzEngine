@@ -5,7 +5,7 @@
 
 #include "Engine/Core/Modules.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// Renderer class.
@@ -13,10 +13,6 @@ namespace IW3SR
 	class Renderer
 	{
 	public:
-		std::unique_ptr<Modules> Modules;
-		std::unique_ptr<Features> Features;
-		std::unique_ptr<GUI> GUI;
-
 		/// <summary>
 		/// Initialize the renderer class.
 		/// </summary>

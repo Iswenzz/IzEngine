@@ -3,7 +3,7 @@
 #include "Engine/Backends/DX9/Resources/Texture.hpp"
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// HUD element.
@@ -11,19 +11,18 @@ namespace IW3SR
 	class API HUD : public IObject
 	{
 	public:
-		std::string ID;
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::One;
 		vec2 RenderPosition = vec2::Zero;
 		vec2 RenderSize = vec2::One;
 		vec4 Color = vec4::One;
+
 		RectAlignHorizontal HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical VerticalAlign = VERTICAL_ALIGN_TOP;
 		Alignment AlignX = ALIGN_LEFT;
 		Alignment AlignY = ALIGN_TOP;
 
-		std::shared_ptr<Texture> Texture;
-		std::string TextureID;
+		std::string TextureName;
 
 		/// <summary>
 		/// Initialize the HUD.
@@ -75,6 +74,8 @@ namespace IW3SR
 		void Render();
 
 	private:
+		std::shared_ptr<Texture> Texture = nullptr;
+
 		/// <summary>
 		/// Compute the element alignment.
 		/// </summary>
@@ -83,6 +84,6 @@ namespace IW3SR
 		void ComputeAlignment(float& x, float& y);
 
 		NLOHMANN_SERIALIZE_POLY_BASE(HUD, Position, Size, Color,
-			HorizontalAlign, VerticalAlign, AlignX, AlignY, TextureID)
+			HorizontalAlign, VerticalAlign, AlignX, AlignY, TextureName)
 	};
 }

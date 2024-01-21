@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <cstdlib>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// System environment.

@@ -1,22 +1,24 @@
 #pragma once
 #include "Module.hpp"
 
-namespace IW3SR
+#include <memory>
+#include <map>
+#include <string>
+
+#define ModulesCallback(method, ...) \
+	Modules::Get().Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
+
+namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Game modules.
+	/// Modules class.
 	/// </summary>
-	class API Modules : public ISerializable
+	class API Modules : public IInitializable
 	{
+		CLASS_SINGLETON(Modules)
 	public:
-		static inline std::map<std::string, std::unique_ptr<Module>> Entries;
-		static inline nlohmann::json Serialized;
-
-		/// <summary>
-		/// Initialize the modules.
-		/// </summary>
-		Modules() = default;
-		virtual ~Modules() = default;
+		std::map<std::string, std::shared_ptr<Module>> Entries;
+		nlohmann::json Serialized;
 
 		/// <summary>
 		/// Initialize the modules.
@@ -24,13 +26,19 @@ namespace IW3SR
 		virtual void Initialize();
 
 		/// <summary>
-		/// Load a module.
+		/// Release the modules.
+		/// </summary>
+		virtual void Release();
+
+		/// <summary>
+		/// Add a module.
 		/// </summary>
 		/// <typeparam name="M">The module type.</typeparam>
+		/// <param name="enabled">Is enabled by default.</param>
 		template <class M = Module>
-		static void Load(bool enabled = true)
+		void Add(bool enabled = true)
 		{
-			auto entry = std::make_unique<M>();
+			auto entry = std::make_shared<M>();
 			bool isSerialized = Serialized.contains(entry->ID);
 
 			entry->IsEnabled = enabled;
@@ -38,6 +46,17 @@ namespace IW3SR
 				entry->Deserialize(Serialized[entry->ID]);
 
 			Entries.insert({ entry->ID, std::move(entry) });
+		}
+
+		/// <summary>
+		/// Load a module.
+		/// </summary>
+		/// <typeparam name="M">The module type.</typeparam>
+		/// <param name="enabled">Is enabled by default.</param>
+		template <class M = Module>
+		static void Load(bool enabled = true)
+		{
+			Get().Add<M>(enabled);
 		}
 
 		/// <summary>
@@ -64,7 +83,7 @@ namespace IW3SR
 		/// <typeparam name="Func">The callback type.</typeparam>
 		/// <param name="callback">The function callback.</param>
 		template <typename Func>
-		static void Callback(Func callback)
+		void Callback(Func callback)
 		{
 			for (const auto& [_, entry] : Entries)
 			{
@@ -76,16 +95,18 @@ namespace IW3SR
 		/// <summary>
 		/// Load the modules.
 		/// </summary>
-		virtual void Deserialize() override;
+		virtual void Deserialize();
 
 		/// <summary>
 		/// Serialize the modules.
 		/// </summary>
-		virtual void Serialize() override;
+		virtual void Serialize();
 
+	protected:
 		/// <summary>
-		/// Shutdown the modules.
+		/// Initialize the modules.
 		/// </summary>
-		virtual void Shutdown();
+		Modules() = default;
+		virtual ~Modules() = default;
 	};
 }

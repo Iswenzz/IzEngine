@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Backends/DX9.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	class D3D9 : public IDirect3D9
 	{

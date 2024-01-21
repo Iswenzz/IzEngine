@@ -7,7 +7,7 @@ namespace IW3SR::Game
 		LoadFonts();
 	}
 
-	void Assets::Shutdown() 
+	void Assets::Release()
 	{
 		Fonts.clear();
 		FontNames.clear();

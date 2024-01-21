@@ -12,13 +12,14 @@
 #include "UI/Themes.hpp"
 #include "UI/Toolbar.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// GUI class.
 	/// </summary>
-	class API GUI
+	class API GUI : public IInitializable
 	{
+		CLASS_SINGLETON(GUI)
 	public:
 		static inline ImGuiContext* Context = nullptr;
 		static inline ImPlotContext* PlotContext = nullptr;
@@ -39,25 +40,14 @@ namespace IW3SR
 		UI::Toolbar Toolbar;
 
 		/// <summary>
-		/// Initialize
-		/// </summary>
-		GUI();
-		~GUI();
-
-		/// <summary>
-		/// Patch the game.
-		/// </summary>
-		void Patch();
-
-		/// <summary>
 		/// Initialize GUI.
 		/// </summary>
 		void Initialize();
 
 		/// <summary>
-		/// Shutdown GUI.
+		/// Release GUI.
 		/// </summary>
-		void Shutdown();
+		void Release();
 
 		/// <summary>
 		/// Reset GUI.
@@ -134,6 +124,13 @@ namespace IW3SR
 		/// <param name="ptr">The pointer.</param>
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
+
+	private:
+		/// <summary>
+		/// Initialize the GUI.
+		/// </summary>
+		GUI();
+		virtual ~GUI();
 
 		NLOHMANN_SERIALIZE(GUI, About, Binds, Memory, Modules, Settings, Themes, OpenKey)
 	};

@@ -4,7 +4,7 @@
 
 #include <tuple>
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	/// <summary>
 	/// Themes window.

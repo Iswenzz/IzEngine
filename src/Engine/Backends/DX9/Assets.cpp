@@ -1,18 +1,14 @@
 #include "Assets.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	void Assets::Initialize()
 	{
-		Log::WriteLine("[Render] Initialize");
-
 		LoadFonts();
 	}
 
-	void Assets::Shutdown()
+	void Assets::Release()
 	{
-		Log::WriteLine("[Render] Shutdown");
-
 		Textures.clear();
 		Fonts.clear();
 		FontNames.clear();
@@ -25,7 +21,7 @@ namespace IW3SR
 		HDC hdc = GetDC(NULL);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
-			FontNames.push_back(lpelf->lfFaceName);
+			Get().FontNames.push_back(lpelf->lfFaceName);
 			return TRUE;
 		};
 		EnumFontFamilies(hdc, NULL, static_cast<FONTENUMPROC>(callback), NULL);
@@ -41,7 +37,7 @@ namespace IW3SR
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>();
+		std::shared_ptr<Font> font = std::make_shared<Font>(id);
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
@@ -60,7 +56,7 @@ namespace IW3SR
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>();
+		std::shared_ptr<Font> font = std::make_shared<Font>(id);
 		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
@@ -69,13 +65,17 @@ namespace IW3SR
 		return Fonts[id] = font;
 	}
 
-	std::shared_ptr<Texture> Assets::LoadTexture(const std::string& filePath)
+	std::shared_ptr<Texture> Assets::LoadTexture(const std::filesystem::path& path)
 	{
-		if (!std::filesystem::exists(filePath))
+		if (!std::filesystem::exists(path))
 			throw std::runtime_error("Path not found.");
 
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
-		D3DXCreateTextureFromFile(dx->device, filePath.c_str(), &texture->Base);
-		return Textures[filePath] = texture;
+		std::string id = path.stem().filename().string();
+		if (auto cache = Textures.find(id); cache != Textures.end())
+			return cache->second;
+
+		std::shared_ptr<Texture> texture = std::make_shared<Texture>(id);
+		D3DXCreateTextureFromFile(dx->device, path.string().c_str(), &texture->Base);
+		return Textures[id] = texture;
 	}
 }

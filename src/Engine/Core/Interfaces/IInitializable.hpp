@@ -1,33 +1,33 @@
 #pragma once
 #include "IObject.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Renderable object.
+	/// Initializable object.
 	/// </summary>
-	class API IRenderable : public IObject
+	class API IInitializable : public IObject
 	{
 	public:
 		/// <summary>
-		/// Initialize renderable.
+		/// Initialize.
 		/// </summary>
 		virtual void Initialize() = 0;
 
 		/// <summary>
-		/// Release renderable.
+		/// Release.
 		/// </summary>
 		virtual void Release() = 0;
 
 	protected:
 		/// <summary>
-		/// Initialize renderable.
+		/// Initialize.
 		/// </summary>
-		IRenderable() = default;
+		IInitializable() = default;
 
 		/// <summary>
-		/// Release renderable.
+		/// Release.
 		/// </summary>
-		virtual ~IRenderable() = default;
+		virtual ~IInitializable() = default;
 	};
 }

@@ -7,7 +7,6 @@ namespace IW3SR::Game
 		Width = width;
 		Limit = limit;
 		DepthTest = depthTest;
-
 		Verts.resize(limit);
 	}
 

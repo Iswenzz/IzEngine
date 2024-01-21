@@ -1,6 +1,6 @@
 #include "Environment.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	void Environment::Initialize()
 	{
@@ -50,7 +50,7 @@ namespace IW3SR
 
 	void Environment::Load()
 	{
-		std::fstream file(Environment::IW3SRDirectory / "settings.json", std::ios::in | std::ios::out | std::ios::app);
+		std::ifstream file(Environment::IW3SRDirectory / "settings.json");
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Settings = nlohmann::json::parse(file);
 	}

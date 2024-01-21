@@ -142,7 +142,7 @@ namespace ImGui
 
     void Movable(const std::string& label, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize)
     {
-        if (!GetGUI()->Open || !GetGUI()->DesignMode) return;
+        if (!GUI::Get().Open || !GUI::Get().DesignMode) return;
 
         PushStyleColor(ImGuiCol_Border, { 0.2, 0.2, 0.2, 0.2 });
         SetNextWindowBgAlpha(0.2f);
@@ -179,13 +179,13 @@ namespace ImGui
     {
         ImDrawList* draw = GetForegroundDrawList();
 
-        const auto& [rainbow1, rainbow2] = GetGUI()->Themes.Rainbow;
+        const auto& [rainbow1, rainbow2] = GUI::Get().Themes.Rainbow;
         draw->AddRectFilledMultiColor(position, size, rainbow1, rainbow2, rainbow2, rainbow1);
     }
 
     void Markdown(const std::string& markdown)
     {
-        Markdown(markdown.c_str(), markdown.size(), GetGUI()->Themes.Markdown);
+        Markdown(markdown.c_str(), markdown.size(), GUI::Get().Themes.Markdown);
     }
 
     bool IsWindowResizing()

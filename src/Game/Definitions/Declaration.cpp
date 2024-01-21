@@ -1,6 +1,6 @@
 #include "Declaration.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	// Binaries
 	std::string COD4X_BIN = "";

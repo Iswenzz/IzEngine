@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Definitions.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// Game dvars.

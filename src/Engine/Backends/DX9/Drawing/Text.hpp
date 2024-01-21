@@ -3,7 +3,7 @@
 #include "Engine/Backends/DX9/Resources/Font.hpp"
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Text element.
@@ -11,7 +11,6 @@ namespace IW3SR
 	class API Text : public IObject
 	{
 	public:
-		std::string ID;
 		std::string Value;
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::Zero;
@@ -19,15 +18,15 @@ namespace IW3SR
 		vec2 RenderPosition = vec2::Zero;
 		vec2 RenderSize = vec2::Zero;
 		vec4 Color = vec4::One;
+
 		RectAlignHorizontal HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		RectAlignVertical VerticalAlign = VERTICAL_ALIGN_TOP;
 		Alignment AlignX = ALIGN_LEFT;
 		Alignment AlignY = ALIGN_TOP;
 
-		std::shared_ptr<Font> Font;
 		std::string FontName;
 		float FontSize = 1.4;
-		int FontIndex;
+		int FontIndex = 0;
 
 		/// <summary>
 		/// Initialize the Text.
@@ -78,6 +77,8 @@ namespace IW3SR
 		void Render();
 
 	private:
+		std::shared_ptr<Font> Font = nullptr;
+
 		/// <summary>
 		/// Compute the text alignment.
 		/// </summary>

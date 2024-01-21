@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Circular buffer.

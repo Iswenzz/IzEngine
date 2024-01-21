@@ -3,18 +3,15 @@
 
 #include "Engine/Backends/DX9/Assets.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
-#include "Engine/Core/Utils/Utils.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{
-		ID = Utils::UUID();
 		Value = text;
 		Position = { x, y };
 		Color = color;
-		
-		SetFont(font);
+		FontName = font;
 	}
 
 	void Text::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -31,12 +28,11 @@ namespace IW3SR
 
 	void Text::SetFont(const std::string& font)
 	{
-		Log::WriteLine("[Render] SetFont");
-
+		auto& assets = Assets::Get();
 		int fontSize = std::floor(scr_place->scaleVirtualToFull[0] * FontSize * 10.f);
-		Font = Assets::LoadFont(font, fontSize);
+		Font = assets.LoadFont(font, fontSize);
 		FontName = font;
-		FontIndex = std::distance(Assets::FontNames.begin(), std::ranges::find(Assets::FontNames, FontName));
+		FontIndex = std::distance(assets.FontNames.begin(), std::ranges::find(assets.FontNames, FontName));
 	}
 
 	void Text::ComputeAlignment(float& x, float& y)
@@ -59,7 +55,7 @@ namespace IW3SR
 
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
-		const std::vector<std::string>& fonts = Assets::FontNames;
+		const std::vector<std::string>& fonts = Assets::Get().FontNames;
 
 		ImGui::DragFloat2("Position", Position);
 		ImGui::ColorEdit4("Color", Color, ImGuiColorEditFlags_Float);
@@ -90,6 +86,9 @@ namespace IW3SR
 	{
 		float x = Position.x;
 		float y = Position.y;
+
+		if (!Font)
+			SetFont(FontName);
 
 		RECT textRect = { 0 };
 		Font->Base->DrawTextA(NULL, Value.c_str(), -1, &textRect, DT_CALCRECT, 0);

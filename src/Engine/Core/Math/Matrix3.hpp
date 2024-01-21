@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     /// <summary>
     /// 3x3 Matrix class.

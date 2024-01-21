@@ -9,35 +9,28 @@
 #include <vector>
 #include <string>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Assets class.
 	/// </summary>
-	class API Assets
+	class API Assets : public IInitializable
 	{
+		CLASS_SINGLETON(Assets)
 	public:
-		static inline std::unordered_map<std::string, std::shared_ptr<Texture>> Textures;
-		static inline std::unordered_map<std::string, std::shared_ptr<Font>> Fonts;
-		static inline std::vector<std::string> FontNames;
+		std::unordered_map<std::string, std::shared_ptr<Texture>> Textures;
+		std::unordered_map<std::string, std::shared_ptr<Font>> Fonts;
+		std::vector<std::string> FontNames;
 
 		/// <summary>
 		/// Initialize the assets.
 		/// </summary>
-		static void Initialize();
+		void Initialize();
 
 		/// <summary>
-		/// Shutdown the assets.
+		/// Release the assets.
 		/// </summary>
-		static void Shutdown();
-
-		/// <summary>
-		/// Load a font.
-		/// </summary>
-		/// <param name="name">The font name.</param>
-		/// <param name="height">The font height.</param>
-		/// <returns></returns>
-		static std::shared_ptr<Font> LoadFont(const std::string& name, int height);
+		void Release();
 
 		/// <summary>
 		/// Load a font.
@@ -45,18 +38,32 @@ namespace IW3SR
 		/// <param name="name">The font name.</param>
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
-		static std::shared_ptr<Font> LoadFont(const std::filesystem::path& path, int height);
+		std::shared_ptr<Font> LoadFont(const std::string& name, int height);
+
+		/// <summary>
+		/// Load a font.
+		/// </summary>
+		/// <param name="name">The font name.</param>
+		/// <param name="height">The font height.</param>
+		/// <returns></returns>
+		std::shared_ptr<Font> LoadFont(const std::filesystem::path& path, int height);
 
 		/// <summary>
 		/// Load image.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
-		static std::shared_ptr<Texture> LoadTexture(const std::string& filePath);
+		std::shared_ptr<Texture> LoadTexture(const std::filesystem::path& path);
 
 	private:
 		/// <summary>
+		/// Initialize assets.
+		/// </summary>
+		Assets() = default;
+		virtual ~Assets() = default;
+
+		/// <summary>
 		/// Load fonts.
 		/// </summary>
-		static void LoadFonts();
+		void LoadFonts();
 	};
 }

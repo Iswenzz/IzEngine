@@ -3,7 +3,7 @@
 
 #include <set>
 
-namespace IW3SR::UI
+namespace IW3SR::Game::UI
 {
 	Settings::Settings() : Window("Settings")
 	{
@@ -15,10 +15,11 @@ namespace IW3SR::UI
 		if (!Open) return;
 
 		Begin();
+		auto& features = Engine::Features::Get();
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : GetRenderer()->Features->Entries)
+		for (const auto& [_, current] : features.Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -27,7 +28,7 @@ namespace IW3SR::UI
 			if (!ImGui::CollapsingHeader(current->Group.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 				continue;
 
-			for (const auto& [_, entry] : GetRenderer()->Features->Entries)
+			for (const auto& [_, entry] : features.Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;

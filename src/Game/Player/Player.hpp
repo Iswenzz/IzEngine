@@ -3,7 +3,7 @@
 #include "Game/Definitions.hpp"
 #include "Engine/Core/Math.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	/// <summary>
 	/// Player class.

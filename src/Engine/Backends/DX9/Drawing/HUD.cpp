@@ -3,18 +3,15 @@
 
 #include "Engine/Backends/DX9/Assets.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
-#include "Engine/Core/Utils/Utils.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	HUD::HUD(const std::string& texture, float x, float y, float w, float h, const vec4& color)
 	{
-		ID = Utils::UUID();
 		Position = { x, y };
 		Size = { w, h };
 		Color = color;
-
-		SetTexture(texture);
+		TextureName = texture;
 	}
 
 	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
@@ -31,8 +28,8 @@ namespace IW3SR
 
 	void HUD::SetTexture(const std::string& texture)
 	{
-		TextureID = texture;
-		Texture = Assets::Textures[texture];
+		Texture = Assets::Get().Textures[texture];
+		TextureName = texture;
 	}
 
 	void HUD::ComputeAlignment(float& x, float& y)
@@ -55,7 +52,7 @@ namespace IW3SR
 
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
-		const std::vector<std::string>& fonts = Assets::FontNames;
+		const std::vector<std::string>& fonts = Assets::Get().FontNames;
 
 		ImGui::DragFloat2("Position", Position);
 		ImGui::DragFloat2("Size", Size);
@@ -84,6 +81,9 @@ namespace IW3SR
 		float y = Position.y;
 		float w = Size.x;
 		float h = Size.y;
+
+		if (!Texture)
+			SetTexture(TextureName);
 
 		ComputeAlignment(x, y);
 		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);

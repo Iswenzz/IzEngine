@@ -22,5 +22,8 @@
 #define FONT_OBJECTIVE  "fonts/objectiveFont"
 
 #define GameCallback(method, ...) \
-	Modules::Callback([&](const auto& entry) { entry->method(__VA_ARGS__); }); \
-	Features::Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
+	ModulesCallback(method, __VA_ARGS__) \
+	FeaturesCallback(method, __VA_ARGS__)
+
+namespace IW3SR::Game {};
+using namespace IW3SR::Game;

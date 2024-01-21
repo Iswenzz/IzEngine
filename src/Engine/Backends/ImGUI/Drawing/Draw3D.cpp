@@ -1,7 +1,7 @@
 #include "Draw3D.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     void Draw3D::Box(const vec3& position, const vec3& size, const vec4& color, int thickness)
     {

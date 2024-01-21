@@ -4,3 +4,6 @@
 
 namespace IW3SR {};
 using namespace IW3SR;
+
+namespace IW3SR::Engine {};
+using namespace IW3SR::Engine;

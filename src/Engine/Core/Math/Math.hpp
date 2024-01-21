@@ -13,7 +13,7 @@
 #define ANGLE2SHORT(x)	(static_cast<int>((x) * 65536 / 360) & 65535)
 #define SHORT2ANGLE(x)	(x * (360.0f / 65536))
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     template <typename T> class Vector2;
     template <typename T> class Vector3;
@@ -71,14 +71,14 @@ namespace IW3SR
         /// </summary>
         /// <param name="radians">Radians value.</param>
         /// <returns>Degrees value.</returns>
-        static float RadToDeg(const float radians);
+        static float RadToDeg(float radians);
 
         /// <summary>
         /// Converts degrees to radians.
         /// </summary>
         /// <param name="degrees">Degrees value.</param>
         /// <returns>Radians value.</returns>
-        static float DegToRad(const float degrees);
+        static float DegToRad(float degrees);
 
 		/// <summary>
         /// Normalizes an angle to the range of -180 to 180 degrees.

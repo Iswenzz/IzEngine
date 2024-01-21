@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Log class.

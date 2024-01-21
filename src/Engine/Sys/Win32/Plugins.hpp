@@ -1,7 +1,7 @@
 #pragma once
 #include "Plugin.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Plugins class.

@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Plugin.hpp"
 
-namespace IW3SR
+namespace IW3SR::Addons
 {
 	/// <summary>
 	/// Modify the game's graphics
@@ -42,7 +42,7 @@ namespace IW3SR
 		/// </summary>
 		void OnMenu() override;
 
-		NLOHMANN_SERIALIZE_POLY(General, Module, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
+		NLOHMANN_SERIALIZE_POLY(General, Feature, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
 			DrawGlow, DrawSun, SunIntensity, SpecularColorScale, TweakBrightness, TweakDesaturation,
 			GlowRadius, GlowBloomDesaturation, GlowBloomIntensity, GlowBloomCutoff, SunColor, SunDirection,
 			TweakLightTint, TweakDarkTint)

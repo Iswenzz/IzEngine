@@ -1,11 +1,11 @@
 #include "PMove.hpp"
 
-namespace IW3SR
+namespace IW3SR::Game
 {
 	void PMove::FinishMove(usercmd_s* cmd)
 	{
         CL_FinishMove_h(cmd);
-		GameCallback(OnFinishMove, cmd);
+		ModulesCallback(OnFinishMove, cmd);
 	}
 
 	void PMove::SetYaw(usercmd_s* cmd, float* angles, const vec3& target)

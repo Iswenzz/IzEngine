@@ -3,7 +3,7 @@
 #include "Engine/Backends/ImGUI.hpp"
 #include "Engine/Backends/DX9.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Vector 3D class.

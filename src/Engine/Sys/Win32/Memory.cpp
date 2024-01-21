@@ -2,7 +2,7 @@
 #pragma warning(disable: 6387)
 #include "Memory.hpp"
 
-namespace IW3SR
+namespace IW3SR::Engine
 {
     void Memory::Read(uintptr_t address, void* data, int size)
     {

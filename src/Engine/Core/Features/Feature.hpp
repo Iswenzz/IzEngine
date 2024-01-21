@@ -5,41 +5,40 @@
 namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Module class.
+	/// Feature class.
 	/// </summary>
-	class API Module : public IInitializable
+	class API Feature : public IInitializable
 	{
 	public:
 		std::string ID;
 		std::string Name;
 		std::string Group;
 		Window Menu;
-		bool IsEnabled = false;
 
 		/// <summary>
-		/// Initialize the module.
+		/// Initialize the feature.
 		/// </summary>
-		Module() = default;
+		Feature() = default;
 
 		/// <summary>
-		/// Initialize the module.
+		/// Initialize the feature.
 		/// </summary>
-		/// <param name="id">The module ID.</param>
-		/// <param name="name">The module name.</param>
-		Module(const std::string& id, const std::string& name, const std::string& group);
+		/// <param name="id">The feature ID.</param>
+		/// <param name="name">The feature name.</param>
+		Feature(const std::string& id, const std::string& name, const std::string& group);
 
 		/// <summary>
-		/// Release the module.
+		/// Release the feature.
 		/// </summary>
-		virtual ~Module();
+		virtual ~Feature();
 
 		/// <summary>
-		/// Initialize the module.
+		/// Initialize the feature.
 		/// </summary>
 		virtual void Initialize();
 
 		/// <summary>
-		/// Release the module.
+		/// Release the feature.
 		/// </summary>
 		virtual void Release();
 
@@ -63,12 +62,6 @@ namespace IW3SR::Engine
 		/// </summary>
 		virtual void OnRender();
 
-		/// <summary>
-		/// Finish moving.
-		/// </summary>
-		/// <param name="cmd">The user command.</param>
-		virtual void OnFinishMove(usercmd_s* cmd);
-
-		NLOHMANN_SERIALIZE_POLY_BASE(Module, IsEnabled, Menu)
+		NLOHMANN_SERIALIZE_POLY_BASE(Feature, Menu)
 	};
 }

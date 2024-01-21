@@ -1,5 +1,3 @@
-add_subdirectory(Features)
-
 target_sources(IW3SR PRIVATE
 	Module.hpp
 	Module.cpp
