@@ -10,7 +10,7 @@ PLUGIN void Initialize(Plugin* plugin)
 
 PLUGIN void Renderer()
 {
-	GUI::ModuleContext();
+	UI::ModuleContext();
 }
 
 PLUGIN void Shutdown()

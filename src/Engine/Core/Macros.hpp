@@ -49,9 +49,4 @@ public: \
 	{ \
 		static type instance; \
 		return instance; \
-	} \
-	\
-	inline void Destroy() \
-	{ \
-		*this = {}; \
 	}

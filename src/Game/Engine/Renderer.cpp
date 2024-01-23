@@ -20,12 +20,6 @@ namespace IW3SR::Game
 		// Increase fps cap to 125 for menus and loadscreen
 		Memory::Set<char>(0x500176, 8);
 		Memory::Set<char>(0x500179, 8);
-
-		if (COD4X)
-		{
-			MainWndProc_h.Address = Memory::Scan(COD4X_BIN,
-				"\x55\x89\xE5\x53\x81\xEC\x84\x00\x00\x00\xC7\x04\x24\x02", 14);
-		}
 	}
 
 	void Renderer::Initialize()

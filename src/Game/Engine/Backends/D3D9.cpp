@@ -213,7 +213,7 @@ namespace IW3SR::Game
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
-		if (GUI::Get().Active)
+		if (UI::Get().Active)
 		{
 			ImGui_ImplDX9_InvalidateDeviceObjects();
 			pIDirect3DDevice9->Reset(pPresentationParameters);

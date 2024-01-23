@@ -6,10 +6,10 @@ namespace IW3SR::Game
 	Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 		DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
 		HINSTANCE hInstance, LPVOID lpParam)>
-		CreateWindowExA_h(CreateWindowExA, GUI::CreateMainWindow);
+		CreateWindowExA_h(CreateWindowExA, Sys::CreateMainWindow);
 
 	Hook<LRESULT CALLBACK(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)>
-		MainWndProc_h(0x57BB20, GUI::MainWndProc);
+		MainWndProc_h(0x57BB20, Sys::MainWndProc);
 
 	Hook<void(int channel, const char* msg, int type)>
 		Com_PrintMessage_h(0x4FCA50, Console::Write);

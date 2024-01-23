@@ -1,6 +1,6 @@
 #include "Binds.hpp"
 
-namespace IW3SR::Game::UI
+namespace IW3SR::Game::UC
 {
 	Binds::Binds() : Window("Binds") { }
 
@@ -11,7 +11,7 @@ namespace IW3SR::Game::UI
 
 		Begin();
 		if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen))
-			ImGui::Keybind("Menu", &GUI::Get().OpenKey.Key, size);
+			ImGui::Keybind("Menu", &UI::Get().OpenKey.Key, size);
 		End();
 	}
 }

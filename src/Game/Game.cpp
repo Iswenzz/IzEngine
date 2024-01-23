@@ -11,6 +11,7 @@ namespace IW3SR::Game
 
 		Renderer = std::make_unique<class Renderer>();
 		Console = std::make_unique<class Console>();
+		Sys = std::make_unique<class Sys>();
 
 		Hook();
 	}
@@ -20,6 +21,7 @@ namespace IW3SR::Game
 		Environment::Save();
 		Plugins::Shutdown();
 
+		Sys.reset();
 		Console.reset();
 		Renderer.reset();
 
