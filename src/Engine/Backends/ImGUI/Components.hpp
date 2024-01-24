@@ -15,6 +15,13 @@ constexpr ImPlotAxisFlags ImPlotAxisFlags_Canvas = ImPlotAxisFlags_NoTickLabels
 	| ImPlotAxisFlags_NoTickMarks
 	| ImPlotAxisFlags_NoGridLines;
 
+constexpr ImGuiWindowFlags ImGuiWindowFlags_Notification = ImGuiWindowFlags_NoCollapse 
+    | ImGuiWindowFlags_NoInputs 
+    | ImGuiWindowFlags_NoMove 
+    | ImGuiWindowFlags_NoResize 
+    | ImGuiWindowFlags_NoScrollbar
+    | ImGuiWindowFlags_NoTitleBar;
+
 namespace ImGui
 {
 	/// <summary>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Plugin.hpp"
+#include "Engine/Backends/ImGUI/Drawing/Notification.hpp"
 
 namespace IW3SR::Addons
 {
@@ -13,6 +14,7 @@ namespace IW3SR::Addons
         CircularBuffer<int, 1000> Values;
         Text FPSText;
 
+        NotificationCenter Notification;
         Window Graph;
         bool ShowGraph;
 

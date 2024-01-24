@@ -13,6 +13,9 @@ namespace IW3SR::Addons
 		FPSText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
 		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
 		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
+
+		Notification = NotificationCenter("Im working");
+		Notification.Create("Hi from Dualite");
 	}
 
 	void FPS::OnMenu()
@@ -28,6 +31,7 @@ namespace IW3SR::Addons
 
 		FPSText.Value = std::to_string(Value);
 		FPSText.Render();
+		Notification.Render();
 
 		if (ShowGraph)
 		{
