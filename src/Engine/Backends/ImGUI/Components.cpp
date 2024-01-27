@@ -205,4 +205,33 @@ namespace ImGui
         }
         return false;
     }
+
+    void LoadingIndicator(const std::string& label, const ImVec2& pos, float radius, int thickness, const ImU32& color)
+    {
+        ImDrawList* draw = ImGui::GetBackgroundDrawList();
+        ImGuiContext* g = GImGui;
+
+        const ImGuiStyle& style = g->Style;
+        const ImVec2 size = { radius * 2, (radius + style.FramePadding.y) * 2 };
+        const ImVec2 centre = ImVec2(pos.x + radius, pos.y + radius + style.FramePadding.y);
+        const ImRect bb = { pos, ImVec2{ pos.x + size.x, pos.y + size.y } };
+
+        ItemSize(bb, style.FramePadding.y);
+        draw->PathClear();
+
+        const float segmentCount = 30;
+        const float start = abs(ImSin(g->Time * 1.8f) * (segmentCount - 5));
+        const float aMin = IM_PI * 2.0f * start / segmentCount;
+        const float aMax = IM_PI * 2.0f * (segmentCount - 3) / segmentCount;
+
+        for (int i = 0; i < segmentCount; i++) 
+        {
+            const float a = aMin + (i / segmentCount) * (aMax - aMin);
+            draw->PathLineTo(ImVec2(centre.x + ImCos(a + g->Time * 8) * radius,
+                centre.y + ImSin(a + g->Time * 8) * radius));
+        }
+
+        draw->PathStroke(color, 0, thickness);
+        draw->AddText(pos + ImVec2{ size.x + 20, size.y / 2 - radius / 2 }, color, label.c_str());
+    }
 }

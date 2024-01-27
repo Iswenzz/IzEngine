@@ -121,6 +121,16 @@ namespace ImGui
 	/// </summary>
 	/// <returns></returns>
 	API bool IsWindowResizing();
+
+	/// <summary>
+	/// A spinner meant to be displayed when loading things or when something is idle.
+	/// </summary>
+	/// <param name="label">The label.</param>
+	/// <param name="radius">The radius.</param>
+	/// <param name="thickness">The thickness.</param>
+	/// <param name="color">The color.</param>
+	/// <returns></returns>
+	API void LoadingIndicator(const std::string& label, const ImVec2& pos, float radius, int thickness, const ImU32& color);
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
