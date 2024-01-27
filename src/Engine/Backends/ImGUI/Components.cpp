@@ -214,9 +214,7 @@ namespace ImGui
         const ImGuiStyle& style = g->Style;
         const ImVec2 size = { radius * 2, (radius + style.FramePadding.y) * 2 };
         const ImVec2 centre = ImVec2(pos.x + radius, pos.y + radius + style.FramePadding.y);
-        const ImRect bb = { pos, ImVec2{ pos.x + size.x, pos.y + size.y } };
 
-        ItemSize(bb, style.FramePadding.y);
         draw->PathClear();
 
         const float segmentCount = 30;

@@ -31,4 +31,10 @@ namespace IW3SR::Game
         clients->viewangles[0] += realDelta - final;
         cmd->angles[0] += ANGLE2SHORT(realDelta - final);
     }
+
+    void PMove::SetAngles(usercmd_s* cmd, float* angles, const vec3& target)
+    {
+        SetPitch(cmd, angles, target);
+        SetYaw(cmd, angles, target);
+    }
 }
