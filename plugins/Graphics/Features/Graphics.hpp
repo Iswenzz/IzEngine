@@ -1,0 +1,50 @@
+#pragma once
+#include "Game/Plugin.hpp"
+
+namespace IW3SR
+{
+	/// <summary>
+	/// Modify the game's graphics
+	/// </summary>
+	class Graphics : public Feature
+	{
+	public:
+		bool DrawSpecular;
+		bool DrawFog;
+		bool DrawDecals;
+		bool WaterAnimation;
+		bool DrawTweaks;
+		bool DrawGlow;
+		bool DrawSun;
+
+		float SunIntensity;
+		float SpecularColorScale;
+		float TweakBrightness;
+		float TweakDesaturation;
+		float GlowRadius;
+		float GlowBloomDesaturation;
+		float GlowBloomIntensity;
+		float GlowBloomCutoff;
+
+		vec4 SunColor;
+		vec3 SunDirection;
+		vec3 TweakLightTint;
+		vec3 TweakDarkTint;
+
+		/// <summary>
+		/// Create the feature.
+		/// </summary>
+		Graphics();
+		virtual ~Graphics() = default;
+
+		/// <summary>
+		/// Menu drawing.
+		/// </summary>
+		void OnMenu() override;
+
+		NLOHMANN_SERIALIZE_POLY(Graphics, Feature, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
+			DrawGlow, DrawSun, SunIntensity, SpecularColorScale, TweakBrightness, TweakDesaturation,
+			GlowRadius, GlowBloomDesaturation, GlowBloomIntensity, GlowBloomCutoff, SunColor, SunDirection,
+			TweakLightTint, TweakDarkTint)
+	};
+}
