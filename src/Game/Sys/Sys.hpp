@@ -1,22 +1,16 @@
 #pragma once
+#include "Engine/Sys/Win32.hpp"
 
 namespace IW3SR::Game
 {
+	/// <summary>
+	/// Game system.
+	/// </summary>
 	class Sys
 	{
+		CLASS_SINGLETON(Sys)
 	public:
-		static inline HWND MainWindow = nullptr;
-
-		/// <summary>
-		/// Initialize system.
-		/// </summary>
-		Sys();
-		~Sys() = default;
-
-		/// <summary>
-		/// Patch the game.
-		/// </summary>
-		void Patch();
+		Engine::Sys& System;
 
 		/// <summary>
 		/// Creates the main window.
@@ -47,5 +41,12 @@ namespace IW3SR::Game
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The result of processing the message.</returns>
 		static LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+
+	private:
+		/// <summary>
+		/// Initialize system.
+		/// </summary>
+		Sys();
+		~Sys() = default;
 	};
 }

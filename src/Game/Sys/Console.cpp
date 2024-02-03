@@ -2,23 +2,17 @@
 
 namespace IW3SR::Game
 {
-	Console::Console()
-	{
-		AllocConsole();
-		SetConsoleTitle("IW3SR");
+	Console::Console() : Con(Engine::Console::Get()) { }
 
-		freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
-		freopen_s(reinterpret_cast<FILE**>(stdout), "CONOUT$", "w", stdout);
-		freopen_s(reinterpret_cast<FILE**>(stderr), "CONOUT$", "w", stderr);
+	void Console::Initialize()
+	{
+		Con.Initialize();
+		Con.SetTile("IW3SR");
 	}
 
-	Console::~Console()
+	void Console::Release()
 	{
-		fclose(stdin);
-		fclose(stdout);
-		fclose(stderr);
-
-		FreeConsole();
+		Con.Release();
 	}
 
 	void Console::Write(int channel, const char* msg, int type)

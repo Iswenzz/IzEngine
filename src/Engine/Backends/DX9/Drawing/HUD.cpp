@@ -1,6 +1,7 @@
 #include "HUD.hpp"
 #include "Draw2D.hpp"
 
+#include "Engine/Backends/DX9/Device.hpp"
 #include "Engine/Backends/DX9/Assets.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
@@ -96,6 +97,6 @@ namespace IW3SR::Engine
 		RenderSize = { w, h };
 
 		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
-		dx->device->StretchRect(Texture->BaseSurface, NULL, NULL, &rect, D3DTEXF_NONE);
+		Device::Get().D3Device->StretchRect(Texture->BaseSurface, NULL, NULL, &rect, D3DTEXF_NONE);
 	}
 }

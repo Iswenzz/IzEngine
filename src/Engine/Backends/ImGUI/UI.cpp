@@ -1,4 +1,5 @@
 #include "UI.hpp"
+#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Engine
 {
@@ -10,15 +11,22 @@ namespace IW3SR::Engine
 		Modules = UC::Modules();
 		Settings = UC::Settings();
 		Themes = UC::Themes();
+
+		Environment::Deserialize("UI", *this);
 	}
 
 	void UI::Initialize()
 	{
 		Active = true;
+
 		ImGui::SetAllocatorFunctions(&Allocator, &Free, &Data);
 		Context = ImGui::CreateContext();
 		PlotContext = ImPlot::CreateContext();
-		ModuleContext();
+		ImGui_ImplWin32_Init(Sys::Get().MainWindow);
+		ImGui_ImplDX9_Init(Device::Get().D3Device);
+
+		InitializeContext();
+		Plugins::SetRenderer();
 
 		Themes.Initialize();
 	}
@@ -26,12 +34,19 @@ namespace IW3SR::Engine
 	void UI::Release()
 	{
 		Active = false;
+
+		ImGui_ImplDX9_Shutdown();
+		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext(Context);
 		ImPlot::DestroyContext(PlotContext);
+
+		Environment::Serialize("UI", *this);
 	}
 
 	void UI::Begin()
 	{
+		ImGui_ImplDX9_NewFrame();
+		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
 		if (OpenKey.IsPressed())
@@ -44,9 +59,10 @@ namespace IW3SR::Engine
 	{
 		ImGui::EndFrame();
 		ImGui::Render();
+		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void UI::ModuleContext()
+	void UI::InitializeContext()
 	{
 		auto& UI = UI::Get();
 		ImGui::SetAllocatorFunctions(UI::Allocator, UI::Free, UI.Data);

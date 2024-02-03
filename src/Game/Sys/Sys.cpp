@@ -3,19 +3,7 @@
 
 namespace IW3SR::Game
 {
-	Sys::Sys()
-	{
-		Patch();
-	}
-
-	void Sys::Patch()
-	{
-		if (COD4X)
-		{
-			MainWndProc_h.Address = Memory::Scan(COD4X_BIN,
-				"\x55\x89\xE5\x53\x81\xEC\x84\x00\x00\x00\xC7\x04\x24\x02", 14);
-		}
-	}
+	Sys::Sys() : System(Engine::Sys::Get()) { }
 
 	HWND Sys::CreateMainWindow(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
 		DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
@@ -28,7 +16,7 @@ namespace IW3SR::Game
 		if (windowName != "Call of Duty 4" && windowName != "Call of Duty 4 X")
 			return hwnd;
 
-		return MainWindow = hwnd;
+		return Get().System.MainWindow = hwnd;
 	}
 
 	LRESULT Sys::MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)

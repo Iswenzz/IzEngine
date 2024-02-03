@@ -46,10 +46,10 @@ namespace IW3SR::Engine
 		void End();
 
 		/// <summary>
-		/// Set the module context.
+		/// Initialize context.
 		/// </summary>
 		/// <remarks>Share context with DLLs.</remarks>
-		static void ModuleContext();
+		static void InitializeContext();
 
 		/// <summary>
 		/// ImGUI allocator.
@@ -77,6 +77,6 @@ namespace IW3SR::Engine
 		UI();
 		virtual ~UI() = default;
 
-		NLOHMANN_SERIALIZE(UI, Memory, Modules, Settings, Themes, OpenKey)
+		NLOHMANN_SERIALIZE(UI, OpenKey, Memory, Modules, Settings, Themes)
 	};
 }

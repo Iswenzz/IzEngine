@@ -1,14 +1,18 @@
 #include "Assets.hpp"
+#include "Engine/Backends/DX9/Assets.hpp"
 
 namespace IW3SR::Game
 {
 	void Assets::Initialize()
 	{
+		Engine::Assets::Get().Initialize();
 		LoadFonts();
 	}
 
 	void Assets::Release()
 	{
+		Engine::Assets::Get().Release();
+
 		Fonts.clear();
 		FontNames.clear();
 	}

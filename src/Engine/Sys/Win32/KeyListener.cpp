@@ -19,7 +19,7 @@ namespace IW3SR::Engine
 
 	bool KeyListener::IsPressed()
 	{
-		return Keys[Key].PrevState == 0 && IsDown();
+		return Keys[Key].PrevState == WM_NULL && IsDown();
 	}
 
 	bool KeyListener::IsUp(int vk)
@@ -58,7 +58,7 @@ namespace IW3SR::Engine
 		{
 			info.PrevState = info.State;
 			if (info.State == WM_KEYUP)
-				info.State = 0;
+				info.State = WM_NULL;
 		}
 	}
 }

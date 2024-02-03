@@ -1,11 +1,14 @@
 target_sources(IW3SR PRIVATE
-	Plugin.hpp
-	Plugin.cpp
-	Plugins.hpp
-	Plugins.cpp
+	Console.hpp
+	Console.cpp
 	Environment.hpp
 	Environment.cpp
 	KeyListener.hpp
 	KeyListener.cpp
 	Memory.hpp
-	Memory.cpp)
+	Memory.cpp
+	Plugin.hpp
+	Plugin.cpp
+	Plugins.hpp
+	Plugins.cpp
+	Sys.hpp)

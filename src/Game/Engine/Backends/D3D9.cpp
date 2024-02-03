@@ -213,12 +213,9 @@ namespace IW3SR::Game
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
-		if (UI::Get().Active)
-		{
-			ImGui_ImplDX9_InvalidateDeviceObjects();
-			pIDirect3DDevice9->Reset(pPresentationParameters);
-			ImGui_ImplDX9_CreateDeviceObjects();
-		}
+		ImGui_ImplDX9_InvalidateDeviceObjects();
+		pIDirect3DDevice9->Reset(pPresentationParameters);
+		ImGui_ImplDX9_CreateDeviceObjects();
 		return pIDirect3DDevice9->Reset(pPresentationParameters);
 	}
 
@@ -379,7 +376,7 @@ namespace IW3SR::Game
 
 	HRESULT D3D9Device::EndScene()
 	{
-		GetRenderer()->Render();
+		Renderer::Get().Render();
 		return pIDirect3DDevice9->EndScene();
 	}
 

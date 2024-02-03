@@ -3,7 +3,9 @@
 
 #include "Game/Engine/Renderer.hpp"
 #include "Game/Player/Player.hpp"
+
 #include "Game/Sys/Console.hpp"
+#include "Game/Sys/Patch.hpp"
 #include "Game/Sys/Sys.hpp"
 
 namespace IW3SR::Game
@@ -14,10 +16,6 @@ namespace IW3SR::Game
 	class GameClient
 	{
 	public:
-		std::unique_ptr<Renderer> Renderer;
-		std::unique_ptr<Console> Console;
-		std::unique_ptr<Sys> Sys;
-
 		std::array<std::shared_ptr<Player>, 64> Players;
 
 		/// <summary>
@@ -49,6 +47,3 @@ namespace IW3SR::Game
 }
 
 extern GameClient* GC;
-
-#define GetRenderer()	GC->Renderer
-#define GetConsole()	GC->Console

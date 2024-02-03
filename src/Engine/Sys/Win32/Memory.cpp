@@ -6,7 +6,12 @@ namespace IW3SR::Engine
 {
     void Memory::Read(uintptr_t address, void* data, int size)
     {
-        ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(address), data, size, nullptr);
+        DWORD oldProtect;
+        LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
+
+        VirtualProtect(lpAddress, size, PAGE_READONLY, &oldProtect);
+        memcpy(data, lpAddress, size);
+        VirtualProtect(lpAddress, size, oldProtect, nullptr);
     }
 
     void Memory::Write(uintptr_t address, const char* bytes, int size)
@@ -14,7 +19,7 @@ namespace IW3SR::Engine
         DWORD oldProtect;
         LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
 
-        VirtualProtect(lpAddress, size, PAGE_EXECUTE_READWRITE, &oldProtect);
+        VirtualProtect(lpAddress, size, PAGE_READWRITE, &oldProtect);
         memcpy(lpAddress, bytes, size);
         VirtualProtect(lpAddress, size, oldProtect, nullptr);
     }
@@ -28,7 +33,7 @@ namespace IW3SR::Engine
     std::vector<uintptr_t> Memory::ScanAll(std::string moduleName, const char* bytes, size_t size, bool first)
     {
         std::vector<uintptr_t> addresses;
-        HMODULE hModule = GetModuleHandleA(moduleName.c_str());
+        HMODULE hModule = GetModuleHandle(moduleName.c_str());
 
         if (!hModule) return addresses;
 
@@ -39,9 +44,7 @@ namespace IW3SR::Engine
         uintptr_t moduleEnd = moduleBase + moduleInfo.SizeOfImage;
 
         std::vector<unsigned char> buffer(moduleInfo.SizeOfImage);
-        ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(moduleBase),
-            &buffer[0], moduleInfo.SizeOfImage, nullptr);
-
+        memcpy(buffer.data(), reinterpret_cast<LPCVOID>(moduleBase), buffer.size());
         for (uintptr_t address = moduleBase; address < moduleEnd - size; ++address)
         {
             if (!memcmp(&buffer[address - moduleBase], bytes, size))

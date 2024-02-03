@@ -31,16 +31,6 @@ namespace IW3SR::Game
 		void Release();
 
 		/// <summary>
-		/// Begin frame.
-		/// </summary>
-		void Begin();
-
-		/// <summary>
-		/// End frame.
-		/// </summary>
-		void End();
-
-		/// <summary>
 		/// Render frame.
 		/// </summary>
 		void Render();
@@ -50,7 +40,7 @@ namespace IW3SR::Game
 		/// Initialize the GUI.
 		/// </summary>
 		GUI();
-		virtual ~GUI();
+		virtual ~GUI() = default;
 
 		NLOHMANN_SERIALIZE(GUI, About, Binds, Toolbar)
 	};

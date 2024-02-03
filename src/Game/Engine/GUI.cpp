@@ -1,5 +1,7 @@
 #include "GUI.hpp"
-#include "Game/Game.hpp"
+#include "Game/Sys/Sys.hpp"
+
+#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Game
 {
@@ -12,49 +14,15 @@ namespace IW3SR::Game
 		Environment::Deserialize("GUI", *this);
 	}
 
-	GUI::~GUI()
-	{
-		Environment::Serialize("GUI", *this);
-	}
-
 	void GUI::Initialize()
 	{
-		if (UI.Active) return;
-
 		UI.Initialize();
-		ImGui_ImplWin32_Init(Sys::MainWindow);
-		ImGui_ImplDX9_Init(dx->device);
-
-		Plugins::SetRenderer();
 	}
 
 	void GUI::Release()
 	{
-		if (!UI.Active) return;
-
-		ImGui_ImplDX9_Shutdown();
-		ImGui_ImplWin32_Shutdown();
 		UI.Release();
-	}
-
-	void GUI::Begin()
-	{
-		if (!UI.Active) return;
-		
-		ImGui_ImplDX9_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		UI.Begin();
-
-		Render();
-	}
-
-	void GUI::End()
-	{
-		if (!UI.Active) return;
-
-		UI.End();
-		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-		KeyListener::Reset();
+		Environment::Serialize("GUI", *this);
 	}
 
 	void GUI::Render()

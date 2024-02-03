@@ -2,6 +2,7 @@
 
 void Init()
 {
+    Sleep(2000);
     GC = new GameClient();
     GC->Start();
 }
