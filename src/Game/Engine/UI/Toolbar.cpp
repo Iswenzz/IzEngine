@@ -1,6 +1,6 @@
 #include "Toolbar.hpp"
 
-namespace IW3SR::Game::UI
+namespace IW3SR::Game::UC
 {
 	Toolbar::Toolbar() : Window("Toolbar")
 	{
@@ -15,13 +15,13 @@ namespace IW3SR::Game::UI
 		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
 
-		auto& gui = GUI::Get();
+		auto& GUI = GUI::Get();
 		const vec2& position = RenderPosition;
 		const vec2& size = RenderSize;
 		const vec2 buttonSize = { 30, 30 };
 
 		ImGui::Rainbow(position + vec2{ 0, size.y }, position + vec2{ size.x, size.y + 2 });
-		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &gui.Modules.Open, buttonSize);
+		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &GUI.UI.Modules.Open, buttonSize);
 		ImGui::Tooltip("Modules");
 		ImGui::SameLine();
 
@@ -32,13 +32,13 @@ namespace IW3SR::Game::UI
 			ImGui::Tooltip("Reload plugins");
 			ImGui::SameLine();
 		}
-		ImGui::ButtonToggle(ICON_FA_GRIP, "Design", &gui.DesignMode, buttonSize);
+		ImGui::ButtonToggle(ICON_FA_GRIP, "Design", &GUI.UI.DesignMode, buttonSize);
 		ImGui::Tooltip("Design mode");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_PAINTBRUSH, "Themes", &gui.Themes.Open, buttonSize);
+		ImGui::Button(ICON_FA_PAINTBRUSH, "Themes", &GUI.UI.Themes.Open, buttonSize);
 		ImGui::Tooltip("Themes");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_KEYBOARD, "Binds", &gui.Binds.Open, buttonSize);
+		ImGui::Button(ICON_FA_KEYBOARD, "Binds", &GUI.Binds.Open, buttonSize);
 		ImGui::Tooltip("Binds");
 		ImGui::SameLine();
 
@@ -53,14 +53,14 @@ namespace IW3SR::Game::UI
 				ImGui::ShowDebugLogWindow(&IsDebug);
 				ImGui::ShowStackToolWindow(&IsDebug);
 			}
-			ImGui::Button(ICON_FA_MEMORY, "Memory", &gui.Memory.Open, buttonSize);
+			ImGui::Button(ICON_FA_MEMORY, "Memory", &GUI.UI.Memory.Open, buttonSize);
 			ImGui::Tooltip("Memory");
 			ImGui::SameLine();
 		}
-		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &gui.About.Open, buttonSize);
+		ImGui::Button(ICON_FA_CIRCLE_INFO, "About", &GUI.About.Open, buttonSize);
 		ImGui::Tooltip("About");
 		ImGui::SameLine();
-		ImGui::Button(ICON_FA_GEAR, "Settings", &gui.Settings.Open, buttonSize);
+		ImGui::Button(ICON_FA_GEAR, "Settings", &GUI.UI.Settings.Open, buttonSize);
 		ImGui::Tooltip("Settings");
 
 		End();

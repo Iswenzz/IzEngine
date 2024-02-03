@@ -3,37 +3,17 @@
 #include "Drawing/Draw2D.hpp"
 #include "Drawing/Draw3D.hpp"
 
-#include "Engine/Backends/DX9/Assets.hpp"
+#include "Engine/Core/Modules.hpp"
+#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Game
 {
-	Renderer::Renderer()
-	{
-		Patch();
-	}
-
-	void Renderer::Patch()
-	{
-		// Disable <developer 1> check for drawing debug lines & collisions
-		Memory::NOP(0x6496D8, 3);
-
-		// Increase fps cap to 125 for menus and loadscreen
-		Memory::Set<char>(0x500176, 8);
-		Memory::Set<char>(0x500179, 8);
-
-		if (COD4X)
-		{
-			MainWndProc_h.Address = Memory::Scan(COD4X_BIN,
-				"\x55\x89\xE5\x53\x81\xEC\x84\x00\x00\x00\xC7\x04\x24\x02", 14);
-		}
-	}
-
 	void Renderer::Initialize()
 	{
 		R_Init_h();
 
+		Device::Get().Assign(dx->device);
 		Assets::Get().Initialize();
-		Engine::Assets::Get().Initialize();
 
 		GUI::Get().Initialize();
 		Modules::Get().Initialize();
@@ -45,9 +25,7 @@ namespace IW3SR::Game
 		Features::Get().Release();
 		Modules::Get().Release();
 		GUI::Get().Release();
-
 		Assets::Get().Release();
-		Engine::Assets::Get().Release();
 
 		R_Shutdown_h(window);
 	}
@@ -55,7 +33,7 @@ namespace IW3SR::Game
 	void Renderer::Draw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
 	{
 		GameCallback(OnDraw3D);
-		Game::Draw3D::Render();
+		Draw3D::Render();
 		RB_EndSceneRendering_h(cmd, viewInfo, src, buf);
 	}
 
@@ -67,9 +45,15 @@ namespace IW3SR::Game
 
 	void Renderer::Render()
 	{
-		GUI::Get().Begin();
+		if (!UI::Get().Active)
+			return;
+		UI::Get().Begin();
+
+		GUI::Get().Render();
 		if (Player::CanRender())
 			GameCallback(OnRender);
-		GUI::Get().End();
+
+		UI::Get().End();
+		KeyListener::Reset();
 	}
 }

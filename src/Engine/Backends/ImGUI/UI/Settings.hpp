@@ -1,7 +1,7 @@
 #pragma once
-#include "Game/Engine/GUI.hpp"
+#include "Engine/Backends/ImGUI/Drawing/Window.hpp"
 
-namespace IW3SR::Game::UI
+namespace IW3SR::Engine::UC
 {
 	/// <summary>
 	/// Settings window.

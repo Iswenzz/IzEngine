@@ -9,8 +9,8 @@ namespace IW3SR::Game
 
 		CoD4X();
 
-		Renderer = std::make_unique<class Renderer>();
-		Console = std::make_unique<class Console>();
+		Patch::Get().Initialize();
+		Console::Get().Initialize();
 
 		Hook();
 	}
@@ -19,9 +19,7 @@ namespace IW3SR::Game
 	{
 		Environment::Save();
 		Plugins::Shutdown();
-
-		Console.reset();
-		Renderer.reset();
+		Console::Get().Release();
 
 		Unhook();
 	}
@@ -42,16 +40,6 @@ namespace IW3SR::Game
 
 		COD4X_BIN = *cod4x;
 		COD4X = reinterpret_cast<uintptr_t>(GetModuleHandle(COD4X_BIN.c_str()));
-
-		uintptr_t antiHook = COD4X + 0x43580;
-		uintptr_t aimAssist = 0x452BFA;
-		uintptr_t localTagMatrix = 0x434200;
-
-		Memory::Write(antiHook, "\xC3", 1);
-		Memory::Write(aimAssist, "\xE8\xA1\xF9\xFA\xFF", 5);
-		Memory::Write(localTagMatrix, "\x51\x53\x8B\x5C\x24", 5);
-
-		bg_weaponNames = reinterpret_cast<WeaponDef**>(COD4X + 0x443DDE0);
 	}
 
 	void GameClient::Hook()

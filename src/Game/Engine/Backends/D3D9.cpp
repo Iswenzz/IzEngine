@@ -10,11 +10,11 @@ namespace IW3SR::Game
 		IDirect3D9Ex* d3d9ex_device = nullptr;
 		Log::WriteLine("Getting Direct3D 9 EX interface...");
 
-		if (SUCCEEDED(Direct3DCreate9Ex(sdk, &d3d9ex_device)))
+		if (SUCCEEDED(::Direct3DCreate9Ex(sdk, &d3d9ex_device)))
 			return new D3D9EX(d3d9ex_device);
 
 		Log::WriteLine("Direct3D 9 EX failed to initialize. Defaulting to Direct3D 9.");
-		return new D3D9(Direct3DCreate9(sdk));
+		return new D3D9(::Direct3DCreate9(sdk));
 	}
 
 	HRESULT D3D9::QueryInterface(REFIID riid, void** ppvObj)
@@ -213,12 +213,9 @@ namespace IW3SR::Game
 
 	HRESULT D3D9Device::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
-		if (GUI::Get().Active)
-		{
-			ImGui_ImplDX9_InvalidateDeviceObjects();
-			pIDirect3DDevice9->Reset(pPresentationParameters);
-			ImGui_ImplDX9_CreateDeviceObjects();
-		}
+		ImGui_ImplDX9_InvalidateDeviceObjects();
+		pIDirect3DDevice9->Reset(pPresentationParameters);
+		ImGui_ImplDX9_CreateDeviceObjects();
 		return pIDirect3DDevice9->Reset(pPresentationParameters);
 	}
 
@@ -379,7 +376,7 @@ namespace IW3SR::Game
 
 	HRESULT D3D9Device::EndScene()
 	{
-		GetRenderer()->Render();
+		Renderer::Get().Render();
 		return pIDirect3DDevice9->EndScene();
 	}
 

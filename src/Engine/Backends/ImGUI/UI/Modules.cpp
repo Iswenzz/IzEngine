@@ -1,9 +1,7 @@
 #include "Modules.hpp"
-#include "Game/Game.hpp"
-
 #include <set>
 
-namespace IW3SR::Game::UI
+namespace IW3SR::Engine::UC
 {
 	Modules::Modules() : Window("Modules")
 	{

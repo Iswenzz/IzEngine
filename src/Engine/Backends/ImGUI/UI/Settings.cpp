@@ -1,9 +1,7 @@
 #include "Settings.hpp"
-#include "Game/Game.hpp"
-
 #include <set>
 
-namespace IW3SR::Game::UI
+namespace IW3SR::Engine::UC
 {
 	Settings::Settings() : Window("Settings")
 	{

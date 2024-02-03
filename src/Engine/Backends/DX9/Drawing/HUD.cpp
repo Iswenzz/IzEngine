@@ -1,6 +1,7 @@
 #include "HUD.hpp"
 #include "Draw2D.hpp"
 
+#include "Engine/Backends/DX9/Device.hpp"
 #include "Engine/Backends/DX9/Assets.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
@@ -50,6 +51,8 @@ namespace IW3SR::Engine
 		if (!ImGui::CollapsingHeader(label.c_str(), open ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None))
 			return;
 
+		ImGui::PushID(ID.c_str());
+
 		const std::vector<std::string>& horizontals = Draw2D::HorizontalAlignment;
 		const std::vector<std::string>& verticals = Draw2D::VerticalAlignment;
 		const std::vector<std::string>& fonts = Assets::Get().FontNames;
@@ -73,6 +76,8 @@ namespace IW3SR::Engine
 		int alignY = AlignY;
 		if (ImGui::Combo("Align Y", &alignY, verticals))
 			AlignY = static_cast<Alignment>(alignY);
+
+		ImGui::PopID();
 	}
 
 	void HUD::Render()
@@ -92,6 +97,6 @@ namespace IW3SR::Engine
 		RenderSize = { w, h };
 
 		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
-		dx->device->StretchRect(Texture->BaseSurface, NULL, NULL, &rect, D3DTEXF_NONE);
+		Device::Get().D3Device->StretchRect(Texture->BaseSurface, NULL, NULL, &rect, D3DTEXF_NONE);
 	}
 }

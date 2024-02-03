@@ -1,9 +1,7 @@
 #pragma once
 #include "GUI.hpp"
-#include "Backends/D3D9EX.hpp"
 #include "Game/Definitions.hpp"
-
-#include "Engine/Core/Modules.hpp"
+#include "Backends/D3D9EX.hpp"
 
 namespace IW3SR::Game
 {
@@ -12,18 +10,8 @@ namespace IW3SR::Game
 	/// </summary>
 	class Renderer
 	{
+		CLASS_SINGLETON(Renderer)
 	public:
-		/// <summary>
-		/// Initialize the renderer class.
-		/// </summary>
-		Renderer();
-		~Renderer() = default;
-
-		/// <summary>
-		/// Patch the game.
-		/// </summary>
-		void Patch();
-
 		/// <summary>
 		/// Initialize the renderer.
 		/// </summary>
@@ -55,5 +43,12 @@ namespace IW3SR::Game
 		/// Render frame.
 		/// </summary>
 		void Render();
+
+	private:
+		/// <summary>
+		/// Initialize the renderer.
+		/// </summary>
+		Renderer() = default;
+		~Renderer() = default;
 	};
 }

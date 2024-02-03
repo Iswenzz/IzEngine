@@ -1,4 +1,5 @@
 #include "Assets.hpp"
+#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Engine
 {
@@ -38,7 +39,7 @@ namespace IW3SR::Engine
 			return cache->second;
 
 		std::shared_ptr<Font> font = std::make_shared<Font>(id);
-		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
+		D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
 		return Fonts[id] = font;
@@ -57,7 +58,7 @@ namespace IW3SR::Engine
 			return cache->second;
 
 		std::shared_ptr<Font> font = std::make_shared<Font>(id);
-		D3DXCreateFont(dx->device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
+		D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
 		if (std::ranges::find(FontNames, name) == FontNames.end())
@@ -75,7 +76,7 @@ namespace IW3SR::Engine
 			return cache->second;
 
 		std::shared_ptr<Texture> texture = std::make_shared<Texture>(id);
-		D3DXCreateTextureFromFile(dx->device, path.string().c_str(), &texture->Base);
+		D3DXCreateTextureFromFile(Device::Get().D3Device, path.string().c_str(), &texture->Base);
 		return Textures[id] = texture;
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "Game/Definitions.hpp"
+#include "Engine/Sys/Win32.hpp"
 
-namespace IW3SR::Game
+namespace IW3SR::Engine
 {
 	/// <summary>
 	/// Console class.
@@ -10,8 +10,6 @@ namespace IW3SR::Game
 	{
 		CLASS_SINGLETON(Console)
 	public:
-		Engine::Console& Con;
-
 		/// <summary>
 		/// Initialize the console.
 		/// </summary>
@@ -23,18 +21,16 @@ namespace IW3SR::Game
 		void Release();
 
 		/// <summary>
-		/// Write to the console.
+		/// Set the console title.
 		/// </summary>
-		/// <param name="channel">The channel.</param>
-		/// <param name="msg">The message.</param>
-		/// <param name="type">The messsage type.</param>
-		static void Write(int channel, const char* msg, int type);
+		/// <param name="title">The title.</param>
+		void SetTile(const std::string& title);
 
 	private:
 		/// <summary>
 		/// Initialize the console.
 		/// </summary>
-		Console();
+		Console() = default;
 		~Console() = default;
 	};
 }

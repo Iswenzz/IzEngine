@@ -5,44 +5,43 @@ namespace IW3SR::Addons
 {
 	FPS::FPS() : Module("sr.player.fps", "FPS", "Player")
 	{
-		Graph = Window("FPS Graph");
+		Value = 0;
 		ShowGraph = false;
 	}
 
 	void FPS::Initialize()
 	{
-		FPSText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
-		FPSText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
-		FPSText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
+		FrameText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
+		FrameText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
+		FrameText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
-		Notification = NotificationCenter("Hi from Dualite");
-		Notification.Push("Hi from Dualite 2");
-		Notification.Push("Hi from Dualite 3");
+		Graph = Plots();
+
+		FrameText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
+		FrameText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
+		FrameText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 	}
 
 	void FPS::OnMenu()
 	{
 		ImGui::Checkbox("Display Graph", &ShowGraph);
-		FPSText.Menu("Text", true);
+		FrameText.Menu("Text", true);
 	}
 
 	void FPS::OnRender()
 	{
-		Notification.Render();
-
 		Value = Dvar::Get<int>("com_maxfps");
 		Values.Add(Value);
 
-		FPSText.Value = std::to_string(Value);
-		FPSText.Render();
+		FrameText.Value = std::to_string(Value);
+		FrameText.Render();
 
 		if (ShowGraph)
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
-			Graph.Begin(ImGuiWindowFlags_Graph);
+			Graph.Begin();
 			if (ImPlot::BeginPlot("##FPS", Graph.RenderSize))
 			{
-				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(FPSText.Color));
+				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(FrameText.Color));
 				ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_Canvas, ImPlotAxisFlags_Canvas);
 				ImPlot::SetupAxisLimits(ImAxis_X1, 0, Values.Size(), ImGuiCond_Always);
 				ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1000, ImGuiCond_Always);
@@ -54,7 +53,6 @@ namespace IW3SR::Addons
 				ImPlot::EndPlot();
 			}
 			Graph.End();
-			ImGui::PopStyleVar();
 		}
 	}
 }

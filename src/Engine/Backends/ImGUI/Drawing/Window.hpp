@@ -34,7 +34,7 @@ namespace IW3SR::Engine
 		/// </summary>
 		/// <param name="position">The position.</param>
 		/// <param name="size">The size.</param>
-		void SetRect(const vec2& position, const vec2& size);
+		virtual void SetRect(const vec2& position, const vec2& size);
 
 		/// <summary>
 		/// Set the window position and size.
@@ -43,17 +43,17 @@ namespace IW3SR::Engine
 		/// <param name="y">Y value.</param>
 		/// <param name="w">The width.</param>
 		/// <param name="h">The height.</param>
-		void SetRect(float x, float y, float w, float h);
+		virtual void SetRect(float x, float y, float w, float h);
 
 		/// <summary>
 		/// Begin drawing.
 		/// </summary>
-		void Begin(ImGuiWindowFlags flags = 0);
+		virtual void Begin(ImGuiWindowFlags flags = 0);
 
 		/// <summary>
 		/// End drawing.
 		/// </summary>
-		void End();
+		virtual void End();
 
 		NLOHMANN_SERIALIZE_POLY_BASE(Window, Name, Position, Size, Open)
 	};

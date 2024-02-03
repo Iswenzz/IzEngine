@@ -3,4 +3,6 @@ add_subdirectory(Resources)
 
 target_sources(IW3SR PRIVATE
 	Assets.hpp
-	Assets.cpp)
+	Assets.cpp
+	Device.hpp
+	Device.cpp)
