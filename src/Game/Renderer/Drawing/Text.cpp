@@ -4,8 +4,6 @@
 #include "Engine/Backends/DX9/Device.hpp"
 #include "Engine/Backends/ImGUI/UI.hpp"
 
-#define RESCALE 0.4f
-
 namespace IW3SR::Game
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
@@ -91,8 +89,8 @@ namespace IW3SR::Game
 	{
 		float x = Position.x;
 		float y = Position.y;
-		float xScale = FontSize * RESCALE;
-		float yScale = FontSize * RESCALE;
+		float xScale = FontSize * FontRescale;
+		float yScale = FontSize * FontRescale;
 
 		if (!Font)
 			SetFont(FontName);

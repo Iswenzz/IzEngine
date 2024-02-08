@@ -33,26 +33,26 @@ namespace IW3SR::Addons
 		{
 			ImGui::Text("Specular");
 			ImGui::Separator();
-			ImGui::Toggle("Enabled", 20, &DrawSpecular);
+			ImGui::Toggle("Enabled", &DrawSpecular);
 			ImGui::SliderFloat("Specular color scale", &SpecularColorScale, 0, 100);
 
 			ImGui::NewLine();
 
 			ImGui::Text("Misc");
 			ImGui::Separator();
-			ImGui::Toggle("fog", 20, &DrawFog);
+			ImGui::Toggle("fog", &DrawFog);
 			ImGui::SameLine();
 			ImGui::Text("Fog");
-			ImGui::Toggle("decals", 20, &DrawDecals);
+			ImGui::Toggle("decals", &DrawDecals);
 			ImGui::SameLine();
 			ImGui::Text("Decals");
-			ImGui::Toggle("water anim", 20, &WaterAnimation);
+			ImGui::Toggle("water anim", &WaterAnimation);
 			ImGui::SameLine();
 			ImGui::Text("Water animation");
 		}
 		if (ImGui::CollapsingHeader("Tweaks"))
 		{
-			ImGui::Toggle("film tweaks", 20, &DrawTweaks);
+			ImGui::Toggle("film tweaks", &DrawTweaks);
 			ImGui::SameLine();
 			ImGui::Text("Enabled");
 			ImGui::SliderFloat("Brightness", &TweakBrightness, -1, 1);
@@ -62,7 +62,7 @@ namespace IW3SR::Addons
 		}
 		if (ImGui::CollapsingHeader("Glow"))
 		{
-			ImGui::Toggle("glow", 20, &DrawGlow);
+			ImGui::Toggle("glow", &DrawGlow);
 			ImGui::SameLine();
 			ImGui::Text("Enabled");
 			ImGui::SliderFloat("Radius", &GlowRadius, 0, 32);
@@ -72,7 +72,7 @@ namespace IW3SR::Addons
 		}
 		if (ImGui::CollapsingHeader("Sun"))
 		{
-			ImGui::Toggle("sun", 20, &DrawSun);
+			ImGui::Toggle("sun", &DrawSun);
 			ImGui::SameLine();
 			ImGui::Text("Enabled");
 			ImGui::SliderFloat("Sun intensity", &SunIntensity, 0, 4);

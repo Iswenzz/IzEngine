@@ -41,34 +41,38 @@ namespace ImGui
         return clicked;
     }
 
-    bool Toggle(const std::string& id, float size, bool* v)
+    bool Toggle(const std::string& id, bool* v, const ImVec2& defaultSize)
     {
+        ImGuiContext& g = *GImGui;
+        ImGuiStyle& style = g.Style;
         ImVec2 p = GetCursorScreenPos();
         ImDrawList* draw = GetWindowDrawList();
-        ImGuiContext* g = GImGui;
 
-        float width = size * 1.55f;
-        float radius = size * 0.50f;
+        float fontSize = g.FontSize;
+        float height = fontSize + style.FramePadding.y / 2.0f;
+        float width = height + style.FramePadding.x * 2.5f;
+        float radius = height * 0.5f;
+        ImVec2 size = CalcItemSize(defaultSize, width, height);
 
-        InvisibleButton(id.c_str(), ImVec2(width, size));
+        InvisibleButton(id.c_str(), size);
         bool clicked = IsItemClicked();
         if (clicked) *v = !*v;
 
-        float t = *v ? 1.0f : 0.0f;
         const float ANIM_SPEED = 0.08f;
+        float t = *v ? 1.0f : 0.0f;
 
-        if (g->LastActiveId == g->CurrentWindow->GetID(id.c_str()))
+        if (g.LastActiveId == g.CurrentWindow->GetID(id.c_str()))
         {
-            float t_anim = ImSaturate(g->LastActiveIdTimer / ANIM_SPEED);
+            float t_anim = ImSaturate(g.LastActiveIdTimer / ANIM_SPEED);
             t = *v ? (t_anim) : (1.0f - t_anim);
         }
-        ImU32 color = IsItemHovered()
-            ? GetColorU32(ImLerp(ImVec4(0.78f, 0.78f, 0.78f, 1.0f), ImVec4(0.64f, 0.83f, 0.34f, 1.0f), t))
-            : GetColorU32(ImLerp(ImVec4(0.85f, 0.85f, 0.85f, 1.0f), ImVec4(0.56f, 0.83f, 0.26f, 1.0f), t));
+        const ImU32 color = IsItemHovered()
+            ? GetColorU32(ImLerp({ 0.78f, 0.78f, 0.78f, 1.0f }, { 0.64f, 0.83f, 0.34f, 1.0f }, t))
+            : GetColorU32(ImLerp({ 0.85f, 0.85f, 0.85f, 1.0f }, { 0.56f, 0.83f, 0.26f, 1.0f }, t));
+        const ImU32 white = GetColorU32({ 1, 1, 1, 1 });
 
-        draw->AddRectFilled(p, ImVec2(p.x + width, p.y + size), color, size * 0.5f);
-        draw->AddCircleFilled(ImVec2(p.x + radius + t * (width - radius * 2.0f), p.y + radius),
-            radius - 1.5f, IM_COL32(255, 255, 255, 255));
+        draw->AddRectFilled(p, { p.x + size.x, p.y + size.y }, color, size.y * 0.5f);
+        draw->AddCircleFilled({ p.x + radius + t * (size.x - radius * 2.0f), p.y + radius }, radius - 1.5f, white);
 
         return clicked;
     }

@@ -2,15 +2,13 @@
 
 namespace IW3SR::Game::UC
 {
-	Toolbar::Toolbar() : Window("Toolbar")
-	{
-		SetRect(0, 0, 640, 0);
-	}
+	Toolbar::Toolbar() : Window("Toolbar") { }
 
 	void Toolbar::Render()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
+		SetRect(0, 0, 640, 14);
 
 		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
@@ -18,7 +16,7 @@ namespace IW3SR::Game::UC
 		auto& GUI = GUI::Get();
 		const vec2& position = RenderPosition;
 		const vec2& size = RenderSize;
-		const vec2 buttonSize = { 30, 30 };
+		const vec2 buttonSize = vec2{ 14, 14 } * UI::Get().Size;
 
 		ImGui::Rainbow(position + vec2{ 0, size.y }, position + vec2{ size.x, size.y + 2 });
 		ImGui::Button(ICON_FA_GAMEPAD, "Modules", &GUI.Modules.Open, buttonSize);

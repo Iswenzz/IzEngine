@@ -18,6 +18,8 @@ namespace IW3SR::Engine
 		bool Open = false;
 		bool DesignMode = false;
 		VirtualScreen Screen;
+		float Size = 1.0f;
+		float Scale = 1.0f;
 
 		UC::Memory Memory;
 		UC::Themes Themes;
@@ -83,6 +85,6 @@ namespace IW3SR::Engine
 		UI();
 		virtual ~UI() = default;
 
-		NLOHMANN_SERIALIZE(UI, Memory, Themes)
+		NLOHMANN_SERIALIZE(UI, Scale, Memory, Themes)
 	};
 }

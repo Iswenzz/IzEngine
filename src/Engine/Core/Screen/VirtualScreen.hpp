@@ -12,7 +12,7 @@ namespace IW3SR::Engine
 		vec2 Position;
 		vec2 Size;
         vec2 DisplaySize;
-        float AdjustedRealWidth;
+        float AdjustedRealWidth = 640.f;
 
         vec2 RealMin;
         vec2 RealMax;

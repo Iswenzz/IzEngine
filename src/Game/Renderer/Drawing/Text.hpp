@@ -20,6 +20,7 @@ namespace IW3SR::Game
 		Alignment AlignY = ALIGN_TOP;
 
 		std::string FontName;
+		float FontRescale = 0.4f;
 		float FontSize = 1.4;
 		int FontIndex = 0;
 

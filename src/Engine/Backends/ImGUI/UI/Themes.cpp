@@ -18,8 +18,8 @@ namespace IW3SR::Engine::UC
 		ImPlotStyle& plotStyle = ImPlot::GetStyle();
 		plotStyle = PlotStyle;
 
-		const float fontSize = 22;
-		const float iconSize = fontSize * 2.f / 3.f;
+		const float fontSize = 12.f * UI::Get().Size;
+		const float iconSize = 8.f * UI::Get().Size;
 
 		static const ImWchar rangesFa[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 		static const ImWchar rangesFab[] = { ICON_MIN_FAB, ICON_MAX_FAB, 0 };
@@ -27,6 +27,7 @@ namespace IW3SR::Engine::UC
 		ImFontConfig config;
 		config.MergeMode = true;
 		config.PixelSnapH = true;
+		config.OversampleH = true;
 		config.GlyphMinAdvanceX = iconSize;
 
 		const auto openSans = Environment::FontsDirectory / "OpenSans-Regular.ttf";
@@ -137,7 +138,7 @@ namespace IW3SR::Engine::UC
 		plotColors[ImPlotCol_Selection] = IMPLOT_AUTO_COL;
 		plotColors[ImPlotCol_Crosshairs] = IMPLOT_AUTO_COL;
 
-		style.WindowMenuButtonPosition = ImGuiDir_Right;
+		style.WindowMenuButtonPosition = ImGuiDir_None;
 		style.WindowPadding = ImVec2(10, 10);
 		style.FramePadding = ImVec2(8, 8);
 		style.CellPadding = ImVec2(6, 6);

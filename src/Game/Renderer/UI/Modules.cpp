@@ -32,7 +32,7 @@ namespace IW3SR::Game::UC
 					continue;
 
 				// Enable/Disable module
-				if (ImGui::Toggle(entry->ID + "toggle", 20, &entry->IsEnabled))
+				if (ImGui::Toggle(entry->ID + "toggle", &entry->IsEnabled))
 					entry->IsEnabled ? modules.Enable(entry->ID) : modules.Disable(entry->ID);
 				ImGui::SameLine();
 				ImGui::Text(entry->Name.c_str());

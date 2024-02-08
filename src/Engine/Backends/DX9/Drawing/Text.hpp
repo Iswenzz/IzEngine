@@ -25,6 +25,7 @@ namespace IW3SR::Engine
 		Alignment AlignY = ALIGN_TOP;
 
 		std::string FontName;
+		float FontRescale = 13.33f;
 		float FontSize = 1.4;
 		int FontIndex = 0;
 

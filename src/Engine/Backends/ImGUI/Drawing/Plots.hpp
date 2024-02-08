@@ -9,7 +9,7 @@ namespace IW3SR::Engine
 	class API Plots : public Window
 	{
 	public:
-		vec2 Position = { 20, 380 };
+		vec2 Position = { 0, 380 };
 		vec2 Size = { 160, 100 };
 
 		/// <summary>

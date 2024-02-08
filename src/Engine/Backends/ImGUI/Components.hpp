@@ -53,8 +53,9 @@ namespace ImGui
 	/// </summary>
 	/// <param name="id">The ID.</param>
 	/// <param name="v">Toggle state.</param>
+	/// param name="size">The button size.</param>
 	/// <return></returns>
-	API bool Toggle(const std::string& id, float size, bool* v);
+	API bool Toggle(const std::string& id, bool* v, const ImVec2& size = ImVec2(0, 0));
 
 	/// <summary>
 	/// Combo box.

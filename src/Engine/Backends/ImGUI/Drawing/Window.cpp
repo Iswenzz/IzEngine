@@ -29,7 +29,7 @@ namespace IW3SR::Engine
 		ImGui::SetNextWindowSize(RenderSize, ImGuiCond_FirstUseEver);
 
 		ImGui::PushID(ID.c_str());
-		ImGui::Begin(Name.c_str(), &Open, flags);
+		ImGui::Begin(Name.c_str(), &Open, flags | ImGuiWindowFlags_NoCollapse);
 		RenderPosition = ImGui::GetWindowPos();
 		RenderSize = ImGui::GetWindowSize();
 
@@ -37,11 +37,10 @@ namespace IW3SR::Engine
 		Size = RenderSize / space;
 
 		if (!(flags & (ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)))
-		{
 			ImGui::Movable("#" + Name, Position, Size, RenderPosition, RenderSize);
-			ImGui::SetWindowPos(RenderPosition);
-			ImGui::SetWindowSize(RenderSize);
-		}
+
+		ImGui::SetWindowPos(RenderPosition);
+		ImGui::SetWindowSize(RenderSize);
 	}
 
 	void Window::End()

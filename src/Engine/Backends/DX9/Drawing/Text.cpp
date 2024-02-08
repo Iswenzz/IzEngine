@@ -30,7 +30,7 @@ namespace IW3SR::Engine
 	void Text::SetFont(const std::string& font)
 	{
 		auto& assets = Assets::Get();
-		int fontSize = std::floor(UI::Get().Screen.VirtualToFull.x * FontSize * 10.f);
+		int fontSize = std::floor(UI::Get().Size * FontSize * FontRescale);
 		Font = assets.LoadFont(font, fontSize);
 		FontName = font;
 		FontIndex = std::distance(assets.FontNames.begin(), std::ranges::find(assets.FontNames, FontName));
