@@ -1,6 +1,7 @@
 #include "Text.hpp"
 #include "Draw2D.hpp"
 
+#include "Engine/Backends/DX9/Device.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
 #define RESCALE 0.4f
@@ -15,7 +16,7 @@ namespace IW3SR::Game
 		FontName = font;
 	}
 
-	void Text::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
+	void Text::SetRectAlignment(Horizontal horizontal, Vertical vertical)
 	{
 		HorizontalAlign = horizontal;
 		VerticalAlign = vertical;
@@ -37,14 +38,14 @@ namespace IW3SR::Game
 
 	void Text::ComputeAlignment(float& x, float& y)
 	{
-		if (AlignX & ALIGN_CENTER)
+		if (AlignX == ALIGN_CENTER)
 			x += -(Size.x / 2.f);
-		else if (AlignX & ALIGN_RIGHT)
+		else if (AlignX == ALIGN_RIGHT)
 			x += -Size.x;
 
-		if (AlignY & ALIGN_MIDDLE)
+		if (AlignY == ALIGN_MIDDLE)
 			y += Size.y / 2.f;
-		else if (AlignY & ALIGN_BOTTOM)
+		else if (AlignY == ALIGN_BOTTOM)
 			y += Size.y;
 	}
 
@@ -69,11 +70,11 @@ namespace IW3SR::Game
 
 		int horizontal = HorizontalAlign - 1;
 		if (ImGui::Combo("Horizontal Alignment", &horizontal, horizontals))
-			HorizontalAlign = static_cast<RectAlignHorizontal>(horizontal + 1);
+			HorizontalAlign = static_cast<Horizontal>(horizontal + 1);
 
 		int vertical = VerticalAlign - 1;
 		if (ImGui::Combo("Vertical Alignment", &vertical, verticals))
-			VerticalAlign = static_cast<RectAlignVertical>(vertical + 1);
+			VerticalAlign = static_cast<Vertical>(vertical + 1);
 
 		int alignX = AlignX / 4;
 		if (ImGui::Combo("Align X", &alignX, horizontals))
@@ -99,7 +100,7 @@ namespace IW3SR::Game
 		Size = { R_TextWidth(Value.c_str(), Value.size(), Font) * xScale, Font->pixelHeight * yScale };
 
 		ComputeAlignment(x, y);
-		Math::ApplyRect(x, y, xScale, yScale, HorizontalAlign, VerticalAlign);
+		Device::Get().Screen.Apply(x, y, xScale, yScale, HorizontalAlign, VerticalAlign);
 		R_AddCmdDrawText(Value.c_str(), 0x7FFFFFFF, Font, x, y, xScale, yScale, 0, 0, Color);
 	}
 }

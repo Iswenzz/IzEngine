@@ -12,13 +12,13 @@ namespace IW3SR::Addons
 	void FPS::Initialize()
 	{
 		FrameText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
-		FrameText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
+		FrameText.SetRectAlignment(HORIZONTAL_RIGHT, VERTICAL_TOP);
 		FrameText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
 		Graph = Plots();
 
-		FrameText = Text("0", "Arial", -30, 0, 1.4, { 1, 1, 1, 1 });
-		FrameText.SetRectAlignment(HORIZONTAL_ALIGN_RIGHT, VERTICAL_ALIGN_TOP);
+		FrameText = Text("0", FONT_SPACERANGER, -30, 0, 1.4, { 1, 1, 1, 1 });
+		FrameText.SetRectAlignment(HORIZONTAL_RIGHT, VERTICAL_TOP);
 		FrameText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 	}
 

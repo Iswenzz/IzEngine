@@ -8,7 +8,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Utility class.
 	/// </summary>
-	class Utils
+	class API Utils
 	{
 	public:
 		/// <summary>

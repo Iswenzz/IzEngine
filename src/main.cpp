@@ -3,13 +3,12 @@
 void Init()
 {
     Sleep(2000);
-    GC = new GameClient();
-    GC->Start();
+    GameClient::Get().Start();
 }
 
 void Shutdown()
 {
-    delete GC;
+    GameClient::Get().Shutdown();
 }
 
 ENTRY BOOL STDCALL RIB_Main(HANDLE handle, INT upDown)

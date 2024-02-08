@@ -45,6 +45,9 @@ namespace IW3SR::Engine
 
 	void UI::Begin()
 	{
+		if (!Active || HasBegin) return;
+
+		HasBegin = true;
 		ImGui_ImplDX9_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
@@ -57,6 +60,7 @@ namespace IW3SR::Engine
 
 	void UI::End()
 	{
+		HasBegin = false;
 		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());

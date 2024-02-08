@@ -15,19 +15,17 @@ namespace IW3SR::Game
 	/// </summary>
 	class GameClient
 	{
+		CLASS_SINGLETON(GameClient)
 	public:
-		std::array<std::shared_ptr<Player>, 64> Players;
-
 		/// <summary>
-		/// Initialize the game.
-		/// </summary>
-		GameClient();
-		~GameClient();
-
-		/// <summary>
-		/// Start game.
+		/// Start the game.
 		/// </summary>
 		void Start();
+
+		/// <summary>
+		/// Shutdown the game.
+		/// </summary>
+		void Shutdown();
 
 		/// <summary>
 		/// CoD4X patch.
@@ -43,7 +41,12 @@ namespace IW3SR::Game
 		/// Unhook game.
 		/// </summary>
 		void Unhook();
+
+	private:
+		/// <summary>
+		/// Initialize the game.
+		/// </summary>
+		GameClient() = default;
+		~GameClient() = default;
 	};
 }
-
-extern GameClient* GC;

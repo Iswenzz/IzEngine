@@ -12,7 +12,8 @@ namespace IW3SR::Game
 	{
 		R_Init_h();
 
-		Device::Get().Assign(dx->device);
+		Device::Get().Assign(dx->d3d9, dx->device);
+		Device::Get().CreateScreen();
 		Assets::Get().Initialize();
 
 		GUI::Get().Initialize();
@@ -32,6 +33,7 @@ namespace IW3SR::Game
 
 	void Renderer::Draw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
 	{
+		UI::Get().Begin();
 		GameCallback(OnDraw3D);
 		Draw3D::Render();
 		RB_EndSceneRendering_h(cmd, viewInfo, src, buf);
@@ -47,9 +49,10 @@ namespace IW3SR::Game
 	{
 		if (!UI::Get().Active)
 			return;
-		UI::Get().Begin();
 
+		UI::Get().Begin();
 		GUI::Get().Render();
+
 		if (Player::CanRender())
 			GameCallback(OnRender);
 

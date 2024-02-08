@@ -66,5 +66,8 @@ namespace IW3SR::Game
 		/// Check if the player is active.
 		/// </summary>
 		inline operator bool() const;
+
+	private:
+		static inline std::array<std::shared_ptr<Player>, 64> Players;
 	};
 }

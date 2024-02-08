@@ -25,33 +25,39 @@ namespace IW3SR::Engine
     using vec4 = Vector4<float>;
     using mat3 = Matrix3<float>;
 
-	struct VirtualScreen
-	{
-		float scaleVirtualToReal[2];
-		float scaleVirtualToFull[2];
-		float scaleRealToVirtual[2];
-		float virtualViewableMin[2];
-		float virtualViewableMax[2];
-		float realViewportSize[2];
-		float realViewableMin[2];
-		float realViewableMax[2];
-		float subScreenLeft;
-	};
+    enum Horizontal
+    {
+        HORIZONTAL_SUBLEFT,			    // Left edge of a 4:3 screen (safe area not included).
+        HORIZONTAL_LEFT,				// Left viewable (safe area) edge.
+        HORIZONTAL_CENTER,			    // Center of the screen (reticle).
+        HORIZONTAL_RIGHT,				// Right viewable (safe area) edge.
+        HORIZONTAL_FULLSCREEN,		    // Disregards safe area.
+        HORIZONTAL_NOSCALE,			    // Uses exact parameters.
+        HORIZONTAL_TO640,				// Scales a real-screen resolution x down into the 0 - 640 range.
+        HORIZONTAL_CENTER_SAFEAREA	    // Center of the safearea.
+    };
 
-	struct RefDef
-	{
-		unsigned int x;
-		unsigned int y;
-		unsigned int width;
-		unsigned int height;
-		float tanHalfFovX;
-		float tanHalfFovY;
-		float vieworg[3];
-		float viewaxis[3][3];
-		float viewOffset[3];
-		int time;
-		float zNear;
-	};
+    enum Vertical
+    {
+        VERTICAL_SUBTOP,			    // Top edge of the 4:3 screen (safe area not included).
+        VERTICAL_TOP,				    // Top viewable (safe area) edge.
+        VERTICAL_CENTER,			    // Center of the screen (reticle).
+        VERTICAL_BOTTOM,			    // Bottom viewable (safe area) edge.
+        VERTICAL_FULLSCREEN,		    // Disregards safe area.
+        VERTICAL_NOSCALE,			    // Uses exact parameters.
+        VERTICAL_TO480,				    // Scales a real-screen resolution y down into the 0 - 480 range.
+        VERTICAL_CENTER_SAFEAREA	    // Center of the save area.
+    };
+
+    enum Alignment
+    {
+        ALIGN_TOP = 0,
+        ALIGN_LEFT = 0,
+        ALIGN_MIDDLE = 1,
+        ALIGN_BOTTOM = 2,
+        ALIGN_CENTER = 4,
+        ALIGN_RIGHT = 8
+    };
 
     /// <summary>
     /// Math class.
@@ -59,13 +65,6 @@ namespace IW3SR::Engine
     class API Math
     {
     public:
-        /// <summary>
-        /// Converts a 3D world position to screen coordinates.
-        /// </summary>
-        /// <param name="worldPosition">World position in 3D space.</param>
-        /// <returns>Screen coordinates as a 2D vector.</returns>
-        static vec2 WorldToScreen(const vec3& worldPosition);
-
         /// <summary>
         /// Converts radians to degrees.
         /// </summary>
@@ -174,27 +173,6 @@ namespace IW3SR::Engine
         /// <param name="start">Starting angle in radians.</param>
         /// <param name="end">Ending angle in radians.</param>
         /// <param name="yaw">Yaw angle in radians.</param>
-        static range_t AnglesToRange(float start, float end, float yaw);
-
-        /// <summary>
-        /// Virtual screen to real screen with rect aligment.
-        /// </summary>
-        /// <param name="x">X value.</param>
-        /// <param name="y">Y value.</param>
-        /// <param name="horizontal">Horizontal aligment.</param>
-        /// <param name="vertical">Vertical aligment.</param>
-        static void ApplyRect(float& x, float& y, RectAlignHorizontal horizontal, RectAlignVertical vertical);
-
-        /// <summary>
-        /// Virtual screen to real screen with rect alignment.
-        /// </summary>
-        /// <param name="x">X value.</param>
-        /// <param name="y">Y value.</param>
-        /// <param name="w">The witdth.</param>
-        /// <param name="h">The height.</param>
-        /// <param name="horizontal">Horizontal aligment.</param>
-        /// <param name="vertical">Vertical aligment.</param>
-        static void ApplyRect(float& x, float& y, float& w, float& h,
-            RectAlignHorizontal horizontal, RectAlignVertical vertical);
+        static vec3 AnglesToRange(float start, float end, float yaw);
     };
 }

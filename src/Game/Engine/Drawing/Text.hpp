@@ -14,8 +14,8 @@ namespace IW3SR::Game
 		vec2 Position = vec2::Zero;
 		vec2 Size = vec2::Zero;
 		vec4 Color = vec4::One;
-		RectAlignHorizontal HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
-		RectAlignVertical VerticalAlign = VERTICAL_ALIGN_TOP;
+		Horizontal HorizontalAlign = HORIZONTAL_LEFT;
+		Vertical VerticalAlign = VERTICAL_TOP;
 		Alignment AlignX = ALIGN_LEFT;
 		Alignment AlignY = ALIGN_TOP;
 
@@ -45,7 +45,7 @@ namespace IW3SR::Game
 		/// </summary>
 		/// <param name="horizontal">Horizontal aligment.</param>
 		/// <param name="vertical">Vertical alignment.</param>
-		void SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical);
+		void SetRectAlignment(Horizontal horizontal, Vertical vertical);
 
 		/// <summary>
 		/// Set the element alignment.

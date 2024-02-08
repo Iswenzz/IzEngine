@@ -9,6 +9,9 @@
 #include <vector>
 #include <string>
 
+#define FONT_OPENSANS 		"OpenSans-Regular"
+#define FONT_SPACERANGER	"Space Ranger"
+
 namespace IW3SR::Engine
 {
 	/// <summary>

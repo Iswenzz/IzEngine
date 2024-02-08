@@ -202,40 +202,6 @@ namespace IW3SR::Game
 		float fontHeight;
 	};
 
-	enum RectAlignHorizontal
-	{
-		HORIZONTAL_ALIGN_SUBLEFT,			// Left edge of a 4:3 screen (safe area not included).
-		HORIZONTAL_ALIGN_LEFT,				// Left viewable (safe area) edge.
-		HORIZONTAL_ALIGN_CENTER,			// Center of the screen (reticle).
-		HORIZONTAL_ALIGN_RIGHT,				// Right viewable (safe area) edge.
-		HORIZONTAL_ALIGN_FULLSCREEN,		// Disregards safe area.
-		HORIZONTAL_ALIGN_NOSCALE,			// Uses exact parameters.
-		HORIZONTAL_ALIGN_TO640,				// Scales a real-screen resolution x down into the 0 - 640 range.
-		HORIZONTAL_ALIGN_CENTER_SAFEAREA	// Center of the safearea.
-	};
-
-	enum RectAlignVertical
-	{
-		VERTICAL_ALIGN_SUBTOP,				// Top edge of the 4:3 screen (safe area not included).
-		VERTICAL_ALIGN_TOP,					// Top viewable (safe area) edge.
-		VERTICAL_ALIGN_CENTER,				// Center of the screen (reticle).
-		VERTICAL_ALIGN_BOTTOM,				// Bottom viewable (safe area) edge.
-		VERTICAL_ALIGN_FULLSCREEN,			// Disregards safe area.
-		VERTICAL_ALIGN_NOSCALE,				// Uses exact parameters.
-		VERTICAL_ALIGN_TO480,				// Scales a real-screen resolution y down into the 0 - 480 range.
-		VERTICAL_ALIGN_CENTER_SAFEAREA		// Center of the save area.
-	};
-
-	enum Alignment
-	{
-		ALIGN_TOP = 0,
-		ALIGN_LEFT = 0,
-		ALIGN_MIDDLE = 1,
-		ALIGN_BOTTOM = 2,
-		ALIGN_CENTER = 4,
-		ALIGN_RIGHT = 8
-	};
-
 	enum XAssetType
 	{
 		ASSET_TYPE_XMODELPIECES = 0x0,
@@ -6751,13 +6717,6 @@ namespace IW3SR::Game
 		bool initiated;
 		int mapped_bmodels;
 		dynBrushModel_t brushes[16];
-	};
-
-	struct range_t
-	{
-		float x1;
-		float x2;
-		bool split;
 	};
 }
 

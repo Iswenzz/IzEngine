@@ -16,6 +16,9 @@ namespace IW3SR::Game
 	static Function<Material* (const char* material, int size)>
 		Material_RegisterHandle = 0x5F2A80;
 
+	static Function<void(pmove_t* pm, pml_t* pml)>
+		PM_GroundTrace = 0x410660;
+
 	static Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
 		R_ConvertColorToBytes = 0x493530;
 
@@ -41,6 +44,12 @@ namespace IW3SR::Game
 
 	extern Hook<void(usercmd_s* cmd)>
 		CL_FinishMove_h;
+
+	extern Hook<void(pmove_t* pm, pml_t* pml)>
+		PM_WalkMove_h;
+
+	extern Hook<void(pmove_t* pm, pml_t* pml)>
+		PM_AirMove_h;
 
 	extern Hook<void()>
 		R_Init_h;

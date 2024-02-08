@@ -1,6 +1,7 @@
 #include "HUD.hpp"
 #include "Draw2D.hpp"
 
+#include "Engine/Backends/DX9/Device.hpp"
 #include "Engine/Backends/ImGUI/Components.hpp"
 
 namespace IW3SR::Game
@@ -13,7 +14,7 @@ namespace IW3SR::Game
 		MaterialName = material;
 	}
 
-	void HUD::SetRectAlignment(RectAlignHorizontal horizontal, RectAlignVertical vertical)
+	void HUD::SetRectAlignment(Horizontal horizontal, Vertical vertical)
 	{
 		HorizontalAlign = horizontal;
 		VerticalAlign = vertical;
@@ -33,14 +34,14 @@ namespace IW3SR::Game
 
 	void HUD::ComputeAlignment(float& x, float& y)
 	{
-		if (AlignX & ALIGN_CENTER)
+		if (AlignX == ALIGN_CENTER)
 			x += -(Size.x / 2.f);
-		else if (AlignX & ALIGN_RIGHT)
+		else if (AlignX == ALIGN_RIGHT)
 			x += -Size.x;
 
-		if (AlignY & ALIGN_MIDDLE)
+		if (AlignY == ALIGN_MIDDLE)
 			y += Size.y / 2.f;
-		else if (AlignY & ALIGN_BOTTOM)
+		else if (AlignY == ALIGN_BOTTOM)
 			y += Size.y;
 	}
 
@@ -61,11 +62,11 @@ namespace IW3SR::Game
 
 		int horizontal = HorizontalAlign - 1;
 		if (ImGui::Combo("Horizontal Alignment", &horizontal, horizontals))
-			HorizontalAlign = static_cast<RectAlignHorizontal>(horizontal + 1);
+			HorizontalAlign = static_cast<Horizontal>(horizontal + 1);
 
 		int vertical = VerticalAlign - 1;
 		if (ImGui::Combo("Vertical Alignment", &vertical, verticals))
-			VerticalAlign = static_cast<RectAlignVertical>(vertical + 1);
+			VerticalAlign = static_cast<Vertical>(vertical + 1);
 
 		int alignX = AlignX / 4;
 		if (ImGui::Combo("Align X", &alignX, horizontals))
@@ -89,7 +90,7 @@ namespace IW3SR::Game
 			SetMaterial(MaterialName);
 
 		ComputeAlignment(x, y);
-		Math::ApplyRect(x, y, w, h, HorizontalAlign, VerticalAlign);
+		Device::Get().Screen.Apply(x, y, w, h, HorizontalAlign, VerticalAlign);
 		R_AddCmdDrawStretchPic(Material, x, y, w, h, 0.f, 0.f, 0.f, 0.f, Color);
 	}
 }

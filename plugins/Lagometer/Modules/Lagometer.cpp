@@ -1,6 +1,6 @@
 #include "Lagometer.hpp"
 
-namespace IW3SR
+namespace IW3SR::Addons
 {
 	Lagometer::Lagometer() : Module("sr.player.lagometer", "Lagometer", "Player")
 	{

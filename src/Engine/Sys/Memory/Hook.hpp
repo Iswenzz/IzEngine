@@ -71,7 +71,7 @@ namespace IW3SR::Engine
         /// <param name="...args">The function args.</param>
         /// <returns></returns>
         template <typename ...Args>
-        R operator()(Args&& ...args)
+        inline R operator()(Args&& ...args)
         {
             return Original(args...);
         }
@@ -79,7 +79,7 @@ namespace IW3SR::Engine
         /// <summary>
         /// Is hook enabled.
         /// </summary>
-        operator bool() const
+        inline operator bool() const
         {
             return IsEnabled;
         }

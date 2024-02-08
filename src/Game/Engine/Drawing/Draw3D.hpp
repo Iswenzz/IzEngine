@@ -13,9 +13,18 @@ namespace IW3SR::Game
 	{
 	public:
 		static inline std::array<GfxPointVertex, 2735> LinesVerts{ };
-		static inline int LinesCount = 0;
+		static inline int LinesVertex = 0;
+		static inline int LinesMaxVertex = 2000;
 		static inline int LinesWidth = 2;
 		static inline int LinesDepthTest = true;
+
+		// <summary>
+		/// Draw a box.
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="color">The color.</param>
+		static void Box(const vec3& position, const vec3& size, const vec4& color);
 
 		/// <summary>
 		/// Draw a line.

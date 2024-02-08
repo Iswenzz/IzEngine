@@ -7,34 +7,6 @@
 
 namespace IW3SR::Engine
 {
-    vec2 Math::WorldToScreen(const vec3& worldPosition)
-    {
-        const int centerX = cgs->refdef.width / 2;
-        const int centerY = cgs->refdef.height / 2;
-
-        const mat3 viewAxis = cgs->refdef.viewaxis;
-        const vec3 origin = cgs->refdef.vieworg;
-        const vec3 local = worldPosition - origin;
-
-        const vec3 forward = viewAxis[0];
-        const vec3 right = viewAxis[1];
-        const vec3 up = viewAxis[2];
-
-        const vec3 transform = {
-            local.Dot(right),
-            local.Dot(up),
-            local.Dot(forward)
-        };
-
-        if (transform[2] < 0.01)
-            return vec2::Zero;
-
-        return {
-            centerX * (1 - (transform[0] / cgs->refdef.tanHalfFovX / transform[2])),
-            centerY * (1 - (transform[1] / cgs->refdef.tanHalfFovY / transform[2]))
-        };
-    }
-
     float Math::RadToDeg(float radians)
     {
         return radians * (180.0f / M_PI);
@@ -285,11 +257,11 @@ namespace IW3SR::Engine
 		return SCREEN_WIDTH / 2 * (1 - tanf(angle) / tanf(half_fov_x));
 	}
 
-	range_t Math::AnglesToRange(float start, float end, float yaw)
+	vec3 Math::AnglesToRange(float start, float end, float yaw)
 	{
 		if (fabsf(end - start) > 2 * M_PI)
 			return { 0, SCREEN_WIDTH, false };
-		bool split = end > start;
+		float split = end > start;
 
 		start = AngleNormalizePI(start - yaw);
 		end = AngleNormalizePI(end - yaw);
@@ -304,79 +276,4 @@ namespace IW3SR::Engine
 		}
 		return { AngleScreenProjection(start), AngleScreenProjection(end), split };
 	}
-
-    void Math::ApplyRect(float& x, float& y, RectAlignHorizontal horizontal, RectAlignVertical vertical)
-    {
-        float zero = 0;
-        ApplyRect(x, y, zero, zero, horizontal, vertical);
-    }
-
-    void Math::ApplyRect(float& x, float& y, float& w, float& h,
-        RectAlignHorizontal horizontal, RectAlignVertical vertical)
-    {
-        switch (horizontal)
-        {
-        case HORIZONTAL_ALIGN_SUBLEFT:
-            x = scr_place->scaleVirtualToReal[0] * x + scr_place->subScreenLeft;
-            w = scr_place->scaleVirtualToReal[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_LEFT:
-            x = scr_place->scaleVirtualToReal[0] * x + scr_place->realViewableMin[0];
-            w = scr_place->scaleVirtualToReal[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_CENTER:
-            x = scr_place->scaleVirtualToReal[0] * x + scr_place->realViewportSize[0] * 0.5f;
-            w = scr_place->scaleVirtualToReal[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_RIGHT:
-            x = scr_place->scaleVirtualToReal[0] * x + scr_place->realViewableMax[0];
-            w = scr_place->scaleVirtualToReal[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_FULLSCREEN:
-            x = scr_place->scaleVirtualToFull[0] * x;
-            w = scr_place->scaleVirtualToFull[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_TO640:
-            x = scr_place->scaleRealToVirtual[0] * x;
-            w = scr_place->scaleRealToVirtual[0] * w;
-            break;
-        case HORIZONTAL_ALIGN_CENTER_SAFEAREA:
-            x = (scr_place->realViewableMax[0] + scr_place->realViewableMin[0]) * 0.5f
-                + scr_place->scaleVirtualToReal[0] * x;
-            w = scr_place->scaleVirtualToReal[0] * w;
-            break;
-        }
-        switch (vertical)
-        {
-        case VERTICAL_ALIGN_TOP:
-            y = scr_place->scaleVirtualToReal[1] * y + scr_place->realViewableMin[1];
-            h = scr_place->scaleVirtualToReal[1] * h;
-            break;
-        case VERTICAL_ALIGN_CENTER:
-            y = scr_place->scaleVirtualToReal[1] * y + scr_place->realViewportSize[1] * 0.5f;
-            h = scr_place->scaleVirtualToReal[1] * h;
-            break;
-        case VERTICAL_ALIGN_BOTTOM:
-            y = scr_place->scaleVirtualToReal[1] * y + scr_place->realViewableMax[1];
-            h = scr_place->scaleVirtualToReal[1] * h;
-            break;
-        case VERTICAL_ALIGN_FULLSCREEN:
-            y = scr_place->scaleVirtualToFull[1] * y;
-            h = scr_place->scaleVirtualToFull[1] * h;
-            break;
-        case VERTICAL_ALIGN_TO480:
-            y = scr_place->scaleRealToVirtual[1] * y;
-            h = scr_place->scaleRealToVirtual[1] * h;
-            break;
-        case VERTICAL_ALIGN_CENTER_SAFEAREA:
-            y = scr_place->scaleVirtualToReal[1] * y + (scr_place->realViewableMax[1]
-                + scr_place->realViewableMin[1]) * 0.5f;
-            h = scr_place->scaleVirtualToReal[1] * h;
-            break;
-        case VERTICAL_ALIGN_SUBTOP:
-            y = scr_place->scaleVirtualToReal[1] * y;
-            h = scr_place->scaleVirtualToReal[1] * h;
-            break;
-        }
-    }
 }

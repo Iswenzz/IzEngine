@@ -380,9 +380,9 @@ namespace IW3SR::Game
 		return pIDirect3DDevice9->EndScene();
 	}
 
-	HRESULT D3D9Device::Clear(DWORD Count, CONST D3DRECT* pRects, DWORD Flags, D3DCOLOR Color, float Z, DWORD Stencil)
+	HRESULT D3D9Device::Clear(DWORD Vertex, CONST D3DRECT* pRects, DWORD Flags, D3DCOLOR Color, float Z, DWORD Stencil)
 	{
-		return pIDirect3DDevice9->Clear(Count, pRects, Flags, Color, Z, Stencil);
+		return pIDirect3DDevice9->Clear(Vertex, pRects, Flags, Color, Z, Stencil);
 	}
 
 	HRESULT D3D9Device::SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX* pMatrix)

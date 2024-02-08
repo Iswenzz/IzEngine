@@ -22,17 +22,17 @@ namespace IW3SR::Game
 	void Player::Allocates()
 	{
 		for (int i = 0; i < 64; i++)
-			GC->Players[i] = std::make_shared<Player>(i);
+			Players[i] = std::make_shared<Player>(i);
 	}
 
 	std::array<std::shared_ptr<Player>, 64>& Player::GetAll()
 	{
-		return GC->Players;
+		return Players;
 	}
 
 	std::shared_ptr<Player> Player::Get(int index)
 	{
-		return GC->Players[index];
+		return Players[index];
 	}
 
 	bool Player::CanRender()

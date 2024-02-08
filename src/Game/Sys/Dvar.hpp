@@ -6,7 +6,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Game dvars.
 	/// </summary>
-	class Dvar
+	class API Dvar
 	{
 	public:
 		/// <summary>

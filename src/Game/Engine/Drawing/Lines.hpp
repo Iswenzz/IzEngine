@@ -11,18 +11,23 @@ namespace IW3SR::Game
 	{
 	public:
 		std::vector<GfxPointVertex> Verts;
-		int Count = 0;
+		int Vertex = 0;
 		int Width = 2;
-		int Limit = 2735;
+		int MaxVertex = 2000;
 		bool DepthTest = true;
 
 		/// <summary>
 		/// Initialize lines.
 		/// </summary>
+		Lines() = default;
+
+		/// <summary>
+		/// Initialize lines.
+		/// </summary>
 		/// <param name="width">The lines width.</param>
-		/// <param name="limit">The lines size limit.</param>
+		/// <param name="max">The max vertex size.</param>
 		/// <param name="depthTest">The depth test.</param>
-		Lines(int width, int limit, bool depthTest);
+		Lines(int width, int max, bool depthTest);
 		virtual ~Lines() = default;
 
 		/// <summary>
@@ -32,6 +37,14 @@ namespace IW3SR::Game
 		/// <param name="end">The end point.</param>
 		/// <param name="color">The color.</param>
 		void Add(const vec3& start, const vec3& end, const vec4& color);
+
+		// <summary>
+		/// Add a box.
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="color">The color.</param>
+		void AddBox(const vec3& position, const vec3& size, const vec4& color);
 
 		/// <summary>
 		/// Draw frame.

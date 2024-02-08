@@ -3,6 +3,7 @@ add_subdirectory(Features)
 add_subdirectory(Interfaces)
 add_subdirectory(Math)
 add_subdirectory(Modules)
+add_subdirectory(Screen)
 add_subdirectory(Serializer)
 add_subdirectory(Utils)
 

@@ -4,7 +4,7 @@
 namespace IW3SR::Engine::UC
 {
 	/// <summary>
-	/// Game modules.
+	/// Engine modules.
 	/// </summary>
 	class Modules : public Window
 	{

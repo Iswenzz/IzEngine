@@ -14,16 +14,16 @@ namespace IW3SR::Addons
 	{
 		Graph = Plots();
 
-		VelocityText = Text("0", "Arial", 0, 2, 1.4, { 0, 1, 1, 1 });
-		VelocityText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		VelocityText = Text("0", FONT_SPACERANGER, 0, 2, 1.4, { 0, 1, 1, 1 });
+		VelocityText.SetRectAlignment(HORIZONTAL_CENTER, VERTICAL_TOP);
 		VelocityText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
-		AverageText = Text("0", "Arial", 50, 2, 1.4, { 1, 1, 0, 1 });
-		AverageText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		AverageText = Text("0", FONT_SPACERANGER, 50, 2, 1.4, { 1, 1, 0, 1 });
+		AverageText.SetRectAlignment(HORIZONTAL_CENTER, VERTICAL_TOP);
 		AverageText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 
-		MaxText = Text("0", "Arial", 100, 2, 1.4, { 1, 0, 0, 1 });
-		MaxText.SetRectAlignment(HORIZONTAL_ALIGN_CENTER, VERTICAL_ALIGN_TOP);
+		MaxText = Text("0", FONT_SPACERANGER, 100, 2, 1.4, { 1, 0, 0, 1 });
+		MaxText.SetRectAlignment(HORIZONTAL_CENTER, VERTICAL_TOP);
 		MaxText.SetAlignment(ALIGN_CENTER, ALIGN_BOTTOM);
 	}
 

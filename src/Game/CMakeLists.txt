@@ -2,6 +2,7 @@ add_subdirectory(Definitions)
 add_subdirectory(Engine)
 add_subdirectory(Player)
 add_subdirectory(Sys)
+add_subdirectory(World)
 
 target_precompile_headers(IW3SR PRIVATE
 	Definitions.hpp

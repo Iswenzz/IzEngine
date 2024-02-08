@@ -18,6 +18,7 @@ namespace IW3SR::Engine
 	void Assets::LoadFonts()
 	{
 		LoadFont(Environment::FontsDirectory / "OpenSans-Regular.ttf", 22);
+		LoadFont(Environment::FontsDirectory / "SpaceRanger.ttf", 22);
 
 		HDC hdc = GetDC(NULL);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)

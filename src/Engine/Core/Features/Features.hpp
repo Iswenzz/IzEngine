@@ -11,7 +11,7 @@
 namespace IW3SR::Engine
 {
 	/// <summary>
-	/// Features class.
+	/// Engine features.
 	/// </summary>
 	class API Features : public IInitializable
 	{

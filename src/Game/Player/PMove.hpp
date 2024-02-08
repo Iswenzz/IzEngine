@@ -16,6 +16,20 @@ namespace IW3SR::Game
 		static void FinishMove(usercmd_s* cmd);
 
 		/// <summary>
+		/// Walk moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		static void WalkMove(pmove_t* pm, pml_t* pml);
+
+		/// <summary>
+		/// Air moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		static void AirMove(pmove_t* pm, pml_t* pml);
+
+		/// <summary>
         /// Set yaw.
         /// </summary>
         /// <param name="cmd">The user command.</param>

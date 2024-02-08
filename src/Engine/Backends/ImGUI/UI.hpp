@@ -18,6 +18,7 @@ namespace IW3SR::Engine
 		bool Active = false;
 		bool Open = false;
 		bool DesignMode = false;
+		bool HasBegin = false;
 		KeyListener OpenKey;
 
 		UC::Memory Memory;

@@ -69,6 +69,20 @@ namespace IW3SR::Engine
 		/// <param name="cmd">The user command.</param>
 		virtual void OnFinishMove(usercmd_s* cmd);
 
+		/// <summary>
+		/// Walk moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		virtual void OnWalkMove(pmove_t* pm, pml_t* pml);
+
+		/// <summary>
+		/// Air moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		virtual void OnAirMove(pmove_t* pm, pml_t* pml);
+
 		NLOHMANN_SERIALIZE_POLY_BASE(Module, IsEnabled, Menu)
 	};
 }

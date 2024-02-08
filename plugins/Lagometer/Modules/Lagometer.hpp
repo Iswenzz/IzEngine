@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Plugin.hpp"
 
-namespace IW3SR
+namespace IW3SR::Addons
 {
 	/// <summary>
 	/// Lagometer plot.
