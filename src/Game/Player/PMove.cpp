@@ -8,6 +8,18 @@ namespace IW3SR::Game
 		ModulesCallback(OnFinishMove, cmd);
 	}
 
+    void PMove::WalkMove(pmove_t* pm, pml_t* pml)
+    {
+        ModulesCallback(OnWalkMove, pm, pml);
+        PM_WalkMove_h(pm, pml);
+    }
+
+    void PMove::AirMove(pmove_t* pm, pml_t* pml)
+    {
+        ModulesCallback(OnAirMove, pm, pml);
+        PM_AirMove_h(pm, pml);
+    }
+
 	void PMove::SetYaw(usercmd_s* cmd, float* angles, const vec3& target)
     {
         float cmdAngle = SHORT2ANGLE(cmd->angles[1]);
@@ -30,5 +42,11 @@ namespace IW3SR::Game
 
         clients->viewangles[0] += realDelta - final;
         cmd->angles[0] += ANGLE2SHORT(realDelta - final);
+    }
+
+    void PMove::SetAngles(usercmd_s* cmd, float* angles, const vec3& target)
+    {
+        SetPitch(cmd, angles, target);
+        SetYaw(cmd, angles, target);
     }
 }

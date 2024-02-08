@@ -24,4 +24,6 @@ namespace IW3SR::Game
 	void Module::OnDraw2D() { }
 	void Module::OnRender() { }
 	void Module::OnFinishMove(usercmd_s* cmd) { }
+	void Module::OnWalkMove(pmove_t* pm, pml_t* pml) { }
+	void Module::OnAirMove(pmove_t* pm, pml_t* pml) { }
 }

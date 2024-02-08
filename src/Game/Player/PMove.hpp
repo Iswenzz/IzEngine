@@ -16,6 +16,20 @@ namespace IW3SR::Game
 		static void FinishMove(usercmd_s* cmd);
 
 		/// <summary>
+		/// Walk moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		static void WalkMove(pmove_t* pm, pml_t* pml);
+
+		/// <summary>
+		/// Air moving.
+		/// </summary>
+		/// <param name="pm">The player movement.</param>
+		/// <param name="pml">The player movement library.</param>
+		static void AirMove(pmove_t* pm, pml_t* pml);
+
+		/// <summary>
         /// Set yaw.
         /// </summary>
         /// <param name="cmd">The user command.</param>
@@ -30,5 +44,13 @@ namespace IW3SR::Game
         /// <param name="angles">The angles.</param>
         /// <param name="target">The target.</param>
         static void SetPitch(usercmd_s* cmd, float* angles, const vec3& target);
+
+		/// <summary>
+		/// Set yaw and pitch.
+		/// </summary>
+		/// <param name="cmd">The user command.</param>
+		/// <param name="angles">The angles.</param>
+		/// <param name="target">The target.</param>
+		static void SetAngles(usercmd_s* cmd, float* angles, const vec3& target);
 	};
 }

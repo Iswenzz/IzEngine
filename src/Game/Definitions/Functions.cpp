@@ -20,6 +20,12 @@ namespace IW3SR::Game
 	Hook<void(usercmd_s* cmd)>
 		CL_FinishMove_h(0x463A60, PMove::FinishMove);
 
+	Hook<void(pmove_t* pm, pml_t* pml)>
+		PM_WalkMove_h(0x40F7A0, PMove::WalkMove);
+
+	Hook<void(pmove_t* pm, pml_t* pml)>
+		PM_AirMove_h(0x40F680, PMove::AirMove);
+
 	Hook<void()>
 		R_Init_h(0x5F4EE0, Renderer::Initialize);
 

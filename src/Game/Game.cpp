@@ -48,6 +48,8 @@ namespace IW3SR::Game
 		Com_PrintMessage_h.Install();
 		CG_DrawCrosshair_h.Install();
 		CL_FinishMove_h.Install();
+		PM_WalkMove_h.Install();
+		PM_AirMove_h.Install();
 		R_Init_h.Install();
 		R_Shutdown_h.Install();
 		R_Direct3DCreate9_h.Install();
@@ -62,6 +64,8 @@ namespace IW3SR::Game
 		Com_PrintMessage_h.Remove();
 		CG_DrawCrosshair_h.Remove();
 		CL_FinishMove_h.Remove();
+		PM_WalkMove_h.Remove();
+		PM_AirMove_h.Remove();
 		R_Init_h.Remove();
 		R_Shutdown_h.Remove();
 		R_Direct3DCreate9_h.Remove();
