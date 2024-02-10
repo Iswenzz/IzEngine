@@ -18,35 +18,30 @@ namespace IW3SR::Engine
 
 		for (const auto& notification : Notifications)
 		{
-			if (!count)
-				ImGui::SetNextWindowPos({ 0, 300 });
-			else
-				ImGui::SetNextWindowPos({ 0, next });
+			Window window;
+			window.SetRect(0, count ? next : 50, 80, 20);
+			window.Begin(ImGuiWindowFlags_Notification);
 
-			ImGui::SetNextWindowSize({ 300, 50 });
-			ImGui::Begin(std::format("Notification # {}", count).c_str(), nullptr, ImGuiWindowFlags_Notification);
-
-			const ImVec2 pos = ImGui::GetWindowPos();
-			const ImVec2 size = ImGui::GetWindowSize();
+			const ImVec2& pos = window.RenderPosition;
+			const ImVec2& size = window.RenderSize;
 
 			draw->AddRectFilled({ -1, pos.y }, { pos.x + size.x, pos.y + size.y }, IM_COL32(0, 0, 0, 255));
 			draw->AddRectFilled({ pos.x + size.x, pos.y }, { pos.x + size.x + 5, pos.y + size.y }, IM_COL32(140, 20, 252, 255));
 
-			ImGui::SetCursorPosX(ImGui::CalcTextSize(notification.message.c_str()).x / 2);
-			ImGui::SetCursorPosY(ImGui::CalcTextSize(notification.message.c_str()).y / 2);
-			ImGui::Text(std::format("IW3SR: {}", notification.message).c_str());
+			const std::string message = std::format("IW3SR: {}", notification.message);
+			ImGui::SetCursorPos(size / 2 - ImGui::CalcTextSize(message.c_str()) / 2);
+			ImGui::Text(message.c_str());
+			window.End();
 
 			next = pos.y + size.y + 10;
 			count++;
-			ImGui::End();
 		}
-		Notifications.erase(std::remove_if(Notifications.begin(), Notifications.end(),
-			[](const Notification& notification)
-			{
-				const Seconds duration(notification.duration);
-				const auto currentTime = Time::now();
-				const static auto endTime = currentTime + duration;
-				return currentTime > endTime;
-			}), Notifications.end());
+		Notifications.erase(std::remove_if(Notifications.begin(), Notifications.end(), [](const Notification& notification)
+		{
+			const Seconds duration(notification.duration);
+			const auto currentTime = Time::now();
+			const static auto endTime = currentTime + duration;
+			return currentTime > endTime;
+		}), Notifications.end());
 	}
 }
