@@ -21,7 +21,7 @@ namespace IW3SR::Game
 
 	void Player::Allocates()
 	{
-		for (int i = 0; i < 64; i++)
+		for (int i = 0; i < Players.size(); i++)
 			Players[i] = std::make_shared<Player>(i);
 	}
 

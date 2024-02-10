@@ -11,9 +11,7 @@ namespace IW3SR::Game
 
 		Patch::Get().Initialize();
 		Console::Get().Initialize();
-
 		Player::Allocates();
-		Plugins::Initialize();
 
 		Hook();
 	}
@@ -21,9 +19,7 @@ namespace IW3SR::Game
 	void GameClient::Shutdown()
 	{
 		Environment::Save();
-
 		Console::Get().Release();
-		Plugins::Shutdown();
 
 		Unhook();
 	}

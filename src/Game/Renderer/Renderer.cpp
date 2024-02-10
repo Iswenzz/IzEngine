@@ -16,8 +16,9 @@ namespace IW3SR::Game
 		Device::Get().Assign(dx->d3d9, dx->device);
 		Device::Get().CreateScreen();
 		Assets::Get().Initialize();
-
 		GUI::Get().Initialize();
+
+		Plugins::Initialize();
 		Modules::Get().Initialize();
 		Features::Get().Initialize();
 	}
@@ -26,6 +27,8 @@ namespace IW3SR::Game
 	{
 		Features::Get().Release();
 		Modules::Get().Release();
+		Plugins::Shutdown();
+
 		GUI::Get().Release();
 		Assets::Get().Release();
 

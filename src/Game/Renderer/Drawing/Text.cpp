@@ -36,14 +36,14 @@ namespace IW3SR::Game
 
 	void Text::ComputeAlignment(float& x, float& y)
 	{
-		if (AlignX == ALIGN_CENTER)
+		if (AlignX & ALIGN_CENTER)
 			x += -(Size.x / 2.f);
-		else if (AlignX == ALIGN_RIGHT)
+		else if (AlignX & ALIGN_RIGHT)
 			x += -Size.x;
 
-		if (AlignY == ALIGN_MIDDLE)
+		if (AlignY & ALIGN_MIDDLE)
 			y += Size.y / 2.f;
-		else if (AlignY == ALIGN_BOTTOM)
+		else if (AlignY & ALIGN_BOTTOM)
 			y += Size.y;
 	}
 
