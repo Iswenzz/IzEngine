@@ -42,22 +42,20 @@ namespace IW3SR::Game
 	{
 		RB_EndSceneRendering_h(cmd, viewInfo, src, buf);
 
-		UI::Get().Begin();
 		Draw3D::Render();
-
 		GameCallback(OnDraw3D);
 		GameCallback(OnDraw3D, cmd, viewInfo, src, buf);
-
-		if (Player::CanRender())
-			GameCallback(OnRender);
 	}
 
 	void Renderer::Render()
 	{
 		UI::Get().Begin();
 		GUI::Get().Render();
-		UI::Get().End();
 
+		if (Player::CanRender())
+			GameCallback(OnRender);
+
+		UI::Get().End();
 		KeyListener::Reset();
 	}
 }
