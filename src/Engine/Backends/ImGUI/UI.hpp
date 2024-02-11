@@ -19,7 +19,6 @@ namespace IW3SR::Engine
 		bool DesignMode = false;
 		VirtualScreen Screen;
 		float Size = 1.0f;
-		float Scale = 1.0f;
 
 		UC::Memory Memory;
 		UC::Themes Themes;
@@ -78,6 +77,7 @@ namespace IW3SR::Engine
 		ImGuiContext* Context = nullptr;
 		ImPlotContext* PlotContext = nullptr;
 		bool HasBegin = false;
+		float Scale = 1.0f;
 
 		/// <summary>
 		/// Initialize the UI.

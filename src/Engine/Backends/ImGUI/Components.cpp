@@ -111,11 +111,14 @@ namespace ImGui
         PopStyleVar();
     }
 
-    void Keybind(const std::string& label, int* key, const ImVec2& size)
+    void Keybind(const std::string& label, int* key, const ImVec2& defaultSize)
     {
         char keyLabel[100];
         const int keyLabelSize = 100;
         const auto id = GetID(label.c_str());
+
+        float width = 50 * UI::Get().Size;
+        ImVec2 size = CalcItemSize(defaultSize, width, 0);
 
         KeepAliveID(id);
         PushID(id);
