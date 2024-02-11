@@ -5,6 +5,7 @@ namespace IW3SR::Engine
 	void Console::Initialize()
 	{
 		AllocConsole();
+		Handle = GetConsoleWindow();
 
 		freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
 		freopen_s(reinterpret_cast<FILE**>(stdout), "CONOUT$", "w", stdout);

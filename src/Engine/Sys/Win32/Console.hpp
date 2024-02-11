@@ -10,6 +10,8 @@ namespace IW3SR::Engine
 	{
 		CLASS_SINGLETON(Console)
 	public:
+		HWND Handle = nullptr;
+
 		/// <summary>
 		/// Initialize the console.
 		/// </summary>
