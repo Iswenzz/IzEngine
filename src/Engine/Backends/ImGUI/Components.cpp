@@ -86,6 +86,12 @@ namespace ImGui
         return Combo(label.c_str(), item, list.data(), list.size(), maxHeightInItems);
     }
 
+    bool CollapsingHeader(const std::string& label, ImGuiTreeNodeFlags flags, bool open)
+    {
+        flags |= open ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None;
+        return CollapsingHeader(label.c_str(), flags);
+    }
+
     void Tooltip(const std::string& text)
     {
         if (!IsItemHovered())

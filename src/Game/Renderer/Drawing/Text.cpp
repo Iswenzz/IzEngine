@@ -49,7 +49,7 @@ namespace IW3SR::Game
 
 	void Text::Menu(const std::string& label, bool open)
 	{
-		if (!ImGui::CollapsingHeader(label.c_str(), open ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None))
+		if (!ImGui::CollapsingHeader(label, open))
 			return;
 
 		ImGui::PushID(ID.c_str());

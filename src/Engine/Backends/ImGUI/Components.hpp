@@ -76,6 +76,15 @@ namespace ImGui
 		int maxHeightInItems = -1);
 
 	/// <summary>
+	/// Collapsing header.
+	/// </summary>
+	/// <param name="label">The label.</param>
+	/// <param name="flags">The tree node flags.</param>
+	/// <param name="open">Is default open.</param>
+	/// <returns></returns>
+	API bool CollapsingHeader(const std::string& label, ImGuiTreeNodeFlags flags = 0, bool open = false);
+
+	/// <summary>
 	/// Creates a tooltip.
 	/// </summary>
 	/// <param name="text">The tooltip text.</param>

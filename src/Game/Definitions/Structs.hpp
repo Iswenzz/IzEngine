@@ -301,8 +301,8 @@ namespace IW3SR::Game
 	{
 		cmd_function_s* next;
 		const char* name;
-		const char* args;			// autoCompleteDir
-		const char* description;	// autoCompleteExt
+		const char* args;
+		const char* description;
 		void(__cdecl* function)();
 	};
 
@@ -1027,8 +1027,8 @@ namespace IW3SR::Game
 
 	union MaterialTextureDefInfo
 	{
-		GfxImage* image;	// MaterialTextureDef->semantic != TS_WATER_MAP
-		water_t* water;		// MaterialTextureDef->semantic == TS_WATER_MAP
+		GfxImage* image;
+		water_t* water;
 	};
 
 	struct MaterialTextureDef
@@ -1235,7 +1235,7 @@ namespace IW3SR::Game
 		const char* name;
 		unsigned short flags;
 		unsigned short passCount;
-		MaterialPass passArray[1]; // passCount
+		MaterialPass passArray[1];
 	};
 
 	enum MaterialWorldVertexFormat : char
@@ -1316,7 +1316,6 @@ namespace IW3SR::Game
 		TECHNIQUE_SHADOWCOOKIE_RECEIVER = 0x1F,
 		TECHNIQUE_DEBUG_BUMPMAP = 0x20,
 		TECHNIQUE_DEBUG_BUMPMAP_INSTANCED = 0x21,
-		// TECHNIQUE_COUNT = 0x22
 	};
 
 	struct infoParm_t
@@ -1738,13 +1737,13 @@ namespace IW3SR::Game
 	struct GfxWorldVertexData
 	{
 		GfxWorldVertex* vertices;
-		void* worldVb; // IDirect3DVertexBuffer9
+		IDirect3DVertexBuffer9* world;
 	};
 
 	struct GfxWorldVertexLayerData
 	{
 		char* data;
-		void* layerVb; // IDirect3DVertexBuffer9
+		IDirect3DVertexBuffer9* layer;
 	};
 
 	struct SunLightParseParams
@@ -4213,8 +4212,8 @@ namespace IW3SR::Game
 
 	struct __declspec() serverStatic_t
 	{
-		// cachedSnapshot_t cachedSnapshotFrames[512];
-		// archivedEntity_s cachedSnapshotEntities[16384];
+		cachedSnapshot_t cachedSnapshotFrames[512];
+		archivedEntity_s cachedSnapshotEntities[16384];
 		int initialized;
 		int time;
 		int snapFlagServerBit;
@@ -4352,7 +4351,6 @@ namespace IW3SR::Game
 	{
 		volatile int used;
 		int total;
-		// int IDirect3DVertexBuffer9;
 		IDirect3DVertexBuffer9* buffer;
 		char* verts;
 	};
@@ -4737,7 +4735,7 @@ namespace IW3SR::Game
 		char surfsBuffer[131072];
 		FxCodeMeshData codeMeshes[2048];
 		unsigned int primDrawSurfsBuf[65536];
-		GfxViewParms viewParms[28];		// GfxViewParms either has pad or zFar
+		GfxViewParms viewParms[28];	// GfxViewParms either has pad or zFar
 		char primaryLightTechType[13][256];
 		float codeMeshArgs[256][4];
 		GfxParticleCloud clouds[256];
@@ -4763,10 +4761,10 @@ namespace IW3SR::Game
 		FxMarkMeshData markMeshes[1536];
 		GfxMeshData markMesh;
 		GfxVertexBufferState* skinnedCacheVb;
-		int IDirect3DQuery9;		// IDirect3DQuery9 *endFence
+		IDirect3DQuery9* endFence;
 		char* tempSkinBuf;
 		volatile int tempSkinPos;
-		int IDirect3DIndexBuffer9;	// IDirect3DIndexBuffer9 *preTessIb
+		IDirect3DIndexBuffer9* preTessIb;
 		int viewParmCount;
 		GfxFog fogSettings;
 		GfxCmdArray* commands;
@@ -4927,7 +4925,7 @@ namespace IW3SR::Game
 	struct gfxVertexSteamsUnk
 	{
 		unsigned int stride;
-		int* vb; // IDirect3DVertexBuffer9
+		IDirect3DVertexBuffer9* vb;
 		unsigned int offset;
 	};
 
@@ -4961,11 +4959,11 @@ namespace IW3SR::Game
 
 	struct GfxCmdBufPrimState
 	{
-		IDirect3DDevice9* device;	// IDirect3DDevice9
-		int* indexBuffer;			// IDirect3DIndexBuffer9
+		IDirect3DDevice9* device;
+		IDirect3DIndexBuffer9* indexBuffer;
 		MaterialVertexDeclType vertDeclType;
 		gfxVertexSteamsUnk streams[2];
-		int* vertexDecl;			// IDirect3DVertexDeclaration9
+		IDirect3DVertexDeclaration9* vertexDecl;
 	};
 
 	struct GfxCmdBufState
@@ -5252,7 +5250,6 @@ namespace IW3SR::Game
 
 	union entryInternalData
 	{
-		// operationEnum op; // $8F00D86C453A25D588E012916CBB9FA9 operationEnum;
 		int operationEnum;
 		Operand operand;
 	};
@@ -5355,7 +5352,7 @@ namespace IW3SR::Game
 		ItemKeyHandler* onKey;
 		statement_s visibleExp;
 		const char* allowedBinding;
-		const char* soundName; // soundloop
+		const char* soundName;
 		int imageTrack;
 		float focusColor[4];
 		float disableColor[4];
@@ -5380,7 +5377,7 @@ namespace IW3SR::Game
 		int gameMsgWindowIndex;
 		int gameMsgWindowMode;
 		const char* text;
-		int textSavegame; // itemFlags
+		int itemFlags;
 		menuDef_t* parent;
 		const char* mouseEnterText;
 		const char* mouseExitText;
@@ -5485,7 +5482,6 @@ namespace IW3SR::Game
 
 	struct PlayerKeyState
 	{
-		// field_t chatField;
 		int chat_team;
 		int overstrikeMode;
 		int anyKeyDown;
@@ -5587,7 +5583,6 @@ namespace IW3SR::Game
 		float origin[3];
 		float angles[3];
 		GfxSkinCacheEntry skinCacheEntry;
-		//$EAE81CC4C8A7A2F7E95AA09AC9F9F9C0 ___u12;
 		char pad[0x24];
 	};
 
@@ -5685,7 +5680,7 @@ namespace IW3SR::Game
 
 	struct scr_animtree_t
 	{
-		void* anims; // XAnim_s
+		struct XAnim_s* anims;
 	};
 
 	struct __declspec(align(8)) animScriptData_t
@@ -6692,9 +6687,9 @@ namespace IW3SR::Game
 	struct dynBrush_t
 	{
 		int cmBrushIndex;
-		cbrush_t* cmBrush;		// Ptr to the clipmap brush
-		cplane_s* cmPlane[6];	// Ptr's to the clipmap brush-planes (axialplanes)
-		cLeaf_t* cmLeaf;		// Ptr to the clipmap brush-leaf
+		cbrush_t* cmBrush;
+		cplane_s* cmPlane[6];
+		cLeaf_t* cmLeaf;
 	};
 
 	struct dynBrushesArray_t

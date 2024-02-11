@@ -55,7 +55,7 @@ namespace IW3SR::Game
 		UI::Get().Begin();
 		GUI::Get().Render();
 
-		if (Player::CanRender())
+		if (cgs->predictedPlayerState.groundEntityNum)
 			GameCallback(OnRender);
 
 		UI::Get().End();

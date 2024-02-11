@@ -57,12 +57,6 @@ namespace IW3SR::Game
 		static inline std::shared_ptr<Player> Get(int index);
 
 		/// <summary>
-		/// Can render modules when player is ready.
-		/// </summary>
-		/// <returns></returns>
-		static bool CanRender();
-
-		/// <summary>
 		/// Check if the player is active.
 		/// </summary>
 		inline operator bool() const;

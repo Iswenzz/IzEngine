@@ -51,6 +51,13 @@ namespace IW3SR::Engine
 		virtual void Begin(ImGuiWindowFlags flags = 0);
 
 		/// <summary>
+		/// Render menu.
+		/// </summary>
+		/// <param name="label">The label.</param>
+		/// <param name="open">Default open.</param>
+		virtual void Menu(const std::string& label, bool open = false);
+
+		/// <summary>
 		/// End drawing.
 		/// </summary>
 		virtual void End();

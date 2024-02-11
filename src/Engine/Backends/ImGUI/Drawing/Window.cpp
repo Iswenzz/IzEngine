@@ -43,6 +43,19 @@ namespace IW3SR::Engine
 		ImGui::SetWindowSize(RenderSize);
 	}
 
+	void Window::Menu(const std::string& label, bool open)
+	{
+		if (!ImGui::CollapsingHeader(label.c_str(), open))
+			return;
+
+		ImGui::PushID(ID.c_str());
+
+		ImGui::DragFloat2("Position", Position);
+		ImGui::DragFloat2("Size", Size);
+
+		ImGui::PopID();
+	}
+
 	void Window::End()
 	{
 		ImGui::End();
