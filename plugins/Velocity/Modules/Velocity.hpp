@@ -31,8 +31,9 @@ namespace IW3SR::Addons
 		Plots Graph;
 
 		KeyListener ResetKey;
-		bool ShowMax;
+		bool ShowVelocity;
 		bool ShowAverage;
+		bool ShowMax;
 		bool ShowGround;
 		bool ShowGroundTime;
 		bool ShowGraph;
@@ -64,6 +65,6 @@ namespace IW3SR::Addons
 		void OnRender() override;
 
 		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, AverageText, MaxText, GroundText, Graph,
-			ResetKey, ShowAverage, ShowMax, ShowGround, ShowGraph)
+			ResetKey, ShowVelocity, ShowAverage, ShowMax, ShowGround, ShowGraph)
 	};
 }

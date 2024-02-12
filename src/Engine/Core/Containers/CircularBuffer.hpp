@@ -33,10 +33,28 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Clear the buffer.
 		/// </summary>
-		void Clear()
+		constexpr void Clear()
 		{
 			Data.fill(0);
 			Offset = 0;
+		}
+
+		/// <summary>
+		/// Iterator begin.
+		/// </summary>
+		/// <returns></returns>
+		constexpr std::array<T, MaxSize>::iterator Begin()
+		{
+			return Data.begin();
+		}
+
+		/// <summary>
+		/// Iterator end.
+		/// </summary>
+		/// <returns></returns>
+		constexpr std::array<T, MaxSize>::iterator End()
+		{
+			return Data.end();
 		}
 
 		/// <summary>

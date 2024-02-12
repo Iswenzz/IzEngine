@@ -5,11 +5,12 @@ namespace IW3SR::Addons
 	Velocity::Velocity() : Module("sr.player.velocity", "Velocity", "Player")
 	{
 		ResetKey = KeyListener('R');
+		ShowVelocity = true;
 		ShowAverage = false;
 		ShowMax = false;
 		ShowGround = false;
 		ShowGroundTime = true;
-		ShowGraph = true;
+		ShowGraph = false;
 	}
 
 	void Velocity::Initialize()
@@ -35,34 +36,32 @@ namespace IW3SR::Addons
 
 	void Velocity::Compute()
 	{
-		static int prevVelocity;
+		static int prevVelocity = 0;
 		static bool prevOnGround = true;
 
 		bool onGround = PMove::OnGround();
 		bool landed = onGround && !prevOnGround;
 
-		Value = vec2(pmove->ps->velocity).Length();
-		BufferValues.Add(Value);
-
 		if (landed)
 		{
 			Averages.Add(prevVelocity);
-			Average = std::accumulate(Averages.Data.begin(), Averages.Data.end(), 0) / Averages.Offset;
+			Average = std::accumulate(Averages.Begin(), Averages.End(), 0) / Averages.Offset;
 			GroundAverages.Add(GroundTime);
-			GroundAverage = std::accumulate(GroundAverages.Data.begin(), GroundAverages.Data.end(), 0) / GroundAverages.Offset;
+			GroundAverage = std::accumulate(GroundAverages.Begin(), GroundAverages.End(), 0) / GroundAverages.Offset;
 			GroundTime = 0;
 		}
 		if (onGround)
 			GroundTime += UI::Get().DeltaTimeMS();
 
+		Value = vec2(pmove->ps->velocity).Length();
+		BufferValues.Add(Value);
 		BufferAverages.Add(Average);
 
 		Max = Value > Max ? Value : Max;
 		BufferMaxs.Add(Max);
 
 		Ground = ShowGroundTime ? GroundTime : GroundAverage;
-		Ground = Ground < 1000 ? Ground : 1000;
-		BufferGrounds.Add(Ground);
+		BufferGrounds.Add(Ground < Max ? Ground : Max);
 
 		prevVelocity = Value;
 		prevOnGround = onGround;
@@ -70,6 +69,7 @@ namespace IW3SR::Addons
 
 	void Velocity::OnMenu()
 	{
+		ImGui::Checkbox("Velocity", &ShowVelocity);
 		ImGui::Checkbox("Average", &ShowAverage);
 		ImGui::Checkbox("Max", &ShowMax);
 
@@ -103,7 +103,8 @@ namespace IW3SR::Addons
 		MaxText.Value = std::to_string(Max);
 		GroundText.Value = std::to_string(Ground);
 
-		VelocityText.Render();
+		if (ShowVelocity)
+			VelocityText.Render();
 		if (ShowAverage)
 			AverageText.Render();
 		if (ShowMax)
@@ -127,15 +128,18 @@ namespace IW3SR::Addons
 			Graph.Begin();
 			if (ImPlot::BeginPlot("##Velocity", Graph.RenderSize))
 			{
-				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(VelocityText.Color));
 				ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_Canvas, ImPlotAxisFlags_Canvas);
 				ImPlot::SetupAxisLimits(ImAxis_X1, 0, BufferValues.Size(), ImGuiCond_Always);
 				ImPlot::SetupAxisLimits(ImAxis_Y1, 0, Max * 1.5, ImGuiCond_Always);
 
-				ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
-				ImPlot::PlotShaded("Velocity", BufferValues.Get(), BufferValues.Size(), -INFINITY, 1, 0, 0, BufferValues.Offset);
-				ImPlot::PlotLine("Velocity", BufferValues.Get(), BufferValues.Size(), 1, 0, 0, BufferValues.Offset);
-
+				if (ShowVelocity)
+				{
+					ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
+					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(VelocityText.Color));
+					ImPlot::PlotShaded("Velocity", BufferValues.Get(), BufferValues.Size(), -INFINITY, 1, 0, 0, BufferValues.Offset);
+					ImPlot::PlotLine("Velocity", BufferValues.Get(), BufferValues.Size(), 1, 0, 0, BufferValues.Offset);
+					ImPlot::PopStyleColor();
+				}
 				if (ShowAverage)
 				{
 					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(AverageText.Color));
@@ -154,7 +158,6 @@ namespace IW3SR::Addons
 					ImPlot::PlotLine("Ground", BufferGrounds.Get(), BufferGrounds.Size(), 1, 0, 0, BufferGrounds.Offset);
 					ImPlot::PopStyleColor();
 				}
-				ImPlot::PopStyleColor();
 				ImPlot::EndPlot();
 			}
 			Graph.End();
