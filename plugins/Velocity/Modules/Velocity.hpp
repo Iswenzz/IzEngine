@@ -9,22 +9,32 @@ namespace IW3SR::Addons
 	class Velocity : public Module
 	{
 	public:
-		int Value;
-		int Average;
-		int Max;
+		int Value = 0;
+		int Average = 0;
+		int Max = 0;
+		int Ground = 0;
+		int GroundAverage = 0;
+		int GroundTime = 0;
 
-		CircularBuffer<int, 1000> Values;
 		CircularBuffer<int, 1000> Averages;
-		CircularBuffer<int, 1000> Maxs;
+		CircularBuffer<int, 1000> GroundAverages;
+
+		CircularBuffer<int, 1000> BufferValues;
+		CircularBuffer<int, 1000> BufferAverages;
+		CircularBuffer<int, 1000> BufferMaxs;
+		CircularBuffer<int, 1000> BufferGrounds;
 
 		Text VelocityText;
 		Text AverageText;
 		Text MaxText;
+		Text GroundText;
 		Plots Graph;
 
 		KeyListener ResetKey;
 		bool ShowMax;
 		bool ShowAverage;
+		bool ShowGround;
+		bool ShowGroundTime;
 		bool ShowGraph;
 
 		/// <summary>
@@ -39,6 +49,11 @@ namespace IW3SR::Addons
 		void Initialize() override;
 
 		/// <summary>
+		/// Compute values.
+		/// </summary>
+		void Compute();
+
+		/// <summary>
 		/// Menu drawing.
 		/// </summary>
 		void OnMenu() override;
@@ -48,7 +63,7 @@ namespace IW3SR::Addons
 		/// </summary>
 		void OnRender() override;
 
-		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, MaxText, AverageText, Graph,
-			ResetKey, ShowAverage, ShowMax, ShowGraph)
+		NLOHMANN_SERIALIZE_POLY(Velocity, Module, VelocityText, AverageText, MaxText, GroundText, Graph,
+			ResetKey, ShowAverage, ShowMax, ShowGround, ShowGraph)
 	};
 }
