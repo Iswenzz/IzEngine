@@ -9,18 +9,22 @@ namespace IW3SR::Addons
 	class Lagometer : public Module
 	{
 	public:
+		vec4 SnapColor;
+		vec4 SnapDelayColor;
+		vec4 SnapFlagColor;
+		vec4 SnapFlagDropColor;
 		vec4 PingColor;
-		vec4 PacketColor;
-		int Ping;
-		int Packet;
 
-		CircularBuffer<int, 1000> PingBuffer;
-		CircularBuffer<int, 1000> PacketBuffer;
+		CircularBuffer<int, 127> Snaps;
+		CircularBuffer<int, 127> SnapsDelay;
+		CircularBuffer<int, 127> SnapsFlags;
+		CircularBuffer<int, 127> SnapsFlagsDrop;
+		CircularBuffer<int, 127> Pings;
 		Plots Graph;
 
+		bool ShowSnap;
+		bool ShowSnapFlag;
 		bool ShowPing;
-		bool ShowPacket;
-		bool ShowGraph;
 
 		/// <summary>
 		/// Create the module.
@@ -34,10 +38,11 @@ namespace IW3SR::Addons
 		void OnMenu() override;
 
 		/// <summary>
-		/// Frame callback.
+		/// Render frame.
 		/// </summary>
 		void OnRender() override;
 
-		NLOHMANN_SERIALIZE_POLY(Lagometer, Module, PingColor, PacketColor, Graph, ShowGraph);
+		NLOHMANN_SERIALIZE_POLY(Lagometer, Module, SnapColor, SnapDelayColor, SnapFlagColor, SnapFlagDropColor,
+			PingColor, ShowSnap, ShowSnapFlag, ShowPing, Graph)
 	};
 }
