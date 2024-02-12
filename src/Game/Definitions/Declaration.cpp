@@ -30,7 +30,6 @@ namespace IW3SR::Game
 	float* com_timescaleValue = reinterpret_cast<float*>(0x1435D68);
 	int* g_entities = reinterpret_cast<int*>(0x12885C4);
 	int* g_clients = reinterpret_cast<int*>(0x13255A8);
-	playerState_s* ps_loc = reinterpret_cast<playerState_s*>(0x13255A8);
 	pmove_t* pmove = reinterpret_cast<pmove_t*>(0x8C9C90);
 	const char* g_entityBeginParsePoint = reinterpret_cast<const char*>(0x1113674);
 	const char* g_entityEndParsePoint = reinterpret_cast<const char*>(0x1113678);

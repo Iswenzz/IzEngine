@@ -49,4 +49,14 @@ namespace IW3SR::Game
         SetPitch(cmd, angles, target);
         SetYaw(cmd, angles, target);
     }
+
+    bool PMove::OnGround()
+    {
+        return pmove->ps->groundEntityNum != 1023;
+    }
+
+    bool PMove::InAir()
+    {
+        return pmove->ps->groundEntityNum == 1023;
+    }
 }

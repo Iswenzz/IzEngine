@@ -39,6 +39,18 @@ namespace IW3SR::Game
 		bool IsAlive();
 
 		/// <summary>
+		/// Is player on ground.
+		/// </summary>
+		/// <returns></returns>
+		bool OnGround();
+
+		/// <summary>
+		/// Is player in air.
+		/// </summary>
+		/// <returns></returns>
+		bool InAir();
+
+		/// <summary>
 		/// Allocates all players.
 		/// </summary>
 		static void Allocates();
@@ -54,7 +66,13 @@ namespace IW3SR::Game
 		/// </summary>
 		/// <param name="index">The player index.</param>
 		/// <returns></returns>
-		static inline std::shared_ptr<Player> Get(int index);
+		static inline std::shared_ptr<Player>& Get(int index);
+
+		/// <summary>
+		/// Get self.
+		/// </summary>
+		/// <returns></returns>
+		static inline std::shared_ptr<Player>& Self();
 
 		/// <summary>
 		/// Check if the player is active.

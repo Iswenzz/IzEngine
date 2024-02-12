@@ -19,6 +19,16 @@ namespace IW3SR::Game
 		return c->isAlive;
 	}
 
+	bool Player::OnGround()
+	{
+		return c->nextState.groundEntityNum != 1023;
+	}
+
+	bool Player::InAir()
+	{
+		return c->nextState.groundEntityNum == 1023;
+	}
+
 	void Player::Allocates()
 	{
 		for (int i = 0; i < Players.size(); i++)
@@ -30,9 +40,14 @@ namespace IW3SR::Game
 		return Players;
 	}
 
-	std::shared_ptr<Player> Player::Get(int index)
+	std::shared_ptr<Player>& Player::Get(int index)
 	{
 		return Players[index];
+	}
+
+	std::shared_ptr<Player>& Player::Self()
+	{
+		return Players[cgs->clientNum];
 	}
 
 	Player::operator bool() const

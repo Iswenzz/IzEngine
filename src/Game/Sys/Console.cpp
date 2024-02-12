@@ -31,7 +31,8 @@ namespace IW3SR::Game
 		{
 		case CTRL_C_EVENT:
 		case CTRL_CLOSE_EVENT:
-			Cmd_ExecuteSingleCommand(0, 0, "quit");
+			if (UI::Get().Active)
+				Cmd_ExecuteSingleCommand(0, 0, "quit");
 			return true;
 		}
 		return false;

@@ -6,6 +6,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Player movement.
 	/// </summary>
+	/// <remarks>PMove is shared with self and spectator client.</remarks>
 	class API PMove
 	{
 	public:
@@ -52,5 +53,17 @@ namespace IW3SR::Game
 		/// <param name="angles">The angles.</param>
 		/// <param name="target">The target.</param>
 		static void SetAngles(usercmd_s* cmd, float* angles, const vec3& target);
+
+		/// <summary>
+		/// Is player on ground.
+		/// </summary>
+		/// <returns></returns>
+		static bool OnGround();
+
+		/// <summary>
+		/// Is player in air.
+		/// </summary>
+		/// <returns></returns>
+		static bool InAir();
 	};
 }

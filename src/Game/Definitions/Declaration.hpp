@@ -31,7 +31,6 @@ namespace IW3SR::Game
 	extern float* com_timescaleValue;
 	API extern int* g_entities;
 	API extern int* g_clients;
-	API extern playerState_s* ps_loc;
 	API extern pmove_t* pmove;
 	extern const char* g_entityBeginParsePoint;
 	extern const char* g_entityEndParsePoint;
