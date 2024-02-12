@@ -11,10 +11,10 @@ namespace IW3SR::Engine
 	class API HUD : public IObject
 	{
 	public:
-		vec2 Position = vec2::Zero;
-		vec2 Size = vec2::One;
-		vec2 RenderPosition = vec2::Zero;
-		vec2 RenderSize = vec2::One;
+		vec2 Position;
+		vec2 Size;
+		vec2 RenderPosition;
+		vec2 RenderSize;
 		vec4 Color = vec4::One;
 
 		Horizontal HorizontalAlign = HORIZONTAL_LEFT;

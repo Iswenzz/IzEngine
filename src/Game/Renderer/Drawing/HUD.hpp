@@ -10,8 +10,8 @@ namespace IW3SR::Game
 	class API HUD : public IObject
 	{
 	public:
-		vec2 Position = vec2::Zero;
-		vec2 Size = vec2::One;
+		vec2 Position;
+		vec2 Size;
 		vec4 Color = vec4::One;
 
 		Horizontal HorizontalAlign = HORIZONTAL_LEFT;

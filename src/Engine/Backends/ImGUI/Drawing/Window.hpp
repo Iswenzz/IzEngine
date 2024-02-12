@@ -13,8 +13,8 @@ namespace IW3SR::Engine
 		std::string Name;
 		vec2 Position = { 20, 20 };
 		vec2 Size = { 200, 140 };
-		vec2 RenderPosition = vec2::Zero;
-		vec2 RenderSize = vec2::Zero;
+		vec2 RenderPosition;
+		vec2 RenderSize;
 		bool Open = false;
 
 		/// <summary>

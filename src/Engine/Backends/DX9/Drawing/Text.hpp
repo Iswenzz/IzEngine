@@ -12,11 +12,11 @@ namespace IW3SR::Engine
 	{
 	public:
 		std::string Value;
-		vec2 Position = vec2::Zero;
-		vec2 Size = vec2::Zero;
+		vec2 Position;
+		vec2 Size;
 		vec2 Scale = vec2::One;
-		vec2 RenderPosition = vec2::Zero;
-		vec2 RenderSize = vec2::Zero;
+		vec2 RenderPosition;
+		vec2 RenderSize;
 		vec4 Color = vec4::One;
 
 		Horizontal HorizontalAlign = HORIZONTAL_LEFT;

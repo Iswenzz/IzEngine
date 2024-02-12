@@ -11,9 +11,10 @@ namespace IW3SR::Game
 	{
 	public:
 		std::string Value;
-		vec2 Position = vec2::Zero;
-		vec2 Size = vec2::Zero;
+		vec2 Position;
+		vec2 Size;
 		vec4 Color = vec4::One;
+
 		Horizontal HorizontalAlign = HORIZONTAL_LEFT;
 		Vertical VerticalAlign = VERTICAL_TOP;
 		Alignment AlignX = ALIGN_LEFT;
