@@ -16,13 +16,13 @@ namespace IW3SR::Addons
 		int GroundAverage = 0;
 		int GroundTime = 0;
 
-		CircularBuffer<int, 1000> Averages;
-		CircularBuffer<int, 1000> GroundAverages;
+		CircularBuffer<int, 500> Averages;
+		CircularBuffer<int, 500> GroundAverages;
 
-		CircularBuffer<int, 1000> BufferValues;
-		CircularBuffer<int, 1000> BufferAverages;
-		CircularBuffer<int, 1000> BufferMaxs;
-		CircularBuffer<int, 1000> BufferGrounds;
+		CircularBuffer<int, 500> BufferValues;
+		CircularBuffer<int, 500> BufferAverages;
+		CircularBuffer<int, 500> BufferMaxs;
+		CircularBuffer<int, 500> BufferGrounds;
 
 		Text VelocityText;
 		Text AverageText;

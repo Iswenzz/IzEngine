@@ -61,6 +61,7 @@ namespace IW3SR::Addons
 		BufferMaxs.Add(Max);
 
 		Ground = ShowGroundTime ? GroundTime : GroundAverage;
+		Ground = Ground < 1000 ? Ground : 1000;
 		BufferGrounds.Add(Ground < Max ? Ground : Max);
 
 		prevVelocity = Value;
