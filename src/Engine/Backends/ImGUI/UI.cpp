@@ -36,7 +36,7 @@ namespace IW3SR::Engine
 	void UI::CreateScreen(const vec2& position, const vec2& size, const vec2& display)
 	{
 		Screen = VirtualScreen(position, size, display);
-		Size = Screen.VirtualToFull.y * Scale;
+		Size = Screen.VirtualToReal.y * Scale;
 	}
 
 	void UI::Release()

@@ -5,7 +5,8 @@ namespace IW3SR::Engine
 {
 	Plots::Plots() : Window(Utils::UUID())
 	{ 
-		SetRect(0, 380, 160, 100);
+		SetRect(0, -100, 200, 100);
+		SetRectAlignment(HORIZONTAL_LEFT, VERTICAL_BOTTOM);
 	}
 
 	void Plots::Begin(ImGuiWindowFlags flags)

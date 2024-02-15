@@ -8,8 +8,6 @@ namespace IW3SR::Game
 	{
 		Con.Initialize();
 		Con.SetTile("IW3SR");
-
-		SetConsoleCtrlHandler(ConsoleHandler, true);
 	}
 
 	void Console::Release()
@@ -23,18 +21,5 @@ namespace IW3SR::Game
 
 		if (Com_PrintMessage_h)
 			Com_PrintMessage_h(channel, msg, type);
-	}
-
-	BOOL Console::ConsoleHandler(DWORD dwCtrlType)
-	{
-		switch (dwCtrlType)
-		{
-		case CTRL_C_EVENT:
-		case CTRL_CLOSE_EVENT:
-			if (UI::Get().Active)
-				Cmd_ExecuteSingleCommand(0, 0, "quit");
-			return true;
-		}
-		return false;
 	}
 }

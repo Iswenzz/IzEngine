@@ -36,12 +36,5 @@ namespace IW3SR::Game
 		/// </summary>
 		Console();
 		~Console() = default;
-
-		/// <summary>
-		/// Console handler.
-		/// </summary>
-		/// <param name="dwCtrlType">The ctrl type.</param>
-		/// <returns></returns>
-		static BOOL WINAPI ConsoleHandler(DWORD dwCtrlType);
 	};
 }

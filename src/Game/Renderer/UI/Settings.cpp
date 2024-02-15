@@ -5,7 +5,8 @@ namespace IW3SR::Game::UC
 {
 	Settings::Settings() : Window("Settings")
 	{
-		SetRect(470, 20, 150, 100);
+		SetRect(-170, 20, 150, 100);
+		SetRectAlignment(HORIZONTAL_RIGHT, VERTICAL_TOP);
 	}
 
 	void Settings::Render()

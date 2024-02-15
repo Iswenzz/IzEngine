@@ -19,11 +19,22 @@ namespace IW3SR::Engine
 		Size = { w, h };
 	}
 
+	void Window::SetRectAlignment(Horizontal horizontal, Vertical vertical)
+	{
+		HorizontalAlign = horizontal;
+		VerticalAlign = vertical;
+	}
+
 	void Window::Begin(ImGuiWindowFlags flags)
 	{
-		const vec2 space = UI::Get().Screen.VirtualToFull;
-		RenderPosition = Position * space;
-		RenderSize = Size * space;
+		float x = Position.x;
+		float y = Position.y;
+		float w = Size.x;
+		float h = Size.y;
+
+		UI::Get().Screen.Apply(x, y, w, h, HorizontalAlign, VerticalAlign);
+		RenderPosition = { x, y };
+		RenderSize = { w, h };
 
 		ImGui::SetNextWindowPos(RenderPosition, ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowSize(RenderSize, ImGuiCond_FirstUseEver);
@@ -33,8 +44,14 @@ namespace IW3SR::Engine
 		RenderPosition = ImGui::GetWindowPos();
 		RenderSize = ImGui::GetWindowSize();
 
-		Position = RenderPosition / space;
-		Size = RenderSize / space;
+		x = RenderPosition.x;
+		y = RenderPosition.y;
+		w = RenderSize.x;
+		h = RenderSize.y;
+
+		UI::Get().Screen.Reverse(x, y, w, h, HorizontalAlign, VerticalAlign);
+		Position = { x, y };
+		Size = { w, h };
 
 		if (!(flags & ImGuiWindowFlags_NoMove))
 			ImGui::Movable("#" + ID, Position, Size, RenderPosition, RenderSize);

@@ -18,6 +18,7 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Begin drawing.
 		/// </summary>
+		/// <param name="flags">Window flags.</param>
 		void Begin(ImGuiWindowFlags flags = 0) override;
 	};
 }

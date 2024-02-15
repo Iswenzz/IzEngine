@@ -17,6 +17,9 @@ namespace IW3SR::Engine
 		vec2 RenderSize;
 		bool Open = false;
 
+		Horizontal HorizontalAlign = HORIZONTAL_LEFT;
+		Vertical VerticalAlign = VERTICAL_TOP;
+
 		/// <summary>
 		/// Initialize the window.
 		/// </summary>
@@ -37,6 +40,13 @@ namespace IW3SR::Engine
 		virtual void SetRect(const vec2& position, const vec2& size);
 
 		/// <summary>
+		/// Set the rect alignment.
+		/// </summary>
+		/// <param name="horizontal">Horizontal aligment.</param>
+		/// <param name="vertical">Vertical alignment.</param>
+		virtual void SetRectAlignment(Horizontal horizontal, Vertical vertical);
+
+		/// <summary>
 		/// Set the window position and size.
 		/// </summary>
 		/// <param name="x">X value.</param>
@@ -48,6 +58,7 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Begin drawing.
 		/// </summary>
+		/// <param name="flags">Window flags.</param>
 		virtual void Begin(ImGuiWindowFlags flags = 0);
 
 		/// <summary>
@@ -62,6 +73,6 @@ namespace IW3SR::Engine
 		/// </summary>
 		virtual void End();
 
-		NLOHMANN_SERIALIZE_POLY_BASE(Window, Name, Position, Size, Open)
+		NLOHMANN_SERIALIZE_POLY_BASE(Window, Position, Size, Open)
 	};
 }

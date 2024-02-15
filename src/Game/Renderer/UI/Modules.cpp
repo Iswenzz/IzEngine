@@ -5,7 +5,8 @@ namespace IW3SR::Game::UC
 {
 	Modules::Modules() : Window("Modules")
 	{
-		SetRect(470, 20, 150, 185);
+		SetRect(-170, 20, 150, 185);
+		SetRectAlignment(HORIZONTAL_RIGHT, VERTICAL_TOP);
 	}
 
 	void Modules::Render()

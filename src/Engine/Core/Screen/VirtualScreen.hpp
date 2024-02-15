@@ -12,7 +12,7 @@ namespace IW3SR::Engine
 		vec2 Position;
 		vec2 Size;
         vec2 DisplaySize;
-        float AdjustedRealWidth = 640.f;
+        float AdjustedRealWidth = 0;
 
         vec2 RealMin;
         vec2 RealMax;
@@ -48,7 +48,7 @@ namespace IW3SR::Engine
         void SafeArea();
 
         /// <summary>
-        /// Apply real to virtual screen.
+        /// Virtual to real screen.
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
@@ -57,7 +57,7 @@ namespace IW3SR::Engine
         void Apply(float& x, float& y, Horizontal horizontal, Vertical vertical);
 
         /// <summary>
-        /// Apply real to virtual screen.
+        /// Virtual to real screen.
         /// </summary>
         /// <param name="x">X value.</param>
         /// <param name="y">Y value.</param>
@@ -66,5 +66,25 @@ namespace IW3SR::Engine
         /// <param name="horizontal">Horizontal aligment.</param>
         /// <param name="vertical">Vertical aligment.</param>
         void Apply(float& x, float& y, float& w, float& h, Horizontal horizontal, Vertical vertical);
+
+        /// <summary>
+        /// Real to virtual screen.
+        /// </summary>
+        /// <param name="x">X value.</param>
+        /// <param name="y">Y value.</param>
+        /// <param name="horizontal">Horizontal aligment.</param>
+        /// <param name="vertical">Vertical aligment.</param>
+        void Reverse(float& x, float& y, Horizontal horizontal, Vertical vertical);
+
+        /// <summary>
+        /// Real to virtual screen.
+        /// </summary>
+        /// <param name="x">X value.</param>
+        /// <param name="y">Y value.</param>
+        /// <param name="w">The witdth.</param>
+        /// <param name="h">The height.</param>
+        /// <param name="horizontal">Horizontal aligment.</param>
+        /// <param name="vertical">Vertical aligment.</param>
+        void Reverse(float& x, float& y, float& w, float& h, Horizontal horizontal, Vertical vertical);
 	};
 }

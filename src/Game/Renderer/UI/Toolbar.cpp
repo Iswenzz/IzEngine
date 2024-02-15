@@ -2,7 +2,10 @@
 
 namespace IW3SR::Game::UC
 {
-	Toolbar::Toolbar() : Window("Toolbar") { }
+	Toolbar::Toolbar() : Window("Toolbar") 
+	{
+		SetRectAlignment(HORIZONTAL_FULLSCREEN, VERTICAL_FULLSCREEN);
+	}
 
 	void Toolbar::Render()
 	{
@@ -10,7 +13,7 @@ namespace IW3SR::Game::UC
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
 		SetRect(0, 0, 640, 14);
 
-		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | 
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
 
 		auto& GUI = GUI::Get();
