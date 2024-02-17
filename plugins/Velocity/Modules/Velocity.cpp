@@ -45,9 +45,9 @@ namespace IW3SR::Addons
 		if (landed)
 		{
 			Averages.Add(prevVelocity);
-			Average = std::accumulate(Averages.Begin(), Averages.End(), 0) / Averages.Offset;
+			Average = Averages.Average();
 			GroundAverages.Add(GroundTime);
-			GroundAverage = std::accumulate(GroundAverages.Begin(), GroundAverages.End(), 0) / GroundAverages.Offset;
+			GroundAverage = GroundAverages.Average();
 			GroundTime = 0;
 		}
 		if (onGround)

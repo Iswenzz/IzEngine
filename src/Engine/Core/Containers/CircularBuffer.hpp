@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+#include <numeric>
+#include <type_traits>
 
 namespace IW3SR::Engine
 {
@@ -28,6 +30,28 @@ namespace IW3SR::Engine
 		{
 			Data[Offset] = element;
 			Offset = (Offset + 1) % MaxSize;
+		}
+
+		/// <summary>
+		/// Sum numeric value.
+		/// </summary>
+		/// <returns></returns>
+		template <typename U = T>
+		requires std::is_arithmetic_v<U>
+		inline U Sum()
+		{
+			return std::accumulate(Begin(), End(), 0);
+		}
+
+		/// <summary>
+		/// Average numeric value.
+		/// </summary>
+		/// <returns></returns>
+		template <typename U = T>
+		requires std::is_arithmetic_v<U>
+		inline U Average()
+		{
+			return Offset && Sum() / Offset;
 		}
 
 		/// <summary>
