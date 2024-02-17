@@ -33,6 +33,7 @@ namespace IW3SR::Engine::UC
 		const auto faSolid = Environment::FontsDirectory / "fa-solid-900.ttf";
 		const auto faBrands = Environment::FontsDirectory / "fa-brands-400.ttf";
 
+		io.Fonts->Clear();
 		io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize);
 		io.Fonts->AddFontFromFileTTF(faRegular.string().c_str(), iconSize, &config, rangesFa);
 		io.Fonts->AddFontFromFileTTF(faSolid.string().c_str(), iconSize, &config, rangesFa);
