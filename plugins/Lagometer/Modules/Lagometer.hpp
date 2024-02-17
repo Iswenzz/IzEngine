@@ -15,11 +15,11 @@ namespace IW3SR::Addons
 		vec4 SnapFlagDropColor;
 		vec4 PingColor;
 
-		CircularBuffer<int, 127> Snaps;
-		CircularBuffer<int, 127> SnapsDelay;
-		CircularBuffer<int, 127> SnapsFlags;
-		CircularBuffer<int, 127> SnapsFlagsDrop;
-		CircularBuffer<int, 127> Pings;
+		CircularBuffer<int, 48> Snaps;
+		CircularBuffer<int, 48> SnapsDelay;
+		CircularBuffer<int, 48> SnapsFlags;
+		CircularBuffer<int, 48> SnapsFlagsDrop;
+		CircularBuffer<int, 48> Pings;
 		Plots Graph;
 
 		bool ShowSnap;

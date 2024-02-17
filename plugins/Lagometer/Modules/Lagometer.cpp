@@ -1,10 +1,19 @@
 #include "Lagometer.hpp"
 
+int* lagometer = reinterpret_cast<int*>(0x7440D8);
+int& lagometerIndex = *reinterpret_cast<int*>(0x7442D8);
+int* pings = reinterpret_cast<int*>(0x7444DC);
+int& pingIndex = *reinterpret_cast<int*>(0x7446DC);
+int* snapsFlags = reinterpret_cast<int*>(0x7442DC);
+
 namespace IW3SR::Addons
 {
 	Lagometer::Lagometer() : Module("sr.player.lagometer", "Lagometer", "Player")
 	{
 		Graph = Plots();
+		Graph.SetRect(-55, -140, 48, 48);
+		Graph.SetRectAlignment(HORIZONTAL_RIGHT, VERTICAL_BOTTOM);
+
 		SnapColor = { 0, 0, 1, 1 };
 		SnapDelayColor = { 1, 1, 0, 1 };
 		SnapFlagColor = { 0, 1, 0, 1 };
@@ -25,44 +34,60 @@ namespace IW3SR::Addons
 
 	void Lagometer::OnRender()
 	{
-		const int snapRange = Graph.Size.y / 3;
-		const int snapScale = snapRange / 300;
+		const int range = 1000;
+		const int snapRange = 667;
+		const int pingRange = 500;
 
-		int snap = (cgs->time - cgs->latestSnapshotTime) * snapScale;
-		int snapFlags = cgs->snap->snapFlags;
-		int ping = cgs->snap->ping;
+		int snap = lagometer[(lagometerIndex - 1) & 0x7F];
+		Snaps.Add(snap < 0 ? snapRange + snap : snapRange);
+		SnapsDelay.Add(snap > 0 ? snapRange + snap : snapRange);
+		
+		Pings.Clear();
+		SnapsFlags.Clear();
+		SnapsFlagsDrop.Clear();
 
-		static int snapDelay = 0;
-		if (snap < 0.f)
-			snapDelay = std::abs(snap);
+		int pingSize = Pings.Size();
+		for (int i = 0; i < pingSize; i++)
+		{
+			int index = pingIndex - pingSize + i - 1;
+			int snapFlags = snapsFlags[index & 0x7F] & 1;
+			int ping = pings[index & 0x7F];
 
-		Snaps.Add(snap);
-		SnapsDelay.Add(snapDelay);
-		SnapsFlags.Add(snapFlags);
-		Pings.Add(ping);
+			if (ping > pingRange)
+				ping = pingRange;
+
+			Pings.Add(ping < 0 ? pingRange : 0);
+			SnapsFlags.Add(snapFlags == 0 ? ping : 0);
+			SnapsFlagsDrop.Add(snapFlags != 0 ? ping : 0);
+		}
 
 		Graph.Begin();
-		if (ImPlot::BeginPlot("##Ping", Graph.RenderSize))
+		if (ImPlot::BeginPlot("##Ping", Graph.RenderSize, ImPlotFlags_NoLegend))
 		{
 			ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_Canvas, ImPlotAxisFlags_Canvas);
 			ImPlot::SetupAxisLimits(ImAxis_X1, 0, Snaps.Size(), ImGuiCond_Always);
-			ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1000, ImGuiCond_Always);
+			ImPlot::SetupAxisLimits(ImAxis_Y1, 0, range, ImGuiCond_Always);
 
 			if (ShowSnap)
 			{
-				ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
-				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(SnapColor));
-				ImPlot::PlotShaded("Snap", Snaps.Get(), Snaps.Size(), -INFINITY, 1, 0, 0, Snaps.Offset);
-				ImPlot::PlotLine("Snap", Snaps.Get(), Snaps.Size(), 1, 0, 0, Snaps.Offset);
-				ImPlot::PopStyleColor();
+				ImPlot::SetNextFillStyle(SnapColor);
+				ImPlot::PlotShaded("Snap", Snaps.Get(), Snaps.Size(), snapRange, 1, 0, 0, Snaps.Offset);
+
+				ImPlot::SetNextFillStyle(SnapDelayColor);
+				ImPlot::PlotShaded("SnapDelay", SnapsDelay.Get(), SnapsDelay.Size(), snapRange, 1, 0, 0, SnapsDelay.Offset);
 			}
 			if (ShowPing)
 			{
-				ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
-				ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(PingColor));
-				ImPlot::PlotShaded("Ping", Pings.Get(), Pings.Size(), -INFINITY, 1, 0, 0, Pings.Offset);
-				ImPlot::PlotLine("Ping", Pings.Get(), Pings.Size(), 1, 0, 0, Pings.Offset);
-				ImPlot::PopStyleColor();
+				ImPlot::SetNextFillStyle(PingColor);
+				ImPlot::PlotShaded("Ping", Pings.Get(), Pings.Size(), -pingRange, 1, 0, 0, Pings.Offset);
+			}
+			if (ShowSnapFlag)
+			{
+				ImPlot::SetNextFillStyle(SnapFlagColor);
+				ImPlot::PlotShaded("SnapFlag", SnapsFlags.Get(), SnapsFlags.Size(), -pingRange, 1, 0, 0, SnapsFlags.Offset);
+
+				ImPlot::SetNextFillStyle(SnapFlagDropColor);
+				ImPlot::PlotShaded("SnapFlagDrop", SnapsFlagsDrop.Get(), SnapsFlagsDrop.Size(), -pingRange, 1, 0, 0, SnapsFlagsDrop.Offset);
 			}
 			ImPlot::EndPlot();
 		}
