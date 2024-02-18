@@ -12,7 +12,7 @@ namespace IW3SR::Engine
 	{
 		using R = typename std::function<T>::result_type;
 	public:
-		int Address = 0;
+		uintptr_t Address = 0;
 		std::function<T> Func = nullptr;
 
 		/// <summary>
@@ -22,21 +22,32 @@ namespace IW3SR::Engine
 		~Function() = default;
 
 		/// <summary>
-		/// Initialize a new Function wrapper.
+		/// Initialize a new function wrapper.
 		/// </summary>
-		/// <param name="address">The address of the function.</param>
-		Function(const uintptr_t& address) : Address(address), Func(reinterpret_cast<T*>(address)) { }
+		/// <param name="address">The target address.</param>
+		Function(uintptr_t address) : Address(address), Func(reinterpret_cast<T*>(address)) { }
 
 		/// <summary>
-		/// Assign function address.
+		/// Assign address.
 		/// </summary>
-		/// <param name="address">The function address.</param>
+		/// <param name="address">The target address.</param>
 		/// <returns></returns>
-		Function& operator=(const uintptr_t& address)
+		Function<T>& operator=(uintptr_t address)
 		{
 			Address = address;
 			Func = std::function<T>(reinterpret_cast<T*>(address));
 			return *this;
+		}
+
+		/// <summary>
+		/// Assign address.
+		/// </summary>
+		/// <param name="address">The target address.</param>
+		/// <returns></returns>
+		void operator <(uintptr_t address)
+		{
+			Address = address;
+			Func = std::function<T>(reinterpret_cast<T*>(address));
 		}
 
 		/// <summary>

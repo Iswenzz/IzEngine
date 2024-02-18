@@ -56,6 +56,12 @@ namespace IW3SR::Game
 		static void Allocates();
 
 		/// <summary>
+		/// Interpolate player states.
+		/// </summary>
+		/// <param name="grabAngles">Grab angles.</param>
+		static void Interpolate(bool grabAngles);
+
+		/// <summary>
 		/// Get all players.
 		/// </summary>
 		/// <returns></returns>

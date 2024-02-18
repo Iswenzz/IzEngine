@@ -22,7 +22,7 @@ namespace IW3SR::Engine::UC
 
 	void Memory::Write(ImU8* data, size_t offset, ImU8 value)
 	{
-		Engine::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value), 1);
+		Engine::Memory::WriteBytes(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
 	}
 
 	void Memory::Render()

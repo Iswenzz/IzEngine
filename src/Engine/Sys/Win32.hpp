@@ -10,9 +10,10 @@
 #include "Log.hpp"
 #include "Memory.hpp"
 
-#include "Win32/Sys.hpp"
 #include "Win32/Console.hpp"
-#include "Win32/Plugins.hpp"
 #include "Win32/Environment.hpp"
 #include "Win32/KeyListener.hpp"
 #include "Win32/Memory.hpp"
+#include "Win32/Plugins.hpp"
+#include "Win32/Signature.hpp"
+#include "Win32/Sys.hpp"

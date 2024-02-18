@@ -1,10 +1,10 @@
 #include "Lagometer.hpp"
 
-int* lagometer = reinterpret_cast<int*>(0x7440D8);
-int& lagometerIndex = *reinterpret_cast<int*>(0x7442D8);
-int* pings = reinterpret_cast<int*>(0x7444DC);
-int& pingIndex = *reinterpret_cast<int*>(0x7446DC);
-int* snapsFlags = reinterpret_cast<int*>(0x7442DC);
+int* lagometer = Signature(0x7440D8);
+int& lagometerIndex = Signature(0x7442D8);
+int* pings = Signature(0x7444DC);
+int& pingIndex = Signature(0x7446DC);
+int* snapsFlags = Signature(0x7442DC);
 
 namespace IW3SR::Addons
 {
@@ -41,7 +41,7 @@ namespace IW3SR::Addons
 		int snap = lagometer[(lagometerIndex - 1) & 0x7F];
 		Snaps.Add(snap < 0 ? snapRange + snap : snapRange);
 		SnapsDelay.Add(snap > 0 ? snapRange + snap : snapRange);
-		
+
 		Pings.Clear();
 		SnapsFlags.Clear();
 		SnapsFlagsDrop.Clear();

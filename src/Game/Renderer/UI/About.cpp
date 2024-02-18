@@ -8,8 +8,8 @@ namespace IW3SR::Game::UC
 	{
 		if (!Open) return;
 
-		constexpr const char* IW3SR = "IW3SR";
-		constexpr const char* markdown = R"(
+		constexpr auto IW3SR = "IW3SR";
+		constexpr auto markdown = R"(
 A Call of Duty 4 Modification.
 
 [https://github.com/Iswenzz/IW3SR](https://github.com/Iswenzz/IW3SR)

@@ -14,52 +14,25 @@ namespace IW3SR::Engine
         VirtualProtect(lpAddress, size, oldProtect, nullptr);
     }
 
-    void Memory::Write(uintptr_t address, const char* bytes, int size)
+    void Memory::Write(uintptr_t address, const std::string& pattern)
+    {
+        WriteBytes(address, HexToBytes(pattern));
+    }
+
+    void Memory::WriteBytes(uintptr_t address, const std::string& bytes)
     {
         DWORD oldProtect;
         LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
+        int size = bytes.size();
 
         VirtualProtect(lpAddress, size, PAGE_READWRITE, &oldProtect);
-        memcpy(lpAddress, bytes, size);
+        memcpy(lpAddress, bytes.data(), size);
         VirtualProtect(lpAddress, size, oldProtect, nullptr);
-    }
-
-    uintptr_t Memory::Scan(std::string moduleName, const char* bytes, size_t size)
-    {
-        std::vector<uintptr_t> addresses = ScanAll(moduleName, bytes, size, true);
-        return addresses.size() ? addresses.back() : 0;
-    }
-
-    std::vector<uintptr_t> Memory::ScanAll(std::string moduleName, const char* bytes, size_t size, bool first)
-    {
-        std::vector<uintptr_t> addresses;
-        HMODULE hModule = GetModuleHandle(moduleName.c_str());
-
-        if (!hModule) return addresses;
-
-        MODULEINFO moduleInfo;
-        GetModuleInformation(GetCurrentProcess(), hModule, &moduleInfo, sizeof(moduleInfo));
-
-        uintptr_t moduleBase = reinterpret_cast<uintptr_t>(moduleInfo.lpBaseOfDll);
-        uintptr_t moduleEnd = moduleBase + moduleInfo.SizeOfImage;
-
-        std::vector<unsigned char> buffer(moduleInfo.SizeOfImage);
-        memcpy(buffer.data(), reinterpret_cast<LPCVOID>(moduleBase), buffer.size());
-        for (uintptr_t address = moduleBase; address < moduleEnd - size; ++address)
-        {
-            if (!memcmp(&buffer[address - moduleBase], bytes, size))
-            {
-                addresses.push_back(address);
-                if (first) return addresses;
-            }
-        }
-        return addresses;
     }
 
     void Memory::NOP(uintptr_t address, int size)
     {
-        std::string bytes(size, '\x90');
-        Write(address, bytes.c_str(), size);
+        WriteBytes(address, std::string(size, '\x90'));
     }
 
     void Memory::JMP(uintptr_t address, uintptr_t to, int size)
@@ -69,7 +42,7 @@ namespace IW3SR::Engine
         bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
 
         NOP(address, size);
-        Write(address, bytes.c_str(), 5);
+        WriteBytes(address, bytes);
     }
 
     void Memory::CALL(uintptr_t address, uintptr_t to, int size)
@@ -79,10 +52,10 @@ namespace IW3SR::Engine
         bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
 
         NOP(address, size);
-        Write(address, bytes.c_str(), 5);
+        WriteBytes(address, bytes);
     }
 
-    uintptr_t Memory::LE(uintptr_t value)
+    constexpr uintptr_t Memory::LE(uintptr_t value)
     {
         uintptr_t result = 0;
         for (int i = 0; i < sizeof(value); ++i)
@@ -90,11 +63,32 @@ namespace IW3SR::Engine
         return result;
     }
 
-    uintptr_t Memory::BE(uintptr_t value)
+    constexpr uintptr_t Memory::BE(uintptr_t value)
     {
         uintptr_t result = 0;
         for (int i = 0; i < sizeof(value); ++i)
             result |= ((value >> (24 - i * 8)) & 0xFF) << (i * 8);
+        return result;
+    }
+
+    constexpr std::string Memory::HexToBytes(const std::string& pattern)
+    {
+        std::string result;
+        for (size_t i = 0; i < pattern.size(); ++i)
+        {
+            if (pattern[i] == ' ')
+                continue;
+
+            if (pattern[i] == '?')
+            {
+                result += '?';
+                ++i;
+                continue;
+            }
+            std::string byte = pattern.substr(i, 2);
+            result.append(1, std::stoi(byte, nullptr, 16));
+            ++i;
+        }
         return result;
     }
 }

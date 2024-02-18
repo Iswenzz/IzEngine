@@ -14,7 +14,7 @@ namespace IW3SR::Game
 			return new D3D9EX(d3d9ex_device);
 
 		Log::WriteLine("Direct3D 9 EX failed to initialize. Defaulting to Direct3D 9.");
-		return new D3D9(::Direct3DCreate9(sdk));
+		return new D3D9(Direct3DCreate9_h(sdk));
 	}
 
 	HRESULT D3D9::QueryInterface(REFIID riid, void** ppvObj)

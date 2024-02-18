@@ -11,9 +11,9 @@ namespace IW3SR::Engine
 		if (!Instance)
 			throw std::runtime_error("Couldn't load plugin.");
 
-		CallbackInitialize = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Initialize"));
-		CallbackRenderer = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Renderer"));
-		CallbackShutdown = reinterpret_cast<uintptr_t>(GetProcAddress(Instance, "Shutdown"));
+		CallbackInitialize < Signature(GetProcAddress(Instance, "Initialize"));
+		CallbackRenderer < Signature(GetProcAddress(Instance, "Renderer"));
+		CallbackShutdown < Signature(GetProcAddress(Instance, "Shutdown"));
 
 		if (!CallbackInitialize)
 			throw std::runtime_error("Plugin is missing Initialize function.");

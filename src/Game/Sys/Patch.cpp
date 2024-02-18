@@ -4,9 +4,15 @@ namespace IW3SR::Game
 {
 	void Patch::Initialize()
 	{
+		Game();
 		Renderer();
-		CoD4X();
 		System();
+	}
+
+	void Patch::Game()
+	{
+		if (COD4X)
+			bg_weaponNames = Signature(COD4X, 0x443DDE0);
 	}
 
 	void Patch::Renderer()
@@ -19,17 +25,9 @@ namespace IW3SR::Game
 		Memory::Set<char>(0x500179, 8);
 	}
 
-	void Patch::CoD4X()
-	{
-		bg_weaponNames = reinterpret_cast<WeaponDef**>(COD4X + 0x443DDE0);
-	}
-
 	void Patch::System()
 	{
 		if (COD4X)
-		{
-			MainWndProc_h.Address = Memory::Scan(COD4X_BIN,
-				"\x55\x89\xE5\x53\x81\xEC\x84\x00\x00\x00\xC7\x04\x24\x02", 14);
-		}
+			MainWndProc_h < Signature(COD4X_BIN, "55 89 E5 53 81 EC 84 00 00 00 C7 04 24 02");
 	}
 }

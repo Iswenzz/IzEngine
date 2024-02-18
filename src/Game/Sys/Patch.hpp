@@ -23,14 +23,14 @@ namespace IW3SR::Game
 		~Patch() = default;
 
 		/// <summary>
+		/// Game patch.
+		/// </summary>
+		void Game();
+
+		/// <summary>
 		/// Renderer patch.
 		/// </summary>
 		void Renderer();
-
-		/// <summary>
-		/// CoD4X patch.
-		/// </summary>
-		void CoD4X();
 
 		/// <summary>
 		/// System patch.

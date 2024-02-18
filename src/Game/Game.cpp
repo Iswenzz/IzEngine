@@ -26,7 +26,7 @@ namespace IW3SR::Game
 
 	void GameClient::CoD4X()
 	{
-		auto cod4x = std::ranges::find_if(Environment::Modules,
+		const auto cod4x = std::ranges::find_if(Environment::Modules,
 			[](const auto& m) { return m.find("cod4x_") != std::string::npos; });
 
 		if (cod4x == Environment::Modules.end())
@@ -39,32 +39,34 @@ namespace IW3SR::Game
 	void GameClient::Hook()
 	{
 		CreateWindowExA_h.Install();
+		Direct3DCreate9_h.Install();
 		MainWndProc_h.Install();
 
 		Com_PrintMessage_h.Install();
 		CG_DrawCrosshair_h.Install();
+		CG_InterpolatePlayerState_h.Install();
 		CL_FinishMove_h.Install();
 		PM_WalkMove_h.Install();
 		PM_AirMove_h.Install();
 		R_Init_h.Install();
 		R_Shutdown_h.Install();
-		R_Direct3DCreate9_h.Install();
 		RB_EndSceneRendering_h.Install();
 	}
 
 	void GameClient::Unhook()
 	{
 		CreateWindowExA_h.Remove();
+		Direct3DCreate9_h.Remove();
 		MainWndProc_h.Remove();
 
 		Com_PrintMessage_h.Remove();
 		CG_DrawCrosshair_h.Remove();
+		CG_InterpolatePlayerState_h.Remove();
 		CL_FinishMove_h.Remove();
 		PM_WalkMove_h.Remove();
 		PM_AirMove_h.Remove();
 		R_Init_h.Remove();
 		R_Shutdown_h.Remove();
-		R_Direct3DCreate9_h.Remove();
 		RB_EndSceneRendering_h.Remove();
 	}
 }

@@ -26,7 +26,7 @@ namespace IW3SR::Engine
 		/// Add an element.
 		/// </summary>
 		/// <param name="element">The element.</param>
-		void Add(const T& element)
+		inline void Add(const T& element)
 		{
 			Data[Offset] = element;
 			Offset = (Offset + 1) % MaxSize;
@@ -57,7 +57,7 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Clear the buffer.
 		/// </summary>
-		constexpr void Clear()
+		constexpr inline void Clear()
 		{
 			Data.fill(0);
 			Offset = 0;
@@ -67,7 +67,7 @@ namespace IW3SR::Engine
 		/// Iterator begin.
 		/// </summary>
 		/// <returns></returns>
-		constexpr std::array<T, MaxSize>::iterator Begin()
+		constexpr inline std::array<T, MaxSize>::iterator Begin()
 		{
 			return Data.begin();
 		}
@@ -76,7 +76,7 @@ namespace IW3SR::Engine
 		/// Iterator end.
 		/// </summary>
 		/// <returns></returns>
-		constexpr std::array<T, MaxSize>::iterator End()
+		constexpr inline std::array<T, MaxSize>::iterator End()
 		{
 			return Data.end();
 		}
@@ -85,7 +85,7 @@ namespace IW3SR::Engine
 		/// Get the buffer data.
 		/// </summary>
 		/// <returns></returns>
-		constexpr const T* Get() const
+		constexpr inline const T* Get() const
 		{
 			return Data.data();
 		}
@@ -94,7 +94,7 @@ namespace IW3SR::Engine
 		/// Get the buffer size.
 		/// </summary>
 		/// <returns></returns>
-		constexpr size_t Size() const
+		constexpr inline size_t Size() const
 		{
 			return MaxSize;
 		}

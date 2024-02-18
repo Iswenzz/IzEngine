@@ -25,28 +25,15 @@ namespace IW3SR::Engine
         /// Write memory.
         /// </summary>
         /// <param name="address">The target address.</param>
+        /// <param name="pattern">The pattern to write.</param>
+        static inline void Write(uintptr_t address, const std::string& pattern);
+
+        /// <summary>
+        /// Write memory.
+        /// </summary>
+        /// <param name="address">The target address.</param>
         /// <param name="bytes">The bytes to write.</param>
-        /// <param name="size">The size of the bytes.</param>
-        static void Write(uintptr_t address, const char* bytes, int size);
-
-        /// <summary>
-        /// Memory scan.
-        /// </summary>
-        /// <param name="moduleName">The module name.</param>
-        /// <param name="bytes">The bytes to scan.</param>
-        /// <param name="size">The bytes size.</param>
-        /// <returns></returns>
-        static uintptr_t Scan(std::string moduleName, const char* bytes, size_t size);
-
-        /// <summary>
-        /// Memory scan all results.
-        /// </summary>
-        /// <param name="moduleName">The module name.</param>
-        /// <param name="bytes">The bytes to scan.</param>
-        /// <param name="size">The bytes size.</param>
-        /// <param name="first">Should only scan until the first result.</param>
-        /// <returns></returns>
-        static std::vector<uintptr_t> ScanAll(std::string moduleName, const char* bytes, size_t size, bool first);
+        static void WriteBytes(uintptr_t address, const std::string& bytes);
 
         /// <summary>
         /// Assign values from reinterpret cast.
@@ -77,25 +64,37 @@ namespace IW3SR::Engine
         }
 
         /// <summary>
-        /// Set bytes.
+        /// Set value.
         /// </summary>
         /// <typeparam name="T">The type to set.</typeparam>
         /// <param name="address">The address.</param>
         /// <param name="value">The value.</param>
         template <typename T>
-        static void Set(uintptr_t address, T value)
+        static inline void Set(uintptr_t address, T value)
         {
-            int size = sizeof(T);
-            std::string bytes(reinterpret_cast<char*>(&value), size);
-            Write(address, bytes.c_str(), size);
+            WriteBytes(address, std::string(reinterpret_cast<char*>(&value), sizeof(T)));
+        }
+
+        /// <summary>
+        /// Get value.
+        /// </summary>
+        /// <typeparam name="T">The type to get.</typeparam>
+        /// <param name="address">The address.</param>
+        /// <param name="value">The value.</param>
+        template <typename T>
+        static inline T Get(uintptr_t address, T value)
+        {
+            T value;
+            Read(address, &value, sizeof(T));
+            return value;
         }
 
         /// <summary>
         /// NOP instruction.
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="size"></param>
-        static void NOP(uintptr_t address, int size);
+        /// <param name="address">The target address.</param>
+        /// <param name="size">The bytes size.</param>
+        static inline void NOP(uintptr_t address, int size);
 
         /// <summary>
         /// JMP instruction.
@@ -103,7 +102,7 @@ namespace IW3SR::Engine
         /// <param name="address">The target address.</param>
         /// <param name="to">The jmp address.</param>
         /// <param name="size">The bytes size.</param>
-        static void JMP(uintptr_t address, uintptr_t to, int size = 5);
+        static inline void JMP(uintptr_t address, uintptr_t to, int size = 5);
 
         /// <summary>
         /// CALL instruction.
@@ -111,20 +110,27 @@ namespace IW3SR::Engine
         /// <param name="address">The target address.</param>
         /// <param name="to">The call address.</param>
         /// <param name="size">The bytes size.</param>
-        static void CALL(uintptr_t address, uintptr_t to, int size = 5);
+        static inline void CALL(uintptr_t address, uintptr_t to, int size = 5);
 
         /// <summary>
         /// Convert to little endian.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        static uintptr_t LE(uintptr_t value);
+        constexpr static inline uintptr_t LE(uintptr_t value);
 
         /// <summary>
         /// Convert to big endian.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        static uintptr_t BE(uintptr_t value);
+        constexpr static inline uintptr_t BE(uintptr_t value);
+
+        /// <summary>
+        /// Hex to bytes.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <returns></returns>
+        constexpr static std::string HexToBytes(const std::string& pattern);
     };
 }

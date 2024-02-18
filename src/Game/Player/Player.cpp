@@ -35,6 +35,11 @@ namespace IW3SR::Game
 			Players[i] = std::make_shared<Player>(i);
 	}
 
+	void Player::Interpolate(bool grabAngles)
+	{
+		CG_InterpolatePlayerState_h(grabAngles);
+	}
+
 	std::array<std::shared_ptr<Player>, 64>& Player::GetAll()
 	{
 		return Players;

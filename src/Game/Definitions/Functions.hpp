@@ -33,11 +33,17 @@ namespace IW3SR::Game
 		HINSTANCE hInstance, LPVOID lpParam)>
 		CreateWindowExA_h;
 
+	extern Hook<IDirect3D9* STDCALL(UINT sdk)>
+		Direct3DCreate9_h;
+
 	extern Hook<LRESULT CALLBACK(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)>
 		MainWndProc_h;
 
 	extern Hook<void(int channel, const char* msg, int type)>
 		Com_PrintMessage_h;
+
+	extern Hook<void(bool grabAngles)>
+		CG_InterpolatePlayerState_h;
 
 	extern Hook<void(int localClientNum)>
 		CG_DrawCrosshair_h;
@@ -56,9 +62,6 @@ namespace IW3SR::Game
 
 	extern Hook<void(int window)>
 		R_Shutdown_h;
-
-	extern Hook<IDirect3D9* STDCALL(UINT sdk)>
-		R_Direct3DCreate9_h;
 
 	extern Hook<void(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)>
 		RB_EndSceneRendering_h;

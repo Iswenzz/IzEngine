@@ -23,19 +23,36 @@ namespace IW3SR::Engine
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
+        /// <param name="callback">The callback function.</param>
+        Hook(T callback) : Hook(0ull, callback) { }
+        ~Hook() = default;
+
+        /// <summary>
+        /// Initialize a new Hook instance.
+        /// </summary>
         /// <param name="target">The target function.</param>
         /// <param name="callback">The callback function.</param>
-        Hook(T target, T callback) : Hook(reinterpret_cast<uintptr_t>(target), callback) { }
+        Hook(T target, T callback) : Hook(reinterpret_cast<uint64_t>(target), callback) { }
 
         /// <summary>
         /// Initialize a new Hook instance.
         /// </summary>
         /// <param name="target">The target address.</param>
         /// <param name="callback">The callback function.</param>
-        Hook(uintptr_t target, T callback)
+        Hook(uint64_t target, T callback)
         {
             Address = target;
             Callback = reinterpret_cast<uint64_t>(callback);
+        }
+
+        /// <summary>
+        /// Assign address.
+        /// </summary>
+        /// <param name="address">The target address.</param>
+        /// <returns></returns>
+        void operator <(uintptr_t address)
+        {
+            Address = address;
         }
 
         /// <summary>
@@ -83,5 +100,11 @@ namespace IW3SR::Engine
         {
             return IsEnabled;
         }
+
+    private:
+        /// <summary>
+        /// Initialize a new Hook instance.
+        /// </summary>
+        Hook() = default;
     };
 }
