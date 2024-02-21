@@ -1,4 +1,5 @@
 ; Exports
+	global BG_EvaluateTrajectory
 	global CG_TracePoint
 	global Dvar_FindVar
 	global R_AddCmdDrawText
@@ -7,23 +8,17 @@
 
 SECTION .text
 
-; void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
-;	const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask);
-CG_TracePoint:
+; void BG_EvaluateTrajectory(const trajectory_t* tr, int atTime, float* out);
+BG_EvaluateTrajectory:
 	push	ebp
 	mov		ebp, esp
-	push	esi
-	push	dword [ebp + 24h]		; contentMask
-	push	dword [ebp + 20h]		; passEntityNum
-	push	dword [ebp + 1Ch]		; end
-	push	dword [ebp + 18h]		; maxs
-	push	dword [ebp + 14h]		; mins
-	push	dword [ebp + 10h]		; start
-	push	dword [ebp + 0Ch]		; trace
-	mov		esi, dword [ebp + 8]	; pm
-	call	dword [CG_TracePoint_a]
-	add		esp, 1Ch
-	pop		esi
+	pushad
+	mov		ecx, dword [ebp + 10h]	; out
+	mov		eax, dword [ebp + 0Ch]	; atTime
+	push	dword [ebp + 8]			; tr
+	call	dword [BG_EvaluateTrajectory_a]
+	add		esp, 4
+	popad
 	pop		ebp
 	ret
 
@@ -31,71 +26,55 @@ CG_TracePoint:
 Dvar_FindVar:
 	push	ebp
 	mov		ebp, esp
-	push	edi
+	pushad
 	mov		edi, dword [ebp + 8]	; name
 	call	dword [Dvar_FindVar_a]
-	pop		edi
+	mov		[esp + 1Ch], eax
+	popad
 	pop		ebp
 	ret
 
 ; void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
 ;	float xScale, float yScale, float rotation, int style, float* color);
 R_AddCmdDrawText:
-	push	ebp
-	mov		ebp, esp
-	push	dword [ebp + 28h]			; style
-	sub		esp, 14h
-	fld		dword [ebp + 24h]			; rotation
-	fstp	dword [esp + 10h]
-	fld		dword [ebp + 20h]			; yScale
-	fstp	dword [esp + 0Ch]
-	fld		dword [ebp + 1Ch]			; xScale
-	fstp	dword [esp + 8]
-	fld		dword [ebp + 18h]			; y
-	fstp	dword [esp + 4]
-	fld		dword [ebp + 14h]			; x
-	fstp	dword [esp]
-	push	dword [ebp + 10h]			; font
-	push	dword [ebp + 0Ch]			; maxChars
-	push	dword [ebp + 8]				; text
-	mov		ecx, dword [ebp + 2Ch]		; color
-	call	dword [R_AddCmdDrawText_a]
-	add		esp, 24h
-	pop		ebp
-	ret
+	push    ebp
+    mov     ebp, esp
+    pushad
+    mov     ecx, dword [ebp + 2Ch]       ; color
+    push    dword [ebp + 28h]            ; style
+    push    dword [ebp + 24h]            ; rotation
+    push    dword [ebp + 20h]            ; yScale
+    push    dword [ebp + 1Ch]            ; xScale
+    push    dword [ebp + 18h]            ; y
+    push    dword [ebp + 14h]            ; x
+    push    dword [ebp + 10h]            ; font
+    push    dword [ebp + 0Ch]            ; maxChars
+    push    dword [ebp + 8]              ; text
+    call    dword [R_AddCmdDrawText_a]
+    add     esp, 24h
+    popad
+    pop     ebp
+    ret
 
 ; void R_AddCmdDrawStretchPic(Material* material, float x, float y, float w, float h,
 ;	float null1, float null2, float null3, float null4, float* color);
 R_AddCmdDrawStretchPic:
 	push	ebp
 	mov		ebp, esp
-	push	ebx
-	push	esi
-	push	edi
+	pushad
 	push	dword [ebp + 2Ch]		; color
+	push	dword [ebp + 28h]		; null4
+	push	dword [ebp + 24h]		; null3
+	push	dword [ebp + 20h]		; null2
+	push	dword [ebp + 1Ch]		; null1
+	push	dword [ebp + 18h]		; h
+	push	dword [ebp + 14h]		; w
+	push	dword [ebp + 10h]		; y
+	push	dword [ebp + 0Ch]		; x
 	mov		eax, dword [ebp + 8]	; material
-	sub		esp, 20h
-	fld		dword [ebp + 28h]		; null4
-	fstp	dword [esp + 1Ch]
-	fld		dword [ebp + 24h]		; null3
-	fstp	dword [esp + 18h]
-	fld		dword [ebp + 20h]		; null2
-	fstp	dword [esp + 14h]
-	fld		dword [ebp + 1Ch]		; null1
-	fstp	dword [esp + 10h]
-	fld		dword [ebp + 18h]		; h
-	fstp	dword [esp + 0Ch]
-	fld		dword [ebp + 14h]		; w
-	fstp	dword [esp + 8]
-	fld		dword [ebp + 10h]		; y
-	fstp	dword [esp + 4]
-	fld		dword [ebp + 0Ch]		; x
-	fstp	dword [esp]
 	call	dword [R_AddCmdDrawStretchPic_a]
 	add		esp, 24h
-	pop		edi
-	pop		esi
-	pop		ebx
+	popad
 	pop		ebp
 	ret
 
@@ -103,16 +82,20 @@ R_AddCmdDrawStretchPic:
 R_TextWidth:
 	push	ebp
 	mov		ebp, esp
+	pushad
 	push	dword [ebp + 10h]		; font
 	push	dword [ebp + 0Ch]		; maxChars
 	mov		eax, dword [ebp + 8]	; text
 	call	dword [R_TextWidth_a]
+	mov		[esp + 24h], eax
 	add		esp, 8
+	popad
 	pop		ebp
 	ret
 
 SECTION .rdata
 
+	BG_EvaluateTrajectory_a: dd 40BD70h
 	CG_TracePoint_a: dd 459EF0h
     Dvar_FindVar_a: dd 56B5D0h
     R_AddCmdDrawText_a: dd 5F6B00h
