@@ -26,7 +26,7 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Draw 2D.
 		/// </summary>
-		/// <param name="localClientNum">Local client index.</param>
+		/// <param name="localClientNum">Local client num.</param>
 		static void Draw2D(int localClientNum);
 
 		/// <summary>

@@ -29,7 +29,7 @@ namespace IW3SR::Game
 	void Text::SetFont(const std::string& font)
 	{
 		auto& assets = Assets::Get();
-		Font = assets.Fonts[font];
+		Font = assets.LoadFont(font);
 		FontName = font;
 		FontIndex = std::distance(assets.FontNames.begin(), std::ranges::find(assets.FontNames, FontName));
 	}

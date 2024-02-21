@@ -11,6 +11,7 @@
 
 #define FONT_OPENSANS 		"OpenSans-Regular"
 #define FONT_SPACERANGER	"Space Ranger"
+#define TEXTURE_NULL		"null"
 
 namespace IW3SR::Engine
 {

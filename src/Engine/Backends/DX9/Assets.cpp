@@ -32,24 +32,23 @@ namespace IW3SR::Engine
 
 	std::shared_ptr<Font> Assets::LoadFont(const std::string& name, int height)
 	{
-		if (std::ranges::find(FontNames, name) == FontNames.end())
-			throw std::runtime_error("Font not found.");
-
 		std::string id = std::format("{}_{}", name, height);
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
 		std::shared_ptr<Font> font = std::make_shared<Font>(id);
-		D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
+		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
-
+			
+		if (hr != S_OK)
+			return Fonts[FONT_OPENSANS];
 		return Fonts[id] = font;
 	}
 
 	std::shared_ptr<Font> Assets::LoadFont(const std::filesystem::path& path, int height)
 	{
 		if (!std::filesystem::exists(path))
-			throw std::runtime_error("Path not found.");
+			throw std::runtime_error("File not found.");
 
 		AddFontResource(path.string().c_str());
 
@@ -59,25 +58,32 @@ namespace IW3SR::Engine
 			return cache->second;
 
 		std::shared_ptr<Font> font = std::make_shared<Font>(id);
-		D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
+		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
+		if (hr != S_OK)
+			return Fonts[FONT_OPENSANS];
+
 		if (std::ranges::find(FontNames, name) == FontNames.end())
-			FontNames.push_back(name.c_str());
+			FontNames.push_back(name);
+
 		return Fonts[id] = font;
 	}
 
 	std::shared_ptr<Texture> Assets::LoadTexture(const std::filesystem::path& path)
 	{
 		if (!std::filesystem::exists(path))
-			throw std::runtime_error("Path not found.");
+			throw std::runtime_error("File not found.");
 
 		std::string id = path.stem().filename().string();
 		if (auto cache = Textures.find(id); cache != Textures.end())
 			return cache->second;
 
 		std::shared_ptr<Texture> texture = std::make_shared<Texture>(id);
-		D3DXCreateTextureFromFile(Device::Get().D3Device, path.string().c_str(), &texture->Base);
+		HRESULT hr = D3DXCreateTextureFromFile(Device::Get().D3Device, path.string().c_str(), &texture->Base);
+
+		if (hr != S_OK)
+			return Textures[TEXTURE_NULL];
 		return Textures[id] = texture;
 	}
 }

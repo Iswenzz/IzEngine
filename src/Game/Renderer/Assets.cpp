@@ -35,8 +35,12 @@ namespace IW3SR::Game
 
 	Font_s* Assets::LoadFont(const std::string& name)
 	{
-		auto font = R_RegisterFont(name.c_str(), name.size());
-		if (!font) throw std::runtime_error("Path not found.");
+		if (auto cache = Fonts.find(name); cache != Fonts.end())
+			return cache->second;
+
+		const auto font = R_RegisterFont(name.c_str(), name.size());
+		if (!font)
+			return Fonts[FONT_OBJECTIVE];
 		return Fonts[name] = font;
 	}
 }
