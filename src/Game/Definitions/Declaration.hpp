@@ -8,10 +8,10 @@ namespace IW3SR::Game
 	API extern std::string IW3MP_BIN;
 	API extern std::string IW3XO_BIN;
 
-	// Modules
-	API extern uintptr_t COD4X;
-	API extern uintptr_t IW3MP;
-	API extern uintptr_t IW3XO;
+	// Handles
+	API extern uintptr_t COD4X_HANDLE;
+	API extern uintptr_t IW3MP_HANDLE;
+	API extern uintptr_t IW3XO_HANDLE;
 
 	// Game
 	API extern CmdArgs* cmd_args;

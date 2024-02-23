@@ -33,7 +33,7 @@ namespace IW3SR::Game
 			return;
 
 		COD4X_BIN = *cod4x;
-		COD4X = reinterpret_cast<uintptr_t>(GetModuleHandle(COD4X_BIN.c_str()));
+		COD4X_HANDLE = reinterpret_cast<uintptr_t>(GetModuleHandle(COD4X_BIN.c_str()));
 	}
 
 	void GameClient::Hook()

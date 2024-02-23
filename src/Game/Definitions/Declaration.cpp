@@ -7,10 +7,10 @@ namespace IW3SR::Game
 	std::string IW3MP_BIN = "iw3mp.exe";
 	std::string IW3XO_BIN = "iw3xo.dll";
 
-	// Modules
-	uintptr_t COD4X = 0;
-	uintptr_t IW3MP = Signature(GetModuleHandle(IW3MP_BIN.c_str()));
-	uintptr_t IW3XO = Signature(GetModuleHandle(IW3XO_BIN.c_str()));
+	// Handles
+	uintptr_t COD4X_HANDLE = 0;
+	uintptr_t IW3MP_HANDLE = Signature(GetModuleHandle(IW3MP_BIN.c_str()));
+	uintptr_t IW3XO_HANDLE = Signature(GetModuleHandle(IW3XO_BIN.c_str()));
 
 	// Game
 	CmdArgs* cmd_args = Signature(0x1410B40);

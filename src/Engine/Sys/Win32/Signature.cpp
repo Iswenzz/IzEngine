@@ -21,9 +21,7 @@ namespace IW3SR::Engine
     uintptr_t Signature::Scan(const std::string& moduleName, const std::string& pattern)
     {
         std::vector<uintptr_t> addresses = ScanAll(moduleName, pattern, true);
-        if (!addresses.size())
-            throw std::runtime_error("Scan couldn't find any matches.");
-        return addresses.back();
+        return addresses.size() ? addresses.back() : 0;
     }
 
     std::vector<uintptr_t> Signature::ScanAll(const std::string& moduleName, const std::string& pattern, bool first)
