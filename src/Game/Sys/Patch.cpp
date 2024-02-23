@@ -1,6 +1,6 @@
 #include "Patch.hpp"
 
-#define COD4X(s) if (COD4X_HANDLE) s;
+#define COD4X if (COD4X_HANDLE)
 
 namespace IW3SR::Game
 {
@@ -13,7 +13,7 @@ namespace IW3SR::Game
 
 	void Patch::Game()
 	{
-		COD4X(bg_weaponNames = Signature(COD4X_HANDLE, 0x443DDE0));
+		COD4X bg_weaponNames = Signature(COD4X_HANDLE, 0x443DDE0);
 	}
 
 	void Patch::Renderer()
@@ -25,11 +25,11 @@ namespace IW3SR::Game
 
 		// Increase fps cap for menus and loadscreen
 		Memory::NOP(0x5001A8, 2);
-		COD4X(Memory::NOP(Signature(COD4X_BIN, "72 ?? 83 ?? 00 F9 C5 00 07"), 2));
+		COD4X Memory::NOP(Signature(COD4X_BIN, "72 ?? 83 ?? 00 F9 C5 00 07"), 2);
 	}
 
 	void Patch::System()
 	{
-		COD4X(MainWndProc_h < Signature(COD4X_BIN, "55 89 E5 53 81 EC 84 00 00 00 C7 04 24 02"));
+		COD4X MainWndProc_h < Signature(COD4X_BIN, "55 89 E5 53 81 EC 84 00 00 00 C7 04 24 02");
 	}
 }
