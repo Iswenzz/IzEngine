@@ -68,11 +68,11 @@ namespace IW3SR::Game
 
     bool PMove::OnGround()
     {
-        return pmove->ps->groundEntityNum != 1023;
+        return cgs->predictedPlayerState.groundEntityNum != 1023;
     }
 
     bool PMove::InAir()
     {
-        return pmove->ps->groundEntityNum == 1023;
+        return cgs->predictedPlayerState.groundEntityNum == 1023;
     }
 }

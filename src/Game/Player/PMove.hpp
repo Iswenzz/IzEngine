@@ -31,18 +31,18 @@ namespace IW3SR::Game
 		static void AirMove(pmove_t* pm, pml_t* pml);
 
 		/// <summary>
-        /// Set yaw.
-        /// </summary>
-        /// <param name="cmd">The user command.</param>
-        /// <param name="target">The target angles.</param>
-        static void SetYaw(usercmd_s* cmd, const vec3& target);
+		/// Set yaw.
+		/// </summary>
+		/// <param name="cmd">The user command.</param>
+		/// <param name="target">The target angles.</param>
+		static void SetYaw(usercmd_s* cmd, const vec3& target);
 
-        /// <summary>
-        /// Set pitch.
-        /// </summary>
-        /// <param name="cmd">The user command.</param>
-        /// <param name="target">The target angles.</param>
-        static void SetPitch(usercmd_s* cmd, const vec3& target);
+		/// <summary>
+		/// Set pitch.
+		/// </summary>
+		/// <param name="cmd">The user command.</param>
+		/// <param name="target">The target angles.</param>
+		static void SetPitch(usercmd_s* cmd, const vec3& target);
 
 		/// <summary>
 		/// Set roll.
