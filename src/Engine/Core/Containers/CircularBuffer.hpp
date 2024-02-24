@@ -51,7 +51,7 @@ namespace IW3SR::Engine
 		requires std::is_arithmetic_v<U>
 		inline U Average()
 		{
-			return Offset && Sum() / Offset;
+			return Offset ? Sum() / Offset : 0;
 		}
 
 		/// <summary>
