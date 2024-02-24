@@ -34,33 +34,29 @@ namespace IW3SR::Game
         /// Set yaw.
         /// </summary>
         /// <param name="cmd">The user command.</param>
-        /// <param name="angles">The view angles.</param>
         /// <param name="target">The target angles.</param>
-        static void SetYaw(usercmd_s* cmd, const float* angles, const vec3& target);
+        static void SetYaw(usercmd_s* cmd, const vec3& target);
 
         /// <summary>
         /// Set pitch.
         /// </summary>
         /// <param name="cmd">The user command.</param>
-        /// <param name="angles">The view angles.</param>
         /// <param name="target">The target angles.</param>
-        static void SetPitch(usercmd_s* cmd, const float* angles, const vec3& target);
+        static void SetPitch(usercmd_s* cmd, const vec3& target);
 
 		/// <summary>
 		/// Set roll.
 		/// </summary>
 		/// <param name="cmd">The user command.</param>
-		/// <param name="angles">The view angles.</param>
 		/// <param name="target">The target angles.</param>
-		static void SetRoll(usercmd_s* cmd, const float* angles, const vec3& target);
+		static void SetRoll(usercmd_s* cmd, const vec3& target);
 
 		/// <summary>
 		/// Set yaw pitch roll.
 		/// </summary>
 		/// <param name="cmd">The user command.</param>
-		/// <param name="angles">The view angles.</param>
 		/// <param name="target">The target angles.</param>
-		static void SetAngles(usercmd_s* cmd, const float* angles, const vec3& target);
+		static void SetAngles(usercmd_s* cmd, const vec3& target);
 
 		/// <summary>
 		/// Is player on ground.
