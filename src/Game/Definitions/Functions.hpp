@@ -27,57 +27,23 @@ namespace IW3SR::Game
 
 	static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)>
 		RB_DrawLines3D = 0x613040;
+}
+ASM
+{
+	using namespace IW3SR::Game;
 
-	extern Hook<HWND STDCALL(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName,
-		DWORD dwStyle, int X, int Y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu,
-		HINSTANCE hInstance, LPVOID lpParam)>
-		CreateWindowExA_h;
+	void BG_EvaluateTrajectory(const trajectory_t * tr, int atTime, float* out);
 
-	extern Hook<IDirect3D9* STDCALL(UINT sdk)>
-		Direct3DCreate9_h;
-
-	extern Hook<LRESULT CALLBACK(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)>
-		MainWndProc_h;
-
-	extern Hook<void(int channel, const char* msg, int type)>
-		Com_PrintMessage_h;
-
-	extern Hook<void(int localClientNum)>
-		CG_PredictPlayerState_Internal_h;
-
-	extern Hook<void(int localClientNum)>
-		CG_DrawCrosshair_h;
-
-	extern Hook<void(usercmd_s* cmd)>
-		CL_FinishMove_h;
-
-	extern Hook<void(pmove_t* pm, pml_t* pml)>
-		PM_WalkMove_h;
-
-	extern Hook<void(pmove_t* pm, pml_t* pml)>
-		PM_AirMove_h;
-
-	extern Hook<void()>
-		R_Init_h;
-
-	extern Hook<void(int window)>
-		R_Shutdown_h;
-
-	extern Hook<void(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)>
-		RB_EndSceneRendering_h;
-
-	ASM void BG_EvaluateTrajectory(const trajectory_t* tr, int atTime, float* out);
-
-	ASM void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
+	void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
 		const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask);
 
-	ASM dvar_s* Dvar_FindVar(const char* name);
+	dvar_s* Dvar_FindVar(const char* name);
 
-	ASM void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
+	void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
 		float xScale, float yScale, float rotation, int style, float* color);
 
-	ASM void R_AddCmdDrawStretchPic(Material* material, float x, float y, float w, float h,
+	void R_AddCmdDrawStretchPic(Material* material, float x, float y, float w, float h,
 		float null1, float null2, float null3, float null4, float* color);
 
-	ASM int R_TextWidth(const char* text, int maxChars, Font_s* font);
+	int R_TextWidth(const char* text, int maxChars, Font_s* font);
 }

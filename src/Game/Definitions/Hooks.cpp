@@ -1,4 +1,4 @@
-#include "Functions.hpp"
+#include "Hooks.hpp"
 #include "Game/Game.hpp"
 
 namespace IW3SR::Game
@@ -34,6 +34,9 @@ namespace IW3SR::Game
 
 	Hook<void()>
 		R_Init_h(0x5F4EE0, Renderer::Initialize);
+
+	Hook<void FASTCALL(void* cmds)>
+		R_RenderAllLeftovers_h(0x615570, Renderer::RenderCommands);
 
 	Hook<void(int window)>
 		R_Shutdown_h(0x5F4F90, Renderer::Shutdown);

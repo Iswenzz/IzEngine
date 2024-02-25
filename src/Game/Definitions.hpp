@@ -6,6 +6,7 @@
 
 #include "Definitions/Structs.hpp"
 #include "Definitions/Functions.hpp"
+#include "Definitions/Hooks.hpp"
 #include "Definitions/Declaration.hpp"
 
 #define FONT_SMALL_DEV  "fonts/smallDevFont"
