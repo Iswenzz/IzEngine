@@ -11,15 +11,6 @@ if(MSVC)
 	set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD true)
 endif()
 
-# NASM
-if(WIN32)
-	set(CMAKE_ASM_NASM_FLAGS "-dWin32 --prefix _")
-	set(CMAKE_ASM_NASM_OBJECT_FORMAT "win32")
-else()
-	set(CMAKE_ASM_NASM_OBJECT_FORMAT "elf32")
-endif()
-enable_language(ASM_NASM)
-
 # CPack
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
@@ -67,12 +58,12 @@ set_target_properties(IW3SR.DLL PROPERTIES
 
 target_link_libraries(IW3SR PUBLIC
 	${SYSTEM_DEPENDENCY}
-	$<TARGET_OBJECTS:IW3SR.ASM>
 	DirectX::SDK
 	imgui::imgui
 	implot::implot
 	nlohmann_json::nlohmann_json
 	glm::glm
+	asmjit::asmjit
 	PolyHook_2::PolyHook_2)
 
 # Install

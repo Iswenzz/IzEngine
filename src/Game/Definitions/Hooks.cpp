@@ -36,7 +36,7 @@ namespace IW3SR::Game
 		R_Init_h(0x5F4EE0, Renderer::Initialize);
 
 	Hook<void FASTCALL(void* cmds)>
-		R_RenderAllLeftovers_h(0x615570, Renderer::RenderCommands);
+		R_RenderAllLeftovers_h(0x615570, Renderer::Commands);
 
 	Hook<void(int window)>
 		R_Shutdown_h(0x5F4F90, Renderer::Shutdown);

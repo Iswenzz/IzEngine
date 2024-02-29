@@ -50,6 +50,11 @@ namespace IW3SR::Game
 		GameCallback(OnDraw3D, cmd, viewInfo, src, buf);
 	}
 
+	void Renderer::Commands(void* cmds)
+	{
+		R_RenderAllLeftovers_h(cmds);
+	}
+
 	void Renderer::Render()
 	{
 		UI::Get().Begin();

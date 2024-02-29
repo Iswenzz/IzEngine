@@ -1,4 +1,8 @@
 #pragma once
+#define C_EXTERN extern "C"
+#define CPP_EXTERN extern "C++"
+#define ASM C_EXTERN
+
 #ifndef CDECL
 #define CDECL __cdecl
 #endif
@@ -10,10 +14,6 @@
 #ifndef FASTCALL
 #define FASTCALL __fastcall
 #endif
-
-#define C_EXTERN extern "C"
-#define CPP_EXTERN extern "C++"
-#define ASM C_EXTERN
 
 #ifndef EXPORT
 #define EXPORT __declspec(dllexport)

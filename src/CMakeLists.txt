@@ -1,15 +1,16 @@
 add_library(IW3SR OBJECT)
 add_library(IW3SR.API INTERFACE)
-add_library(IW3SR.ASM OBJECT)
 add_library(IW3SR.DLL SHARED)
 
 add_subdirectory(Engine)
 add_subdirectory(Game)
 
 target_include_directories(IW3SR PUBLIC .)
+target_compile_definitions(IW3SR PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
+
+# DLL
 target_sources(IW3SR.DLL PRIVATE main.cpp)
 target_link_libraries(IW3SR.DLL PUBLIC IW3SR)
-target_compile_definitions(IW3SR PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
 
 # API
 target_link_libraries(IW3SR.API INTERFACE IW3SR.DLL)

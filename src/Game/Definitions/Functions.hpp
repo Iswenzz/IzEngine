@@ -3,47 +3,53 @@
 
 namespace IW3SR::Game
 {
-	static Function<int(const char* name)>
-		BG_FindWeaponIndexByName = 0x416610;
+	API extern Function<void(const trajectory_t* tr, int atTime, float* out)>
+		BG_EvaluateTrajectory;
 
-	static Function<void(trace_t* result, const vec3_t start, const vec3_t mins, const vec3_t maxs,
+	API extern Function<int(const char* name)>
+		BG_FindWeaponIndexByName;
+
+	API extern Function<void(trace_t* result, const vec3_t start, const vec3_t mins, const vec3_t maxs,
 		const vec3_t end, int skipEntity, int tracemask)>
-		CG_Trace = 0x45A230;
+		CG_Trace;
 
-	static Function<void(int localClientNum, int controllerIndex, const char* text)>
-		Cmd_ExecuteSingleCommand = 0x4F9AB0;
+	API extern Function<void(int localClientNum, int controllerIndex, const char* text)>
+		Cmd_ExecuteSingleCommand;
 
-	static Function<Material* (const char* material, int size)>
-		Material_RegisterHandle = 0x5F2A80;
+	API extern Function<dvar_s*(const char* name)>
+		Dvar_FindVar;
 
-	static Function<void(pmove_t* pm, pml_t* pml)>
-		PM_GroundTrace = 0x410660;
+	extern Function<Material*(const char* material, int size)>
+		Material_RegisterHandle;
 
-	static Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
-		R_ConvertColorToBytes = 0x493530;
+	API extern Function<void(pmove_t* pm, pml_t* pml)>
+		PM_GroundTrace;
 
-	static Function<Font_s* (const char* font, int size)>
-		R_RegisterFont = 0x5F1EC0;
+	extern Function<void(const char* text, int maxChars, Font_s* font, float x, float y,
+		float xScale, float yScale, float rotation, int style, float* color)>
+		R_AddCmdDrawText;
 
-	static Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)>
-		RB_DrawLines3D = 0x613040;
+	extern Function<void(Material* material, float x, float y, float w, float h,
+		float null1, float null2, float null3, float null4, float* color)>
+		R_AddCmdDrawStretchPic;
+
+	extern Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
+		R_ConvertColorToBytes;
+
+	extern Function<Font_s*(const char* font, int size)>
+		R_RegisterFont;
+
+	extern Function<int(const char* text, int maxChars, Font_s* font)>
+		R_TextWidth;
+
+	extern Function<void(int count, int width, GfxPointVertex* verts, bool depthTest)>
+		RB_DrawLines3D;
 }
-ASM
+namespace IW3SR::Game
 {
-	using namespace IW3SR::Game;
-
-	void BG_EvaluateTrajectory(const trajectory_t * tr, int atTime, float* out);
-
-	void CG_TracePoint(pmove_t* pm, trace_t* trace, const float* start,
-		const float* mins, const float* maxs, const float* end, int passEntityNum, int contentMask);
-
-	dvar_s* Dvar_FindVar(const char* name);
-
-	void R_AddCmdDrawText(const char* text, int maxChars, Font_s* font, float x, float y,
-		float xScale, float yScale, float rotation, int style, float* color);
-
-	void R_AddCmdDrawStretchPic(Material* material, float x, float y, float w, float h,
-		float null1, float null2, float null3, float null4, float* color);
-
-	int R_TextWidth(const char* text, int maxChars, Font_s* font);
+	ASM_FUNCTION(BG_EvaluateTrajectory);
+	ASM_FUNCTION(Dvar_FindVar);
+	ASM_FUNCTION(R_AddCmdDrawText);
+	ASM_FUNCTION(R_AddCmdDrawStretchPic);
+	ASM_FUNCTION(R_TextWidth);
 }

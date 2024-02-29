@@ -28,6 +28,12 @@ namespace IW3SR::Engine
 		Function(uintptr_t address) : Address(address), Func(reinterpret_cast<T*>(address)) { }
 
 		/// <summary>
+		/// Initialize a new function wrapper.
+		/// </summary>
+		/// <param name="function">The target function.</param>
+		Function(T function) : Address(reinterpret_cast<uintptr_t>(function)), Func(function) { }
+
+		/// <summary>
 		/// Assign address.
 		/// </summary>
 		/// <param name="address">The target address.</param>
@@ -65,7 +71,7 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Is function defined.
 		/// </summary>
-		operator bool() const
+		inline operator bool() const
 		{
 			return Address;
 		}
