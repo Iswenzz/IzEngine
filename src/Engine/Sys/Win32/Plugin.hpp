@@ -12,6 +12,7 @@ namespace IW3SR::Engine
 		std::string ID;
 		std::string Name;
 		std::string FilePath;
+		bool Loaded = false;
 
 		HINSTANCE Instance = nullptr;
 		Function<void(Plugin* plugin)> CallbackInitialize;

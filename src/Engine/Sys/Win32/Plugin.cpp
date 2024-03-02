@@ -9,16 +9,18 @@ namespace IW3SR::Engine
 		Instance = LoadLibrary(FilePath.c_str());
 
 		if (!Instance)
-			throw std::runtime_error("Couldn't load plugin.");
-
+		{
+			Log::WriteLine(Channel::Error, "Loading plugin {}", filePath);
+			return;
+		}
 		CallbackInitialize < Signature(GetProcAddress(Instance, "Initialize"));
 		CallbackRenderer < Signature(GetProcAddress(Instance, "Renderer"));
 		CallbackShutdown < Signature(GetProcAddress(Instance, "Shutdown"));
 
-		if (!CallbackInitialize)
-			throw std::runtime_error("Plugin is missing Initialize function.");
+		Loaded = CallbackInitialize;
 
-		CallbackInitialize(this);
+		if (CallbackInitialize)
+			CallbackInitialize(this);
 		if (CallbackRenderer)
 			CallbackRenderer();
 	}
