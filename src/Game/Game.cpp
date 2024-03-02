@@ -42,6 +42,7 @@ namespace IW3SR::Game
 		Direct3DCreate9_h.Install();
 		MainWndProc_h.Install();
 
+		Cmd_ExecuteSingleCommand_h.Install();
 		Com_PrintMessage_h.Install();
 		CG_DrawCrosshair_h.Install();
 		CG_PredictPlayerState_Internal_h.Install();
@@ -60,6 +61,7 @@ namespace IW3SR::Game
 		Direct3DCreate9_h.Remove();
 		MainWndProc_h.Remove();
 
+		Cmd_ExecuteSingleCommand_h.Remove();
 		Com_PrintMessage_h.Remove();
 		CG_DrawCrosshair_h.Remove();
 		CG_PredictPlayerState_Internal_h.Remove();

@@ -43,6 +43,14 @@ namespace IW3SR::Game
 		/// <param name="type">The messsage type.</param>
 		static void Write(ConChannel channel, const char* msg, int type);
 
+		/// <summary>
+		/// Execute single command.
+		/// </summary>
+		/// <param name="localClientNum">The local client number.</param>
+		/// <param name="controllerIndex">The controller index.</param>
+		/// <param name="command">The command.</param>
+		static void ExecuteSingleCommand(int localClientNum, int controllerIndex, char* command);
+
 	private:
 		/// <summary>
 		/// Initialize the console.

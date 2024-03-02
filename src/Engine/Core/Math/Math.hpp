@@ -81,6 +81,13 @@ namespace IW3SR::Engine
         /// <returns>Radians value.</returns>
         static float DegToRad(float degrees);
 
+        /// <summary>
+        /// Normalizes an angle to the range of 0 to 90 degrees.
+        /// </summary>
+        /// <param name="angle">Angle in degrees.</param>
+        /// <returns></returns>
+        static float AngleNormalize90(float angle);
+
 		/// <summary>
         /// Normalizes an angle to the range of -180 to 180 degrees.
         /// </summary>

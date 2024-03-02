@@ -14,6 +14,9 @@ namespace IW3SR::Game
 	extern Hook<LRESULT CALLBACK(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)>
 		MainWndProc_h;
 
+	extern Hook<void(int localClientNum, int controllerIndex, char* command)>
+		Cmd_ExecuteSingleCommand_h;
+
 	extern Hook<void(ConChannel channel, const char* msg, int type)>
 		Com_PrintMessage_h;
 

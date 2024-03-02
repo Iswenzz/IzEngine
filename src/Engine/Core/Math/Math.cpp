@@ -17,6 +17,11 @@ namespace IW3SR::Engine
         return degrees * M_PI / 180.0f;
     }
 
+    float Math::AngleNormalize90(float angle)
+    {
+        return fmodf(angle + 180 + 90, 180) - 90;
+    }
+
 	float Math::AngleNormalize180(float angle)
     {
         angle = AngleNormalize360(angle);

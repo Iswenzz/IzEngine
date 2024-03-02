@@ -36,8 +36,6 @@ namespace IW3SR::Addons
 			ImGui::Toggle("Enabled", &DrawSpecular);
 			ImGui::SliderFloat("Specular color scale", &SpecularColorScale, 0, 100);
 
-			ImGui::NewLine();
-
 			ImGui::Text("Misc");
 			ImGui::Separator();
 			ImGui::Toggle("fog", &DrawFog);

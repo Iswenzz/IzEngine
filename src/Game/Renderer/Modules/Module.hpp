@@ -94,6 +94,11 @@ namespace IW3SR::Game
 		/// <param name="pml">The player movement library.</param>
 		virtual void OnAirMove(pmove_t* pm, pml_t* pml);
 
+		/// <summary>
+		/// On load position.
+		/// </summary>
+		virtual void OnLoadPosition();
+
 		NLOHMANN_SERIALIZE_POLY_BASE(Module, IsEnabled, Menu)
 	};
 }
