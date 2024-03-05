@@ -2,7 +2,7 @@
 
 namespace IW3SR::Game
 {
-	Module::Module(const std::string& id, const std::string& name, const std::string& group)
+	Module::Module(const std::string& id, const std::string& group, const std::string& name)
 	{
 		ID = id;
 		Name = name;

@@ -70,6 +70,17 @@ namespace IW3SR::Engine
 		{
 			json = value;
 		}
+
+	protected:
+		/// <summary>
+		/// Create serializable.
+		/// </summary>
+		ISerializable() = default;
+
+		/// <summary>
+		/// Release serializable.
+		/// </summary>
+		virtual ~ISerializable() = default;
 	};
 
 	template <class T>

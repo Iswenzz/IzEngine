@@ -8,7 +8,7 @@ int* snapsFlags = Signature(0x7442DC);
 
 namespace IW3SR::Addons
 {
-	Lagometer::Lagometer() : Module("sr.player.lagometer", "Lagometer", "Player")
+	Lagometer::Lagometer() : Module("sr.player.lagometer", "Player", "Lagometer")
 	{
 		Graph = Plots();
 		Graph.SetRect(-55, -140, 48, 48);

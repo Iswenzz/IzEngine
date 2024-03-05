@@ -2,7 +2,7 @@
 
 namespace IW3SR::Addons
 {
-	Velocity::Velocity() : Module("sr.player.velocity", "Velocity", "Player")
+	Velocity::Velocity() : Module("sr.player.velocity", "Player", "Velocity")
 	{
 		Graph = Plots();
 

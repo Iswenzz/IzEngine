@@ -2,7 +2,7 @@
 
 namespace IW3SR::Addons
 {
-	FPS::FPS() : Module("sr.player.fps", "FPS", "Player")
+	FPS::FPS() : Module("sr.player.fps", "Player", "FPS")
 	{
 		Graph = Plots();
 

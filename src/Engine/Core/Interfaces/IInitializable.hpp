@@ -10,23 +10,23 @@ namespace IW3SR::Engine
 	{
 	public:
 		/// <summary>
-		/// Initialize.
+		/// Initialize object.
 		/// </summary>
 		virtual void Initialize() = 0;
 
 		/// <summary>
-		/// Release.
+		/// Release object.
 		/// </summary>
 		virtual void Release() = 0;
 
 	protected:
 		/// <summary>
-		/// Initialize.
+		/// Initialize object.
 		/// </summary>
 		IInitializable() = default;
 
 		/// <summary>
-		/// Release.
+		/// Release object.
 		/// </summary>
 		virtual ~IInitializable() = default;
 	};

@@ -25,9 +25,10 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Initialize the setting.
 		/// </summary>
-		/// <param name="id">The setting ID.</param>
-		/// <param name="name">The setting name.</param>
-		Setting(const std::string& id, const std::string& name, const std::string& group);
+		/// <param name="id">The ID.</param>
+		/// <param name="group">The group.</param>
+		/// <param name="name">The name.</param>
+		Setting(const std::string& id, const std::string& group, const std::string& name);
 
 		/// <summary>
 		/// Release the setting.

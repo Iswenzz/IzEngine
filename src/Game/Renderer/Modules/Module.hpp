@@ -26,9 +26,10 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Initialize the module.
 		/// </summary>
-		/// <param name="id">The module ID.</param>
-		/// <param name="name">The module name.</param>
-		Module(const std::string& id, const std::string& name, const std::string& group);
+		/// <param name="id">The ID.</param>
+		/// <param name="group">The group.</param>
+		/// <param name="name">The name.</param>
+		Module(const std::string& id, const std::string& group, const std::string& name);
 
 		/// <summary>
 		/// Release the module.

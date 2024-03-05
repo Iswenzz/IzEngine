@@ -2,7 +2,7 @@
 
 namespace IW3SR::Game
 {
-	Setting::Setting(const std::string& id, const std::string& name, const std::string& group)
+	Setting::Setting(const std::string& id, const std::string& group, const std::string& name)
 	{
 		ID = id;
 		Name = name;
