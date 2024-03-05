@@ -7,9 +7,9 @@
 namespace IW3SR::Game
 {
 	/// <summary>
-	/// Feature class.
+	/// Setting class.
 	/// </summary>
-	class API Feature : public IInitializable
+	class API Setting : public IInitializable
 	{
 	public:
 		std::string ID;
@@ -18,29 +18,29 @@ namespace IW3SR::Game
 		Window Menu;
 
 		/// <summary>
-		/// Initialize the feature.
+		/// Initialize the setting.
 		/// </summary>
-		Feature() = default;
+		Setting() = default;
 
 		/// <summary>
-		/// Initialize the feature.
+		/// Initialize the setting.
 		/// </summary>
-		/// <param name="id">The feature ID.</param>
-		/// <param name="name">The feature name.</param>
-		Feature(const std::string& id, const std::string& name, const std::string& group);
+		/// <param name="id">The setting ID.</param>
+		/// <param name="name">The setting name.</param>
+		Setting(const std::string& id, const std::string& name, const std::string& group);
 
 		/// <summary>
-		/// Release the feature.
+		/// Release the setting.
 		/// </summary>
-		virtual ~Feature();
+		virtual ~Setting();
 
 		/// <summary>
-		/// Initialize the feature.
+		/// Initialize the setting.
 		/// </summary>
 		virtual void Initialize();
 
 		/// <summary>
-		/// Release the feature.
+		/// Release the setting.
 		/// </summary>
 		virtual void Release();
 
@@ -73,6 +73,6 @@ namespace IW3SR::Game
 		/// </summary>
 		virtual void OnRender();
 
-		NLOHMANN_SERIALIZE_POLY_BASE(Feature, Menu)
+		NLOHMANN_SERIALIZE_POLY_BASE(Setting, Menu)
 	};
 }

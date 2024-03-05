@@ -1,19 +1,14 @@
 #include "Game/Plugin.hpp"
-#include "Features/General.hpp"
+#include "Settings/General.hpp"
 
 PLUGIN void Initialize(Plugin* plugin)
 {
-	plugin->SetInfos("sr.feature.graphics", "Graphics");
+	plugin->SetInfos("sr.graphics", "Graphics");
 
-	Features::Load<General>();
+	Settings::Load<General>();
 }
 
 PLUGIN void Renderer()
 {
 	UI::InitializeContext();
-}
-
-PLUGIN void Shutdown()
-{
-	Features::Remove("sr.feature.graphics");
 }

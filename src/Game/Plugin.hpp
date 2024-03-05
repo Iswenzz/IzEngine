@@ -14,7 +14,7 @@
 #include "Game/Renderer/GUI.hpp"
 #include "Game/Renderer/Drawing/Draw3D.hpp"
 #include "Game/Renderer/Drawing/Lines.hpp"
-#include "Game/Renderer/Features/Features.hpp"
+#include "Game/Renderer/Settings/Settings.hpp"
 #include "Game/Renderer/Modules/Modules.hpp"
 
 #include "Game/Player/Player.hpp"

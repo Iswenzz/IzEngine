@@ -1,3 +1,3 @@
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Game PRIVATE
 	World.hpp
 	World.cpp)

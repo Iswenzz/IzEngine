@@ -14,11 +14,11 @@ namespace IW3SR::Game::UC
 		if (!Open) return;
 
 		Begin();
-		auto& features = Game::Features::Get();
+		auto& settings = Game::Settings::Get();
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : features.Entries)
+		for (const auto& [_, current] : settings.Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -27,7 +27,7 @@ namespace IW3SR::Game::UC
 			if (!ImGui::CollapsingHeader(current->Group, true))
 				continue;
 
-			for (const auto& [_, entry] : features.Entries)
+			for (const auto& [_, entry] : settings.Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;
@@ -35,7 +35,7 @@ namespace IW3SR::Game::UC
 				ImGui::Text(entry->Name.c_str());
 				ImGui::SameLine(frameWidth);
 
-				// Draw feature menu
+				// Draw setting menu
 				ImGui::Button(ICON_FA_GEAR, entry->ID + "menu", &entry->Menu.Open);
 				if (entry->Menu.Open)
 				{

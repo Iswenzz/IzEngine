@@ -1,4 +1,4 @@
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Game PRIVATE
 	Declaration.hpp
 	Declaration.cpp
 	Functions.hpp

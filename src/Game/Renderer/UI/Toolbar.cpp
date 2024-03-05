@@ -2,7 +2,7 @@
 
 namespace IW3SR::Game::UC
 {
-	Toolbar::Toolbar() : Window("Toolbar") 
+	Toolbar::Toolbar() : Window("Toolbar")
 	{
 		SetRectAlignment(HORIZONTAL_FULLSCREEN, VERTICAL_FULLSCREEN);
 	}
@@ -13,7 +13,7 @@ namespace IW3SR::Game::UC
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
 		SetRect(0, 0, 640, 14);
 
-		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | 
+		Begin(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove);
 
 		auto& GUI = GUI::Get();
@@ -74,7 +74,7 @@ namespace IW3SR::Game::UC
 		IsReloading = true;
 
 		Game::Modules::Get().Serialize();
-		Game::Features::Get().Serialize();
+		Game::Settings::Get().Serialize();
 
 		Plugins::Shutdown();
 		std::thread([this] { Compile(); }).detach();
@@ -90,7 +90,7 @@ namespace IW3SR::Game::UC
 		Plugins::Initialize();
 
 		Game::Modules::Get().Deserialize();
-		Game::Features::Get().Deserialize();
+		Game::Settings::Get().Deserialize();
 
 		IsReloading = false;
 	}

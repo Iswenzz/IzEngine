@@ -1,4 +1,4 @@
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Game PRIVATE
 	Console.cpp
 	Console.hpp
 	Dvar.hpp

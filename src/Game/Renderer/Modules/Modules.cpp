@@ -10,6 +10,7 @@ namespace IW3SR::Game
 	void Modules::Release()
 	{
 		Serialize();
+		Entries.clear();
 	}
 
 	void Modules::Enable(const std::string& id)

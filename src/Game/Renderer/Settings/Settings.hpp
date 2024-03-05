@@ -1,40 +1,40 @@
 #pragma once
-#include "Feature.hpp"
+#include "Setting.hpp"
 
 #include <memory>
 #include <map>
 #include <string>
 
-#define FeaturesCallback(method, ...) \
-	Features::Get().Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
+#define SettingsCallback(method, ...) \
+	Settings::Get().Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
 
 namespace IW3SR::Game
 {
 	/// <summary>
-	/// Engine features.
+	/// Engine settings.
 	/// </summary>
-	class API Features : public IInitializable
+	class API Settings : public IInitializable
 	{
-		CLASS_SINGLETON(Features)
+		CLASS_SINGLETON(Settings)
 	public:
-		std::map<std::string, std::shared_ptr<Feature>> Entries;
+		std::map<std::string, std::shared_ptr<Setting>> Entries;
 		nlohmann::json Serialized;
 
 		/// <summary>
-		/// Initialize the features.
+		/// Initialize the settings.
 		/// </summary>
 		virtual void Initialize();
 
 		/// <summary>
-		/// Release the features.
+		/// Release the settings.
 		/// </summary>
 		virtual void Release();
 
 		/// <summary>
-		/// Add a feature.
+		/// Add a setting.
 		/// </summary>
-		/// <typeparam name="F">The feature type.</typeparam>
-		template <class F = Feature>
+		/// <typeparam name="F">The setting type.</typeparam>
+		template <class F = Setting>
 		void Add()
 		{
 			auto entry = std::make_shared<F>();
@@ -47,19 +47,19 @@ namespace IW3SR::Game
 		}
 
 		/// <summary>
-		/// Load a feature.
+		/// Load a setting.
 		/// </summary>
-		/// <typeparam name="F">The feature type.</typeparam>
-		template <class F = Feature>
+		/// <typeparam name="F">The setting type.</typeparam>
+		template <class F = Setting>
 		static void Load()
 		{
 			Get().Add<F>();
 		}
 
 		/// <summary>
-		/// Remove a feature.
+		/// Remove a setting.
 		/// </summary>
-		/// <param name="id">The feature id.</param>
+		/// <param name="id">The setting id.</param>
 		static void Remove(const std::string& id);
 
 		/// <summary>
@@ -75,20 +75,20 @@ namespace IW3SR::Game
 		}
 
 		/// <summary>
-		/// Load the features.
+		/// Load the settings.
 		/// </summary>
 		virtual void Deserialize();
 
 		/// <summary>
-		/// Serialize the features.
+		/// Serialize the settings.
 		/// </summary>
 		virtual void Serialize();
 
 	protected:
 		/// <summary>
-		/// Initialize the features.
+		/// Initialize the settings.
 		/// </summary>
-		Features() = default;
-		virtual ~Features() = default;
+		Settings() = default;
+		virtual ~Settings() = default;
 	};
 }

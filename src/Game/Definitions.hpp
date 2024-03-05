@@ -21,7 +21,7 @@
 
 #define GameCallback(method, ...) \
 	ModulesCallback(method, __VA_ARGS__) \
-	FeaturesCallback(method, __VA_ARGS__)
+	SettingsCallback(method, __VA_ARGS__)
 
 namespace IW3SR::Game {};
 using namespace IW3SR::Game;

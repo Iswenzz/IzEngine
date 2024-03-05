@@ -91,7 +91,7 @@ namespace IW3SR::Engine
             const float a = asinf(-matrix[0][2]);
             const float ca = cos(a);
 
-            if (fabsf(ca) > 0.005f)
+            if (abs(ca) > 0.005f)
             {
                 out[0] = atan2f(matrix[1][2] / ca, matrix[2][2] / ca);
                 out[1] = a;

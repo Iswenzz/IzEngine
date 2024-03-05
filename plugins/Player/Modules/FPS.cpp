@@ -1,5 +1,4 @@
 #include "FPS.hpp"
-#include "Engine/Backends/DX9/Assets.hpp"
 
 namespace IW3SR::Addons
 {

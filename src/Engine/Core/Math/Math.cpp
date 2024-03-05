@@ -19,7 +19,7 @@ namespace IW3SR::Engine
 
     float Math::AngleNormalize90(float angle)
     {
-        return fmodf(angle + 180 + 90, 180) - 90;
+        return fmod(angle + 180 + 90, 180) - 90;
     }
 
 	float Math::AngleNormalize180(float angle)
@@ -37,7 +37,7 @@ namespace IW3SR::Engine
 
     float Math::AngleNormalizePI(const float angle)
     {
-        const float tAngle = fmodf(angle + M_PI, 2 * M_PI);
+        const float tAngle = fmod(angle + M_PI, 2 * M_PI);
         return tAngle < 0 ? tAngle + M_PI : tAngle - M_PI;
     }
 
@@ -264,7 +264,7 @@ namespace IW3SR::Engine
 
 	vec3 Math::AnglesToRange(float start, float end, float yaw, float tanHalfFov)
 	{
-		if (fabsf(end - start) > 2 * M_PI)
+		if (abs(end - start) > 2 * M_PI)
 			return { 0, SCREEN_WIDTH, false };
 		float split = end > start;
 

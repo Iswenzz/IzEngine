@@ -1,4 +1,4 @@
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Game PRIVATE
 	Draw2D.hpp
 	Draw2D.cpp
 	Draw3D.hpp

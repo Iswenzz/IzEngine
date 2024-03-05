@@ -1,11 +1,36 @@
+add_library(IW3SR.Engine OBJECT)
+
 add_subdirectory(Backends)
 add_subdirectory(Core)
 add_subdirectory(Sys)
 
-target_precompile_headers(IW3SR PRIVATE
+target_precompile_headers(IW3SR.Engine PRIVATE
 	API.hpp
 	Plugin.hpp)
 
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Engine PRIVATE
 	API.hpp
 	Plugin.hpp)
+
+# Tests
+if(BUILD_TESTING)
+	add_executable(IW3SR.Engine.Tests)
+	add_test(NAME Engine COMMAND IW3SR.Engine.Tests)
+endif()
+
+# Build
+target_include_directories(IW3SR.Engine PUBLIC ..)
+target_compile_definitions(IW3SR.Engine PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
+
+target_link_libraries(IW3SR.Engine PUBLIC
+	DirectX::SDK
+	imgui::imgui
+	implot::implot
+	nlohmann_json::nlohmann_json
+	glm::glm
+	asmjit::asmjit
+	PolyHook_2::PolyHook_2)
+
+# Tree
+get_target_property(SOURCES IW3SR.Engine SOURCES)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})

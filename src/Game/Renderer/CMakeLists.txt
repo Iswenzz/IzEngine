@@ -1,10 +1,10 @@
 add_subdirectory(Backends)
 add_subdirectory(Drawing)
-add_subdirectory(Features)
+add_subdirectory(Settings)
 add_subdirectory(Modules)
 add_subdirectory(UI)
 
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Game PRIVATE
 	Assets.hpp
 	Assets.cpp
 	GUI.hpp

@@ -2,7 +2,7 @@
 #include "Assets.hpp"
 #include "Drawing/Draw2D.hpp"
 #include "Drawing/Draw3D.hpp"
-#include "Features/Features.hpp"
+#include "Settings/Settings.hpp"
 #include "Modules/Modules.hpp"
 
 #include "Engine/Backends/DX9/Device.hpp"
@@ -20,12 +20,12 @@ namespace IW3SR::Game
 
 		Plugins::Initialize();
 		Modules::Get().Initialize();
-		Features::Get().Initialize();
+		Settings::Get().Initialize();
 	}
 
 	void Renderer::Shutdown(int window)
 	{
-		Features::Get().Release();
+		Settings::Get().Release();
 		Modules::Get().Release();
 		Plugins::Shutdown();
 

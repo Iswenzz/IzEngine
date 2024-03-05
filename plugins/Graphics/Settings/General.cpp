@@ -2,7 +2,7 @@
 
 namespace IW3SR::Addons
 {
-	General::General() : Feature("sr.feature.graphics", "Graphics", "General")
+	General::General() : Setting("sr.graphics.general", "Graphics", "General")
 	{
 		DrawSpecular = true;
 		DrawFog = false;

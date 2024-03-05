@@ -4,9 +4,9 @@
 namespace IW3SR::Addons
 {
 	/// <summary>
-	/// Modify the game's graphics
+	/// Modify general graphics.
 	/// </summary>
-	class General : public Feature
+	class General : public Setting
 	{
 	public:
 		bool DrawSpecular;
@@ -32,7 +32,7 @@ namespace IW3SR::Addons
 		vec3 TweakDarkTint;
 
 		/// <summary>
-		/// Create the feature.
+		/// Create the setting.
 		/// </summary>
 		General();
 		virtual ~General() = default;
@@ -42,7 +42,7 @@ namespace IW3SR::Addons
 		/// </summary>
 		void OnMenu() override;
 
-		NLOHMANN_SERIALIZE_POLY(General, Feature, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
+		NLOHMANN_SERIALIZE_POLY(General, Setting, DrawSpecular, DrawFog, DrawDecals, DrawTweaks,
 			DrawGlow, DrawSun, SunIntensity, SpecularColorScale, TweakBrightness, TweakDesaturation,
 			GlowRadius, GlowBloomDesaturation, GlowBloomIntensity, GlowBloomCutoff, SunColor, SunDirection,
 			TweakLightTint, TweakDarkTint)

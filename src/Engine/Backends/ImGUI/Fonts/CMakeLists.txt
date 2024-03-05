@@ -1,3 +1,3 @@
-target_sources(IW3SR PRIVATE
+target_sources(IW3SR.Engine PRIVATE
 	IconsFontAwesome6.hpp
 	IconsFontAwesome6Brands.hpp)

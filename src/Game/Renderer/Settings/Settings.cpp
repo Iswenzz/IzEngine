@@ -1,27 +1,28 @@
-#include "Features.hpp"
+#include "Settings.hpp"
 
 namespace IW3SR::Game
 {
-	void Features::Initialize()
+	void Settings::Initialize()
 	{
 		Deserialize();
 	}
 
-	void Features::Release()
+	void Settings::Release()
 	{
 		Serialize();
+		Entries.clear();
 	}
 
-	void Features::Remove(const std::string& id)
+	void Settings::Remove(const std::string& id)
 	{
 		auto& entries = Get().Entries;
 		if (auto it = entries.find(id); it != entries.end())
 			entries.erase(it);
 	}
 
-	void Features::Deserialize()
+	void Settings::Deserialize()
 	{
-		std::ifstream file(Environment::IW3SRDirectory / "features.json");
+		std::ifstream file(Environment::IW3SRDirectory / "settings.json");
 
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Serialized = nlohmann::json::parse(file);
@@ -33,14 +34,14 @@ namespace IW3SR::Game
 		}
 	}
 
-	void Features::Serialize()
+	void Settings::Serialize()
 	{
 		for (const auto& [_, entry] : Entries)
 		{
 			entry->Serialize(Serialized[entry->ID]);
 			entry->Release();
 		}
-		std::ofstream file(Environment::IW3SRDirectory / "features.json");
+		std::ofstream file(Environment::IW3SRDirectory / "settings.json");
 		file << Serialized.dump(4);
 		file.close();
 	}
