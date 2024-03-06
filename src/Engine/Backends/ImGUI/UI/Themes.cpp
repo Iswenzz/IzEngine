@@ -139,8 +139,8 @@ namespace IW3SR::Engine::UC
 		Style.WindowPadding = ImVec2(10, 10);
 		Style.FramePadding = ImVec2(8, 8);
 		Style.CellPadding = ImVec2(6, 6);
-		Style.ItemSpacing = ImVec2(6, 6);
-		Style.ItemInnerSpacing = ImVec2(6, 6);
+		Style.ItemSpacing = ImVec2(8, 8);
+		Style.ItemInnerSpacing = ImVec2(10, 10);
 		Style.TouchExtraPadding = ImVec2(0, 0);
 		Style.IndentSpacing = 25;
 		Style.ScrollbarSize = 16;
