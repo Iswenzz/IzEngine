@@ -1,7 +1,7 @@
 #pragma once
+#include "Engine/Core/Base/UUID.hpp"
 #include "Engine/Core/Communication/Events.hpp"
 #include "Engine/Core/Serializer/ISerializable.hpp"
-#include "Engine/Core/Utils/Utils.hpp"
 
 namespace IW3SR::Engine
 {
@@ -11,7 +11,7 @@ namespace IW3SR::Engine
 	class API IObject : public ISerializable
 	{
 	public:
-		std::string ID = Utils::UUID();
+		UUID ID;
 
 		/// <summary>
 		/// Event dispatch.
@@ -29,7 +29,7 @@ namespace IW3SR::Engine
 		/// Create a new object.
 		/// </summary>
 		/// <param name="id">The object ID.</param>
-		IObject(const std::string& id) : ID(id) { };
+		IObject(const UUID& id) : ID(id) { };
 
 		/// <summary>
 		/// Release the object.

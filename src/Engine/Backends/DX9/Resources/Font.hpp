@@ -12,10 +12,9 @@ namespace IW3SR::Engine
 		ID3DXFont* Base = nullptr;
 
 		/// <summary>
-		/// Initialize a new Font.
+		/// Create a font.
 		/// </summary>
-		/// <param name="id">The font ID.</param>
-		Font(const std::string& id);
+		Font() = default;
 		~Font();
 	};
 }

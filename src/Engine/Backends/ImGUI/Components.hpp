@@ -29,6 +29,13 @@ constexpr std::array<const char*, 3> Verticals = { "Top", "Center", "Bottom" };
 namespace ImGui
 {
 	/// <summary>
+	/// Push ID.
+	/// </summary>
+	/// <param name="uuid">The UUID.</param>
+	/// <returns></returns>
+	API inline void PushID(const UUID& uuid);
+
+	/// <summary>
 	/// Create a button.
 	/// </summary>
 	/// <param name="label">The button label.</param>
@@ -129,7 +136,7 @@ namespace ImGui
 	/// <param name="renderPosition">The render position.</param>
 	/// <param name="renderSize">The render size.</param>
 	/// <returns></returns>
-	API void Movable(const std::string& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize);
+	API void Movable(const UUID& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize);
 
 	/// <summary>
 	/// Rainbow rect.

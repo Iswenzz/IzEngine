@@ -10,7 +10,7 @@ namespace IW3SR::Engine
 	{
 	public:
 		/// <summary>
-		/// Initialize the plots.
+		/// Create plots.
 		/// </summary>
 		Plots();
 		virtual ~Plots() = default;

@@ -36,10 +36,10 @@ namespace IW3SR::Engine
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>(id);
+		std::shared_ptr<Font> font = std::make_shared<Font>();
 		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
-			
+
 		if (hr != S_OK)
 			return Fonts[FONT_OPENSANS];
 		return Fonts[id] = font;
@@ -57,7 +57,7 @@ namespace IW3SR::Engine
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>(id);
+		std::shared_ptr<Font> font = std::make_shared<Font>();
 		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
@@ -79,7 +79,7 @@ namespace IW3SR::Engine
 		if (auto cache = Textures.find(id); cache != Textures.end())
 			return cache->second;
 
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>(id);
+		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
 		HRESULT hr = D3DXCreateTextureFromFile(Device::Get().D3Device, path.string().c_str(), &texture->Base);
 
 		if (hr != S_OK)

@@ -13,10 +13,9 @@ namespace IW3SR::Engine
 		IDirect3DSurface9* BaseSurface = nullptr;
 
 		/// <summary>
-		/// Initialize a new Texture.
+		/// Create a texture.
 		/// </summary>
-		/// <param name="id">The font ID.</param>
-		Texture(const std::string& id);
+		Texture() = default;
 		~Texture();
 	};
 }

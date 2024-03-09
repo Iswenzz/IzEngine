@@ -3,7 +3,7 @@
 
 namespace IW3SR::Engine
 {
-	Window::Window(std::string name)
+	Window::Window(const std::string& name)
 	{
 		Name = name;
 	}
@@ -41,7 +41,6 @@ namespace IW3SR::Engine
 		RenderPosition = { x, y };
 		RenderSize = { w, h };
 
-		ImGui::PushID(ID.c_str());
 		ImGui::Begin(Name.c_str(), &Open, flags | ImGuiWindowFlags_NoCollapse);
 
 		if (ImGui::IsWindowChanged())
@@ -64,7 +63,7 @@ namespace IW3SR::Engine
 			ImGui::SetWindowSize({ w, h });
 		}
 		if (Designer)
-			ImGui::Movable("#" + ID, Position, Size, RenderPosition, RenderSize);
+			ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
 	}
 
 	void Window::Menu(const std::string& label, bool open)
@@ -84,6 +83,5 @@ namespace IW3SR::Engine
 	void Window::End()
 	{
 		ImGui::End();
-		ImGui::PopID();
 	}
 }

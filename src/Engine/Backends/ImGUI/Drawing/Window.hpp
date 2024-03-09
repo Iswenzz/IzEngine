@@ -22,16 +22,16 @@ namespace IW3SR::Engine
 		Vertical VerticalAlign = VERTICAL_TOP;
 
 		/// <summary>
-		/// Initialize the window.
+		/// Create a window.
 		/// </summary>
 		Window() = default;
 		virtual ~Window() = default;
 
 		/// <summary>
-		/// Initialize the window.
+		/// Create a window.
 		/// </summary>
 		/// <param name="name">The window name.</param>
-		Window(std::string name);
+		Window(const std::string& name);
 
 		/// <summary>
 		/// Set designer edition.

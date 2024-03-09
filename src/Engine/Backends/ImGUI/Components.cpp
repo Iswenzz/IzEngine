@@ -3,6 +3,11 @@
 
 namespace ImGui
 {
+    void PushID(const UUID& uuid)
+    {
+        PushID(uuid.String.c_str());
+    }
+
     bool Button(const std::string& label, bool* v, const ImVec2& size)
     {
         Button(label.c_str(), size);
@@ -190,7 +195,7 @@ namespace ImGui
         PopID();
     }
 
-    void Movable(const std::string& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize)
+    void Movable(const UUID& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize)
     {
         if (!UI::Get().Open || !UI::Get().DesignMode) return;
 
@@ -198,7 +203,7 @@ namespace ImGui
         SetNextWindowBgAlpha(0.2f);
         SetNextWindowPos(renderPosition, ImGuiCond_FirstUseEver);
         SetNextWindowSize(renderSize, ImGuiCond_FirstUseEver);
-        Begin(id.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
+        Begin(id.String.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
 
         vec2 framePosition = GetWindowPos();
         vec2 frameSize = GetWindowSize();
