@@ -17,10 +17,18 @@ namespace IW3SR::Game
 
 	void Setting::Initialize() { }
 	void Setting::Release() { }
-	void Setting::OnMenu() { }
 
-	void Setting::OnDraw3D() { }
-	void Setting::OnDraw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf) { }
-	void Setting::OnDraw2D() { }
+	void Setting::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+
+		dispatcher.Dispatch<EventRenderer3D>(EVENT_BIND(OnDraw3D));
+		dispatcher.Dispatch<EventRenderer2D>(EVENT_BIND(OnDraw2D));
+		dispatcher.Dispatch<EventRendererRender>(EVENT_BIND_VOID(OnRender));
+	}
+
+	void Setting::OnMenu() { }
+	void Setting::OnDraw3D(EventRenderer3D& event) { }
+	void Setting::OnDraw2D(EventRenderer2D& event) { }
 	void Setting::OnRender() { }
 }

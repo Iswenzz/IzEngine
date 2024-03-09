@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Communication/Events.hpp"
 #include "Engine/Core/Serializer/ISerializable.hpp"
 #include "Engine/Core/Utils/Utils.hpp"
 
@@ -11,6 +12,12 @@ namespace IW3SR::Engine
 	{
 	public:
 		std::string ID = Utils::UUID();
+
+		/// <summary>
+		/// Event dispatch.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnEvent(Event& event) { }
 
 	protected:
 		/// <summary>

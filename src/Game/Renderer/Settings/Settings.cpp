@@ -45,4 +45,10 @@ namespace IW3SR::Game
 		file << Serialized.dump(4);
 		file.close();
 	}
+
+	void Settings::Dispatch(Event& event)
+	{
+		for (const auto& [_, entry] : Entries)
+			entry->OnEvent(event);
+	}
 }

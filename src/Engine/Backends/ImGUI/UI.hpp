@@ -10,7 +10,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// UI class.
 	/// </summary>
-	class API UI : public IInitializable
+	class API UI
 	{
 		CLASS_SINGLETON(UI)
 	public:

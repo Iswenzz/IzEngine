@@ -75,4 +75,12 @@ namespace IW3SR::Game
 		R_Shutdown_h.Remove();
 		RB_EndSceneRendering_h.Remove();
 	}
+
+	void Application::Dispatch(Event& event)
+	{
+		Plugins::Dispatch(event);
+
+		Modules::Get().Dispatch(event);
+		Settings::Get().Dispatch(event);
+	}
 }

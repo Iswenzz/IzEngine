@@ -13,7 +13,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// GUI class.
 	/// </summary>
-	class API GUI : public IInitializable
+	class API GUI
 	{
 		CLASS_SINGLETON(GUI)
 	public:

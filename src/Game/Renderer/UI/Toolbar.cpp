@@ -90,7 +90,9 @@ namespace IW3SR::Game::UC
 		Plugins::Initialize();
 		Game::Modules::Get().Initialize();
 		Game::Settings::Get().Initialize();
-		Plugins::Renderer();
+
+		EventPluginRenderer event;
+		Plugins::Dispatch(event);
 
 		IsReloading = false;
 	}

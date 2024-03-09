@@ -6,7 +6,7 @@ namespace IW3SR::Engine
 	{
 		if (!std::filesystem::is_directory(Environment::PluginsDirectory))
 			return;
-
+		
 		for (const auto& entry : std::filesystem::directory_iterator(Environment::PluginsDirectory))
 		{
 			if (entry.path().extension() != ".dll")
@@ -18,14 +18,14 @@ namespace IW3SR::Engine
 		}
 	}
 
-	void Plugins::Renderer()
-	{
-		for (const auto& [name, mod] : Modules)
-			mod->Renderer();
-	}
-
 	void Plugins::Shutdown()
 	{
 		Modules.clear();
+	}
+
+	void Plugins::Dispatch(Event& event)
+	{
+		for (const auto& [_, mod] : Modules)
+			mod->OnEvent(event);
 	}
 }

@@ -9,7 +9,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Setting class.
 	/// </summary>
-	class API Setting : public IInitializable
+	class API Setting : public IObject
 	{
 	public:
 		std::string ID;
@@ -46,6 +46,12 @@ namespace IW3SR::Game
 		virtual void Release();
 
 		/// <summary>
+		/// Event dispatch.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnEvent(Event& event) override;
+
+		/// <summary>
 		/// Menu drawing.
 		/// </summary>
 		virtual void OnMenu();
@@ -53,21 +59,14 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Draw 3D.
 		/// </summary>
-		virtual void OnDraw3D();
-
-		/// <summary>
-		/// Draw 3D.
-		/// </summary>
-		/// <param name="cmd">Render command.</param>
-		/// <param name="viewInfo">View information for the graphics.</param>
-		/// <param name="src">Source state for the graphics command buffer.</param>
-		/// <param name="buf">Graphics command buffer state.</param>
-		virtual void OnDraw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf);
+		/// <param name="event">The event.</param>
+		virtual void OnDraw3D(EventRenderer3D& event);
 
 		/// <summary>
 		/// Draw 2D.
 		/// </summary>
-		virtual void OnDraw2D();
+		/// <param name="event">The event.</param>
+		virtual void OnDraw2D(EventRenderer2D& event);
 
 		/// <summary>
 		/// Render frame.

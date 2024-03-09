@@ -1,5 +1,6 @@
 #pragma once
 #include "Serializer.hpp"
+#include <type_traits>
 
 namespace IW3SR::Engine
 {

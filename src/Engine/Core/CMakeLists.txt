@@ -1,3 +1,4 @@
+add_subdirectory(Communication)
 add_subdirectory(Containers)
 add_subdirectory(Interfaces)
 add_subdirectory(Math)

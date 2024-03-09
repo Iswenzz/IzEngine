@@ -1,7 +1,6 @@
 #pragma once
 #include "Definitions.hpp"
 
-#include "Engine/Plugin.hpp"
 #include "Engine/Backends/DX9/Assets.hpp"
 #include "Engine/Backends/DX9/Drawing/Draw2D.hpp"
 #include "Engine/Backends/DX9/Drawing/HUD.hpp"

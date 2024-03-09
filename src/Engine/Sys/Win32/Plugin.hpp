@@ -6,7 +6,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Plugin class.
 	/// </summary>
-	class API Plugin
+	class API Plugin : public IObject
 	{
 	public:
 		std::string ID;
@@ -36,15 +36,16 @@ namespace IW3SR::Engine
 		~Plugin();
 
 		/// <summary>
-		/// On renderer initialize.
-		/// </summary>
-		void Renderer();
-
-		/// <summary>
 		/// Set plugin infos.
 		/// </summary>
 		/// <param name="id">The ID.</param>
 		/// <param name="name">The name.</param>
 		void SetInfos(const std::string& id, const std::string& name);
+
+		/// <summary>
+		/// Event dispatch.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		void OnEvent(Event& event) override;
 	};
 }

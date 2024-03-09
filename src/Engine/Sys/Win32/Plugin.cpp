@@ -32,15 +32,17 @@ namespace IW3SR::Engine
 		Instance = nullptr;
 	}
 
-	void Plugin::Renderer()
-	{
-		if (CallbackRenderer)
-			CallbackRenderer();
-	}
-
 	void Plugin::SetInfos(const std::string& id, const std::string& name)
 	{
 		ID = id;
 		Name = name;
+	}
+
+	void Plugin::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+
+		if (CallbackRenderer)
+			dispatcher.Dispatch<EventPluginRenderer>(CallbackRenderer.Func);
 	}
 }

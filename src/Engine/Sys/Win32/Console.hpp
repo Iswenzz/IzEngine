@@ -6,7 +6,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Console class.
 	/// </summary>
-	class Console : public IInitializable
+	class Console
 	{
 		CLASS_SINGLETON(Console)
 	public:

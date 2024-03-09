@@ -21,7 +21,8 @@ namespace IW3SR::Game
 		Modules::Get().Initialize();
 		Settings::Get().Initialize();
 
-		Plugins::Renderer();
+		EventPluginRenderer event;
+		Plugins::Dispatch(event);
 	}
 
 	void Renderer::Shutdown(int window)
@@ -37,16 +38,18 @@ namespace IW3SR::Game
 	void Renderer::Draw2D(int localClientNum)
 	{
 		CG_DrawCrosshair_h(localClientNum);
-		GameCallback(OnDraw2D);
+
+		EventRenderer2D event;
+		Application::Get().Dispatch(event);
 	}
 
 	void Renderer::Draw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf)
 	{
 		RB_EndSceneRendering_h(cmd, viewInfo, src, buf);
-
 		Draw3D::Render();
-		GameCallback(OnDraw3D);
-		GameCallback(OnDraw3D, cmd, viewInfo, src, buf);
+
+		EventRenderer3D event;
+		Application::Get().Dispatch(event);
 	}
 
 	void Renderer::Commands(void* cmds)
@@ -62,7 +65,10 @@ namespace IW3SR::Game
 		GUI::Get().Render();
 
 		if (client_ui->connectionState == CA_ACTIVE)
-			GameCallback(OnRender);
+		{
+			EventRendererRender event;
+			Application::Get().Dispatch(event);
+		}
 
 		UI::Get().End();
 		KeyListener::Reset();

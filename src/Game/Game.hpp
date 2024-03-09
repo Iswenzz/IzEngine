@@ -42,6 +42,12 @@ namespace IW3SR::Game
 		/// </summary>
 		void Unhook();
 
+		/// <summary>
+		/// Dispatch event.
+		/// </summary>
+		/// <param name="event">The event.s</param>
+		void Dispatch(Event& event);
+
 	private:
 		/// <summary>
 		/// Initialize the application.

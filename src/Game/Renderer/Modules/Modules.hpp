@@ -5,15 +5,12 @@
 #include <map>
 #include <string>
 
-#define ModulesCallback(method, ...) \
-	Modules::Get().Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
-
 namespace IW3SR::Game
 {
 	/// <summary>
 	/// Modules class.
 	/// </summary>
-	class API Modules : public IInitializable
+	class API Modules
 	{
 		CLASS_SINGLETON(Modules)
 	public:
@@ -23,12 +20,12 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Initialize the modules.
 		/// </summary>
-		virtual void Initialize();
+		void Initialize();
 
 		/// <summary>
 		/// Release the modules.
 		/// </summary>
-		virtual void Release();
+		void Release();
 
 		/// <summary>
 		/// Add a module.
@@ -49,6 +46,40 @@ namespace IW3SR::Game
 		}
 
 		/// <summary>
+		/// Enable a module.
+		/// </summary>
+		/// <param name="id">The module id.</param>
+		void Enable(const std::string& id);
+
+		/// <summary>
+		/// Disable a module.
+		/// </summary>
+		/// <param name="id">The module id.</param>
+		void Disable(const std::string& id);
+
+		/// <summary>
+		/// Remove a module.
+		/// </summary>
+		/// <param name="id">The module id.</param>
+		void Remove(const std::string& id);
+
+		/// <summary>
+		/// Load the modules.
+		/// </summary>
+		void Deserialize();
+
+		/// <summary>
+		/// Serialize the modules.
+		/// </summary>
+		void Serialize();
+
+		/// <summary>
+		/// Dipatch event.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		void Dispatch(Event& event);
+
+		/// <summary>
 		/// Load a module.
 		/// </summary>
 		/// <typeparam name="M">The module type.</typeparam>
@@ -58,49 +89,6 @@ namespace IW3SR::Game
 		{
 			Get().Add<M>(enabled);
 		}
-
-		/// <summary>
-		/// Enable a module.
-		/// </summary>
-		/// <param name="id">The module id.</param>
-		virtual void Enable(const std::string& id);
-
-		/// <summary>
-		/// Disable a module.
-		/// </summary>
-		/// <param name="id">The module id.</param>
-		virtual void Disable(const std::string& id);
-
-		/// <summary>
-		/// Remove a module.
-		/// </summary>
-		/// <param name="id">The module id.</param>
-		void Remove(const std::string& id);
-
-		/// <summary>
-		/// Dispatch callback.
-		/// </summary>
-		/// <typeparam name="Func">The callback type.</typeparam>
-		/// <param name="callback">The function callback.</param>
-		template <typename Func>
-		void Callback(Func callback)
-		{
-			for (const auto& [_, entry] : Entries)
-			{
-				if (entry->IsEnabled)
-					callback(entry);
-			}
-		}
-
-		/// <summary>
-		/// Load the modules.
-		/// </summary>
-		virtual void Deserialize();
-
-		/// <summary>
-		/// Serialize the modules.
-		/// </summary>
-		virtual void Serialize();
 
 	protected:
 		/// <summary>

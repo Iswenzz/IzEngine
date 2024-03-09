@@ -26,8 +26,10 @@ namespace IW3SR::Game
 	void Console::ExecuteSingleCommand(int localClientNum, int controllerIndex, char* command)
 	{
 		if (std::string(command) == "openscriptmenu cj load")
-			ModulesCallback(OnLoadPosition);
-
+		{
+			EventPlayerLoadPosition event;
+			Application::Get().Dispatch(event);
+		}
 		Cmd_ExecuteSingleCommand_h(localClientNum, controllerIndex, command);
 	}
 

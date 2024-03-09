@@ -5,6 +5,7 @@
 #include "Engine/Sys/Win32.hpp"
 
 #include "Definitions/Structs.hpp"
+#include "Definitions/Events.hpp"
 #include "Definitions/Functions.hpp"
 #include "Definitions/Hooks.hpp"
 #include "Definitions/Declaration.hpp"
@@ -18,10 +19,6 @@
 #define FONT_NORMAL     "fonts/normalFont"
 #define FONT_EXTRA_BIG  "fonts/extraBigFont"
 #define FONT_OBJECTIVE  "fonts/objectiveFont"
-
-#define GameCallback(method, ...) \
-	ModulesCallback(method, __VA_ARGS__) \
-	SettingsCallback(method, __VA_ARGS__)
 
 namespace IW3SR::Game {};
 using namespace IW3SR::Game;

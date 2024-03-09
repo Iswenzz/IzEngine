@@ -9,7 +9,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Module class.
 	/// </summary>
-	class API Module : public IInitializable
+	class API Module : public IObject
 	{
 	public:
 		std::string ID;
@@ -47,29 +47,33 @@ namespace IW3SR::Game
 		virtual void Release();
 
 		/// <summary>
+		/// Event dispatch.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnEvent(Event& event) override;
+
+		/// <summary>
 		/// Menu drawing.
 		/// </summary>
 		virtual void OnMenu();
 
 		/// <summary>
-		/// Finish moving.
-		/// </summary>
-		/// <param name="cmd">The user command.</param>
-		virtual void OnFinishMove(usercmd_s* cmd);
-
-		/// <summary>
 		/// Walk moving.
 		/// </summary>
-		/// <param name="pm">The player movement.</param>
-		/// <param name="pml">The player movement library.</param>
-		virtual void OnWalkMove(pmove_t* pm, pml_t* pml);
+		/// <param name="event">The event.</param>
+		virtual void OnWalkMove(EventPMoveWalk& event);
 
 		/// <summary>
 		/// Air moving.
 		/// </summary>
-		/// <param name="pm">The player movement.</param>
-		/// <param name="pml">The player movement library.</param>
-		virtual void OnAirMove(pmove_t* pm, pml_t* pml);
+		/// <param name="event">The event.</param>
+		virtual void OnAirMove(EventPMoveAir& event);
+
+		/// <summary>
+		/// Finish moving.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnFinishMove(EventPMoveFinish& event);
 
 		/// <summary>
 		/// On load position.
@@ -79,21 +83,14 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Draw 3D.
 		/// </summary>
-		virtual void OnDraw3D();
-
-		/// <summary>
-		/// Draw 3D.
-		/// </summary>
-		/// <param name="cmd">Render command.</param>
-		/// <param name="viewInfo">View information for the graphics.</param>
-		/// <param name="src">Source state for the graphics command buffer.</param>
-		/// <param name="buf">Graphics command buffer state.</param>
-		virtual void OnDraw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf);
+		/// <param name="event">The event.</param>
+		virtual void OnDraw3D(EventRenderer3D& event);
 
 		/// <summary>
 		/// Draw 2D.
 		/// </summary>
-		virtual void OnDraw2D();
+		/// <param name="event">The event.</param>
+		virtual void OnDraw2D(EventRenderer2D& event);
 
 		/// <summary>
 		/// Render frame.

@@ -5,15 +5,12 @@
 #include <map>
 #include <string>
 
-#define SettingsCallback(method, ...) \
-	Settings::Get().Callback([&](const auto& entry) { entry->method(__VA_ARGS__); });
-
 namespace IW3SR::Game
 {
 	/// <summary>
 	/// Engine settings.
 	/// </summary>
-	class API Settings : public IInitializable
+	class API Settings
 	{
 		CLASS_SINGLETON(Settings)
 	public:
@@ -23,12 +20,12 @@ namespace IW3SR::Game
 		/// <summary>
 		/// Initialize the settings.
 		/// </summary>
-		virtual void Initialize();
+		void Initialize();
 
 		/// <summary>
 		/// Release the settings.
 		/// </summary>
-		virtual void Release();
+		void Release();
 
 		/// <summary>
 		/// Add a setting.
@@ -47,6 +44,28 @@ namespace IW3SR::Game
 		}
 
 		/// <summary>
+		/// Remove a setting.
+		/// </summary>
+		/// <param name="id">The setting id.</param>
+		void Remove(const std::string& id);
+
+		/// <summary>
+		/// Load the settings.
+		/// </summary>
+		void Deserialize();
+
+		/// <summary>
+		/// Serialize the settings.
+		/// </summary>
+		void Serialize();
+
+		/// <summary>
+		/// Dispatch event.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		void Dispatch(Event& event);
+
+		/// <summary>
 		/// Load a setting.
 		/// </summary>
 		/// <typeparam name="F">The setting type.</typeparam>
@@ -55,34 +74,6 @@ namespace IW3SR::Game
 		{
 			Get().Add<F>();
 		}
-
-		/// <summary>
-		/// Remove a setting.
-		/// </summary>
-		/// <param name="id">The setting id.</param>
-		void Remove(const std::string& id);
-
-		/// <summary>
-		/// Dispatch callback.
-		/// </summary>
-		/// <typeparam name="Func">The callback type.</typeparam>
-		/// <param name="callback">The function callback.</param>
-		template <typename Func>
-		void Callback(Func callback)
-		{
-			for (const auto& [_, entry] : Entries)
-				callback(entry);
-		}
-
-		/// <summary>
-		/// Load the settings.
-		/// </summary>
-		virtual void Deserialize();
-
-		/// <summary>
-		/// Serialize the settings.
-		/// </summary>
-		virtual void Serialize();
 
 	protected:
 		/// <summary>

@@ -34,8 +34,8 @@ namespace IW3SR::Addons
 
 	void Velocity::Compute()
 	{
-		static int prevVelocity = 0;
 		static bool prevOnGround = true;
+		int prevVelocity = vec2(pmove->ps->oldVelocity).Length();
 
 		bool onGround = PMove::OnGround();
 		bool landed = onGround && !prevOnGround;
@@ -62,7 +62,6 @@ namespace IW3SR::Addons
 		Ground = Ground < 1000 ? Ground : 1000;
 		BufferGrounds.Add(Ground < Max ? Ground : Max);
 
-		prevVelocity = Value;
 		prevOnGround = onGround;
 	}
 

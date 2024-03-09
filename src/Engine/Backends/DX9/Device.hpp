@@ -6,7 +6,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Graphics device.
 	/// </summary>
-	class API Device : public IObject
+	class API Device
 	{
 		CLASS_SINGLETON(Device)
 	public:

@@ -17,15 +17,30 @@ namespace IW3SR::Game
 
 	void Module::Initialize() { }
 	void Module::Release() { }
+
+	void Module::OnEvent(Event& event)
+	{
+		if (!IsEnabled) return;
+		EventDispatcher dispatcher(event);
+
+		dispatcher.Dispatch<EventRenderer3D>(EVENT_BIND(OnDraw3D));
+		dispatcher.Dispatch<EventRenderer2D>(EVENT_BIND(OnDraw2D));
+		dispatcher.Dispatch<EventRendererRender>(EVENT_BIND_VOID(OnRender));
+
+		dispatcher.Dispatch<EventPlayerLoadPosition>(EVENT_BIND_VOID(OnLoadPosition));
+		dispatcher.Dispatch<EventPMoveWalk>(EVENT_BIND(OnWalkMove));
+		dispatcher.Dispatch<EventPMoveAir>(EVENT_BIND(OnAirMove));
+		dispatcher.Dispatch<EventPMoveFinish>(EVENT_BIND(OnFinishMove));
+	}
+
 	void Module::OnMenu() { }
 
-	void Module::OnFinishMove(usercmd_s* cmd) { }
-	void Module::OnWalkMove(pmove_t* pm, pml_t* pml) { }
-	void Module::OnAirMove(pmove_t* pm, pml_t* pml) { }
 	void Module::OnLoadPosition() { }
+	void Module::OnWalkMove(EventPMoveWalk& event) { }
+	void Module::OnAirMove(EventPMoveAir& event) { }
+	void Module::OnFinishMove(EventPMoveFinish& event) { }
 
-	void Module::OnDraw3D() { }
-	void Module::OnDraw3D(GfxCmdBufInput* cmd, GfxViewInfo* viewInfo, GfxCmdBufSourceState* src, GfxCmdBufState* buf) { }
-	void Module::OnDraw2D() { }
+	void Module::OnDraw3D(EventRenderer3D& event) { }
+	void Module::OnDraw2D(EventRenderer2D& event) { }
 	void Module::OnRender() { }
 }

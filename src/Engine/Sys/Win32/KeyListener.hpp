@@ -16,7 +16,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Key listener.
 	/// </summary>
-	class API KeyListener : public IObject
+	class API KeyListener
 	{
 	public:
 		static inline std::unordered_map<int, KeyInfo> Keys;
@@ -86,6 +86,6 @@ namespace IW3SR::Engine
 		/// </summary>
 		static void Reset();
 
-		NLOHMANN_SERIALIZE_POLY_BASE(KeyListener, Key)
+		NLOHMANN_SERIALIZE(KeyListener, Key)
 	};
 }

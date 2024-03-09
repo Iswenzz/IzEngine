@@ -19,7 +19,7 @@ namespace IW3SR::Game
 	/// <summary>
 	/// Console class.
 	/// </summary>
-	class Console : public IInitializable
+	class Console
 	{
 		CLASS_SINGLETON(Console)
 	public:

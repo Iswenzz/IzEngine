@@ -5,18 +5,24 @@ namespace IW3SR::Game
 	void PMove::FinishMove(usercmd_s* cmd)
 	{
         CL_FinishMove_h(cmd);
-		ModulesCallback(OnFinishMove, cmd);
+
+        EventPMoveFinish event(cmd);
+        Application::Get().Dispatch(event);
 	}
 
     void PMove::WalkMove(pmove_t* pm, pml_t* pml)
     {
-        ModulesCallback(OnWalkMove, pm, pml);
+        EventPMoveWalk event(pm, pml);
+        Application::Get().Dispatch(event);
+
         PM_WalkMove_h(pm, pml);
     }
 
     void PMove::AirMove(pmove_t* pm, pml_t* pml)
     {
-        ModulesCallback(OnAirMove, pm, pml);
+        EventPMoveAir event(pm, pml);
+        Application::Get().Dispatch(event);
+
         PM_AirMove_h(pm, pml);
     }
 

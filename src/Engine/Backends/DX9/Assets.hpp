@@ -18,7 +18,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Assets class.
 	/// </summary>
-	class API Assets : public IInitializable
+	class API Assets
 	{
 		CLASS_SINGLETON(Assets)
 	public:
