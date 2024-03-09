@@ -1,5 +1,6 @@
 #pragma once
 #include <concepts>
+#include <string_view>
 
 #define EVENT_BIND(function) [this](auto&&... args) \
 	{ this->function(std::forward<decltype(args)>(args)...); }
@@ -9,8 +10,8 @@
 
 #define EVENT_CLASS(type) \
 	public: \
-	virtual const char* GetEventType() const override { return GetStaticType(); } \
-	static const char* GetStaticType() { return type; }
+	virtual std::string_view GetEventType() const override { return GetStaticType(); } \
+	static std::string_view GetStaticType() { return type; }
 
 namespace IW3SR::Engine
 {
@@ -29,7 +30,7 @@ namespace IW3SR::Engine
 		/// Get the event type.
 		/// </summary>
 		/// <returns></returns>
-		virtual const char* GetEventType() const = 0;
+		virtual std::string_view GetEventType() const = 0;
 	};
 
 	/// <summary>
