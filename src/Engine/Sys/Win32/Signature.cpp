@@ -1,4 +1,5 @@
 #include "Signature.hpp"
+#include <Psapi.h>
 
 namespace IW3SR::Engine
 {

@@ -10,5 +10,11 @@ namespace IW3SR::Engine
 	{
 	public:
 		static inline HWND MainWindow = nullptr;
+
+		/// <summary>
+		/// Is debug mode.
+		/// </summary>
+		/// <returns></returns>
+		static bool IsDebug();
 	};
 }

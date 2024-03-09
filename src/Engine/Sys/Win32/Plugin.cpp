@@ -1,5 +1,4 @@
 #include "Plugin.hpp"
-#include <stdexcept>
 
 namespace IW3SR::Engine
 {

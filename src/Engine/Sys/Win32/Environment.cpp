@@ -1,4 +1,5 @@
 #include "Environment.hpp"
+#include <TlHelp32.h>
 
 namespace IW3SR::Engine
 {

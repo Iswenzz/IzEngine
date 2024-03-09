@@ -1,6 +1,7 @@
+#include "Memory.hpp"
+
 #pragma warning(push)
 #pragma warning(disable: 6387)
-#include "Memory.hpp"
 
 namespace IW3SR::Engine
 {

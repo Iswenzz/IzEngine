@@ -1,10 +1,6 @@
 #pragma once
 #include "Setting.hpp"
 
-#include <memory>
-#include <map>
-#include <string>
-
 namespace IW3SR::Game
 {
 	/// <summary>

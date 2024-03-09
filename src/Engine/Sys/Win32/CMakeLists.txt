@@ -13,4 +13,5 @@ target_sources(IW3SR.Engine PRIVATE
 	Plugins.cpp
 	Signature.hpp
 	Signature.cpp
-	Sys.hpp)
+	Sys.hpp
+	Sys.cpp)

@@ -4,10 +4,8 @@
 #include "Resources/Texture.hpp"
 #include "Resources/Font.hpp"
 
-#include <map>
 #include <unordered_map>
 #include <vector>
-#include <string>
 
 #define FONT_OPENSANS 		"OpenSans-Regular"
 #define FONT_SPACERANGER	"Space Ranger"

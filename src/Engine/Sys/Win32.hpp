@@ -2,10 +2,10 @@
 #include "Engine/API.hpp"
 
 #define WIN32_LEAN_AND_MEAN
+#define UUID_DEFINED
 
 #include <Windows.h>
-#include <TlHelp32.h>
-#include <Psapi.h>
+#include <filesystem>
 
 #include "Log.hpp"
 #include "Memory.hpp"

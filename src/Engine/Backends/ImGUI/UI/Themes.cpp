@@ -1,6 +1,8 @@
 #include "Themes.hpp"
 #include "Engine/Backends/ImGUI/UI.hpp"
 
+#include <shellapi.h>
+
 namespace IW3SR::Engine::UC
 {
 	Themes::Themes() : Window("Themes")
@@ -220,7 +222,7 @@ namespace IW3SR::Engine::UC
 	{
 		std::string url(data.link, data.linkLength);
 		if (!data.isImage)
-			ShellExecuteA(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+			ShellExecute(nullptr, "open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 	}
 
 	ImGui::MarkdownImageData Themes::MarkdownImage(ImGui::MarkdownLinkCallbackData data)
