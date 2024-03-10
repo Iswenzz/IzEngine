@@ -11,7 +11,7 @@ namespace IW3SR::Game
 	void Player::Initialize()
 	{
 		for (int i = 0; i < Players.size(); i++)
-			Players[i] = std::make_shared<Player>(i);
+			Players[i] = CreateRef<Player>(i);
 	}
 
 	bool Player::IsSelf()
@@ -67,17 +67,17 @@ namespace IW3SR::Game
 		}
 	}
 
-	std::array<std::shared_ptr<Player>, 64>& Player::GetAll()
+	std::array<Ref<Player>, 64>& Player::GetAll()
 	{
 		return Players;
 	}
 
-	std::shared_ptr<Player>& Player::Get(int index)
+	Ref<Player>& Player::Get(int index)
 	{
 		return Players[index];
 	}
 
-	std::shared_ptr<Player>& Player::Self()
+	Ref<Player>& Player::Self()
 	{
 		return Players[cgs->clientNum];
 	}

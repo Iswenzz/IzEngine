@@ -9,7 +9,7 @@ namespace IW3SR::Engine
 	class Plugins
 	{
 	public:
-		static inline std::map<std::string, std::unique_ptr<Plugin>> Modules;
+		static inline std::map<std::string, Scope<Plugin>> Modules;
 		static inline bool IsReloading = false;
 
 		/// <summary>

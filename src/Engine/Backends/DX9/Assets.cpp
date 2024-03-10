@@ -30,13 +30,13 @@ namespace IW3SR::Engine
 		ReleaseDC(NULL, hdc);
 	}
 
-	std::shared_ptr<Font> Assets::LoadFont(const std::string& name, int height)
+	Ref<Font> Assets::LoadFont(const std::string& name, int height)
 	{
 		std::string id = std::format("{}_{}", name, height);
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>();
+		Ref<Font> font = CreateRef<Font>();
 		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
@@ -45,7 +45,7 @@ namespace IW3SR::Engine
 		return Fonts[id] = font;
 	}
 
-	std::shared_ptr<Font> Assets::LoadFont(const std::filesystem::path& path, int height)
+	Ref<Font> Assets::LoadFont(const std::filesystem::path& path, int height)
 	{
 		if (!std::filesystem::exists(path))
 			throw std::runtime_error("File not found.");
@@ -57,7 +57,7 @@ namespace IW3SR::Engine
 		if (auto cache = Fonts.find(id); cache != Fonts.end())
 			return cache->second;
 
-		std::shared_ptr<Font> font = std::make_shared<Font>();
+		Ref<Font> font = CreateRef<Font>();
 		HRESULT hr = D3DXCreateFont(Device::Get().D3Device, height, 0, FW_NORMAL, 1, FALSE, DEFAULT_CHARSET,
 			OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &font->Base);
 
@@ -70,7 +70,7 @@ namespace IW3SR::Engine
 		return Fonts[id] = font;
 	}
 
-	std::shared_ptr<Texture> Assets::LoadTexture(const std::filesystem::path& path)
+	Ref<Texture> Assets::LoadTexture(const std::filesystem::path& path)
 	{
 		if (!std::filesystem::exists(path))
 			throw std::runtime_error("File not found.");
@@ -79,7 +79,7 @@ namespace IW3SR::Engine
 		if (auto cache = Textures.find(id); cache != Textures.end())
 			return cache->second;
 
-		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+		Ref<Texture> texture = CreateRef<Texture>();
 		HRESULT hr = D3DXCreateTextureFromFile(Device::Get().D3Device, path.string().c_str(), &texture->Base);
 
 		if (hr != S_OK)

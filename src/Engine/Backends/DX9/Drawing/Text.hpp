@@ -78,7 +78,7 @@ namespace IW3SR::Engine
 		void Render();
 
 	private:
-		std::shared_ptr<Font> Font = nullptr;
+		Ref<Font> Font = nullptr;
 
 		/// <summary>
 		/// Compute the text alignment.

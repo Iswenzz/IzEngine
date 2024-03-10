@@ -16,7 +16,7 @@ namespace IW3SR::Engine
         uint64_t Callback = 0;
         uint64_t Trampoline = 0;
         std::function<T> Original = nullptr;
-        std::unique_ptr<PLH::NatDetour> Detour = nullptr;
+        Scope<PLH::NatDetour> Detour = nullptr;
         bool IsEnabled = false;
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace IW3SR::Engine
             if (IsEnabled) return;
             IsEnabled = true;
 
-            Detour = std::make_unique<PLH::NatDetour>(Address, Callback, &Trampoline);
+            Detour = CreateScope<PLH::NatDetour>(Address, Callback, &Trampoline);
             Detour->hook();
             Original = std::function<T>(reinterpret_cast<T*>(Trampoline));
         }

@@ -10,7 +10,7 @@ namespace IW3SR::Game
 	{
 		CLASS_SINGLETON(Modules)
 	public:
-		std::map<std::string, std::shared_ptr<Module>> Entries;
+		std::map<std::string, Ref<Module>> Entries;
 		nlohmann::json Serialized;
 
 		/// <summary>
@@ -31,7 +31,7 @@ namespace IW3SR::Game
 		template <class M = Module>
 		void Add(bool enabled = true)
 		{
-			auto entry = std::make_shared<M>();
+			auto entry = CreateRef<M>();
 			bool isSerialized = Serialized.contains(entry->ID);
 
 			entry->IsEnabled = enabled;

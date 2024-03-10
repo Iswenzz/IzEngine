@@ -74,7 +74,7 @@ namespace IW3SR::Engine
 		void Render();
 
 	private:
-		std::shared_ptr<Texture> Texture = nullptr;
+		Ref<Texture> Texture = nullptr;
 
 		/// <summary>
 		/// Compute the element alignment.

@@ -20,8 +20,8 @@ namespace IW3SR::Engine
 	{
 		CLASS_SINGLETON(Assets)
 	public:
-		std::unordered_map<std::string, std::shared_ptr<Texture>> Textures;
-		std::unordered_map<std::string, std::shared_ptr<Font>> Fonts;
+		std::unordered_map<std::string, Ref<Texture>> Textures;
+		std::unordered_map<std::string, Ref<Font>> Fonts;
 		std::vector<std::string> FontNames;
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace IW3SR::Engine
 		/// <param name="name">The font name.</param>
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
-		std::shared_ptr<Font> LoadFont(const std::string& name, int height);
+		Ref<Font> LoadFont(const std::string& name, int height);
 
 		/// <summary>
 		/// Load a font.
@@ -48,13 +48,13 @@ namespace IW3SR::Engine
 		/// <param name="name">The font name.</param>
 		/// <param name="height">The font height.</param>
 		/// <returns></returns>
-		std::shared_ptr<Font> LoadFont(const std::filesystem::path& path, int height);
+		Ref<Font> LoadFont(const std::filesystem::path& path, int height);
 
 		/// <summary>
 		/// Load image.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
-		std::shared_ptr<Texture> LoadTexture(const std::filesystem::path& path);
+		Ref<Texture> LoadTexture(const std::filesystem::path& path);
 
 	private:
 		/// <summary>

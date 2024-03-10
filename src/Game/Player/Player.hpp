@@ -65,20 +65,20 @@ namespace IW3SR::Game
 		/// Get all players.
 		/// </summary>
 		/// <returns></returns>
-		static std::array<std::shared_ptr<Player>, 64>& GetAll();
+		static std::array<Ref<Player>, 64>& GetAll();
 
 		/// <summary>
 		/// Get a player.
 		/// </summary>
 		/// <param name="index">The player index.</param>
 		/// <returns></returns>
-		static inline std::shared_ptr<Player>& Get(int index);
+		static inline Ref<Player>& Get(int index);
 
 		/// <summary>
 		/// Get self.
 		/// </summary>
 		/// <returns></returns>
-		static inline std::shared_ptr<Player>& Self();
+		static inline Ref<Player>& Self();
 
 		/// <summary>
 		/// Check if the player is active.
@@ -86,7 +86,7 @@ namespace IW3SR::Game
 		inline operator bool() const;
 
 	private:
-		static inline std::array<std::shared_ptr<Player>, 64> Players;
+		static inline std::array<Ref<Player>, 64> Players;
 
 		/// <summary>
 		/// Interpolate view angles for mover.
