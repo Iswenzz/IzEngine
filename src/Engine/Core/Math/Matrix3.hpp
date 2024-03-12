@@ -1,5 +1,6 @@
 #pragma once
-#include "Engine/Core/Math.hpp"
+#include "GLM.hpp"
+#include "Math.hpp"
 
 namespace IW3SR::Engine
 {
@@ -209,7 +210,7 @@ namespace IW3SR::Engine
         /// <summary>
         /// Matrix is not zero.
         /// </summary>
-        operator bool() const
+        explicit operator bool() const
         {
             return *this != Zero;
         }

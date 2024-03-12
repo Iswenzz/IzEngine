@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Core/Math.hpp"
-#include "Engine/Backends/ImGUI.hpp"
-#include "Engine/Backends/DX9.hpp"
+#include "GLM.hpp"
 
 namespace IW3SR::Engine
 {
@@ -172,7 +170,7 @@ namespace IW3SR::Engine
         /// <summary>
         /// Vector is not zero.
         /// </summary>
-        operator bool() const
+        explicit operator bool() const
         {
             return *this != Zero;
         }

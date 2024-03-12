@@ -1,11 +1,12 @@
 #include "Renderer.hpp"
 #include "Assets.hpp"
+#include "GUI.hpp"
+
+#include "Backends/D3D9EX.hpp"
 #include "Drawing/Draw2D.hpp"
 #include "Drawing/Draw3D.hpp"
 #include "Settings/Settings.hpp"
 #include "Modules/Modules.hpp"
-
-#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Game
 {

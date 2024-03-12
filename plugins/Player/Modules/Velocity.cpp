@@ -133,26 +133,26 @@ namespace IW3SR::Addons
 				if (ShowVelocity)
 				{
 					ImPlot::SetNextFillStyle(IMPLOT_AUTO_COL, 0.5f);
-					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(VelocityText.Color));
+					ImPlot::PushStyleColor(ImPlotCol_Line, VelocityText.Color.RGBA());
 					ImPlot::PlotShaded("Velocity", BufferValues.Get(), BufferValues.Size(), -INFINITY, 1, 0, 0, BufferValues.Offset);
 					ImPlot::PlotLine("Velocity", BufferValues.Get(), BufferValues.Size(), 1, 0, 0, BufferValues.Offset);
 					ImPlot::PopStyleColor();
 				}
 				if (ShowAverage)
 				{
-					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(AverageText.Color));
+					ImPlot::PushStyleColor(ImPlotCol_Line, AverageText.Color.RGBA());
 					ImPlot::PlotLine("Average", BufferAverages.Get(), BufferAverages.Size(), 1, 0, 0, BufferAverages.Offset);
 					ImPlot::PopStyleColor();
 				}
 				if (ShowMax)
 				{
-					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(MaxText.Color));
+					ImPlot::PushStyleColor(ImPlotCol_Line, MaxText.Color.RGBA());
 					ImPlot::PlotLine("Max", BufferMaxs.Get(), BufferMaxs.Size(), 1, 0, 0, BufferMaxs.Offset);
 					ImPlot::PopStyleColor();
 				}
 				if (ShowGround)
 				{
-					ImPlot::PushStyleColor(ImPlotCol_Line, static_cast<ImU32>(GroundText.Color));
+					ImPlot::PushStyleColor(ImPlotCol_Line, GroundText.Color.RGBA());
 					ImPlot::PlotLine("Ground", BufferGrounds.Get(), BufferGrounds.Size(), 1, 0, 0, BufferGrounds.Offset);
 					ImPlot::PopStyleColor();
 				}

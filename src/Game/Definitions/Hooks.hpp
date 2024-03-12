@@ -1,5 +1,6 @@
 #pragma once
-#include "Engine/Sys/Memory.hpp"
+#include "Sys/Memory/Hook.hpp"
+#include "Sys/Memory/Assembler.hpp"
 
 namespace IW3SR::Game
 {

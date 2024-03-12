@@ -1,7 +1,6 @@
 #pragma once
-#include "PMove.hpp"
 #include "Game/Definitions.hpp"
-#include "Engine/Core/Math.hpp"
+#include "PMove.hpp"
 
 namespace IW3SR::Game
 {

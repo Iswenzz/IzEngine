@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Core/Math.hpp"
-#include "Engine/Backends/ImGUI.hpp"
-#include "Engine/Backends/DX9.hpp"
+#include "GLM.hpp"
 
 namespace IW3SR::Engine
 {
@@ -159,12 +157,29 @@ namespace IW3SR::Engine
         }
 
         /// <summary>
-        /// Convert the vector to raw data.
+        /// Convert to int color.
         /// </summary>
-        /// <returns>Pointer to raw data.</returns>
-        operator T*() const
+        int BGRA() const
         {
-            return reinterpret_cast<T*>(const_cast<vec4*>(this));
+            int color = 0;
+            color |= (static_cast<int>(this->w * 255.f) & 0xFF) << 24;
+            color |= (static_cast<int>(this->x * 255.f) & 0xFF) << 16;
+            color |= (static_cast<int>(this->y * 255.f) & 0xFF) << 8;
+            color |= (static_cast<int>(this->z * 255.f) & 0xFF);
+            return color;
+        }
+
+        /// <summary>
+        /// Convert to int color.
+        /// </summary>
+        int RGBA() const
+        {
+            int color = 0;
+            color |= (static_cast<int>(this->w * 255.f) & 0xFF) << 24;
+            color |= (static_cast<int>(this->z * 255.f) & 0xFF) << 16;
+            color |= (static_cast<int>(this->y * 255.f) & 0xFF) << 8;
+            color |= (static_cast<int>(this->x * 255.f) & 0xFF);
+            return color;
         }
 
         /// <summary>
@@ -176,25 +191,26 @@ namespace IW3SR::Engine
         }
 
         /// <summary>
-        /// Convert to imgui color.
+        /// Convert the vector to raw data.
         /// </summary>
-        operator ImU32() const
+        /// <returns>Pointer to raw data.</returns>
+        operator T*() const
         {
-            return D3DCOLOR_COLORVALUE(this->z, this->y, this->x, this->w);
+            return reinterpret_cast<T*>(const_cast<vec4*>(this));
         }
 
         /// <summary>
-        /// Convert to DX color.
+        /// Convert to int color.
         /// </summary>
-        operator D3DCOLOR() const
+        operator int() const
         {
-            return D3DCOLOR_COLORVALUE(this->x, this->y, this->z, this->w);
+            return RGBA();
         }
 
         /// <summary>
         /// Vector is not zero.
         /// </summary>
-        operator bool() const
+        explicit operator bool() const
         {
             return *this != Zero;
         }

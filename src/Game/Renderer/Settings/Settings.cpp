@@ -1,4 +1,5 @@
 #include "Settings.hpp"
+#include <fstream>
 
 namespace IW3SR::Game
 {

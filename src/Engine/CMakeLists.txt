@@ -1,11 +1,11 @@
 add_library(IW3SR.Engine OBJECT)
 
-add_subdirectory(Backends)
+add_subdirectory(Renderer)
 add_subdirectory(Core)
 add_subdirectory(Sys)
 
-target_precompile_headers(IW3SR.Engine PRIVATE API.hpp)
-target_sources(IW3SR.Engine PRIVATE API.hpp)
+target_precompile_headers(IW3SR.Engine PRIVATE Base.hpp)
+target_sources(IW3SR.Engine PRIVATE Base.hpp)
 
 # Tests
 if(BUILD_TESTING)
@@ -14,11 +14,11 @@ if(BUILD_TESTING)
 endif()
 
 # Build
-target_include_directories(IW3SR.Engine PUBLIC ..)
+target_include_directories(IW3SR.Engine PUBLIC . ..)
 target_compile_definitions(IW3SR.Engine PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
 
 target_link_libraries(IW3SR.Engine PUBLIC
-	DirectX::SDK
+	$<$<BOOL:${GRAPHICS_API_DXSDK}>:DirectX::SDK>
 	imgui::imgui
 	implot::implot
 	nlohmann_json::nlohmann_json

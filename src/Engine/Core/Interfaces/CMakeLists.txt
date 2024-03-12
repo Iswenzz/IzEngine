@@ -1,2 +1,3 @@
 target_sources(IW3SR.Engine PRIVATE
-	IObject.hpp)
+	IObject.hpp
+	ISerializable.hpp)

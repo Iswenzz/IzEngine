@@ -1,8 +1,8 @@
 #pragma once
+#include "DX9/Base.hpp"
+
 #pragma warning(push)
 #pragma warning(disable: 4359)
-
-#include "Engine/Backends/DX9.hpp"
 
 namespace IW3SR::Game
 {
@@ -430,7 +430,7 @@ namespace IW3SR::Game
 		bool(__cdecl* domainFunc)(dvar_s*, DvarValue);
 		dvar_s* hashNext;
 	};
-	
+
 	using DB_XAssetSizeHandler_t = int(*)();
 
 	enum DB_FILE_EXISTS_PATH

@@ -1,9 +1,6 @@
 #pragma once
 #include "Game/Definitions.hpp"
 
-#include "Engine/Backends/ImGUI.hpp"
-#include "Engine/Backends/ImGUI/Drawing/Window.hpp"
-
 namespace IW3SR::Game
 {
 	/// <summary>

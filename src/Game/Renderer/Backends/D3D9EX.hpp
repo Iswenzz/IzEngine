@@ -1,5 +1,5 @@
 #pragma once
-#include "D3D9.hpp"
+#include "DX9/Base.hpp"
 
 namespace IW3SR::Game
 {

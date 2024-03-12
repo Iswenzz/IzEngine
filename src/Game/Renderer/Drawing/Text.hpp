@@ -1,6 +1,5 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Engine/Core/Math.hpp"
 
 namespace IW3SR::Game
 {

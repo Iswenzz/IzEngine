@@ -1,6 +1,5 @@
 #pragma once
 #include "Game/Definitions.hpp"
-#include "Engine/Backends/ImGUI/UI.hpp"
 
 #include "UI/About.hpp"
 #include "UI/Binds.hpp"

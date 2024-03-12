@@ -1,8 +1,5 @@
 #include "HUD.hpp"
-#include "Draw2D.hpp"
-
-#include "Engine/Backends/DX9/Device.hpp"
-#include "Engine/Backends/ImGUI/UI.hpp"
+#include "Game/Renderer/Assets.hpp"
 
 namespace IW3SR::Game
 {

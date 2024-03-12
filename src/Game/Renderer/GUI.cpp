@@ -1,7 +1,4 @@
 #include "GUI.hpp"
-#include "Game/Sys/Sys.hpp"
-
-#include "Engine/Backends/DX9/Device.hpp"
 
 namespace IW3SR::Game
 {
@@ -33,7 +30,7 @@ namespace IW3SR::Game
 		if (KeyOpen.IsPressed())
 			UI.Open = !UI.Open;
 
-		if (!UI.Open) 
+		if (!UI.Open)
 			return;
 
 		Toolbar.Render();

@@ -1,7 +1,5 @@
 #pragma once
-#include "GUI.hpp"
 #include "Game/Definitions.hpp"
-#include "Backends/D3D9EX.hpp"
 
 namespace IW3SR::Game
 {

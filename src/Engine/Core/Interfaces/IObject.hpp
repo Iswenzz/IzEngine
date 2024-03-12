@@ -1,7 +1,6 @@
 #pragma once
-#include "Engine/Core/Base/UUID.hpp"
-#include "Engine/Core/Communication/Events.hpp"
-#include "Engine/Core/Serializer/ISerializable.hpp"
+#include "Core/Communication/Events.hpp"
+#include "ISerializable.hpp"
 
 namespace IW3SR::Engine
 {

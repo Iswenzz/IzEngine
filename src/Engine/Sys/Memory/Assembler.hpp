@@ -1,8 +1,7 @@
 #pragma once
-#include "Engine/API.hpp"
 #include "Function.hpp"
-
 #include <asmjit/asmjit.h>
+
 #ifndef ASMJIT_NO_X86
 namespace arch = asmjit::x86;
 #else

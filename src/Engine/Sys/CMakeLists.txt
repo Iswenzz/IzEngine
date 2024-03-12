@@ -1,10 +1,10 @@
 add_subdirectory(Memory)
-add_subdirectory(Win32)
 
-target_precompile_headers(IW3SR.Engine PRIVATE
-	Win32.hpp)
+if(PLATFORM_WINDOWS)
+	add_subdirectory(Windows)
+endif()
 
 target_sources(IW3SR.Engine PRIVATE
-	Memory.hpp
-	Log.hpp
-	Win32.hpp)
+	Log.hpp)
+
+target_include_directories(IW3SR.Engine PUBLIC .)

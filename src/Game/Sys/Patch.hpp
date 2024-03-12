@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Sys/Win32.hpp"
+#include "Game/Definitions.hpp"
 
 namespace IW3SR::Game
 {

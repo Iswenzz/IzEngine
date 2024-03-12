@@ -1,5 +1,4 @@
 #include "Assets.hpp"
-#include "Engine/Backends/DX9/Assets.hpp"
 
 namespace IW3SR::Game
 {

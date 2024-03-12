@@ -1,1 +1,3 @@
-add_subdirectory(Windows)
+if(PLATFORM_WINDOWS)
+	add_subdirectory(Windows)
+endif()

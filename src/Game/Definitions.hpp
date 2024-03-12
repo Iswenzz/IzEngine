@@ -1,8 +1,7 @@
 #pragma once
-#include "Engine/API.hpp"
-#include "Engine/Backends/DX9.hpp"
-#include "Engine/Backends/ImGUI.hpp"
-#include "Engine/Sys/Win32.hpp"
+#include "DX9/Common.hpp"
+#include "ImGUI/Common.hpp"
+#include "Windows/Common.hpp"
 
 #include "Definitions/Structs.hpp"
 #include "Definitions/Events.hpp"

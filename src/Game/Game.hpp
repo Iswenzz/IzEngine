@@ -2,6 +2,7 @@
 #include "Definitions.hpp"
 
 #include "Game/Renderer/Renderer.hpp"
+#include "Game/Renderer/Backends/D3D9.hpp"
 #include "Game/Player/Player.hpp"
 
 #include "Game/Sys/Console.hpp"
