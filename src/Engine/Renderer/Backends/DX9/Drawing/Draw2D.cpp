@@ -9,7 +9,6 @@ namespace IW3SR::Engine
         auto data = reinterpret_cast<ID3DXFont*>(font->Data);
 		RECT rect = { static_cast<int>(position.x), static_cast<int>(position.y), 0, 0 };
         data->DrawTextA(nullptr, text.c_str(), -1, &rect, DT_NOCLIP, color.BGRA());
-        // ImGui::GetBackgroundDrawList()->AddText(font, position, color, text.c_str());
     }
 
     vec2 Draw2D::TextSize(const std::string& text, const Ref<Font>& font)

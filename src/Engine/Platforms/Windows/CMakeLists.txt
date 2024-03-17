@@ -8,5 +8,6 @@ target_sources(IW3SR.Engine PRIVATE
 	KeyListener.cpp
 	Memory.cpp
 	Plugin.cpp
+	Plugins.cpp
 	Signature.cpp
 	System.cpp)

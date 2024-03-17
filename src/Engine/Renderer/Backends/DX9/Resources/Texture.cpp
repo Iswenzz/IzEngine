@@ -35,7 +35,7 @@ namespace IW3SR::Engine
 
 	void Textures::Initialize()
 	{
-		// @TODO register default textures
+		
 	}
 
 	void Textures::Release()
