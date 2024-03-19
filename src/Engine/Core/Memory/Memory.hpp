@@ -22,7 +22,7 @@ namespace IW3SR::Engine
         /// </summary>
         /// <param name="address">The target address.</param>
         /// <param name="pattern">The pattern to write.</param>
-        static inline void Write(uintptr_t address, const std::string& pattern);
+        static void Write(uintptr_t address, const std::string& pattern);
 
         /// <summary>
         /// Write memory.

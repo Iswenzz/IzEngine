@@ -237,7 +237,7 @@ namespace IW3SR::Engine::UC
 		ImVec2 const contentSize = ImGui::GetContentRegionAvail();
 		if (imageData.size.x > contentSize.x)
 		{
-			float const ratio = imageData.size.y / imageData.size.x;
+			const float ratio = imageData.size.y / imageData.size.x;
 			imageData.size.x = contentSize.x;
 			imageData.size.y = contentSize.x * ratio;
 		}

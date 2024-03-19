@@ -1,4 +1,6 @@
 #pragma once
+#include "Macros.hpp"
+
 #include <cstdint>
 #include <string>
 
@@ -7,7 +9,7 @@ namespace IW3SR::Engine
 	/// <summary>
 	/// Unique identifier.
 	/// </summary>
-	class UUID
+	class API UUID
 	{
 	public:
 		uint64_t Value;

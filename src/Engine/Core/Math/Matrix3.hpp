@@ -89,18 +89,18 @@ namespace IW3SR::Engine
         vec3 ToEulerAngles(const mat3& matrix) const
         {
             vec3 out;
-            const float a = asinf(-matrix[0][2]);
+            const float a = asin(-matrix[0][2]);
             const float ca = cos(a);
 
             if (abs(ca) > 0.005f)
             {
-                out[0] = atan2f(matrix[1][2] / ca, matrix[2][2] / ca);
+                out[0] = atan2(matrix[1][2] / ca, matrix[2][2] / ca);
                 out[1] = a;
-                out[2] = atan2f(matrix[0][1] / ca, matrix[0][0] / ca);
+                out[2] = atan2(matrix[0][1] / ca, matrix[0][0] / ca);
             }
             else
             {
-                out[0] = atan2f(-matrix[2][1] / ca, matrix[1][1] / ca);
+                out[0] = atan2(-matrix[2][1] / ca, matrix[1][1] / ca);
                 out[1] = a;
                 out[2] = 0.0f;
             }

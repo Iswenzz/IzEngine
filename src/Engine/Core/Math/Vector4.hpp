@@ -129,7 +129,7 @@ namespace IW3SR::Engine
         /// <returns>The length of the vector.</returns>
         T Length() const
         {
-            return std::sqrtf(LengthSquared());
+            return sqrt(LengthSquared());
         }
 
         /// <summary>

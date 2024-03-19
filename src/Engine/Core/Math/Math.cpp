@@ -246,20 +246,20 @@ namespace IW3SR::Engine
 
 	bool Math::AngleInFov(float angle, float tanHalfFov)
 	{
-		float const half_fov_x = atanf(tanHalfFov);
+		const float half_fov_x = atan(tanHalfFov);
 		return angle > -half_fov_x && angle < half_fov_x;
 	}
 
 	float Math::AngleScreenProjection(float angle, float tanHalfFov)
 	{
-		float const half_fov_x = atanf(tanHalfFov);
+		const float half_fov_x = atan(tanHalfFov);
 
 		if (angle >= half_fov_x)
 			return 0;
 		if (angle <= -half_fov_x)
 			return SCREEN_WIDTH;
 
-		return SCREEN_WIDTH / 2 * (1 - tanf(angle) / tanf(half_fov_x));
+		return SCREEN_WIDTH / 2 * (1 - tan(angle) / tan(half_fov_x));
 	}
 
 	vec3 Math::AnglesToRange(float start, float end, float yaw, float tanHalfFov)
@@ -274,7 +274,7 @@ namespace IW3SR::Engine
 		if (end > start)
 		{
 			split = !split;
-			float const tmp = start;
+			const float tmp = start;
 
 			start = end;
 			end = tmp;
