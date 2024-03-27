@@ -10,6 +10,12 @@ target_sources(IW3SR.Engine PRIVATE Base.hpp)
 # Tests
 if(BUILD_TESTING)
 	add_executable(IW3SR.Engine.Tests)
+	target_link_libraries(IW3SR.Engine.Tests PRIVATE
+		IW3SR.Engine
+		GTest::gtest
+		GTest::gtest_main
+		GTest::gmock
+		GTest::gmock_main)
 	add_test(NAME Engine COMMAND IW3SR.Engine.Tests)
 endif()
 

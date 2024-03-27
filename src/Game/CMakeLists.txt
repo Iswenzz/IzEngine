@@ -22,6 +22,12 @@ target_sources(IW3SR.Game PRIVATE
 # Tests
 if(BUILD_TESTING)
 	add_executable(IW3SR.Game.Tests)
+	target_link_libraries(IW3SR.Game.Tests PRIVATE
+		IW3SR.Game
+		GTest::gtest
+		GTest::gtest_main
+		GTest::gmock
+		GTest::gmock_main)
 	add_test(NAME Game COMMAND IW3SR.Game.Tests)
 endif()
 

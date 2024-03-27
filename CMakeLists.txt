@@ -40,12 +40,6 @@ endif()
 if(BUILD_TESTING)
 	include(CTest)
 	find_package(GTest CONFIG REQUIRED)
-
-	target_link_libraries(IW3SR.Tests PUBLIC
-		GTest::gtest
-		GTest::gtest_main
-		GTest::gmock
-		GTest::gmock_main)
 endif()
 
 # Build
