@@ -49,3 +49,9 @@ add_subdirectory(plugins)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/private")
     add_subdirectory(private)
 endif()
+
+# Clang
+add_custom_target(clang-tidy COMMAND clang-tidy -p ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+add_custom_target(clang-format COMMAND clang-format -i ${CMAKE_SOURCE_DIR})
+set_target_properties(clang-tidy PROPERTIES FOLDER Clang)
+set_target_properties(clang-format PROPERTIES FOLDER Clang)
