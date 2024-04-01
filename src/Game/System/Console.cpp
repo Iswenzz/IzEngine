@@ -1,5 +1,4 @@
 #include "Console.hpp"
-#include "Game/Game.hpp"
 
 namespace IW3SR::Game
 {

@@ -1,5 +1,5 @@
 #include "Settings.hpp"
-#include "Game/Game.hpp"
+#include "Game/Renderer/Settings/Settings.hpp"
 
 #include <set>
 

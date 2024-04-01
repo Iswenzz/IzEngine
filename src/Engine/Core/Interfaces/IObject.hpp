@@ -1,6 +1,7 @@
 #pragma once
-#include "Core/Communication/Events.hpp"
 #include "ISerializable.hpp"
+
+#include "Core/Communication/Events.hpp"
 
 namespace IW3SR::Engine
 {

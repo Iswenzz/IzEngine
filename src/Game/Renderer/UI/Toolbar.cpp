@@ -1,7 +1,8 @@
 #include "Toolbar.hpp"
 
-#include "Game/Game.hpp"
 #include "Game/Renderer/GUI.hpp"
+#include "Game/Renderer/Modules/Modules.hpp"
+#include "Game/Renderer/Settings/Settings.hpp"
 
 namespace IW3SR::Game::UC
 {

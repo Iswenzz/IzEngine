@@ -1,5 +1,13 @@
 #include "Hooks.hpp"
-#include "Game/Game.hpp"
+
+#include "Game/Renderer/Backends/D3D9.hpp"
+#include "Game/Renderer/Modules/Modules.hpp"
+#include "Game/Renderer/Renderer.hpp"
+#include "Game/Renderer/Settings/Settings.hpp"
+
+#include "Game/Player/Player.hpp"
+#include "Game/System/Console.hpp"
+#include "Game/System/System.hpp"
 
 // clang-format off
 namespace IW3SR::Game

@@ -6,9 +6,16 @@ namespace IW3SR::Game
 {
 	void Patch::Initialize()
 	{
+		CoD4X();
 		Definitions();
 		Renderer();
 		System();
+		Hook();
+	}
+
+	void Patch::Shutdown()
+	{
+		Unhook();
 	}
 
 	void Patch::Definitions()
@@ -39,5 +46,55 @@ namespace IW3SR::Game
 		// Increase gmem
 		Memory::Set(0x4FF23B + 4, 0x20);
 		Memory::Set(0x4FF26B + 9, 0x20);
+	}
+
+	void Patch::CoD4X()
+	{
+		const auto cod4x = std::ranges::find_if(Environment::Modules,
+			[](const auto& m) { return m.find("cod4x_") != std::string::npos; });
+
+		if (cod4x == Environment::Modules.end())
+			return;
+
+		COD4X_BIN = *cod4x;
+		COD4X_HANDLE = uintptr_t(GetModuleHandle(COD4X_BIN.c_str()));
+	}
+
+	void Patch::Hook()
+	{
+		CreateWindowExA_h.Install();
+		Direct3DCreate9_h.Install();
+		MainWndProc_h.Install();
+
+		Cmd_ExecuteSingleCommand_h.Install();
+		Com_PrintMessage_h.Install();
+		CG_DrawCrosshair_h.Install();
+		CG_PredictPlayerState_Internal_h.Install();
+		CL_FinishMove_h.Install();
+		PM_WalkMove_h.Install();
+		PM_AirMove_h.Install();
+		R_Init_h.Install();
+		R_RenderAllLeftovers_h.Install();
+		R_Shutdown_h.Install();
+		RB_EndSceneRendering_h.Install();
+	}
+
+	void Patch::Unhook()
+	{
+		CreateWindowExA_h.Remove();
+		Direct3DCreate9_h.Remove();
+		MainWndProc_h.Remove();
+
+		Cmd_ExecuteSingleCommand_h.Remove();
+		Com_PrintMessage_h.Remove();
+		CG_DrawCrosshair_h.Remove();
+		CG_PredictPlayerState_Internal_h.Remove();
+		CL_FinishMove_h.Remove();
+		PM_WalkMove_h.Remove();
+		PM_AirMove_h.Remove();
+		R_Init_h.Remove();
+		R_RenderAllLeftovers_h.Remove();
+		R_Shutdown_h.Remove();
+		RB_EndSceneRendering_h.Remove();
 	}
 }

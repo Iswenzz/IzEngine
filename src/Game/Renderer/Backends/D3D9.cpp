@@ -1,7 +1,7 @@
-#include "Game/Game.hpp"
-
 #include "D3D9.hpp"
 #include "D3D9EX.hpp"
+
+#include "Game/Renderer/Renderer.hpp"
 
 namespace IW3SR::Game
 {

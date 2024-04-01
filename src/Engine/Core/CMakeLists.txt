@@ -1,3 +1,4 @@
+add_subdirectory(Application)
 add_subdirectory(Base)
 add_subdirectory(Communication)
 add_subdirectory(Console)

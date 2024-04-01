@@ -10,13 +10,11 @@ add_subdirectory(World)
 
 target_precompile_headers(IW3SR.Game PRIVATE
 	Base.hpp
-	Game.hpp
 	Plugin.hpp)
 
 target_sources(IW3SR.Game PRIVATE
+	Application.cpp
 	Base.hpp
-	Game.hpp
-	Game.cpp
 	Plugin.hpp)
 
 # Tests

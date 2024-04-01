@@ -14,6 +14,11 @@ namespace IW3SR::Game
 		/// </summary>
 		static void Initialize();
 
+		/// <summary>
+		/// Shutdown patch.
+		/// </summary>
+		static void Shutdown();
+
 	private:
 		/// <summary>
 		/// Patch definitions.
@@ -29,5 +34,20 @@ namespace IW3SR::Game
 		/// System patch.
 		/// </summary>
 		static void System();
+
+		/// <summary>
+		/// CoD4X client modifications.
+		/// </summary>
+		static void CoD4X();
+
+		/// <summary>
+		/// Hook application.
+		/// </summary>
+		static void Hook();
+
+		/// <summary>
+		/// Unhook application.
+		/// </summary>
+		static void Unhook();
 	};
 }
