@@ -16,9 +16,8 @@ namespace IW3SR::Game
 
 	void Settings::Remove(const std::string& id)
 	{
-		auto& entries = Get().Entries;
-		if (auto it = entries.find(id); it != entries.end())
-			entries.erase(it);
+		if (auto it = Entries.find(id); it != Entries.end())
+			Entries.erase(it);
 	}
 
 	void Settings::Deserialize()

@@ -17,14 +17,14 @@ namespace IW3SR::Game
 		Renderer::Initialize();
 
 		GUI::Get().Initialize();
-		Modules::Get().Initialize();
-		Settings::Get().Initialize();
+		Modules::Initialize();
+		Settings::Initialize();
 	}
 
 	void GRenderer::Shutdown(int window)
 	{
-		Settings::Get().Release();
-		Modules::Get().Release();
+		Settings::Release();
+		Modules::Release();
 		GUI::Get().Release();
 
 		Renderer::Shutdown();

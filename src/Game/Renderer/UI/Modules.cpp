@@ -17,11 +17,10 @@ namespace IW3SR::Game::UC
 			return;
 
 		Begin();
-		auto& modules = Game::Modules::Get();
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : modules.Entries)
+		for (const auto& [_, current] : Game::Modules::Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -30,14 +29,14 @@ namespace IW3SR::Game::UC
 			if (!ImGui::CollapsingHeader(current->Group, true))
 				continue;
 
-			for (const auto& [_, entry] : modules.Entries)
+			for (const auto& [_, entry] : Game::Modules::Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;
 
 				// Enable/Disable module
 				if (ImGui::Toggle(entry->ID + "toggle", &entry->IsEnabled))
-					entry->IsEnabled ? modules.Enable(entry->ID) : modules.Disable(entry->ID);
+					entry->IsEnabled ? Game::Modules::Enable(entry->ID) : Game::Modules::Disable(entry->ID);
 				ImGui::SameLine();
 				ImGui::Text(entry->Name.c_str());
 				ImGui::SameLine(frameWidth);

@@ -77,8 +77,8 @@ namespace IW3SR::Game::UC
 			return;
 		IsReloading = true;
 
-		Game::Modules::Get().Release();
-		Game::Settings::Get().Release();
+		Game::Modules::Release();
+		Game::Settings::Release();
 
 		Plugins::Shutdown();
 		std::thread([this] { Compile(); }).detach();
@@ -92,8 +92,8 @@ namespace IW3SR::Game::UC
 			system(std::format(command, CMAKE_BINARY_DIR).c_str());
 		}
 		Plugins::Initialize();
-		Game::Modules::Get().Initialize();
-		Game::Settings::Get().Initialize();
+		Game::Modules::Initialize();
+		Game::Settings::Initialize();
 
 		EventPluginRenderer event;
 		Plugins::Dispatch(event);

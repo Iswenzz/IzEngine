@@ -80,7 +80,7 @@ namespace IW3SR::Game
 	{
 		Plugins::Dispatch(event);
 
-		Modules::Get().Dispatch(event);
-		Settings::Get().Dispatch(event);
+		Modules::Dispatch(event);
+		Settings::Dispatch(event);
 	}
 }

@@ -17,11 +17,10 @@ namespace IW3SR::Game::UC
 			return;
 
 		Begin();
-		auto& settings = Game::Settings::Get();
 		const float frameWidth = ImGui::GetWindowContentRegionMax().x - 30;
 		std::set<std::string> groups;
 
-		for (const auto& [_, current] : settings.Entries)
+		for (const auto& [_, current] : Game::Settings::Entries)
 		{
 			if (std::ranges::find(groups, current->Group) != groups.end())
 				continue;
@@ -30,7 +29,7 @@ namespace IW3SR::Game::UC
 			if (!ImGui::CollapsingHeader(current->Group, true))
 				continue;
 
-			for (const auto& [_, entry] : settings.Entries)
+			for (const auto& [_, entry] : Game::Settings::Entries)
 			{
 				if (current->Group != entry->Group)
 					continue;
