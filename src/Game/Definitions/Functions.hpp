@@ -20,6 +20,9 @@ namespace IW3SR::Game
 	API extern Function<void(int localClientNum, int controllerIndex, const char* text)>
 		Cmd_ExecuteSingleCommand;
 
+	extern Function<char*(const char** pData, bool allowLineBreaks)>
+		Com_ParseExt;
+
 	API extern Function<dvar_s*(const char* name)>
 		Dvar_FindVar;
 

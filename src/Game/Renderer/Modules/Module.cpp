@@ -25,22 +25,36 @@ namespace IW3SR::Game
 
 		EventDispatcher dispatcher(event);
 
-		dispatcher.Dispatch<EventRenderer3D>(EVENT_BIND(OnDraw3D));
-		dispatcher.Dispatch<EventRenderer2D>(EVENT_BIND(OnDraw2D));
-		dispatcher.Dispatch<EventRendererRender>(EVENT_BIND_VOID(OnRender));
+		dispatcher.Dispatch<EventPlayerConnect>(EVENT_BIND(OnConnect));
+		dispatcher.Dispatch<EventPlayerDisconnect>(EVENT_BIND(OnDisconnect));
+		dispatcher.Dispatch<EventPlayerSpawn>(EVENT_BIND(OnSpawn));
 
 		dispatcher.Dispatch<EventPlayerLoadPosition>(EVENT_BIND_VOID(OnLoadPosition));
 		dispatcher.Dispatch<EventPMoveWalk>(EVENT_BIND(OnWalkMove));
 		dispatcher.Dispatch<EventPMoveAir>(EVENT_BIND(OnAirMove));
 		dispatcher.Dispatch<EventPMoveFinish>(EVENT_BIND(OnFinishMove));
+
+		dispatcher.Dispatch<EventExecuteCommand>(EVENT_BIND(OnExecuteCommand));
+		dispatcher.Dispatch<EventScriptMenuResponse>(EVENT_BIND(OnMenuResponse));
+
+		dispatcher.Dispatch<EventRenderer3D>(EVENT_BIND(OnDraw3D));
+		dispatcher.Dispatch<EventRenderer2D>(EVENT_BIND(OnDraw2D));
+		dispatcher.Dispatch<EventRendererRender>(EVENT_BIND_VOID(OnRender));
 	}
 
 	void Module::OnMenu() { }
 
-	void Module::OnLoadPosition() { }
+	void Module::OnConnect(EventPlayerConnect& event) { }
+	void Module::OnDisconnect(EventPlayerDisconnect& event) { }
+	void Module::OnSpawn(EventPlayerSpawn& event) { }
+
 	void Module::OnWalkMove(EventPMoveWalk& event) { }
 	void Module::OnAirMove(EventPMoveAir& event) { }
 	void Module::OnFinishMove(EventPMoveFinish& event) { }
+	void Module::OnLoadPosition() { }
+
+	void Module::OnExecuteCommand(EventExecuteCommand& event) { }
+	void Module::OnMenuResponse(EventScriptMenuResponse& event) { }
 
 	void Module::OnDraw3D(EventRenderer3D& event) { }
 	void Module::OnDraw2D(EventRenderer2D& event) { }

@@ -93,4 +93,11 @@ namespace IW3SR::Game
 		std::string menu;
 		std::string response;
 	};
+
+	class EventExecuteCommand : public Event
+	{
+		EVENT_CLASS("execute.command")
+		EventExecuteCommand(std::string command) : command(command) { }
+		std::string command;
+	};
 }

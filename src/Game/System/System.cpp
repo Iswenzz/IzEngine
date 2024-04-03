@@ -36,24 +36,29 @@ namespace IW3SR::Game
 		return MainWndProc_h(hWnd, Msg, wParam, lParam);
 	}
 
-	void System::ExecuteSingleCommand(int localClientNum, int controllerIndex, char* command)
+	void System::ExecuteSingleCommand(int localClientNum, int controllerIndex, char* cmd)
 	{
-		if (std::string(command) == "openscriptmenu cj load")
+		std::string command = cmd;
+		Cmd_ExecuteSingleCommand_h(localClientNum, controllerIndex, cmd);
+
+		if (command == "openscriptmenu cj load")
 		{
 			EventPlayerLoadPosition event;
 			Application::Get().Dispatch(event);
 		}
-		Cmd_ExecuteSingleCommand_h(localClientNum, controllerIndex, command);
+		EventExecuteCommand event(command);
+		Application::Get().Dispatch(event);
 	}
 
 	void System::ScriptMenuResponse(int localClientNum, itemDef_s* item, const char** args) 
 	{ 
+		std::string arguments = *args;
+		const char* data = arguments.data();
+		std::string response = Com_ParseExt(&data, false);
+
 		Script_ScriptMenuResponse_h(localClientNum, item, args);
 
-		std::string command;
-		EventScriptMenuResponse event(item->parent->window.name, command);
+		EventScriptMenuResponse event(item->parent->window.name, response);
 		Application::Get().Dispatch(event);
-
-		// Log::WriteLine(Channel::Game, "Response: {} {}", item->parent->window.name, command);
 	}
 }

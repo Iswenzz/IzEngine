@@ -55,6 +55,24 @@ namespace IW3SR::Game
 		virtual void OnMenu();
 
 		/// <summary>
+		/// Player connect.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnConnect(EventPlayerConnect& event);
+
+		/// <summary>
+		/// Player disconnect.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnDisconnect(EventPlayerDisconnect& event);
+
+		/// <summary>
+		/// Player spawn.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnSpawn(EventPlayerSpawn& event);
+
+		/// <summary>
 		/// Walk moving.
 		/// </summary>
 		/// <param name="event">The event.</param>
@@ -73,9 +91,21 @@ namespace IW3SR::Game
 		virtual void OnFinishMove(EventPMoveFinish& event);
 
 		/// <summary>
-		/// On load position.
+		/// Load position.
 		/// </summary>
 		virtual void OnLoadPosition();
+
+		/// <summary>
+		/// Execute command.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnExecuteCommand(EventExecuteCommand& event);
+
+		/// <summary>
+		/// Menu response.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		virtual void OnMenuResponse(EventScriptMenuResponse& event);
 
 		/// <summary>
 		/// Draw 3D.
