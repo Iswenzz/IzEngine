@@ -23,11 +23,44 @@ namespace IW3SR::Game
 	extern Function<char*(const char** pData, bool allowLineBreaks)>
 		Com_ParseExt;
 
-	API extern Function<dvar_s*(const char* name)>
+	extern Function<dvar_s*(const char* name)>
 		Dvar_FindVar;
 
-	API extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description, DvarValue value, DvarLimits limits)>
-		Dvar_RegisterVariant;
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		int value, int null1, int null2, int null3, int min, int max)>
+		Dvar_RegisterVariantInt;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float value, int null1, int null2, int null3, float min, float max)>
+		Dvar_RegisterVariantFloat;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		bool value, int null1, int null2, int null3, int null4, int null5)>
+		Dvar_RegisterVariantBool;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		const char* value, int null1, int null2, int null3, int null4, int null5)>
+		Dvar_RegisterVariantString;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		int value, int null1, int null2, int null3, int enumSize, const char** enumData)>
+		Dvar_RegisterVariantEnum;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int null2, int null3, float min, float max)>
+		Dvar_RegisterVariantVec2;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int z, int null3, float min, float max)>
+		Dvar_RegisterVariantVec3;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int z, int w, float min, float max)>
+		Dvar_RegisterVariantVec4;
+
+	extern Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float r, float g, int b, int a, int null4, int null5)>
+		Dvar_RegisterVariantColor;
 
 	extern Function<Material*(const char* material, int size)>
 		Material_RegisterHandle;

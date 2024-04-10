@@ -22,10 +22,43 @@ namespace IW3SR::Game
 	Function<dvar_s*(const char* name)>
 		Dvar_FindVar = ASM_LOAD(Dvar_FindVar);
 
-	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description, DvarValue value, DvarLimits limits)>
-		Dvar_RegisterVariant = ASM_LOAD(Dvar_RegisterVariant);
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		int value, int null1, int null2, int null3, int min, int max)>
+		Dvar_RegisterVariantInt = ASM_LOAD(Dvar_RegisterVariant);
 
-	Function<Material* (const char* material, int size)>
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float value, int null1, int null2, int null3, float min, float max)>
+		Dvar_RegisterVariantFloat = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		bool value, int null1, int null2, int null3, int null4, int null5)>
+		Dvar_RegisterVariantBool = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		const char* value, int null1, int null2, int null3, int null4, int null5)>
+		Dvar_RegisterVariantString = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		int value, int null1, int null2, int null3, int enumSize, const char** enumData)>
+		Dvar_RegisterVariantEnum = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int null2, int null3, float min, float max)>
+		Dvar_RegisterVariantVec2 = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int z, int null3, float min, float max)>
+		Dvar_RegisterVariantVec3 = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float x, float y, int z, int w, float min, float max)>
+		Dvar_RegisterVariantVec4 = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<dvar_s*(const char* dvarName, DvarType type, int flags, const char* description,
+		float r, float g, int b, int a, int null4, int null5)>
+		Dvar_RegisterVariantColor = ASM_LOAD(Dvar_RegisterVariant);
+
+	Function<Material*(const char* material, int size)>
 		Material_RegisterHandle = 0x5F2A80;
 
 	Function<void(pmove_t* pm, pml_t* pml)>
@@ -42,7 +75,7 @@ namespace IW3SR::Game
 	Function<void FASTCALL(const float* colorFloat, char* colorBytes)>
 		R_ConvertColorToBytes = 0x493530;
 
-	Function<Font_s* (const char* font, int size)>
+	Function<Font_s*(const char* font, int size)>
 		R_RegisterFont = 0x5F1EC0;
 
 	Function<void(GfxCmdBufSourceState* source, float gameTime)>
@@ -97,15 +130,19 @@ namespace IW3SR::Game
 		a.mov(x86::ebp, x86::esp);
 		a.pushad();
 
-		a.push(x86::dword_ptr(x86::ebp, 0x1C));			 // limits
-		a.push(x86::dword_ptr(x86::ebp, 0x18));			 // value
+		a.push(x86::dword_ptr(x86::ebp, 0x2C));			 // max
+		a.push(x86::dword_ptr(x86::ebp, 0x28));			 // min
+		a.push(x86::dword_ptr(x86::ebp, 0x24));			 // w
+		a.push(x86::dword_ptr(x86::ebp, 0x20));			 // z
+		a.push(x86::dword_ptr(x86::ebp, 0x1C));			 // y
+		a.push(x86::dword_ptr(x86::ebp, 0x18));			 // x
 		a.push(x86::dword_ptr(x86::ebp, 0x14));			 // description
 		a.push(x86::dword_ptr(x86::ebp, 0x10));			 // flags
 		a.push(x86::dword_ptr(x86::ebp, 0x0C));			 // type
 		a.mov(x86::eax, x86::dword_ptr(x86::ebp, 0x08)); // dvarName
 		a.call(0x56C350);
-		a.mov(x86::dword_ptr(x86::esp, 0x30), x86::eax);
-		a.add(x86::esp, 0x14);
+		a.mov(x86::dword_ptr(x86::esp, 0x40), x86::eax);
+		a.add(x86::esp, 0x24);
 
 		a.popad();
 		a.pop(x86::ebp);
