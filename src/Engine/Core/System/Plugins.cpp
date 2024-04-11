@@ -1,7 +1,6 @@
-#include "Windows/Base.hpp"
+#include "Plugins.hpp"
 
 #include "Core/System/Environment.hpp"
-#include "Core/System/Plugins.hpp"
 
 namespace IW3SR::Engine
 {
@@ -12,7 +11,7 @@ namespace IW3SR::Engine
 
 		for (const auto& entry : std::filesystem::directory_iterator(Environment::PluginsDirectory))
 		{
-			if (entry.path().extension() != ".dll")
+			if (entry.path().extension() != Plugin::Extension)
 				continue;
 
 			auto mod = CreateScope<Plugin>(entry.path().string());

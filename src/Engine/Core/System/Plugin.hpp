@@ -19,6 +19,7 @@ namespace IW3SR::Engine
 		Function<void(Plugin* plugin)> CallbackInitialize;
 		Function<void()> CallbackRenderer;
 		Function<void()> CallbackShutdown;
+		static const char* Extension;
 
 		/// <summary>
 		/// Create a new plugin.

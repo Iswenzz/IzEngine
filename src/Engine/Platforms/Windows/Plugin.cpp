@@ -5,6 +5,8 @@
 
 namespace IW3SR::Engine
 {
+	const char* Plugin::Extension = ".dll";
+
 	Plugin::Plugin(std::string filePath)
 	{
 		FilePath = filePath;
