@@ -93,11 +93,11 @@ namespace IW3SR::Game::UC
 			system(std::format(command, CMAKE_BINARY_DIR).c_str());
 		}
 		Plugins::Initialize();
-		Game::Modules::Initialize();
-		Game::Settings::Initialize();
-
 		EventPluginRenderer event;
 		Plugins::Dispatch(event);
+
+		Game::Modules::Initialize();
+		Game::Settings::Initialize();
 
 		IsReloading = false;
 	}

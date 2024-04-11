@@ -7,7 +7,7 @@
 #include "System/Console.hpp"
 #include "System/Patch.hpp"
 
-namespace IW3SR::Engine
+namespace IW3SR
 {
 	void Application::Start()
 	{
