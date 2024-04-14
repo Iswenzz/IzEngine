@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/Base.hpp"
+
 #include <polyhook2/Detour/NatDetour.hpp>
 
 namespace IW3SR::Engine

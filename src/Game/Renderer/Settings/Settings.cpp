@@ -1,4 +1,6 @@
 #include "Settings.hpp"
+#include "Core/System/Environment.hpp"
+
 #include <fstream>
 
 namespace IW3SR::Game

@@ -1,5 +1,8 @@
 #include "Toolbar.hpp"
 
+#include "Core/System/Plugins.hpp"
+#include "Core/System/System.hpp"
+
 #include "Game/Renderer/GUI.hpp"
 #include "Game/Renderer/Modules/Modules.hpp"
 #include "Game/Renderer/Settings/Settings.hpp"

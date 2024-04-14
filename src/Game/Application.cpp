@@ -1,4 +1,6 @@
-#include "Core/Common.hpp"
+#include "Core/Base.hpp"
+#include "Core/System/Environment.hpp"
+#include "Core/System/Plugins.hpp"
 
 #include "Renderer/Modules/Modules.hpp"
 #include "Renderer/Settings/Settings.hpp"

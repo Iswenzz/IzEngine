@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Core/Base.hpp"
 
 #define FONT_OPENSANS "OpenSans-Regular"
 #define FONT_SPACERANGER "Space Ranger"

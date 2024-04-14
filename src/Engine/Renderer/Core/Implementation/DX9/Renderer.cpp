@@ -2,7 +2,9 @@
 
 #include "Core/System/Plugins.hpp"
 #include "Core/System/System.hpp"
-#include "Device.hpp"
+
+#include "DX9/Device.hpp"
+#include "ImGUI/UI.hpp"
 
 namespace IW3SR::Engine
 {

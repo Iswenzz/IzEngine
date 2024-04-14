@@ -19,11 +19,8 @@ namespace IW3SR::Game
 		/// <param name="min">The min value.</param>
 		/// <param name="max">The max value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterInt(const char* name, DvarFlags flags, const char* description, int value,
-			int min, int max)
-		{
-			return Dvar_RegisterVariantInt(name, DvarType::INTEGER, flags, description, value, 0, 0, 0, min, max);
-		}
+		static dvar_s* RegisterInt(const char* name, DvarFlags flags, const char* description, int value, int min,
+			int max);
 
 		/// <summary>
 		/// Register float dvar.
@@ -35,11 +32,8 @@ namespace IW3SR::Game
 		/// <param name="min">The min value.</param>
 		/// <param name="max">The max value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterFloat(const char* name, DvarFlags flags, const char* description, float value,
-			float min, float max)
-		{
-			return Dvar_RegisterVariantFloat(name, DvarType::VALUE, flags, description, value, 0, 0, 0, min, max);
-		}
+		static dvar_s* RegisterFloat(const char* name, DvarFlags flags, const char* description, float value, float min,
+			float max);
 
 		/// <summary>
 		/// Register bool dvar.
@@ -49,10 +43,7 @@ namespace IW3SR::Game
 		/// <param name="description">The description.</param>
 		/// <param name="value">The default value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterBool(const char* name, DvarFlags flags, const char* description, bool value)
-		{
-			return Dvar_RegisterVariantBool(name, DvarType::BOOLEAN, flags, description, value, 0, 0, 0, 0, 0);
-		}
+		static dvar_s* RegisterBool(const char* name, DvarFlags flags, const char* description, bool value);
 
 		/// <summary>
 		/// Register string dvar.
@@ -62,11 +53,7 @@ namespace IW3SR::Game
 		/// <param name="description">The description.</param>
 		/// <param name="value">The default value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterString(const char* name, DvarFlags flags, const char* description,
-			const char* value)
-		{
-			return Dvar_RegisterVariantString(name, DvarType::STRING, flags, description, value, 0, 0, 0, 0, 0);
-		}
+		static dvar_s* RegisterString(const char* name, DvarFlags flags, const char* description, const char* value);
 
 		/// <summary>
 		/// Register enum dvar.
@@ -77,12 +64,8 @@ namespace IW3SR::Game
 		/// <param name="value">The default value.</param>
 		/// <param name="list">The enum list.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterEnum(const char* name, DvarFlags flags, const char* description, int value,
-			const std::vector<const char*>& list)
-		{
-			return Dvar_RegisterVariantEnum(name, DvarType::ENUMERATION, flags, description, value, 0, 0, 0,
-				static_cast<int>(list.size()), const_cast<const char**>(list.data()));
-		}
+		static dvar_s* RegisterEnum(const char* name, DvarFlags flags, const char* description, int value,
+			const std::vector<const char*>& list);
 
 		/// <summary>
 		/// Register vec2 dvar.
@@ -95,11 +78,8 @@ namespace IW3SR::Game
 		/// <param name="min">The min value.</param>
 		/// <param name="max">The max value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterVec2(const char* name, DvarFlags flags, const char* description, float x, float y,
-			float min, float max)
-		{
-			return Dvar_RegisterVariantVec2(name, DvarType::VEC2, flags, description, x, y, 0, 0, min, max);
-		}
+		static dvar_s* RegisterVec2(const char* name, DvarFlags flags, const char* description, float x, float y,
+			float min, float max);
 
 		/// <summary>
 		/// Register vec3 dvar.
@@ -113,11 +93,8 @@ namespace IW3SR::Game
 		/// <param name="min">The min value.</param>
 		/// <param name="max">The max value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterVec3(const char* name, DvarFlags flags, const char* description, float x, float y,
-			float z, float min, float max)
-		{
-			return Dvar_RegisterVariantVec3(name, DvarType::VEC3, flags, description, x, y, z, 0, min, max);
-		}
+		static dvar_s* RegisterVec3(const char* name, DvarFlags flags, const char* description, float x, float y,
+			float z, float min, float max);
 
 		/// <summary>
 		/// Register vec4 dvar.
@@ -132,11 +109,8 @@ namespace IW3SR::Game
 		/// <param name="min">The min value.</param>
 		/// <param name="max">The max value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterVec4(const char* name, DvarFlags flags, const char* description, float x, float y,
-			float z, float w, float min, float max)
-		{
-			return Dvar_RegisterVariantVec4(name, DvarType::VEC4, flags, description, x, y, z, w, min, max);
-		}
+		static dvar_s* RegisterVec4(const char* name, DvarFlags flags, const char* description, float x, float y,
+			float z, float w, float min, float max);
 
 		/// <summary>
 		/// Register color dvar.
@@ -149,20 +123,14 @@ namespace IW3SR::Game
 		/// <param name="b">The default b value.</param>
 		/// <param name="a">The default a value.</param>
 		/// <returns></returns>
-		static inline dvar_s* RegisterColor(const char* name, DvarFlags flags, const char* description, float r,
-			float g, float b, float a)
-		{
-			return Dvar_RegisterVariantColor(name, DvarType::COLOR, flags, description, r, g, b, a, 0, 0);
-		}
+		static dvar_s* RegisterColor(const char* name, DvarFlags flags, const char* description, float r, float g,
+			float b, float a);
 
 		/// <summary>
 		/// Find dvar.
 		/// </summary>
 		/// <param name="name">The dvar name.</param>
-		static inline dvar_s* Find(const std::string& name)
-		{
-			return Dvar_FindVar(name.c_str());
-		}
+		static dvar_s* Find(const std::string& name);
 
 		/// <summary>
 		/// Get dvar value.

@@ -1,5 +1,9 @@
 #include "Patch.hpp"
 
+#include "Core/Memory/Memory.hpp"
+#include "Core/Memory/Signature.hpp"
+#include "Core/System/Environment.hpp"
+
 #define COD4X if (COD4X_HANDLE)
 
 namespace IW3SR::Game
@@ -39,8 +43,8 @@ namespace IW3SR::Game
 		COD4X Memory::NOP(Signature(COD4X_BIN, "72 ?? 83 ?? 00 F9 C5 00 07"), 2);
 	}
 
-	void Patch::Player() 
-	{ 
+	void Patch::Player()
+	{
 		// Hooks
 		COD4X CL_Connect_h < Signature(COD4X_BIN, "55 89 E5 53 81 EC 24 04 00 00 E8");
 		COD4X CG_Respawn_h < Signature(COD4X_BIN, "55 89 E5 83 EC 18 B8 ?? ?? ?? ?? 8B 50 20");

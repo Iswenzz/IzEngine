@@ -10,6 +10,9 @@ add_subdirectory(Memory)
 add_subdirectory(Screen)
 add_subdirectory(System)
 
+target_precompile_headers(IW3SR.Engine PRIVATE
+	Base.hpp)
+
 target_sources(IW3SR.Engine PRIVATE
-	Common.hpp
+	Base.hpp
 	Math.hpp)

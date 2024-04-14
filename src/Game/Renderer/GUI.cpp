@@ -1,5 +1,7 @@
 #include "GUI.hpp"
 
+#include "Core/System/Environment.hpp"
+
 namespace IW3SR::Game
 {
 	GUI::GUI() : UI(UI::Get())

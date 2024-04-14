@@ -17,7 +17,7 @@ namespace IW3SR::Game
 		const vec3_t end, int skipEntity, int tracemask)>
 		CG_Trace;
 
-	API extern Function<void(int localClientNum, int controllerIndex, const char* text)>
+	extern Function<void(int localClientNum, int controllerIndex, const char* text)>
 		Cmd_ExecuteSingleCommand;
 
 	extern Function<char*(const char** pData, bool allowLineBreaks)>

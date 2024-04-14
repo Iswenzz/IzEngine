@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Core/Base.hpp"
 
 namespace IW3SR::Engine
 {

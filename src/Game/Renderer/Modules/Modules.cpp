@@ -1,4 +1,6 @@
 #include "Modules.hpp"
+#include "Core/System/Environment.hpp"
+
 #include <fstream>
 
 namespace IW3SR::Game

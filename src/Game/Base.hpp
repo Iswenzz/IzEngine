@@ -1,6 +1,6 @@
 #pragma once
 #include "DX9/Common.hpp"
-#include "Platforms/Common.hpp"
+#include "ImGUI/Common.hpp"
 #include "Renderer/Common.hpp"
 
 #include "Definitions/Declaration.hpp"

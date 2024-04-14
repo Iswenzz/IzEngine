@@ -1,5 +1,7 @@
 #include "Console.hpp"
 
+#include "Core/Console/Console.hpp"
+
 namespace IW3SR::Game
 {
 	void GConsole::Initialize()

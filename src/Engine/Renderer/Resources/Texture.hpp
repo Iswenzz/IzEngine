@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Core/Base.hpp"
 
 #define TEXTURE_NULL "null"
 #define TEXTURE_WHITE "white"

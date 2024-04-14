@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Core/Base.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define UUID_DEFINED
