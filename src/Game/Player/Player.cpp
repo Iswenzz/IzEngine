@@ -21,7 +21,7 @@ namespace IW3SR::Game
 		EventPlayerConnect event;
 		Application::Get().Dispatch(event);
 	}
-	
+
 	void Player::Disconnect(int localClientNum)
 	{
 		CL_Disconnect_h(localClientNum);
@@ -30,7 +30,7 @@ namespace IW3SR::Game
 		Application::Get().Dispatch(event);
 	}
 
-	void Player::Respawn() 
+	void Player::Respawn()
 	{
 		CG_Respawn_h();
 

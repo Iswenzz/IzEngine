@@ -6,6 +6,8 @@
 #include "Modules/Modules.hpp"
 #include "Settings/Settings.hpp"
 
+#include "Game/System/Console.hpp"
+
 namespace IW3SR::Game
 {
 	void GRenderer::Initialize()
@@ -57,6 +59,7 @@ namespace IW3SR::Game
 
 	void GRenderer::Render()
 	{
+		GConsole::Frame();
 		Renderer::Begin();
 		GUI::Get().Render();
 
@@ -66,5 +69,6 @@ namespace IW3SR::Game
 			Application::Get().Dispatch(event);
 		}
 		Renderer::End();
+		Keyboard::Reset();
 	}
 }

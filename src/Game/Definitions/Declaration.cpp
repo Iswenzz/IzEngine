@@ -39,6 +39,8 @@ namespace IW3SR::Game
 	XAssetEntry* g_assetEntryPool = Signature(0xF0D640);
 	infoParm_t* info_params = Signature(0x71FBD0);
 	WeaponDef** bg_weaponNames = Signature(0x736DB8);
+	dvar_s** dvars = Signature(0xCBA7408);
+	int& dvarCount = Signature(0xCBA73F8);
 
 	// Render
 	DxGlobals* dx = Signature(0xCC9A400);

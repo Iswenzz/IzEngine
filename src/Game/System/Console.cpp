@@ -9,7 +9,8 @@ namespace IW3SR::Game
 		Console::Initialize();
 		Console::SetTile("IW3SR");
 
-		// SetWindowLongPtr(consoleWindowHandle, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WndProc));
+		for (int i = 0; i <= dvarCount - 1; i++)
+			Console::AddCommand(dvars[i]->name);
 	}
 
 	void GConsole::Shutdown()
@@ -23,6 +24,23 @@ namespace IW3SR::Game
 
 		if (Com_PrintMessage_h)
 			Com_PrintMessage_h(channel, msg, type);
+	}
+
+	void GConsole::Command(EventConsoleCommand& event)
+	{
+		Cmd_ExecuteSingleCommand(0, 0, event.command.c_str());
+	}
+
+	void GConsole::Dispatch(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+
+		dispatcher.Dispatch<EventConsoleCommand>(Command);
+	}
+
+	void GConsole::Frame() 
+	{
+		Console::Frame();
 	}
 
 	std::string GConsole::Q3(const std::string& msg)

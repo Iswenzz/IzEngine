@@ -39,6 +39,8 @@ namespace IW3SR::Game
 	extern XAssetEntry* g_assetEntryPool;
 	extern infoParm_t* info_params;
 	extern WeaponDef** bg_weaponNames;
+	extern dvar_s** dvars;
+	extern int& dvarCount;
 
 	// Render
 	API extern DxGlobals* dx;

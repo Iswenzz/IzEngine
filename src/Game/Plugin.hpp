@@ -1,8 +1,8 @@
 #pragma once
-#include "Core/Memory/Signature.hpp"
 #include "Core/Memory/Function.hpp"
 #include "Core/Memory/Hook.hpp"
 #include "Core/Memory/Memory.hpp"
+#include "Core/Memory/Signature.hpp"
 #include "Core/System/Plugins.hpp"
 
 #include "Renderer/Drawing/Draw2D.hpp"

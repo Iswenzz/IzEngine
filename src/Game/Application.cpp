@@ -1,4 +1,3 @@
-#include "Core/Base.hpp"
 #include "Core/System/Environment.hpp"
 #include "Core/System/Plugins.hpp"
 
@@ -36,5 +35,6 @@ namespace IW3SR
 		Plugins::Dispatch(event);
 		Modules::Dispatch(event);
 		Settings::Dispatch(event);
+		GConsole::Dispatch(event);
 	}
 }

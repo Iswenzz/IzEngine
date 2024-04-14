@@ -1,10 +1,10 @@
 #pragma once
+#include "Macros.hpp"
+
 #include <format>
 #include <iostream>
 #include <string>
 #include <unordered_map>
-
-#include "Macros.hpp"
 
 namespace IW3SR::Engine
 {
@@ -26,9 +26,9 @@ namespace IW3SR::Engine
 	};
 
 	/// <summary>
-	/// Console ANSI colors.
+	/// Log ANSI colors.
 	/// </summary>
-	enum class ConColor
+	enum class LogColor
 	{
 		Default = 0,
 		Red = 91,
@@ -58,12 +58,7 @@ namespace IW3SR::Engine
 		/// Write to the console.
 		/// </summary>
 		/// <param name="msg">The string.</param>
-		static void Write(const std::string& msg)
-		{
-			const bool eol = msg.find('\n') != std::string::npos;
-			const auto endl = eol ? FormatColor(ConColor::Default) : "";
-			std::cout << msg << endl;
-		}
+		static void Write(const std::string& msg);
 
 		/// <summary>
 		/// Write to the console.
@@ -111,7 +106,7 @@ namespace IW3SR::Engine
 		struct Info
 		{
 			std::string name;
-			ConColor color;
+			LogColor color;
 		};
 
 		// clang-format off
@@ -119,16 +114,16 @@ namespace IW3SR::Engine
 		/// Channels.
 		/// </summary>
 		static inline std::unordered_map<Channel, Info> Channels = {
-			{ Channel::Log, { "Log", ConColor::Default } },
-			{ Channel::Debug, { "Debug", ConColor::DarkWhite } },
-			{ Channel::Warning, { "Warning", ConColor::Yellow } },
-			{ Channel::Error, { "Error", ConColor::Red } },
-			{ Channel::Info, { "Info", ConColor::Cyan } },
-			{ Channel::Verbose, { "Verbose", ConColor::Green } },
-			{ Channel::System, { "System", ConColor::Magenta } },
-			{ Channel::Engine, { "Engine", ConColor::Magenta } },
-			{ Channel::Game, { "Game", ConColor::Cyan } },
-			{ Channel::Audio, { "Audio", ConColor::Magenta } }
+			{ Channel::Log, { "Log", LogColor::Default } },
+			{ Channel::Debug, { "Debug", LogColor::DarkWhite } },
+			{ Channel::Warning, { "Warning", LogColor::Yellow } },
+			{ Channel::Error, { "Error", LogColor::Red } },
+			{ Channel::Info, { "Info", LogColor::Cyan } },
+			{ Channel::Verbose, { "Verbose", LogColor::Green } },
+			{ Channel::System, { "System", LogColor::Magenta } },
+			{ Channel::Engine, { "Engine", LogColor::Magenta } },
+			{ Channel::Game, { "Game", LogColor::Cyan } },
+			{ Channel::Audio, { "Audio", LogColor::Magenta } }
 		};
 		// clang-format on
 
@@ -146,7 +141,7 @@ namespace IW3SR::Engine
 		/// Format color.
 		/// </summary>
 		/// <param name="color">The color.</param>
-		static inline std::string FormatColor(ConColor color)
+		static inline std::string FormatColor(LogColor color)
 		{
 			return std::format("\x1b[{}m", static_cast<int>(color));
 		}

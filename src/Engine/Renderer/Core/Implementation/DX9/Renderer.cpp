@@ -42,6 +42,5 @@ namespace IW3SR::Engine
 	{
 		UI::Get().End();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-		Keyboard::Reset();
 	}
 }

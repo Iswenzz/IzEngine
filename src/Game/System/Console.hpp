@@ -4,17 +4,17 @@
 namespace IW3SR::Game
 {
 	// clang-format off
-	constexpr std::array<ConColor, 10> Q3Colors = {
-		ConColor::Default,
-		ConColor::Red,
-		ConColor::Green,
-		ConColor::Yellow,
-		ConColor::Blue,
-		ConColor::Cyan,
-		ConColor::Magenta,
-		ConColor::Default,
-		ConColor::Default,
-		ConColor::Default
+	constexpr std::array<LogColor, 10> Q3Colors = {
+		LogColor::Default,
+		LogColor::Red,
+		LogColor::Green,
+		LogColor::Yellow,
+		LogColor::Blue,
+		LogColor::Cyan,
+		LogColor::Magenta,
+		LogColor::Default,
+		LogColor::Default,
+		LogColor::Default
 	};
 	// clang-format on
 
@@ -41,6 +41,23 @@ namespace IW3SR::Game
 		/// <param name="msg">The message.</param>
 		/// <param name="type">The messsage type.</param>
 		static void Write(ConChannel channel, const char* msg, int type);
+
+		/// <summary>
+		/// Execute command.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		static void Command(EventConsoleCommand& event);
+
+		/// <summary>
+		/// Dispatch event.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		static void Dispatch(Event& event);
+
+		/// <summary>
+		/// Console frame.
+		/// </summary>
+		static void Frame();
 
 	private:
 		/// <summary>
