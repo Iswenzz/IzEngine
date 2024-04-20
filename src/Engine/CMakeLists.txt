@@ -22,6 +22,7 @@ endif()
 # Build
 target_include_directories(IW3SR.Engine PUBLIC . ..)
 target_compile_definitions(IW3SR.Engine PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
+target_compile_definitions(IW3SR.Engine PUBLIC CMAKE_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}")
 
 target_link_libraries(IW3SR.Engine PUBLIC
 	$<$<BOOL:${GRAPHICS_API_DXSDK}>:DirectX::SDK>

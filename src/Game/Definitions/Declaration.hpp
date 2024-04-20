@@ -94,12 +94,12 @@ namespace IW3SR::Game
 
 	// Database
 	extern HANDLE db_handle;
-	extern unsigned short* db_hashTable;
+	extern uint16_t* db_hashTable;
 	extern XAssetHeader* db_xassetPool;
 	extern XZone* g_zones;
 	extern XAssetEntry* g_assetEntryPool;
 	extern DB_XAssetSizeHandler_t* db_xassetSizeHandlers;
-	extern unsigned int* g_poolSize;
+	extern uint32_t* g_poolSize;
 	extern const char** zone_code_post_gfx_mp;
 	extern const char** zone_localized_code_post_gfx_mp;
 	extern const char** zone_ui_mp;

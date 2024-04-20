@@ -94,12 +94,12 @@ namespace IW3SR::Game
 
 	// Database
 	HANDLE db_handle = Signature(0x14E89A4);
-	unsigned short* db_hashTable = Signature(0xE62A80);
+	uint16_t* db_hashTable = Signature(0xE62A80);
 	XAssetHeader* db_xassetPool = Signature(0x7265E0);
 	XZone* g_zones = Signature(0xFFEFD0);
 	XAssetEntry* g_assetEntryPool = Signature(0xF0D640);
 	DB_XAssetSizeHandler_t* db_xassetSizeHandlers = Signature(0x726A10);
-	unsigned int* g_poolSize = Signature(0x7263A0);
+	uint32_t* g_poolSize = Signature(0x7263A0);
 	const char** zone_code_post_gfx_mp = Signature(0xCC9D128);
 	const char** zone_localized_code_post_gfx_mp = Signature(0xCC9D134);
 	const char** zone_ui_mp = Signature(0xCC9D12C);

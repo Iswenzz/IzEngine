@@ -10,37 +10,26 @@ namespace IW3SR::Game
 	typedef vec_t vec2_t[2];
 	typedef vec_t vec3_t[3];
 	typedef vec_t vec4_t[4];
-
-	typedef unsigned short ScriptString;
 	typedef void (*xfunction_t)();
 
-	typedef struct scr_function_s
+	struct XAnimTree_s;
+	struct FxEffectDef;
+	struct gentity_s;
+	struct GfxCell;
+	struct GfxPortal;
+	struct GfxViewInfo;
+	struct itemDef_s;
+	struct pathnode_t;
+	struct pathnode_tree_t;
+	struct scr_vehicle_s;
+	struct snd_alias_list_t;
+
+	struct scr_function_s
 	{
 		struct scr_function_s* next;
 		char* name;
 		xfunction_t function;
 		bool developer;
-	} scr_function_t;
-
-	enum GfxRenderTargetId
-	{
-		R_RENDERTARGET_SAVED_SCREEN = 0x0,
-		R_RENDERTARGET_FRAME_BUFFER = 0x1,
-		R_RENDERTARGET_SCENE = 0x2,
-		R_RENDERTARGET_RESOLVED_POST_SUN = 0x3,
-		R_RENDERTARGET_RESOLVED_SCENE = 0x4,
-		R_RENDERTARGET_FLOAT_Z = 0x5,
-		R_RENDERTARGET_DYNAMICSHADOWS = 0x6,
-		R_RENDERTARGET_PINGPONG_0 = 0x7,
-		R_RENDERTARGET_PINGPONG_1 = 0x8,
-		R_RENDERTARGET_SHADOWCOOKIE = 0x9,
-		R_RENDERTARGET_SHADOWCOOKIE_BLUR = 0xA,
-		R_RENDERTARGET_POST_EFFECT_0 = 0xB,
-		R_RENDERTARGET_POST_EFFECT_1 = 0xC,
-		R_RENDERTARGET_SHADOWMAP_SUN = 0xD,
-		R_RENDERTARGET_SHADOWMAP_SPOT = 0xE,
-		R_RENDERTARGET_COUNT = 0xF,
-		R_RENDERTARGET_NONE = 0x10,
 	};
 
 	enum hitLocation_t
@@ -174,7 +163,7 @@ namespace IW3SR::Game
 		Message consoleMessages[1024];
 		char consoleText[32768];
 		char textTempLine[512];
-		unsigned int lineOffset;
+		uint32_t lineOffset;
 		int displayLineOffset;
 		int prevChannel;
 		bool outputVisible;
@@ -289,25 +278,28 @@ namespace IW3SR::Game
 
 	enum ButtonFlags
 	{
-		FIRE = 1,
-		MELEE = 4,
-		ACTIVATE = 8,
-		RELOAD = 16,
-		LEAN_LEFT = 64,
-		LEAN_RIGHT = 128,
-		PRONE = 256,
-		CROUCH = 512,
-		JUMP = 1024,
-		ADS_TOGGLE_ON = 2048,
-		CROUCH_HOLD = 4608,
-		PRONE_HOLD = 4352,
-		STEADY_AIM = 8192,
-		SPRINT = 8194,
-		FRAG = 16384,
-		SPECIAL_GRENADE = 32768,
-		ADS_TOGGLE_OFF = 524288,
-		ADS_HOLD = 526336,
-		NO_INPUT = 1048576
+		BUTTON_FIRE = BIT(0),
+		BUTTON_SPRINT = BIT(1),
+		BUTTON_MELEE = BIT(2),
+		BUTTON_USE = BIT(3),
+		BUTTON_RELOAD = BIT(4),
+		BUTTON_USE_RELOAD = BIT(5),
+		BUTTON_LEAN_LEFT = BIT(6),
+		BUTTON_LEAN_RIGHT = BIT(7),
+		BUTTON_PRONE = BIT(8),
+		BUTTON_CROUCH = BIT(9),
+		BUTTON_JUMP = BIT(10),
+		BUTTON_ADS = BIT(11),
+		BUTTON_CROUCH_HOLD = BIT(12) | BIT(9),
+		BUTTON_PRONE_HOLD = BIT(12) | BIT(8),
+		BUTTON_STEADY_AIM = BIT(13),
+		BUTTON_HOLD_BREATH = BIT(13) | BIT(1),
+		BUTTON_FRAG = BIT(14),
+		BUTTON_SPECIAL = BIT(15),
+		BUTTON_NIGHTVISION = BIT(18),
+		BUTTON_ADS_OFF = BIT(19),
+		BUTTON_ADS_HOLD = BIT(19) | BIT(6),
+		BUTTON_NO_INPUT = BIT(20)
 	};
 
 	enum weaponstate_t
@@ -379,7 +371,7 @@ namespace IW3SR::Game
 	{
 		bool enabled;
 		int integer;
-		unsigned int unsignedInt;
+		uint32_t uinteger;
 		float value;
 		float vector[4];
 		const char* string;
@@ -388,32 +380,32 @@ namespace IW3SR::Game
 
 	enum class DvarType : int8_t
 	{
-		BOOLEAN = 0,
-		VALUE = 1,
-		VEC2 = 2,
-		VEC3 = 3,
-		VEC4 = 4,
-		INTEGER = 5,
-		ENUMERATION = 6,
-		STRING = 7,
-		COLOR = 8,
-		RGB = 9
+		BOOLEAN = 0x0,
+		VALUE = 0x1,
+		VEC2 = 0x2,
+		VEC3 = 0x3,
+		VEC4 = 0x4,
+		INTEGER = 0x5,
+		ENUMERATION = 0x6,
+		STRING = 0x7,
+		COLOR = 0x8,
+		RGB = 0x9
 	};
 
 	enum DvarFlags : uint16_t
 	{
-		NONE = 0x0,
-		SAVED = 0x1,
-		USERINFO = 0x2,	  // Sent to server on connect or change
-		SERVERINFO = 0x4, // Sent in response to front end requests
-		REPLICATED = 0x8,
-		WRITEPROTECTED = 0x10,
-		LATCHED = 0x20,
-		READONLY = 0x40,
-		CHEATPROTECTED = 0x80,
-		TEMP = 0x100,
-		NORESTART = 0x400,	  // Do not clear when a cvar_restart is issued
-		USERCREATED = 0x4000, // Created by a set command
+		DVAR_NONE = BIT(0),
+		DVAR_SAVED = BIT(1),
+		DVAR_USERINFO = BIT(2),	  // Sent to server on connect or change
+		DVAR_SERVERINFO = BIT(3), // Sent in response to front end requests
+		DVAR_REPLICATED = BIT(4),
+		DVAR_WRITEPROTECTED = BIT(5),
+		DVAR_LATCHED = BIT(6),
+		DVAR_READONLY = BIT(7),
+		DVAR_CHEATPROTECTED = BIT(8),
+		DVAR_TEMP = BIT(9),
+		DVAR_NORESTART = BIT(10),	// Do not clear when a cvar_restart is issued
+		DVAR_USERCREATED = BIT(14), // Created by a set command
 	};
 
 	struct dvar_s
@@ -435,33 +427,22 @@ namespace IW3SR::Game
 
 	enum DB_FILE_EXISTS_PATH
 	{
-		DB_PATH_ZONE = 0,
-		DB_PATH_MAIN = 1,
-		DB_PATH_USERMAPS = 2
+		DB_PATH_ZONE = 0x0,
+		DB_PATH_MAIN = 0x1,
+		DB_PATH_USERMAPS = 0x2
 	};
 
 	enum XZONE_FLAGS
 	{
-		XZONE_ZERO = 0x0,
-		XZONE_LOC_POST_GFX = 0x0,
-		XZONE_LOC_POST_GFX_FREE = 0x0,
-		XZONE_LOC_COMMON = 0x1,
-		XZONE_LOC_COMMON_FREE = 0x0,
-		XZONE_POST_GFX = 0x2,
-		XZONE_POST_GFX_FREE = 0x0,
-		XZONE_COMMON = 0x4,
-		XZONE_COMMON_FREE = 0x0,
-		XZONE_UI = 0x8,
-		XZONE_UI_FREE = 0x0,
-		XZONE_MAP = 0x8,
-		XZONE_MAP_FREE = 0x8,
-		XZONE_MOD = 0x10,
-		XZONE_MOD_FREE = 0x0,
-		XZONE_DEBUG = 0x40,
-		XZONE_DEBUG_FREE = 0x40,
-		XZONE_LOAD = 0x20,
-		XZONE_LOAD_FREE = 0x60,
-		XZONE_UI_FREE_INGAME = XZONE_LOAD_FREE | XZONE_UI
+		XZONE_LOC_POST_GFX = 0,
+		XZONE_LOC_COMMON = BIT(0),
+		XZONE_POST_GFX = BIT(1),
+		XZONE_COMMON = BIT(2),
+		XZONE_UI = BIT(3),
+		XZONE_MAP = BIT(3),
+		XZONE_MOD = BIT(4),
+		XZONE_LOAD = BIT(5),
+		XZONE_DEBUG = BIT(6)
 	};
 
 	struct XZoneInfo
@@ -491,13 +472,13 @@ namespace IW3SR::Game
 
 	union PackedUnitVec
 	{
-		unsigned int packed;
+		uint32_t packed;
 		char array[4];
 	};
 
 	union GfxColor
 	{
-		unsigned int packed;
+		uint32_t packed;
 		char array[4];
 	};
 
@@ -583,7 +564,7 @@ namespace IW3SR::Game
 
 	struct ActionSlotParam_SpecifyWeapon
 	{
-		unsigned int index;
+		uint32_t index;
 	};
 
 	struct ActionSlotParam
@@ -747,14 +728,14 @@ namespace IW3SR::Game
 		int eFlags;
 		int eventSequence;
 		int events[4];
-		unsigned int eventParms[4];
+		uint32_t eventParms[4];
 		int oldEventSequence;
 		int clientNum;
 		int offHandIndex;
 		OffhandSecondaryClass offhandSecondary;
-		unsigned int weapon;
+		uint32_t weapon;
 		int weaponstate;
-		unsigned int weaponShotCount;
+		uint32_t weaponShotCount;
 		float fWeaponPosFrac;
 		int adsDelayTime;
 		int spreadOverride;
@@ -775,9 +756,9 @@ namespace IW3SR::Game
 		int stats[5];
 		int ammo[128];
 		int ammoclip[128];
-		unsigned int weapons[4];
-		unsigned int weaponold[4];
-		unsigned int weaponrechamber[4];
+		uint32_t weapons[4];
+		uint32_t weaponold[4];
+		uint32_t weaponrechamber[4];
 		float proneDirection;
 		float proneDirectionPitch;
 		float proneTorsoPitch;
@@ -856,7 +837,7 @@ namespace IW3SR::Game
 		TRACE_HITTYPE_DYNENT_BRUSH = 0x3,
 	};
 
-	struct __declspec(align(4)) trace_t
+	struct alignas(4) trace_t
 	{
 		float fraction;
 		float normal[3];
@@ -864,10 +845,10 @@ namespace IW3SR::Game
 		int contents;
 		const char* material;
 		TraceHitType hitType;
-		unsigned short hitId;
-		unsigned short modelIndex;
-		unsigned short partName;
-		unsigned short partGroup;
+		uint16_t hitId;
+		uint16_t modelIndex;
+		uint16_t partName;
+		uint16_t partGroup;
 		bool allsolid;
 		bool startsolid;
 		bool walkable;
@@ -960,9 +941,9 @@ namespace IW3SR::Game
 		char semantic;
 		char track;
 		CardMemory cardMemory;
-		unsigned short width;
-		unsigned short height;
-		unsigned short depth;
+		uint16_t width;
+		uint16_t height;
+		uint16_t depth;
 		char category;
 		bool delayLoadPixels;
 		const char* name;
@@ -970,17 +951,17 @@ namespace IW3SR::Game
 
 	enum file_image_flags_t
 	{
-		IMG_FLAG_NOPICMIP = 0x1,
-		IMG_FLAG_NOMIPMAPS = 0x2,
-		IMG_FLAG_CUBEMAP = 0x4,
-		IMG_FLAG_VOLMAP = 0x8,
-		IMG_FLAG_STREAMING = 0x10,
-		IMG_FLAG_LEGACY_NORMALS = 0x20,
-		IMG_FLAG_CLAMP_U = 0x40,
-		IMG_FLAG_CLAMP_V = 0x80,
-		IMG_FLAG_DYNAMIC = 0x10000,
-		IMG_FLAG_RENDER_TARGET = 0x20000,
-		IMG_FLAG_SYSTEMMEM = 0x40000,
+		IMG_FLAG_NOPICMIP = BIT(0),
+		IMG_FLAG_NOMIPMAPS = BIT(1),
+		IMG_FLAG_CUBEMAP = BIT(2),
+		IMG_FLAG_VOLMAP = BIT(3),
+		IMG_FLAG_STREAMING = BIT(4),
+		IMG_FLAG_LEGACY_NORMALS = BIT(5),
+		IMG_FLAG_CLAMP_U = BIT(6),
+		IMG_FLAG_CLAMP_V = BIT(7),
+		IMG_FLAG_DYNAMIC = BIT(16),
+		IMG_FLAG_RENDER_TARGET = BIT(17),
+		IMG_FLAG_SYSTEMMEM = BIT(18)
 	};
 
 	struct GfxImageFileHeader
@@ -995,9 +976,9 @@ namespace IW3SR::Game
 
 	struct GfxVertexShaderLoadDef
 	{
-		unsigned int* program;
-		unsigned short programSize;
-		unsigned short loadForRenderer;
+		uint32_t* program;
+		uint16_t programSize;
+		uint16_t loadForRenderer;
 	};
 
 	struct MaterialVertexShaderProgram
@@ -1014,9 +995,9 @@ namespace IW3SR::Game
 
 	struct GfxPixelShaderLoadDef
 	{
-		unsigned int* program;
-		unsigned short programSize;
-		unsigned short loadForRenderer;
+		uint32_t* program;
+		uint16_t programSize;
+		uint16_t loadForRenderer;
 	};
 
 	struct MaterialPixelShaderProgram
@@ -1040,7 +1021,7 @@ namespace IW3SR::Game
 
 	struct GfxStateBits
 	{
-		unsigned int loadBits[2];
+		uint32_t loadBits[2];
 	};
 
 	struct WaterWritable
@@ -1079,7 +1060,7 @@ namespace IW3SR::Game
 
 	struct MaterialTextureDef
 	{
-		unsigned int nameHash;
+		uint32_t nameHash;
 		char nameStart;
 		char nameEnd;
 		char samplerState;
@@ -1089,26 +1070,26 @@ namespace IW3SR::Game
 
 	struct GfxDrawSurfFields
 	{
-		unsigned __int64 objectId : 16;
-		unsigned __int64 reflectionProbeIndex : 8;
-		unsigned __int64 customIndex : 5;
-		unsigned __int64 materialSortedIndex : 11;
-		unsigned __int64 prepass : 2;
-		unsigned __int64 primaryLightIndex : 8;
-		unsigned __int64 surfType : 4;
-		unsigned __int64 primarySortKey : 6;
-		unsigned __int64 unused : 4;
+		uint64_t objectId : 16;
+		uint64_t reflectionProbeIndex : 8;
+		uint64_t customIndex : 5;
+		uint64_t materialSortedIndex : 11;
+		uint64_t prepass : 2;
+		uint64_t primaryLightIndex : 8;
+		uint64_t surfType : 4;
+		uint64_t primarySortKey : 6;
+		uint64_t unused : 4;
 	};
 
 	union GfxDrawSurf
 	{
 		GfxDrawSurfFields fields;
-		unsigned long long packed;
+		uint64_t packed;
 	};
 
 	struct MaterialArgumentCodeConst
 	{
-		unsigned short index;
+		uint16_t index;
 		char firstRow;
 		char rowCount;
 	};
@@ -1117,14 +1098,14 @@ namespace IW3SR::Game
 	{
 		const float* literalConst;
 		MaterialArgumentCodeConst codeConst;
-		unsigned int codeSampler;
-		unsigned int nameHash;
+		uint32_t codeSampler;
+		uint32_t nameHash;
 	};
 
 	struct MaterialShaderArgument
 	{
-		unsigned short type;
-		unsigned short dest;
+		uint16_t type;
+		uint16_t dest;
 		MaterialArgumentDef u;
 	};
 
@@ -1270,12 +1251,12 @@ namespace IW3SR::Game
 	struct MaterialTechnique
 	{
 		const char* name;
-		unsigned short flags;
-		unsigned short passCount;
+		uint16_t flags;
+		uint16_t passCount;
 		MaterialPass passArray[1];
 	};
 
-	enum MaterialWorldVertexFormat : char
+	enum MaterialWorldVertexFormat : uint8_t
 	{
 		MTL_WORLDVERT_TEX_1_NRM_1 = 0x0,
 		MTL_WORLDVERT_TEX_2_NRM_1 = 0x1,
@@ -1310,8 +1291,8 @@ namespace IW3SR::Game
 		char textureAtlasRowCount;
 		char textureAtlasColumnCount;
 		GfxDrawSurf drawSurf;
-		unsigned int surfaceTypeBits;
-		unsigned short hashIndex;
+		uint32_t surfaceTypeBits;
+		uint16_t hashIndex;
 	};
 #pragma pack(pop)
 
@@ -1392,7 +1373,7 @@ namespace IW3SR::Game
 	struct cbrushside_t
 	{
 		cplane_s* plane;
-		unsigned int materialNum;
+		uint32_t materialNum;
 		short firstAdjacentSideOffset;
 		char edgeCount;
 	};
@@ -1408,7 +1389,7 @@ namespace IW3SR::Game
 	struct XSurfaceVertexInfo
 	{
 		short vertCount[4];
-		unsigned short* vertsBlend;
+		uint16_t* vertsBlend;
 	};
 
 	struct GfxPointVertex
@@ -1419,10 +1400,10 @@ namespace IW3SR::Game
 
 	union PackedTexCoords
 	{
-		unsigned int packed;
+		uint32_t packed;
 	};
 
-	struct __declspec(align(4)) ShowCollisionBrushPt
+	struct alignas(4) ShowCollisionBrushPt
 	{
 		float xyz[3];
 		short sideIndex[3];
@@ -1446,38 +1427,38 @@ namespace IW3SR::Game
 
 	struct XSurfaceCollisionAabb
 	{
-		unsigned short mins[3];
-		unsigned short maxs[3];
+		uint16_t mins[3];
+		uint16_t maxs[3];
 	};
 
 	struct XSurfaceCollisionNode
 	{
 		XSurfaceCollisionAabb aabb;
-		unsigned short childBeginIndex;
-		unsigned short childCount;
+		uint16_t childBeginIndex;
+		uint16_t childCount;
 	};
 
 	struct XSurfaceCollisionLeaf
 	{
-		unsigned short triangleBeginIndex;
+		uint16_t triangleBeginIndex;
 	};
 
 	struct XSurfaceCollisionTree
 	{
 		float trans[3];
 		float scale[3];
-		unsigned int nodeCount;
+		uint32_t nodeCount;
 		XSurfaceCollisionNode* nodes;
-		unsigned int leafCount;
+		uint32_t leafCount;
 		XSurfaceCollisionLeaf* leafs;
 	};
 
 	struct XRigidVertList
 	{
-		unsigned short boneOffset;
-		unsigned short vertCount;
-		unsigned short triOffset;
-		unsigned short triCount;
+		uint16_t boneOffset;
+		uint16_t vertCount;
+		uint16_t triOffset;
+		uint16_t triCount;
 		XSurfaceCollisionTree* collisionTree;
 	};
 
@@ -1485,15 +1466,15 @@ namespace IW3SR::Game
 	{
 		char tileMode;
 		bool deformed;
-		unsigned short vertCount;
-		unsigned short triCount;
+		uint16_t vertCount;
+		uint16_t triCount;
 		char zoneHandle;
-		unsigned short baseTriIndex;
-		unsigned short baseVertIndex;
-		unsigned short* triIndices;
+		uint16_t baseTriIndex;
+		uint16_t baseVertIndex;
+		uint16_t* triIndices;
 		XSurfaceVertexInfo vertInfo;
 		GfxPackedVertex* verts0;
-		unsigned int vertListCount;
+		uint32_t vertListCount;
 		XRigidVertList* vertList;
 		int partBits[4];
 	};
@@ -1503,7 +1484,7 @@ namespace IW3SR::Game
 		float mins[3];
 		int contents;
 		float maxs[3];
-		unsigned int numsides;
+		uint32_t numsides;
 		cbrushside_t* sides;
 		short axialMaterialNum[2][3];
 		char* baseAdjacentSide;
@@ -1531,7 +1512,7 @@ namespace IW3SR::Game
 
 	struct PhysGeomList
 	{
-		unsigned int count;
+		uint32_t count;
 		PhysGeomInfo* geoms;
 		PhysMass mass;
 	};
@@ -1575,8 +1556,8 @@ namespace IW3SR::Game
 	struct XModelLodInfo
 	{
 		float dist;
-		unsigned short numsurfs;
-		unsigned short surfIndex;
+		uint16_t numsurfs;
+		uint16_t surfIndex;
 		int partBits[4];
 		char lod;
 		char smcIndexPlusOne;
@@ -1606,9 +1587,9 @@ namespace IW3SR::Game
 		const char* name;
 		char numBones;
 		char numRootBones;
-		unsigned char numsurfs;
+		uint8_t numsurfs;
 		char lodRampType;
-		unsigned short* boneNames;
+		uint16_t* boneNames;
 		char* parentList;
 		short* quats;
 		float* trans;
@@ -1637,20 +1618,20 @@ namespace IW3SR::Game
 	union XAnimIndices
 	{
 		char* _1;
-		unsigned short* _2;
+		uint16_t* _2;
 		void* data;
 	};
 
 	union XAnimDynamicFrames
 	{
 		char (*_1)[3];
-		unsigned short (*_2)[3];
+		uint16_t (*_2)[3];
 	};
 
 	union XAnimDynamicIndices
 	{
 		char _1[1];
-		unsigned short _2[1];
+		uint16_t _2[1];
 	};
 
 #pragma pack(push, 4)
@@ -1670,9 +1651,9 @@ namespace IW3SR::Game
 
 	struct XAnimPartTrans
 	{
-		unsigned short size;
+		uint16_t size;
 		char smallTrans;
-		__declspec(align(2)) XAnimPartTransData u;
+		ALIGN(2) XAnimPartTransData u;
 	};
 
 	struct XAnimDeltaPartQuatDataFrames
@@ -1689,8 +1670,8 @@ namespace IW3SR::Game
 
 	struct XAnimDeltaPartQuat
 	{
-		unsigned short size;
-		__declspec(align(4)) XAnimDeltaPartQuatData u;
+		uint16_t size;
+		alignas(4) XAnimDeltaPartQuatData u;
 	};
 
 	struct XAnimDeltaPart
@@ -1701,7 +1682,7 @@ namespace IW3SR::Game
 
 	struct XAnimNotifyInfo
 	{
-		ScriptString name;
+		uint16_t name;
 		float time;
 	};
 
@@ -1726,22 +1707,22 @@ namespace IW3SR::Game
 	struct XAnimParts
 	{
 		const char* name;
-		unsigned short dataByteCount;
-		unsigned short dataShortCount;
-		unsigned short dataIntCount;
-		unsigned short randomDataByteCount;
-		unsigned short randomDataIntCount;
-		unsigned short numframes;
+		uint16_t dataByteCount;
+		uint16_t dataShortCount;
+		uint16_t dataIntCount;
+		uint16_t randomDataByteCount;
+		uint16_t randomDataIntCount;
+		uint16_t numframes;
 		char bLoop;
 		char bDelta;
 		char boneCount[12];
 		char notifyCount;
 		char assetType;
-		unsigned int randomDataShortCount;
-		unsigned int indexCount;
+		uint32_t randomDataShortCount;
+		uint32_t indexCount;
 		float framerate;
 		float frequency;
-		ScriptString* names;
+		uint16_t* names;
 		char* dataByte;
 		short* dataShort;
 		int* dataInt;
@@ -1755,10 +1736,10 @@ namespace IW3SR::Game
 
 	struct GfxStreamingAabbTree
 	{
-		unsigned short firstItem;
-		unsigned short itemCount;
-		unsigned short firstChild;
-		unsigned short childCount;
+		uint16_t firstItem;
+		uint16_t itemCount;
+		uint16_t firstChild;
+		uint16_t childCount;
 		float mins[3];
 		float maxs[3];
 	};
@@ -1766,9 +1747,9 @@ namespace IW3SR::Game
 	struct GfxWorldStreamInfo
 	{
 		int aabbTreeCount;
-		// GfxStreamingAabbTree *aabbTrees;
-		// int leafRefCount;
-		// int *leafRefs;
+		GfxStreamingAabbTree* aabbTrees;
+		int leafRefCount;
+		int* leafRefs;
 	};
 
 	struct GfxWorldVertexData
@@ -1796,7 +1777,7 @@ namespace IW3SR::Game
 		float angles[3];
 	};
 
-	struct __declspec(align(4)) GfxLightImage
+	struct alignas(4) GfxLightImage
 	{
 		GfxImage* image;
 		char samplerState;
@@ -1821,7 +1802,7 @@ namespace IW3SR::Game
 		float cosHalfFovOuter;
 		float cosHalfFovInner;
 		int exponent;
-		unsigned int spotShadowIndex;
+		uint32_t spotShadowIndex;
 		GfxLightDef* def;
 	};
 
@@ -1835,25 +1816,23 @@ namespace IW3SR::Game
 	{
 		int cellCount;
 		cplane_s* planes;
-		unsigned short* nodes;
-		unsigned int* sceneEntCellBits;
+		uint16_t* nodes;
+		uint32_t* sceneEntCellBits;
 	};
 
 	struct GfxAabbTree
 	{
 		float mins[3];
 		float maxs[3];
-		unsigned short childCount;
-		unsigned short surfaceCount;
-		unsigned short startSurfIndex;
-		unsigned short surfaceCountNoDecal;
-		unsigned short startSurfIndexNoDecal;
-		unsigned short smodelIndexCount;
-		unsigned short* smodelIndexes;
+		uint16_t childCount;
+		uint16_t surfaceCount;
+		uint16_t startSurfIndex;
+		uint16_t surfaceCountNoDecal;
+		uint16_t startSurfIndexNoDecal;
+		uint16_t smodelIndexCount;
+		uint16_t* smodelIndexes;
 		int childrenOffset;
 	};
-
-	struct GfxPortal;
 
 	struct GfxPortalWritable
 	{
@@ -1871,8 +1850,6 @@ namespace IW3SR::Game
 		char side[3];
 		char pad;
 	};
-
-	struct GfxCell;
 
 	struct GfxPortal
 	{
@@ -1906,7 +1883,7 @@ namespace IW3SR::Game
 
 	struct GfxLightGridEntry
 	{
-		unsigned short colorsIndex;
+		uint16_t colorsIndex;
 		char primaryLightIndex;
 		char needsTrace;
 	};
@@ -1919,17 +1896,17 @@ namespace IW3SR::Game
 	struct GfxLightGrid
 	{
 		char hasLightRegions;
-		unsigned int sunPrimaryLightIndex;
-		unsigned short mins[3];
-		unsigned short maxs[3];
-		unsigned int rowAxis;
-		unsigned int colAxis;
-		unsigned short* rowDataStart;
-		unsigned int rawRowDataSize;
+		uint32_t sunPrimaryLightIndex;
+		uint16_t mins[3];
+		uint16_t maxs[3];
+		uint32_t rowAxis;
+		uint32_t colAxis;
+		uint16_t* rowDataStart;
+		uint32_t rawRowDataSize;
 		char* rawRowData;
-		unsigned int entryCount;
+		uint32_t entryCount;
 		GfxLightGridEntry* entries;
-		unsigned int colorCount;
+		uint32_t colorCount;
 		GfxLightGridColors* colors;
 	};
 
@@ -1939,13 +1916,13 @@ namespace IW3SR::Game
 		float maxs[3];
 	};
 
-	struct __declspec(align(4)) GfxBrushModel
+	struct alignas(4) GfxBrushModel
 	{
 		GfxBrushModelWritable writable;
 		float bounds[2][3];
-		unsigned short surfaceCount;
-		unsigned short startSurfIndex;
-		unsigned short surfaceCountNoDecal;
+		uint16_t surfaceCount;
+		uint16_t startSurfIndex;
+		uint16_t surfaceCountNoDecal;
 	};
 
 	struct MaterialMemory
@@ -1956,7 +1933,7 @@ namespace IW3SR::Game
 
 	struct Glyph
 	{
-		unsigned short letter;
+		uint16_t letter;
 		char x0;
 		char y0;
 		char dx;
@@ -2188,7 +2165,7 @@ namespace IW3SR::Game
 		int iHeadIcon;
 		int iHeadIconTeam;
 		int solid;
-		unsigned int eventParm;
+		uint32_t eventParm;
 		int eventSequence;
 		int events[4];
 		int eventParms[4];
@@ -2200,7 +2177,7 @@ namespace IW3SR::Game
 		int indexUnion2;
 		float fTorsoPitch;
 		float fWaistPitch;
-		unsigned int partBits[4];
+		uint32_t partBits[4];
 	};
 
 	enum team_t
@@ -2269,33 +2246,33 @@ namespace IW3SR::Game
 
 	struct XModelDrawInfo
 	{
-		unsigned short lod;
-		unsigned short surfId;
+		uint16_t lod;
+		uint16_t surfId;
 	};
 
 	struct GfxSceneDynModel
 	{
 		XModelDrawInfo info;
-		unsigned short dynEntId;
+		uint16_t dynEntId;
 	};
 
 	struct BModelDrawInfo
 	{
-		unsigned short surfId;
+		uint16_t surfId;
 	};
 
 	struct GfxSceneDynBrush
 	{
 		BModelDrawInfo info;
-		unsigned short dynEntId;
+		uint16_t dynEntId;
 	};
 
 	struct GfxShadowGeometry
 	{
-		unsigned short surfaceCount;
-		unsigned short smodelCount;
-		unsigned short* sortedSurfIndex;
-		unsigned short* smodelIndex;
+		uint16_t surfaceCount;
+		uint16_t smodelCount;
+		uint16_t* sortedSurfIndex;
+		uint16_t* smodelIndex;
 	};
 
 	struct GfxLightRegionAxis
@@ -2309,13 +2286,13 @@ namespace IW3SR::Game
 	{
 		float kdopMidPoint[9];
 		float kdopHalfSize[9];
-		unsigned int axisCount;
+		uint32_t axisCount;
 		GfxLightRegionAxis* axis;
 	};
 
 	struct GfxLightRegion
 	{
-		unsigned int hullCount;
+		uint32_t hullCount;
 		GfxLightRegionHull* hulls;
 	};
 
@@ -2330,8 +2307,8 @@ namespace IW3SR::Game
 	{
 		int vertexLayerData;
 		int firstVertex;
-		unsigned short vertexCount;
-		unsigned short triCount;
+		uint16_t vertexCount;
+		uint16_t triCount;
 		int baseIndex;
 	};
 
@@ -2361,49 +2338,49 @@ namespace IW3SR::Game
 		float scale;
 	};
 
-	struct __declspec(align(4)) GfxStaticModelDrawInst
+	struct alignas(4) GfxStaticModelDrawInst
 	{
 		float cullDist;
 		GfxPackedPlacement placement;
 		XModel* model;
-		unsigned short smodelCacheIndex[4];
+		uint16_t smodelCacheIndex[4];
 		char reflectionProbeIndex;
 		char primaryLightIndex;
-		unsigned short lightingHandle;
+		uint16_t lightingHandle;
 		char flags;
 	};
 
 	struct GfxWorldDpvsStatic
 	{
-		unsigned int smodelCount;
-		unsigned int staticSurfaceCount;
-		unsigned int staticSurfaceCountNoDecal;
-		unsigned int litSurfsBegin;
-		unsigned int litSurfsEnd;
-		unsigned int decalSurfsBegin;
-		unsigned int decalSurfsEnd;
-		unsigned int emissiveSurfsBegin;
-		unsigned int emissiveSurfsEnd;
-		unsigned int smodelVisDataCount;
-		unsigned int surfaceVisDataCount;
+		uint32_t smodelCount;
+		uint32_t staticSurfaceCount;
+		uint32_t staticSurfaceCountNoDecal;
+		uint32_t litSurfsBegin;
+		uint32_t litSurfsEnd;
+		uint32_t decalSurfsBegin;
+		uint32_t decalSurfsEnd;
+		uint32_t emissiveSurfsBegin;
+		uint32_t emissiveSurfsEnd;
+		uint32_t smodelVisDataCount;
+		uint32_t surfaceVisDataCount;
 		char* smodelVisData[3];
 		char* surfaceVisData[3];
-		unsigned int* lodData;
-		unsigned short* sortedSurfIndex;
+		uint32_t* lodData;
+		uint16_t* sortedSurfIndex;
 		GfxStaticModelInst* smodelInsts;
 		GfxSurface* surfaces;
 		GfxCullGroup* cullGroups;
 		GfxStaticModelDrawInst* smodelDrawInsts;
 		GfxDrawSurf* surfaceMaterials;
-		unsigned int* surfaceCastsSunShadow;
+		uint32_t* surfaceCastsSunShadow;
 		volatile int usageCount;
 	};
 
 	struct GfxWorldDpvsDynamic
 	{
-		unsigned int dynEntClientWordCount[2];
-		unsigned int dynEntClientCount[2];
-		unsigned int* dynEntCellBits[2];
+		uint32_t dynEntClientWordCount[2];
+		uint32_t dynEntClientCount[2];
+		uint32_t* dynEntCellBits[2];
 		char* dynEntVisData[2][3];
 	};
 
@@ -2414,24 +2391,24 @@ namespace IW3SR::Game
 		int planeCount;
 		int nodeCount;
 		int indexCount;
-		unsigned short* indices;
+		uint16_t* indices;
 		int surfaceCount;
 		GfxWorldStreamInfo streamInfo;
 		int skySurfCount;
 		int* skyStartSurfs;
 		GfxImage* skyImage;
 		char skySamplerState;
-		unsigned int vertexCount;
+		uint32_t vertexCount;
 		GfxWorldVertexData vd;
-		unsigned int vertexLayerDataSize;
+		uint32_t vertexLayerDataSize;
 		GfxWorldVertexLayerData vld;
 		SunLightParseParams sunParse;
 		GfxLight* sunLight;
 		float sunColorFromBsp[3];
-		unsigned int sunPrimaryLightIndex;
-		unsigned int primaryLightCount;
+		uint32_t sunPrimaryLightIndex;
+		uint32_t primaryLightCount;
 		int cullGroupCount;
-		unsigned int reflectionProbeCount;
+		uint32_t reflectionProbeCount;
 		GfxReflectionProbe* reflectionProbes;
 		GfxTexture* reflectionProbeTextures;
 		GfxWorldDpvsPlanes dpvsPlanes;
@@ -2446,17 +2423,17 @@ namespace IW3SR::Game
 		GfxBrushModel* models;
 		float mins[3];
 		float maxs[3];
-		unsigned int checksum;
+		uint32_t checksum;
 		int materialMemoryCount;
 		MaterialMemory* materialMemory;
 		sunflare_t sun;
 		float outdoorLookupMatrix[4][4];
 		GfxImage* outdoorImage;
-		unsigned int* cellCasterBits;
+		uint32_t* cellCasterBits;
 		GfxSceneDynModel* sceneDynModel;
 		GfxSceneDynBrush* sceneDynBrush;
-		unsigned int* primaryLightEntityShadowVis;
-		unsigned int* primaryLightDynEntShadowVis[2];
+		uint32_t* primaryLightEntityShadowVis;
+		uint32_t* primaryLightDynEntShadowVis[2];
 		char* nonSunPrimaryLightForModelDynEnt;
 		GfxShadowGeometry* shadowGeom;
 		GfxLightRegion* lightRegion;
@@ -2466,7 +2443,7 @@ namespace IW3SR::Game
 
 	struct cStaticModelWritable
 	{
-		unsigned short nextModelInWorldSector;
+		uint16_t nextModelInWorldSector;
 	};
 
 	struct cStaticModel_s
@@ -2495,8 +2472,8 @@ namespace IW3SR::Game
 #pragma pack(push, 4)
 	struct cLeaf_t
 	{
-		unsigned short firstCollAabbIndex;
-		unsigned short collAabbCount;
+		uint16_t firstCollAabbIndex;
+		uint16_t collAabbCount;
 		int brushContents;
 		int terrainContents;
 		float mins[3];
@@ -2508,14 +2485,14 @@ namespace IW3SR::Game
 
 	struct cLeafBrushNodeLeaf_t
 	{
-		unsigned short* brushes;
+		uint16_t* brushes;
 	};
 
 	struct cLeafBrushNodeChildren_t
 	{
 		float dist;
 		float range;
-		unsigned short childOffset[2];
+		uint16_t childOffset[2];
 	};
 
 	union cLeafBrushNodeData_t
@@ -2559,8 +2536,8 @@ namespace IW3SR::Game
 	{
 		float origin[3];
 		float halfSize[3];
-		unsigned short materialIndex;
-		unsigned short childCount;
+		uint16_t materialIndex;
+		uint16_t childCount;
 		CollisionAabbTreeIndex u;
 	};
 
@@ -2578,7 +2555,7 @@ namespace IW3SR::Game
 		float mins[3];
 		int contents;
 		float maxs[3];
-		unsigned int numsides;
+		uint32_t numsides;
 		cbrushside_t* sides;
 		short axialMaterialNum[2][3];
 		char* baseAdjacentSide;
@@ -2586,7 +2563,7 @@ namespace IW3SR::Game
 		char edgeCount[2][3];
 		short colorCounter;
 		short cmBrushIndex;
-		// float distFromCam;
+		float distFromCam;
 		short cmSubmodelIndex;
 		bool isSubmodel;
 		bool pad;
@@ -2602,16 +2579,16 @@ namespace IW3SR::Game
 	struct TriggerModel
 	{
 		int contents;
-		unsigned short hullCount;
-		unsigned short firstHull;
+		uint16_t hullCount;
+		uint16_t firstHull;
 	};
 
 	struct TriggerHull
 	{
 		Bounds bounds;
 		int contents;
-		unsigned short slabCount;
-		unsigned short firstSlab;
+		uint16_t slabCount;
+		uint16_t firstSlab;
 	};
 
 	struct TriggerSlab
@@ -2623,11 +2600,11 @@ namespace IW3SR::Game
 
 	struct MapTriggers
 	{
-		unsigned int count;
+		uint32_t count;
 		TriggerModel* models;
-		unsigned int hullCount;
+		uint32_t hullCount;
 		TriggerHull* hulls;
-		unsigned int slabCount;
+		uint32_t slabCount;
 		TriggerSlab* slabs;
 	};
 
@@ -2655,8 +2632,8 @@ namespace IW3SR::Game
 		int type;
 		GfxPlacement pose;
 		XModel* xModel;
-		unsigned short brushModel;
-		unsigned short physicsBrushModel;
+		uint16_t brushModel;
+		uint16_t physicsBrushModel;
 		FxEffectDef_Placeholder* destroyFx;
 		void* destroyPieces; // XModelPieces
 		PhysPreset* physPreset;
@@ -2671,28 +2648,28 @@ namespace IW3SR::Game
 		int isInUse;
 		int planeCount;
 		cplane_s* planes;
-		unsigned int numStaticModels;
+		uint32_t numStaticModels;
 		cStaticModel_s* staticModelList;
-		unsigned int numMaterials;
+		uint32_t numMaterials;
 		dmaterial_t* materials;
-		unsigned int numBrushSides;
+		uint32_t numBrushSides;
 		cbrushside_t* brushsides;
-		unsigned int numBrushEdges;
+		uint32_t numBrushEdges;
 		char* brushEdges;
-		unsigned int numNodes;
+		uint32_t numNodes;
 		cNode_t* nodes;
-		unsigned int numLeafs;
+		uint32_t numLeafs;
 		cLeaf_t* leafs;
-		unsigned int leafbrushNodesCount;
+		uint32_t leafbrushNodesCount;
 		cLeafBrushNode_s* leafbrushNodes;
-		unsigned int numLeafBrushes;
-		unsigned short* leafbrushes;
-		unsigned int numLeafSurfaces;
-		unsigned int* leafsurfaces;
-		unsigned int vertCount;
+		uint32_t numLeafBrushes;
+		uint16_t* leafbrushes;
+		uint32_t numLeafSurfaces;
+		uint32_t* leafsurfaces;
+		uint32_t vertCount;
 		float (*verts)[3];
 		int triCount;
-		unsigned short* triIndices;
+		uint16_t* triIndices;
 		char* triEdgeIsWalkable;
 		int borderCount;
 		CollisionBorder* borders;
@@ -2700,9 +2677,9 @@ namespace IW3SR::Game
 		CollisionPartition* partitions;
 		int aabbTreeCount;
 		CollisionAabbTree* aabbTrees;
-		unsigned int numSubModels;
+		uint32_t numSubModels;
 		cmodel_t* cmodels;
-		unsigned short numBrushes;
+		uint16_t numBrushes;
 		cbrush_t* brushes;
 		int numClusters;
 		int clusterBytes;
@@ -2711,12 +2688,12 @@ namespace IW3SR::Game
 		MapEnts* mapEnts;
 		cbrush_t* box_brush;
 		cmodel_t box_model;
-		unsigned short dynEntCount[2];
+		uint16_t dynEntCount[2];
 		DynEntityDef* dynEntDefList[2];
 		void* dynEntPoseList[2];   // DynEntityPose
 		void* dynEntClientList[2]; // DynEntityClient
 		void* dynEntCollList[2];   // DynEntityColl
-		unsigned int checksum;
+		uint32_t checksum;
 	};
 
 	struct RawFile
@@ -2748,7 +2725,7 @@ namespace IW3SR::Game
 	{
 		const char* name;
 		int isInUse;
-		unsigned int primaryLightCount;
+		uint32_t primaryLightCount;
 		ComPrimaryLight* primaryLights;
 	};
 
@@ -2825,8 +2802,6 @@ namespace IW3SR::Game
 		FxElemVisualState amplitude;
 	};
 
-	struct FxEffectDef;
-
 	union FxEffectDefRef
 	{
 		FxEffectDef* handle;
@@ -2869,7 +2844,7 @@ namespace IW3SR::Game
 		int vertCount;
 		FxTrailVertex* verts;
 		int indCount;
-		unsigned short* inds;
+		uint16_t* inds;
 	};
 
 	const struct FxElemDef
@@ -2924,7 +2899,7 @@ namespace IW3SR::Game
 		FxElemDef* elemDefs;
 	};
 
-	enum FxElemType : char
+	enum FxElemType : uint8_t
 	{
 		FX_ELEM_TYPE_SPRITE_BILLBOARD = 0x0,
 		FX_ELEM_TYPE_SPRITE_ORIENTED = 0x1,
@@ -2945,7 +2920,7 @@ namespace IW3SR::Game
 	struct pathlink_s
 	{
 		float fDist;
-		unsigned short nodeNum;
+		uint16_t nodeNum;
 		char disconnectCount;
 		char negotiationLink;
 		char ubBadPlaceCount[4];
@@ -2980,12 +2955,12 @@ namespace IW3SR::Game
 	struct pathnode_constant_t
 	{
 		nodeType type;
-		unsigned short spawnflags;
-		unsigned short targetname;
-		unsigned short script_linkName;
-		unsigned short script_noteworthy;
-		unsigned short target;
-		unsigned short animscript;
+		uint16_t spawnflags;
+		uint16_t targetname;
+		uint16_t script_linkName;
+		uint16_t script_noteworthy;
+		uint16_t target;
+		uint16_t animscript;
 		int animscriptfunc;
 		float vOrigin[3];
 		float fAngle;
@@ -2996,7 +2971,7 @@ namespace IW3SR::Game
 		short wChainId;
 		short wChainDepth;
 		short wChainParent;
-		unsigned short totalLinkCount;
+		uint16_t totalLinkCount;
 		pathlink_s* Links;
 	};
 
@@ -3011,8 +2986,6 @@ namespace IW3SR::Game
 		short turretEntNumber;
 		short userCount;
 	};
-
-	struct pathnode_t;
 
 	struct pathnode_transient_t
 	{
@@ -3035,16 +3008,14 @@ namespace IW3SR::Game
 	struct pathbasenode_t
 	{
 		float vOrigin[3];
-		unsigned int type;
+		uint32_t type;
 	};
 
 	struct pathnode_tree_nodes_t
 	{
 		int nodeCount;
-		unsigned short* nodes;
+		uint16_t* nodes;
 	};
-
-	struct pathnode_tree_t;
 
 	union pathnode_tree_info_t
 	{
@@ -3061,12 +3032,12 @@ namespace IW3SR::Game
 
 	struct PathData
 	{
-		unsigned int nodeCount;
+		uint32_t nodeCount;
 		pathnode_t* nodes;
 		pathbasenode_t* basenodes;
-		unsigned int chainNodeCount;
-		unsigned short* chainNodeForNode;
-		unsigned short* nodeForChainNode;
+		uint32_t chainNodeCount;
+		uint16_t* chainNodeForNode;
+		uint16_t* nodeForChainNode;
 		int visBytes;
 		char* pathVis;
 		int nodeTreeCount;
@@ -3084,86 +3055,10 @@ namespace IW3SR::Game
 		const char* name;
 	};
 
-	union XAssetHeader
-	{
-		void* data;
-		// XModelPieces *xmodelPieces;
-		PhysPreset* physPreset;
-		XAnimParts* parts;
-		XModel* model;
-		Material* material;
-		// MaterialPixelShader *pixelShader;
-		// MaterialVertexShader *vertexShader;
-		MaterialTechniqueSet* techniqueSet;
-		GfxImage* image;
-		// snd_alias_list_t *sound;
-		// SndCurve *sndCurve;
-		clipMap_t* clipMap;
-		ComWorld* comWorld;
-		GameWorldSp* gameWorldSp;
-		// GameWorldMp *gameWorldMp;
-		MapEnts* mapEnts;
-		GfxWorld* gfxWorld;
-		GfxLightDef* lightDef;
-		// Font_s *font;
-		// MenuList *menuList;
-		// menuDef_t *menu;
-		// LocalizeEntry *localize;
-		// WeaponDef *weapon;
-		// SndDriverGlobals *sndDriverGlobals;
-		FxEffectDef* fx;
-		// FxImpactTable *impactFx;
-		RawFile* rawfile;
-		// StringTable *stringTable;
-	};
-
-	struct XAsset
-	{
-		XAssetType type;
-		XAssetHeader header;
-	};
-
-	struct XAssetEntry
-	{
-		XAsset asset;
-		char zoneIndex;
-		char inuse;
-		unsigned short nextHash;
-		unsigned short nextOverride;
-		unsigned short usageFrame;
-	};
-
-	struct XBlock
-	{
-		char* data;
-		unsigned int size;
-	};
-
-	struct XZoneMemory
-	{
-		XBlock blocks[9];
-		char* lockedVertexData;
-		char* lockedIndexData;
-		void* vertexBuffer;
-		void* indexBuffer;
-	};
-
-	struct XZone
-	{
-		char name[64];
-		int flags;
-		int allocType;
-		XZoneMemory mem;
-		int fileSize;
-		char modZone;
-	};
-
-	struct gentity_s;
-
 	struct EntHandle
 	{
-		unsigned short number;
-		unsigned short infoIndex;
+		uint16_t number;
+		uint16_t infoIndex;
 	};
 
 	struct entityShared_t
@@ -3288,8 +3183,6 @@ namespace IW3SR::Game
 		WEAPSTANCE_NUM = 0x3,
 	};
 
-	struct snd_alias_list_t;
-
 	enum activeReticleType_t
 	{
 		VEH_ACTIVE_RETICLE_NONE = 0x0,
@@ -3374,7 +3267,7 @@ namespace IW3SR::Game
 		int deaths;
 		int kills;
 		int assists;
-		unsigned short scriptPersId;
+		uint16_t scriptPersId;
 		clientConnected_t connected;
 		usercmd_s cmd;
 		usercmd_s oldcmd;
@@ -3445,7 +3338,7 @@ namespace IW3SR::Game
 		int weapIdleTime;
 		int lastServerTime;
 		int lastSpawnTime;
-		unsigned int lastWeapon;
+		uint32_t lastWeapon;
 		bool previouslyFiring;
 		bool previouslyUsingNightVision;
 		bool previouslySprinting;
@@ -3475,8 +3368,6 @@ namespace IW3SR::Game
 		char stopSndPlayer;
 	};
 
-	struct scr_vehicle_s;
-
 	struct item_ent_t
 	{
 		int ammoCount;
@@ -3484,7 +3375,7 @@ namespace IW3SR::Game
 		int index;
 	};
 
-	struct __declspec(align(4)) trigger_ent_t
+	struct alignas(4) trigger_ent_t
 	{
 		int threshold;
 		int accumulate;
@@ -3553,7 +3444,7 @@ namespace IW3SR::Game
 	{
 		gentity_s* parent;
 		gentity_s* next;
-		unsigned short name;
+		uint16_t name;
 		int index;
 		float axis[4][3];
 		float parentInvAxis[4][3];
@@ -3566,17 +3457,17 @@ namespace IW3SR::Game
 		gclient_s* client;
 		turretInfo_s* pTurretInfo;
 		scr_vehicle_s* scr_vehicle;
-		unsigned short model;
+		uint16_t model;
 		char physicsObject;
 		char takedamage;
 		char active;
 		char nopickup;
 		char handler;
 		char team;
-		unsigned short classname;
-		unsigned short target;
-		unsigned short targetname;
-		unsigned int attachIgnoreCollision;
+		uint16_t classname;
+		uint16_t target;
+		uint16_t targetname;
+		uint32_t attachIgnoreCollision;
 		int spawnflags;
 		int flags;
 		int eventTime;
@@ -3595,8 +3486,8 @@ namespace IW3SR::Game
 		EntHandle missileTargetEnt;
 		tagInfo_s* tagInfo;
 		gentity_s* tagChildren;
-		unsigned short attachModelNames[19];
-		unsigned short attachTagNames[19];
+		uint16_t attachModelNames[19];
+		uint16_t attachTagNames[19];
 		int useCount;
 		gentity_s* nextFree;
 	};
@@ -3610,9 +3501,9 @@ namespace IW3SR::Game
 		XModel* handXModel;
 		const char* szXAnims[33];
 		const char* szModeName;
-		unsigned short hideTags[8];
-		unsigned short notetrackSoundMapKeys[16];
-		unsigned short notetrackSoundMapValues[16];
+		uint16_t hideTags[8];
+		uint16_t notetrackSoundMapKeys[16];
+		uint16_t notetrackSoundMapValues[16];
 		int playerAnimType;
 		weapType_t weapType;
 		weapClass_t weapClass;
@@ -3844,7 +3735,7 @@ namespace IW3SR::Game
 		int iReloadAmmoAdd;
 		int iReloadStartAdd;
 		const char* szAltWeaponName;
-		unsigned int altWeaponIndex;
+		uint32_t altWeaponIndex;
 		int iDropAmmoMin;
 		int iDropAmmoMax;
 		int blocksProne;
@@ -4026,7 +3917,7 @@ namespace IW3SR::Game
 	{
 		netadrtype_t type;
 		char ip[4];
-		unsigned short port;
+		uint16_t port;
 		char ipx[10];
 	};
 
@@ -4107,7 +3998,7 @@ namespace IW3SR::Game
 		int serverTime;
 	};
 
-	struct __declspec() VoicePacket_t
+	struct VoicePacket_t
 	{
 		char talker;
 		char data[256];
@@ -4155,7 +4046,7 @@ namespace IW3SR::Game
 		int statPacketSendTime[7];
 	};
 
-	struct __declspec() client_t
+	struct client_t
 	{
 		clientHeader_t header;
 		const char* dropReason;
@@ -4203,7 +4094,7 @@ namespace IW3SR::Game
 		char netchanOutgoingBuffer[131072];
 		char netchanIncomingBuffer[2048];
 		char cdkeyHash[33];
-		unsigned short scriptId;
+		uint16_t scriptId;
 		int bIsTestClient;
 		int serverId;
 		VoicePacket_t voicePackets[40];
@@ -4228,7 +4119,7 @@ namespace IW3SR::Game
 		playerState_s ps;
 	};
 
-	struct __declspec(align(4)) challenge_t
+	struct alignas(4) challenge_t
 	{
 		netadr_t adr;
 		int challenge;
@@ -4246,7 +4137,7 @@ namespace IW3SR::Game
 		int banTime;
 	};
 
-	struct __declspec() serverStatic_t
+	struct serverStatic_t
 	{
 		cachedSnapshot_t cachedSnapshotFrames[512];
 		archivedEntity_s cachedSnapshotEntities[16384];
@@ -4287,8 +4178,8 @@ namespace IW3SR::Game
 
 	struct svEntity_s
 	{
-		unsigned short worldSector;
-		unsigned short nextEntityInWorldSector;
+		uint16_t worldSector;
+		uint16_t nextEntityInWorldSector;
 		archivedEntity_s baseline;
 		int numClusters;
 		int clusternums[16];
@@ -4314,8 +4205,8 @@ namespace IW3SR::Game
 		int start_frameTime;
 		int checksumFeed;
 		cmodel_t* models[512];
-		unsigned short emptyConfigString;
-		unsigned short configstrings[2442];
+		uint16_t emptyConfigString;
+		uint16_t configstrings[2442];
 		svEntity_s svEntities[1024];
 		gentity_s* gentities;
 		int gentitySize;
@@ -4358,7 +4249,7 @@ namespace IW3SR::Game
 		float endpos[3];
 		GfxColor color;
 		float radius[2];
-		unsigned int pad[2];
+		uint32_t pad[2];
 	};
 
 	struct GfxViewParms
@@ -4376,11 +4267,11 @@ namespace IW3SR::Game
 
 	struct FxCodeMeshData
 	{
-		unsigned int triCount;
-		unsigned short* indices;
-		unsigned short argOffset;
-		unsigned short argCount;
-		unsigned int pad;
+		uint32_t triCount;
+		uint16_t* indices;
+		uint16_t argOffset;
+		uint16_t argCount;
+		uint32_t pad;
 	};
 
 	struct GfxVertexBufferState
@@ -4393,16 +4284,16 @@ namespace IW3SR::Game
 
 	struct GfxMeshData
 	{
-		unsigned int indexCount;
-		unsigned int totalIndexCount;
-		unsigned short* indices;
+		uint32_t indexCount;
+		uint32_t totalIndexCount;
+		uint16_t* indices;
 		GfxVertexBufferState vb;
-		unsigned int vertSize;
+		uint32_t vertSize;
 	};
 
 	union PackedLightingCoords
 	{
-		unsigned int packed;
+		uint32_t packed;
 		char array[4];
 	};
 
@@ -4418,21 +4309,21 @@ namespace IW3SR::Game
 
 	struct GfxModelLightingPatch
 	{
-		unsigned short modelLightingIndex;
+		uint16_t modelLightingIndex;
 		char primaryLightWeight;
 		char colorsCount;
 		char groundLighting[4];
-		unsigned short colorsWeight[8];
-		unsigned short colorsIndex[8];
+		uint16_t colorsWeight[8];
+		uint16_t colorsIndex[8];
 	};
 
-	struct __declspec(align(4)) GfxModelSurfaceInfo
+	struct alignas(4) GfxModelSurfaceInfo
 	{
 		DObjAnimMat* baseMat;
 		char boneIndex;
 		char boneCount;
-		unsigned short gfxEntIndex;
-		unsigned short lightingHandle;
+		uint16_t gfxEntIndex;
+		uint16_t lightingHandle;
 	};
 
 	union $178D1D161B34F636C03EBC0CA3007D75
@@ -4456,18 +4347,18 @@ namespace IW3SR::Game
 
 	struct GfxEntity
 	{
-		unsigned int renderFxFlags;
+		uint32_t renderFxFlags;
 		float materialTime;
 	};
 
 	struct FxMarkMeshData
 	{
-		unsigned int triCount;
-		unsigned short* indices;
-		unsigned short modelIndex;
+		uint32_t triCount;
+		uint16_t* indices;
+		uint16_t modelIndex;
 		char modelTypeAndSurf;
 		char pad0;
-		unsigned int pad1;
+		uint32_t pad1;
 	};
 
 	struct GfxFog
@@ -4481,8 +4372,8 @@ namespace IW3SR::Game
 
 	struct GfxCmdHeader
 	{
-		unsigned short id;
-		unsigned short byteCount;
+		uint16_t id;
+		uint16_t byteCount;
 	};
 
 	struct GfxCmdArray
@@ -4515,12 +4406,10 @@ namespace IW3SR::Game
 		SHADOW_MAP = 0x2,
 	};
 
-	struct GfxViewInfo;
-
 	struct GfxDrawSurfListInfo
 	{
 		GfxDrawSurf* drawSurfs;
-		unsigned int drawSurfCount;
+		uint32_t drawSurfCount;
 		MaterialTechniqueType baseTechType;
 		GfxViewInfo* viewInfo;
 		float viewOrigin[4];
@@ -4528,16 +4417,16 @@ namespace IW3SR::Game
 		int cameraView;
 	};
 
-	struct __declspec(align(16)) ShadowCookie
+	struct alignas(16) ShadowCookie
 	{
 		GfxMatrix shadowLookupMatrix;
 		float boxMin[3];
 		float boxMax[3];
 		GfxViewParms* shadowViewParms;
 		float fade;
-		unsigned int sceneEntIndex;
-		__declspec(align(1)) GfxDrawSurfListInfo casterInfo;
-		__declspec(align(1)) GfxDrawSurfListInfo receiverInfo;
+		uint32_t sceneEntIndex;
+		ALIGN(1) GfxDrawSurfListInfo casterInfo;
+		ALIGN(1) GfxDrawSurfListInfo receiverInfo;
 	};
 
 	struct GfxWindowTarget
@@ -4548,28 +4437,28 @@ namespace IW3SR::Game
 		int height;
 	};
 
-	struct __declspec(align(8)) DxGlobals
+	struct alignas(8) DxGlobals
 	{
 		HINSTANCE* hinst;
 		IDirect3D9* d3d9;
 		IDirect3DDevice9* device;
-		unsigned int adapterIndex;
+		uint32_t adapterIndex;
 		bool adapterNativeIsValid;
 		int adapterNativeWidth;
 		int adapterNativeHeight;
 		int adapterFullscreenWidth;
 		int adapterFullscreenHeight;
 		int depthStencilFormat;
-		unsigned int displayModeCount;
+		uint32_t displayModeCount;
 		void* displayModes[256];
 		const char* resolutionNameTable[257];
 		const char* refreshRateNameTable[257];
 		char modeText[5120];
 		void* fencePool[8];
-		unsigned int nextFence;
+		uint32_t nextFence;
 		int gpuSync;
 		int multiSampleType;
-		unsigned int multiSampleQuality;
+		uint32_t multiSampleQuality;
 		int sunSpriteSamples;
 		void* singleSampleDepthStencilSurface;
 		bool deviceLost;
@@ -4579,9 +4468,9 @@ namespace IW3SR::Game
 		GfxWindowTarget windows[1];
 		int flushGpuQueryCount;
 		void* flushGpuQuery;
-		unsigned __int64 gpuSyncDelay;
-		unsigned __int64 gpuSyncStart;
-		unsigned __int64 gpuSyncEnd;
+		uint64_t gpuSyncDelay;
+		uint64_t gpuSyncStart;
+		uint64_t gpuSyncEnd;
 		bool flushGpuQueryIssued;
 		int linearNonMippedMinFilter;
 		int linearNonMippedMagFilter;
@@ -4593,20 +4482,41 @@ namespace IW3SR::Game
 		int anisotropyFor2x;
 		int anisotropyFor4x;
 		int mipFilterMode;
-		unsigned int mipBias;
+		uint32_t mipBias;
 		void* swapFence;
 	};
 
-	struct __declspec(align(16)) ShadowCookieList
+	struct alignas(16) ShadowCookieList
 	{
 		ShadowCookie cookies[24];
-		unsigned int cookieCount;
+		uint32_t cookieCount;
 	};
 
 	struct PointLightPartition
 	{
 		GfxLight light;
 		GfxDrawSurfListInfo info;
+	};
+
+	enum GfxRenderTargetId
+	{
+		R_RENDERTARGET_SAVED_SCREEN = 0x0,
+		R_RENDERTARGET_FRAME_BUFFER = 0x1,
+		R_RENDERTARGET_SCENE = 0x2,
+		R_RENDERTARGET_RESOLVED_POST_SUN = 0x3,
+		R_RENDERTARGET_RESOLVED_SCENE = 0x4,
+		R_RENDERTARGET_FLOAT_Z = 0x5,
+		R_RENDERTARGET_DYNAMICSHADOWS = 0x6,
+		R_RENDERTARGET_PINGPONG_0 = 0x7,
+		R_RENDERTARGET_PINGPONG_1 = 0x8,
+		R_RENDERTARGET_SHADOWCOOKIE = 0x9,
+		R_RENDERTARGET_SHADOWCOOKIE_BLUR = 0xA,
+		R_RENDERTARGET_POST_EFFECT_0 = 0xB,
+		R_RENDERTARGET_POST_EFFECT_1 = 0xC,
+		R_RENDERTARGET_SHADOWMAP_SUN = 0xD,
+		R_RENDERTARGET_SHADOWMAP_SPOT = 0xE,
+		R_RENDERTARGET_COUNT = 0xF,
+		R_RENDERTARGET_NONE = 0x10,
 	};
 
 	struct GfxDepthOfField
@@ -4649,12 +4559,12 @@ namespace IW3SR::Game
 		int pointIsNear[9];
 	};
 
-	struct __declspec() GfxSunShadowPartition
+	struct GfxSunShadowPartition
 	{
 		GfxViewParms shadowViewParms;
 		int partitionIndex;
 		GfxViewport viewport;
-		__declspec(align(1)) GfxDrawSurfListInfo info;
+		ALIGN(1) GfxDrawSurfListInfo info;
 		GfxSunShadowBoundingPoly boundingPoly;
 	};
 
@@ -4672,7 +4582,7 @@ namespace IW3SR::Game
 		GfxSunShadowPartition partition[2];
 	};
 
-	struct __declspec() GfxSpotShadow
+	struct GfxSpotShadow
 	{
 		GfxViewParms shadowViewParms;
 		GfxMatrix lookupMatrix;
@@ -4680,7 +4590,7 @@ namespace IW3SR::Game
 		char pad[3];
 		GfxLight* light;
 		float fade;
-		__declspec(align(1)) GfxDrawSurfListInfo info;
+		ALIGN(1) GfxDrawSurfListInfo info;
 		GfxViewport viewport;
 		GfxImage* image;
 		GfxRenderTargetId renderTargetId;
@@ -4788,11 +4698,11 @@ namespace IW3SR::Game
 		int* durations;
 	};
 
-	struct __declspec(align(16)) GfxBackEndData
+	struct alignas(16) GfxBackEndData
 	{
 		char surfsBuffer[131072];
 		FxCodeMeshData codeMeshes[2048];
-		unsigned int primDrawSurfsBuf[65536];
+		uint32_t primDrawSurfsBuf[65536];
 		GfxViewParms viewParms[28]; // GfxViewParms either has pad or zFar
 		char primaryLightTechType[13][256];
 		float codeMeshArgs[256][4];
@@ -4800,14 +4710,14 @@ namespace IW3SR::Game
 		GfxDrawSurf drawSurfs[32768];
 		GfxMeshData codeMesh;
 		GfxSModelCachedVertex smcPatchVerts[8192];
-		unsigned short smcPatchList[256];
-		unsigned int smcPatchCount;
-		unsigned int smcPatchVertsUsed;
+		uint16_t smcPatchList[256];
+		uint32_t smcPatchCount;
+		uint32_t smcPatchVertsUsed;
 		GfxModelLightingPatch modelLightingPatchList[4096];
 		volatile int modelLightingPatchCount;
 		GfxBackEndPrimitiveData prim;
-		unsigned int shadowableLightHasShadowMap[8];
-		unsigned int frameCount;
+		uint32_t shadowableLightHasShadowMap[8];
+		uint32_t frameCount;
 		int drawSurfCount;
 		volatile int surfPos;
 		volatile int gfxEntCount;
@@ -4826,19 +4736,19 @@ namespace IW3SR::Game
 		int viewParmCount;
 		GfxFog fogSettings;
 		GfxCmdArray* commands;
-		unsigned int viewInfoIndex;
-		unsigned int viewInfoCount;
+		uint32_t viewInfoIndex;
+		uint32_t viewInfoCount;
 		GfxViewInfo* viewInfo;
 		const void* cmds;
 		GfxLight sunLight;
 		int hasApproxSunDirChanged;
 		volatile int primDrawSurfPos;
-		unsigned int* staticModelLit;
+		uint32_t* staticModelLit;
 		DebugGlobals debugGlobals;
-		unsigned int drawType;
+		uint32_t drawType;
 	};
 
-	struct __declspec(align(8)) GfxCmdBufInput
+	struct alignas(8) GfxCmdBufInput
 	{
 		float consts[58][4];
 		GfxImage* codeImages[27];
@@ -4854,20 +4764,20 @@ namespace IW3SR::Game
 		GfxViewport displayViewport;
 		GfxViewport scissorViewport;
 		ShadowType dynamicShadowType;
-		__declspec(align(16)) ShadowCookieList shadowCookieList;
+		alignas(16) ShadowCookieList shadowCookieList;
 		int localClientNum;
 		int isRenderingFullScreen;
 		bool needsFloatZ;
 		GfxLight shadowableLights[255];
-		unsigned int shadowableLightCount;
+		uint32_t shadowableLightCount;
 		PointLightPartition pointLightPartitions[4];
 		GfxMeshData pointLightMeshData[4];
 		int pointLightCount;
-		unsigned int emissiveSpotLightIndex;
+		uint32_t emissiveSpotLightIndex;
 		GfxLight emissiveSpotLight;
 		int emissiveSpotDrawSurfCount;
 		GfxDrawSurf* emissiveSpotDrawSurfs;
-		unsigned int emissiveSpotLightCount;
+		uint32_t emissiveSpotLightCount;
 		float blurRadius;
 		float frustumPlanes[4][4];
 		GfxDepthOfField dof;
@@ -4875,12 +4785,12 @@ namespace IW3SR::Game
 		GfxGlow glow;
 		const void* cmds;
 		GfxSunShadow sunShadow;
-		unsigned int spotShadowCount;
-		__declspec() GfxSpotShadow spotShadows[4];
+		uint32_t spotShadowCount;
+		GfxSpotShadow spotShadows[4];
 		GfxQuadMeshData* fullSceneViewMesh;
-		__declspec(align(1)) GfxDrawSurfListInfo litInfo;
-		__declspec(align(1)) GfxDrawSurfListInfo decalInfo;
-		__declspec(align(1)) GfxDrawSurfListInfo emissiveInfo;
+		ALIGN(1) GfxDrawSurfListInfo litInfo;
+		ALIGN(1) GfxDrawSurfListInfo decalInfo;
+		ALIGN(1) GfxDrawSurfListInfo emissiveInfo;
 		GfxCmdBufInput input;
 	};
 
@@ -4935,19 +4845,19 @@ namespace IW3SR::Game
 		Null27 = 0x1B,
 	};
 
-	struct __declspec(align(16)) GfxCmdBufSourceState
+	struct alignas(16) GfxCmdBufSourceState
 	{
 		GfxCodeMatrices matrices;
 		GfxCmdBufInput input;
 		GfxViewParms viewParms;
 		GfxMatrix shadowLookupMatrix;
-		unsigned short constVersions[90];
-		unsigned short matrixVersions[8];
+		uint16_t constVersions[90];
+		uint16_t matrixVersions[8];
 		float eyeOffset[4];
-		unsigned int shadowableLightForShadowLookupMatrix;
+		uint32_t shadowableLightForShadowLookupMatrix;
 		GfxScaledPlacement* objectPlacement;
 		GfxViewParms* viewParms3D;
-		unsigned int depthHackFlags;
+		uint32_t depthHackFlags;
 		GfxScaledPlacement skinnedPlacement;
 		int cameraView;
 		GfxViewMode viewMode;
@@ -4958,7 +4868,7 @@ namespace IW3SR::Game
 		int renderTargetWidth;
 		int renderTargetHeight;
 		bool viewportIsDirty;
-		unsigned int shadowableLightIndex;
+		uint32_t shadowableLightIndex;
 	};
 
 	struct GfxImageFilterPass
@@ -4982,9 +4892,9 @@ namespace IW3SR::Game
 
 	struct gfxVertexSteamsUnk
 	{
-		unsigned int stride;
+		uint32_t stride;
 		IDirect3DVertexBuffer9* vb;
-		unsigned int offset;
+		uint32_t offset;
 	};
 
 	enum GfxDepthRangeType
@@ -5027,22 +4937,22 @@ namespace IW3SR::Game
 	struct GfxCmdBufState
 	{
 		char refSamplerState[16];
-		unsigned int samplerState[16];
+		uint32_t samplerState[16];
 		GfxTexture* samplerTexture[16];
 		GfxCmdBufPrimState prim;
 		Material* material;
 		MaterialTechniqueType techType;
 		MaterialTechnique* technique;
 		MaterialPass* pass;
-		unsigned int passIndex;
+		uint32_t passIndex;
 		GfxDepthRangeType depthRangeType;
 		float depthRangeNear;
 		float depthRangeFar;
-		unsigned __int64 vertexShaderConstState[32];
-		unsigned __int64 pixelShaderConstState[256];
+		uint64_t vertexShaderConstState[32];
+		uint64_t pixelShaderConstState[256];
 		char alphaRef;
-		unsigned int refStateBits[2];
-		unsigned int activeStateBits[2];
+		uint32_t refStateBits[2];
+		uint32_t activeStateBits[2];
 		MaterialPixelShader* pixelShader;
 		MaterialVertexShader* vertexShader;
 		GfxViewport viewport;
@@ -5069,16 +4979,16 @@ namespace IW3SR::Game
 	{
 		GfxImage* image;
 		GfxRenderTargetSurface surface;
-		unsigned int width;
-		unsigned int height;
+		uint32_t width;
+		uint32_t height;
 	};
 
 	struct materialCommands_t
 	{
 		GfxVertex verts[5450];
-		unsigned short indices[1048576];
+		uint16_t indices[1048576];
 		MaterialVertexDeclType vertDeclType;
-		unsigned int vertexSize;
+		uint32_t vertexSize;
 		int indexCount;
 		int vertexCount;
 		int firstVertex;
@@ -5127,19 +5037,19 @@ namespace IW3SR::Game
 		char pad_0x0099[0x3];
 	};
 
-	struct __declspec(align(4)) vidConfig_t
+	struct alignas(4) vidConfig_t
 	{
-		unsigned int sceneWidth;
-		unsigned int sceneHeight;
-		unsigned int displayWidth;
-		unsigned int displayHeight;
-		unsigned int displayFrequency;
+		uint32_t sceneWidth;
+		uint32_t sceneHeight;
+		uint32_t displayWidth;
+		uint32_t displayHeight;
+		uint32_t displayFrequency;
 		int isFullscreen;
 		float aspectRatioWindow;
 		float aspectRatioScenePixel;
 		float aspectRatioDisplayPixel;
-		unsigned int maxTextureSize;
-		unsigned int maxTextureMaps;
+		uint32_t maxTextureSize;
+		uint32_t maxTextureMaps;
 		bool deviceSupportsGamma;
 	};
 
@@ -5217,7 +5127,7 @@ namespace IW3SR::Game
 
 	struct fileInIwd_s
 	{
-		unsigned int pos;
+		uint32_t pos;
 		char* name;
 		fileInIwd_s* next;
 	};
@@ -5233,7 +5143,7 @@ namespace IW3SR::Game
 		volatile int hasOpenFile;
 		int numfiles;
 		char referenced;
-		unsigned int hashSize;
+		uint32_t hashSize;
 		fileInIwd_s** hashTable;
 		fileInIwd_s* buildBuffer;
 	};
@@ -5388,8 +5298,6 @@ namespace IW3SR::Game
 		const char* enumDvarName;
 		void* data;
 	};
-
-	struct itemDef_s;
 
 	struct menuDef_t
 	{
@@ -5588,10 +5496,10 @@ namespace IW3SR::Game
 
 	struct refdef_s
 	{
-		unsigned int x;
-		unsigned int y;
-		unsigned int width;
-		unsigned int height;
+		uint32_t x;
+		uint32_t y;
+		uint32_t width;
+		uint32_t height;
 		float tanHalfFovX;
 		float tanHalfFovY;
 		float vieworg[3];
@@ -5621,15 +5529,15 @@ namespace IW3SR::Game
 
 	struct GfxSkinCacheEntry
 	{
-		unsigned int frameCount;
+		uint32_t frameCount;
 		int skinnedCachedOffset;
-		unsigned short numSkinnedVerts;
-		unsigned short ageCount;
+		uint16_t numSkinnedVerts;
+		uint16_t ageCount;
 	};
 
 	struct cpose_t
 	{
-		unsigned short lightingHandle;
+		uint16_t lightingHandle;
 		char eType;
 		char eTypeUnion;
 		char localClientNum;
@@ -5655,7 +5563,7 @@ namespace IW3SR::Game
 		int previousEventSequence;
 		int miscTime;
 		float lightingOrigin[3];
-		void* tree; // XAnimTree_s
+		XAnimTree_s* tree;
 	};
 
 	enum InvalidCmdHintType
@@ -5707,7 +5615,7 @@ namespace IW3SR::Game
 	struct animScriptCondition_t
 	{
 		int index;
-		unsigned int value[2];
+		uint32_t value[2];
 	};
 
 	struct animScriptItem_t
@@ -5724,7 +5632,7 @@ namespace IW3SR::Game
 		animScriptItem_t* items[128];
 	};
 
-	struct __declspec(align(8)) animation_s
+	struct alignas(8) animation_s
 	{
 		char name[64];
 		int initialLerp;
@@ -5732,7 +5640,7 @@ namespace IW3SR::Game
 		int duration;
 		int nameHash;
 		int flags;
-		__int64 movetype;
+		int64_t movetype;
 		int noteType;
 	};
 
@@ -5741,10 +5649,10 @@ namespace IW3SR::Game
 		struct XAnim_s* anims;
 	};
 
-	struct __declspec(align(8)) animScriptData_t
+	struct alignas(8) animScriptData_t
 	{
 		animation_s animations[512];
-		unsigned int numAnimations;
+		uint32_t numAnimations;
 		animScript_t scriptAnims[1][43];
 		animScript_t scriptCannedAnims[1][43];
 		animScript_t scriptStateChange[1][1];
@@ -5752,9 +5660,9 @@ namespace IW3SR::Game
 		animScriptItem_t scriptItems[2048];
 		int numScriptItems;
 		scr_animtree_t animTree;
-		unsigned short torsoAnim;
-		unsigned short legsAnim;
-		unsigned short turningAnim;
+		uint16_t torsoAnim;
+		uint16_t legsAnim;
+		uint16_t turningAnim;
 		snd_alias_list_t*(__cdecl* soundAlias)(const char*);
 		int(__cdecl* playSoundAlias)(int, snd_alias_list_t*);
 	};
@@ -5788,7 +5696,7 @@ namespace IW3SR::Game
 		float tag_origin_offset[3];
 	};
 
-	struct __declspec(align(4)) clientInfo_t
+	struct alignas(4) clientInfo_t
 	{
 		int infoValid;
 		int isAlive;
@@ -5813,8 +5721,8 @@ namespace IW3SR::Game
 		int leftHandGun;
 		int dobjDirty;
 		clientControllers_t control;
-		unsigned int clientConditions[10][2];
-		void* pXAnimTree; // XAnimTree_s
+		uint32_t clientConditions[10][2];
+		XAnimTree_s* pXAnimTree;
 		int iDObjWeapon;
 		char weaponModel;
 		int stanceTransitionTime;
@@ -5826,8 +5734,6 @@ namespace IW3SR::Game
 		bool usingKnife;
 	};
 
-	struct XAnimTree_s;
-
 	struct bgs_t
 	{
 		animScriptData_t animScriptData;
@@ -5838,7 +5744,7 @@ namespace IW3SR::Game
 		int anim_user;
 		XModel*(__cdecl* GetXModel)(const char*);
 		void* CreateDObj;
-		unsigned short AttachWeapon;
+		uint16_t AttachWeapon;
 		void* DObj;
 		void(__cdecl* SafeDObjFree)(int, int);
 		void*(__cdecl* AllocXAnim)(int);
@@ -5974,9 +5880,9 @@ namespace IW3SR::Game
 		int lastStanceChangeTime;
 		int lastStanceFlashTime;
 		int voiceTime;
-		unsigned int weaponSelect;
+		uint32_t weaponSelect;
 		int weaponSelectTime;
-		unsigned int weaponLatestPrimaryIdx;
+		uint32_t weaponLatestPrimaryIdx;
 		int prevViewmodelWeapon;
 		int equippedOffHand;
 		viewDamage_t viewDamage[8];
@@ -6057,8 +5963,8 @@ namespace IW3SR::Game
 
 	struct trigger_info_t
 	{
-		unsigned short entnum;
-		unsigned short otherEntnum;
+		uint16_t entnum;
+		uint16_t otherEntnum;
 		int useCount;
 		int otherUseCount;
 	};
@@ -6076,7 +5982,7 @@ namespace IW3SR::Game
 	{
 		int time;
 		int entnum;
-		unsigned short name;
+		uint16_t name;
 		float tagMat[4][3];
 	};
 
@@ -6150,15 +6056,15 @@ namespace IW3SR::Game
 	struct MaterialString
 	{
 		const char* string;
-		unsigned int hash;
+		uint32_t hash;
 	};
 
 	struct MaterialStateMapRule
 	{
-		unsigned int stateBitsMask[2];
-		unsigned int stateBitsValue[2];
-		unsigned int stateBitsSet[2];
-		unsigned int stateBitsClear[2];
+		uint32_t stateBitsMask[2];
+		uint32_t stateBitsValue[2];
+		uint32_t stateBitsSet[2];
+		uint32_t stateBitsClear[2];
 	};
 
 	struct MaterialStateMapRuleSet
@@ -6175,8 +6081,8 @@ namespace IW3SR::Game
 
 	struct MaterialInfoRaw
 	{
-		unsigned int nameOffset;
-		unsigned int refImageNameOffset;
+		uint32_t nameOffset;
+		uint32_t refImageNameOffset;
 		char gameFlags;
 		char sortKey;
 		char textureAtlasRowCount;
@@ -6184,10 +6090,10 @@ namespace IW3SR::Game
 		float maxDeformMove;
 		char deformFlags;
 		char usage;
-		unsigned short toolFlags;
-		unsigned int locale;
-		unsigned short autoTexScaleWidth;
-		unsigned short autoTexScaleHeight;
+		uint16_t toolFlags;
+		uint32_t locale;
+		uint16_t autoTexScaleWidth;
+		uint16_t autoTexScaleHeight;
 		float tessSize;
 		int surfaceFlags;
 		int contents;
@@ -6196,31 +6102,31 @@ namespace IW3SR::Game
 	struct MaterialRaw
 	{
 		MaterialInfoRaw info;
-		unsigned int refStateBits[2];
-		unsigned short textureCount;
-		unsigned short constantCount;
-		unsigned int techSetNameOffset;
-		unsigned int textureTableOffset;
-		unsigned int constantTableOffset;
+		uint32_t refStateBits[2];
+		uint16_t textureCount;
+		uint16_t constantCount;
+		uint32_t techSetNameOffset;
+		uint32_t textureTableOffset;
+		uint32_t constantTableOffset;
 	};
 
 	struct MaterialLoadGlob
 	{
-		unsigned int cachedShaderCount;
+		uint32_t cachedShaderCount;
 		GfxCachedShaderText* cachedShaderText;
-		unsigned int vertexDeclCount;
+		uint32_t vertexDeclCount;
 		MaterialVertexDeclaration vertexDeclHashTable[32];
-		unsigned int literalCount;
+		uint32_t literalCount;
 		float literalTable[16][4];
-		unsigned int stringCount;
+		uint32_t stringCount;
 		MaterialString stringHashTable[64];
-		unsigned int vertexShaderCount;
+		uint32_t vertexShaderCount;
 		MaterialVertexShader* vertexShaderHashTable[2][2048];
-		unsigned int pixelShaderCount;
+		uint32_t pixelShaderCount;
 		MaterialPixelShader* pixelShaderHashTable[2][2048];
-		unsigned int stateMapCount;
+		uint32_t stateMapCount;
 		MaterialStateMap* stateMapHashTable[32];
-		unsigned int techniqueCount;
+		uint32_t techniqueCount;
 		MaterialTechnique* techniqueHashTable[2][4096];
 		MaterialRaw* sortMtlRaw;
 	};
@@ -6229,7 +6135,7 @@ namespace IW3SR::Game
 	{
 		volatile int used;
 		int total;
-		unsigned short* indices;
+		uint16_t* indices;
 	};
 
 	struct GfxIndexBufferState
@@ -6237,7 +6143,7 @@ namespace IW3SR::Game
 		volatile int used;
 		int total;
 		IDirect3DIndexBuffer9* buffer;
-		unsigned short* indices;
+		uint16_t* indices;
 	};
 
 	struct GfxPackedVertexNormal
@@ -6246,7 +6152,7 @@ namespace IW3SR::Game
 		PackedUnitVec tangent;
 	};
 
-	struct __declspec(align(4)) GfxBuffers
+	struct alignas(4) GfxBuffers
 	{
 		GfxDynamicIndices smodelCache;
 		IDirect3DVertexBuffer9* smodelCacheVb;
@@ -6265,7 +6171,7 @@ namespace IW3SR::Game
 		GfxPackedVertexNormal skinnedCacheNormals[2][147456];
 		GfxPackedVertexNormal* skinnedCacheNormalsAddr;
 		GfxPackedVertexNormal* oldSkinnedCacheNormalsAddr;
-		unsigned int skinnedCacheNormalsFrameCount;
+		uint32_t skinnedCacheNormalsFrameCount;
 		bool fastSkin;
 		bool skinCache;
 	};
@@ -6290,7 +6196,7 @@ namespace IW3SR::Game
 
 	struct GfxSceneEntityCull
 	{
-		volatile unsigned int state;
+		volatile uint32_t state;
 		float mins[3];
 		float maxs[3];
 		char lods[32];
@@ -6300,13 +6206,13 @@ namespace IW3SR::Game
 	union GfxSceneEntityInfo
 	{
 		cpose_t* pose;
-		unsigned short* cachedLightingHandle;
+		uint16_t* cachedLightingHandle;
 	};
 
 	struct XAnimParent
 	{
-		unsigned short flags;
-		unsigned short children;
+		uint16_t flags;
+		uint16_t children;
 	};
 
 	union $2714E77E76DE9429E851020801EAFDE5
@@ -6317,26 +6223,26 @@ namespace IW3SR::Game
 
 	struct XAnimEntry
 	{
-		unsigned short numAnims;
-		unsigned short parent;
+		uint16_t numAnims;
+		uint16_t parent;
 		$2714E77E76DE9429E851020801EAFDE5 ___u2;
 	};
 
 	struct XAnim_s
 	{
 		const char* debugName;
-		unsigned int size;
+		uint32_t size;
 		const char** debugAnimNames;
 		XAnimEntry entries[1];
 	};
 
-	struct __declspec(align(4)) XAnimTree_s
+	struct alignas(4) XAnimTree_s
 	{
 		XAnim_s* anims;
 		int info_usage;
 		volatile int calcRefCount;
 		volatile int modifyRefCount;
-		unsigned short children;
+		uint16_t children;
 	};
 
 	struct DSkelPartBits
@@ -6356,49 +6262,49 @@ namespace IW3SR::Game
 	struct DObj_s
 	{
 		XAnimTree_s* tree;
-		unsigned short duplicateParts;
-		unsigned short entnum;
+		uint16_t duplicateParts;
+		uint16_t entnum;
 		char duplicatePartsSize;
 		char numModels;
 		char numBones;
-		unsigned int ignoreCollision;
+		uint32_t ignoreCollision;
 		volatile int locked;
 		DSkel skel;
 		float radius;
-		unsigned int hidePartBits[4];
+		uint32_t hidePartBits[4];
 		XModel** models;
 	};
 
-	struct __declspec(align(4)) GfxSceneEntity
+	struct alignas(4) GfxSceneEntity
 	{
 		float lightingOrigin[3];
 		GfxScaledPlacement placement;
 		GfxSceneEntityCull cull;
-		unsigned short gfxEntIndex;
-		unsigned short entnum;
+		uint16_t gfxEntIndex;
+		uint16_t entnum;
 		DObj_s* obj;
 		GfxSceneEntityInfo info;
 		char reflectionProbeIndex;
 	};
 
-	struct __declspec(align(4)) GfxSceneModel
+	struct alignas(4) GfxSceneModel
 	{
 		XModelDrawInfo info;
 		XModel* model;
 		DObj_s* obj;
 		GfxScaledPlacement placement;
-		unsigned short gfxEntIndex;
-		unsigned short entnum;
+		uint16_t gfxEntIndex;
+		uint16_t entnum;
 		float radius;
-		unsigned short* cachedLightingHandle;
+		uint16_t* cachedLightingHandle;
 		float lightingOrigin[3];
 		char reflectionProbeIndex;
 	};
 
-	struct __declspec(align(4)) GfxSceneBrush
+	struct alignas(4) GfxSceneBrush
 	{
 		BModelDrawInfo info;
-		unsigned short entnum;
+		uint16_t entnum;
 		GfxBrushModel* bmodel;
 		GfxPlacement placement;
 		char reflectionProbeIndex;
@@ -6412,14 +6318,14 @@ namespace IW3SR::Game
 
 	struct GfxSceneDpvs
 	{
-		unsigned int localClientNum;
+		uint32_t localClientNum;
 		char* entVisData[7];
-		unsigned short* sceneXModelIndex;
-		unsigned short* sceneDObjIndex;
+		uint16_t* sceneXModelIndex;
+		uint16_t* sceneDObjIndex;
 		GfxEntCellRefInfo* entInfo[4];
 	};
 
-	struct __declspec(align(64)) GfxScene
+	struct alignas(64) GfxScene
 	{
 		GfxDrawSurf bspDrawSurfs[8192];
 		GfxDrawSurf smodelDrawSurfsLight[8192];
@@ -6452,7 +6358,7 @@ namespace IW3SR::Game
 		GfxDrawSurf smodelSpotShadowDrawSurfs3[256];
 		GfxDrawSurf entSpotShadowDrawSurfs3[512];
 		GfxDrawSurf shadowDrawSurfs[512];
-		unsigned int shadowableLightIsUsed[32];
+		uint32_t shadowableLightIsUsed[32];
 		int maxDrawSurfCount[34];
 		volatile int drawSurfCount[34];
 		GfxDrawSurf* drawSurfs[34];
@@ -6467,7 +6373,7 @@ namespace IW3SR::Game
 		GfxVisibleLight visLight[4];
 		GfxVisibleLight visLightShadow[1];
 		GfxShadowCookie cookie[24];
-		unsigned int* entOverflowedDrawBuf;
+		uint32_t* entOverflowedDrawBuf;
 		volatile int sceneDObjCount;
 		GfxSceneEntity sceneDObj[512];
 		char sceneDObjVisData[7][512];
@@ -6477,8 +6383,8 @@ namespace IW3SR::Game
 		volatile int sceneBrushCount;
 		GfxSceneBrush sceneBrush[512];
 		char sceneBrushVisData[3][512];
-		unsigned int sceneDynModelCount;
-		unsigned int sceneDynBrushCount;
+		uint32_t sceneDynModelCount;
+		uint32_t sceneDynBrushCount;
 		DpvsPlane shadowFarPlane[2];
 		DpvsPlane shadowNearPlane[2];
 		GfxSceneDpvs dpvs;
@@ -6576,7 +6482,7 @@ namespace IW3SR::Game
 		char skelMemory[262144];
 		char* skelMemoryStart;
 		bool allowedAllocSkel;
-		__declspec(align(4)) usercmd_s cmds[128];
+		alignas(4) usercmd_s cmds[128];
 		int cmdNumber;
 		ClientArchiveData clientArchive[256];
 		int clientArchiveIndex;
@@ -6591,7 +6497,7 @@ namespace IW3SR::Game
 		float vehicleViewPitch;
 	};
 
-	struct __declspec(align(128)) r_global_permanent_t
+	struct alignas(128) r_global_permanent_t
 	{
 		Material* sortedMaterials[2048];
 		int needSortMaterials;
@@ -6654,6 +6560,80 @@ namespace IW3SR::Game
 		int savedScreenTimes[4];
 	};
 
+	union XAssetHeader
+	{
+		void* data;
+		//XModelPieces* xmodelPieces;
+		PhysPreset* physPreset;
+		XAnimParts* parts;
+		XModel* model;
+		Material* material;
+		MaterialPixelShader* pixelShader;
+		MaterialVertexShader* vertexShader;
+		MaterialTechniqueSet* techniqueSet;
+		GfxImage* image;
+		snd_alias_list_t* sound;
+		//SndCurve* sndCurve;
+		clipMap_t* clipMap;
+		ComWorld* comWorld;
+		GameWorldSp* gameWorldSp;
+		GameWorldMp* gameWorldMp;
+		MapEnts* mapEnts;
+		GfxWorld* gfxWorld;
+		GfxLightDef* lightDef;
+		Font_s* font;
+		MenuList* menuList;
+		menuDef_t* menu;
+		//LocalizeEntry* localize;
+		WeaponDef* weapon;
+		//SndDriverGlobals* sndDriverGlobals;
+		FxEffectDef* fx;
+		//FxImpactTable* impactFx;
+		RawFile* rawfile;
+		//StringTable* stringTable;
+	};
+
+	struct XAsset
+	{
+		XAssetType type;
+		XAssetHeader header;
+	};
+
+	struct XAssetEntry
+	{
+		XAsset asset;
+		char zoneIndex;
+		char inuse;
+		uint16_t nextHash;
+		uint16_t nextOverride;
+		uint16_t usageFrame;
+	};
+
+	struct XBlock
+	{
+		char* data;
+		uint32_t size;
+	};
+
+	struct XZoneMemory
+	{
+		XBlock blocks[9];
+		char* lockedVertexData;
+		char* lockedIndexData;
+		void* vertexBuffer;
+		void* indexBuffer;
+	};
+
+	struct XZone
+	{
+		char name[64];
+		int flags;
+		int allocType;
+		XZoneMemory mem;
+		int fileSize;
+		char modZone;
+	};
+
 	struct Image_MemUsage
 	{
 		int total;
@@ -6679,13 +6659,13 @@ namespace IW3SR::Game
 		float bias;
 	};
 
-	struct __declspec(align(4)) GfxLodParms
+	struct alignas(4) GfxLodParms
 	{
 		float origin[3];
 		GfxLodRamp ramp[2];
 	};
 
-	struct __declspec(align(8)) r_globals_t
+	struct alignas(8) r_globals_t
 	{
 		GfxViewParms identityViewParms;
 		bool inFrame;
@@ -6694,7 +6674,7 @@ namespace IW3SR::Game
 		bool ignorePrecacheErrors;
 		float viewOrg[3];
 		float viewDir[3];
-		unsigned int frontEndFrameCount;
+		uint32_t frontEndFrameCount;
 		int totalImageMemory;
 		Material* materialHashTable[2048];
 		GfxFog fogSettings[5];
@@ -6722,11 +6702,11 @@ namespace IW3SR::Game
 		bool drawXModels;
 		bool drawBModels;
 		const char* codeImageNames[27];
-		unsigned int viewInfoCount;
+		uint32_t viewInfoCount;
 		int sunShadowFull;
 		float sunShadowmapScale;
 		float sunShadowmapScaleNum;
-		unsigned int sunShadowSize;
+		uint32_t sunShadowSize;
 		float sunShadowPartitionRatio;
 		int drawSunShadow;
 		int skinnedCacheReachedThreshold;
