@@ -1,2 +1,2 @@
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Application.hpp)

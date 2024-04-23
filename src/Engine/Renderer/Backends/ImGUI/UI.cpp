@@ -4,7 +4,7 @@
 #include "Core/System/System.hpp"
 #include "DX9/Device.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	UI::UI()
 	{

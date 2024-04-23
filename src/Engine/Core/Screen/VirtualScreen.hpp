@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Math.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Virtual screen.

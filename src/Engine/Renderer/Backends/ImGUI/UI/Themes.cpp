@@ -4,7 +4,7 @@
 #include "Core/System/System.hpp"
 #include "ImGUI/UI.hpp"
 
-namespace IW3SR::Engine::UC
+namespace IzEngine::UC
 {
 	Themes::Themes() : Window("Themes")
 	{

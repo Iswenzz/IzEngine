@@ -1,7 +1,7 @@
 #pragma once
 #include "DX9/Base.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Graphics device.

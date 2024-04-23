@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Console class.

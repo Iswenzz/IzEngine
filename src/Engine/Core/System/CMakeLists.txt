@@ -1,6 +1,6 @@
 add_subdirectory(Implementation)
 
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Environment.hpp
 	Plugin.hpp
 	Plugins.hpp

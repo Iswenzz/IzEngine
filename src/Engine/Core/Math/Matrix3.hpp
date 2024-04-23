@@ -2,7 +2,7 @@
 #include "GLM.hpp"
 #include "Math.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// 3x3 Matrix class.

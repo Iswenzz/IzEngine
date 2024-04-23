@@ -3,7 +3,7 @@
 
 #include "ImGUI/UI.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	HUD::HUD(const std::string& texture, float x, float y, float w, float h, const vec4& color)
 	{

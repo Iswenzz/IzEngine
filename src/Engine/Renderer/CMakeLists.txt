@@ -3,5 +3,5 @@ add_subdirectory(Core)
 add_subdirectory(Drawing)
 add_subdirectory(Resources)
 
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Common.hpp)

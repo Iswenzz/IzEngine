@@ -3,7 +3,7 @@
 #include "Core/Console/Console.hpp"
 #include "Core/Input/Keyboard.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Console::Initialize()
 	{

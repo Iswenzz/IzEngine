@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Base.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Key info struct.

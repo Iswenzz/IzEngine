@@ -1,7 +1,7 @@
 #include "UUID.hpp"
 #include <random>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	static std::random_device Device;
 	static std::mt19937_64 Engine(Device());

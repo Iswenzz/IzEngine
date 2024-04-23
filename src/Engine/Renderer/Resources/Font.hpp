@@ -4,7 +4,7 @@
 #define FONT_OPENSANS "OpenSans-Regular"
 #define FONT_SPACERANGER "Space Ranger"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Font class.

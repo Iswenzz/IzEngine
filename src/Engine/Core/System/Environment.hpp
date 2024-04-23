@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Base.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// System environment.
@@ -13,7 +13,7 @@ namespace IW3SR::Engine
 		static inline std::vector<std::string> Modules;
 
 		static inline std::filesystem::path BaseDirectory;
-		static inline std::filesystem::path IW3SRDirectory;
+		static inline std::filesystem::path InstallDirectory;
 		static inline std::filesystem::path PluginsDirectory;
 		static inline std::filesystem::path ResourcesDirectory;
 		static inline std::filesystem::path FontsDirectory;
@@ -22,7 +22,8 @@ namespace IW3SR::Engine
 		/// <summary>
 		/// Initialize the environment.
 		/// </summary>
-		static void Initialize();
+		/// <param name="install">The install folder name.</param>
+		static void Initialize(const std::string& install);
 
 		/// <summary>
 		/// Load settings.

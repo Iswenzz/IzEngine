@@ -3,7 +3,7 @@
 
 #include "ImGUI/UI.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	Text::Text(const std::string& text, const std::string& font, float x, float y, float size, const vec4& color)
 	{

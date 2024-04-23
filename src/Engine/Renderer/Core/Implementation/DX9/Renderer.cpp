@@ -6,7 +6,7 @@
 #include "DX9/Device.hpp"
 #include "ImGUI/UI.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Renderer::Initialize()
 	{

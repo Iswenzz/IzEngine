@@ -2,7 +2,7 @@
 
 #include "Core/Console/Console.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Log::Write(const std::string& msg)
 	{

@@ -5,10 +5,8 @@
 #include "Core/Base/UUID.hpp"
 
 // clang-format off
-namespace IW3SR { };
-using namespace IW3SR;
-namespace IW3SR::Engine { };
-using namespace IW3SR::Engine;
-namespace IW3SR::Addons { };
-using namespace IW3SR::Addons;
+namespace IzEngine { };
+using namespace IzEngine;
+namespace IzEngine::Addons { };
+using namespace IzEngine::Addons;
 // clang-format on

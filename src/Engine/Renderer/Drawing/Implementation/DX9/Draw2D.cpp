@@ -2,7 +2,7 @@
 
 #include "Renderer/Drawing/Draw2D.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Draw2D::Text(const std::string& text, const Ref<Font>& font, const vec2& position, const vec2& size,
 		const vec4& color)

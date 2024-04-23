@@ -15,7 +15,7 @@
 #define ANGLE2SHORT(x) (static_cast<int>((x) * 65536 / 360) & 65535)
 #define SHORT2ANGLE(x) (x * (360.0f / 65536))
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	template <typename T>
 	class Vector2;

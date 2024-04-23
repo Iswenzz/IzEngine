@@ -5,7 +5,7 @@
 
 #include <Psapi.h>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	Signature::Signature(uintptr_t address) : Address(address) { }
 	Signature::Signature(const std::string& pattern) : Signature("", pattern) { }

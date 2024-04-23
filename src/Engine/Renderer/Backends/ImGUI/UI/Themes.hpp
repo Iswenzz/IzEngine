@@ -3,7 +3,7 @@
 
 #include <tuple>
 
-namespace IW3SR::Engine::UC
+namespace IzEngine::UC
 {
 	/// <summary>
 	/// Themes window.

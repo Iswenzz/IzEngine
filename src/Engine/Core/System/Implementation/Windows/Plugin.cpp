@@ -3,7 +3,7 @@
 #include "Core/Memory/Signature.hpp"
 #include "Core/System/Plugin.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	const char* Plugin::Extension = ".dll";
 

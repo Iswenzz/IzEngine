@@ -1,7 +1,7 @@
 #pragma once
 #include "GLM.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Vector 4D class.

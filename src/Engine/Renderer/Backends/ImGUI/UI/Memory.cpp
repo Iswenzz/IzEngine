@@ -1,7 +1,7 @@
 #include "Memory.hpp"
 #include "Core/Memory/Memory.hpp"
 
-namespace IW3SR::Engine::UC
+namespace IzEngine::UC
 {
 	Memory::Memory() : Window("Memory")
 	{
@@ -16,13 +16,13 @@ namespace IW3SR::Engine::UC
 	ImU8 Memory::Read(const ImU8* data, size_t offset)
 	{
 		ImU8 byte = 0;
-		Engine::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
+		IzEngine::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
 		return byte;
 	}
 
 	void Memory::Write(ImU8* data, size_t offset, ImU8 value)
 	{
-		Engine::Memory::WriteBytes(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
+		IzEngine::Memory::WriteBytes(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
 	}
 
 	void Memory::Render()

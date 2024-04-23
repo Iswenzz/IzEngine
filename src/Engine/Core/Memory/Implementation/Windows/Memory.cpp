@@ -5,7 +5,7 @@
 #pragma warning(push)
 #pragma warning(disable : 6387)
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Memory::Read(uintptr_t address, void* data, int size)
 	{

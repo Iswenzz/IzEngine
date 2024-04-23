@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Base.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Signature class.

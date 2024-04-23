@@ -5,7 +5,7 @@
 #define TEXTURE_WHITE "white"
 #define TEXTURE_BLACK "black"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Texture class.

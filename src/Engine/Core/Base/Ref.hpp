@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Create a unique pointer.

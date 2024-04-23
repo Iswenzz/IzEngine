@@ -2,7 +2,7 @@
 
 #include "Core/Input/Keyboard.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	Keyboard::Keyboard(int key)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Renderer class.

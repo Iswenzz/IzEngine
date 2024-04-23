@@ -5,16 +5,16 @@
 #include <TlHelp32.h>
 #include <fstream>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
-	void Environment::Initialize()
+	void Environment::Initialize(const std::string& install)
 	{
 		Build();
 		BuildModulesList();
 
-		IW3SRDirectory = BaseDirectory / "iw3sr";
-		PluginsDirectory = IW3SRDirectory / "plugins";
-		ResourcesDirectory = IW3SRDirectory / "resources";
+		InstallDirectory = BaseDirectory / install;
+		PluginsDirectory = InstallDirectory / "plugins";
+		ResourcesDirectory = InstallDirectory / "resources";
 		FontsDirectory = ResourcesDirectory / "fonts";
 		ImagesDirectory = ResourcesDirectory / "images";
 	}
@@ -47,14 +47,14 @@ namespace IW3SR::Engine
 
 	void Environment::Save()
 	{
-		std::ofstream file(Environment::IW3SRDirectory / "application.json");
+		std::ofstream file(Environment::InstallDirectory / "application.json");
 		file << Settings.dump(4);
 		file.close();
 	}
 
 	void Environment::Load()
 	{
-		std::ifstream file(Environment::IW3SRDirectory / "application.json");
+		std::ifstream file(Environment::InstallDirectory / "application.json");
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Settings = nlohmann::json::parse(file);
 	}

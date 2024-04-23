@@ -2,7 +2,7 @@
 
 #include "Core/System/Environment.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Plugins::Initialize()
 	{

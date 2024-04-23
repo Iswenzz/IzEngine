@@ -1,7 +1,7 @@
 #include "Notification.hpp"
 #include "ImGUI/Drawing/Window.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void NotificationCenter::Push(const std::string& msg, int duration)
 	{
@@ -30,7 +30,7 @@ namespace IW3SR::Engine
 			draw->AddRectFilled({ pos.x + size.x, pos.y }, { pos.x + size.x + 5, pos.y + size.y },
 				IM_COL32(140, 20, 252, 255));
 
-			const std::string message = std::format("IW3SR: {}", notification.message);
+			const std::string message = std::format("IzEngine: {}", notification.message);
 			ImGui::SetCursorPos(size / 2 - ImGui::CalcTextSize(message.c_str()) / 2);
 			ImGui::Text(message.c_str());
 			window.End();

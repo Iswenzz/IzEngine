@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	template <typename T>
 	class Matrix3;

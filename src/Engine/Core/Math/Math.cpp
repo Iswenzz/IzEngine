@@ -5,7 +5,7 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	float Math::RadToDeg(float radians)
 	{

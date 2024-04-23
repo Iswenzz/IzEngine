@@ -3,7 +3,7 @@
 #include "Core/System/Environment.hpp"
 #include "Renderer/Resources/Font.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	Ref<Font>& Font::Create(const std::string& name, int height)
 	{

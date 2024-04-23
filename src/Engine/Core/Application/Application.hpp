@@ -3,7 +3,7 @@
 
 #include "Core/Communication/Events.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Application client.

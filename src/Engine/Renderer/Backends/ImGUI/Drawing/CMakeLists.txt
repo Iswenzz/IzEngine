@@ -1,4 +1,4 @@
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Notification.hpp
 	Notification.cpp
 	Plots.hpp

@@ -1,7 +1,7 @@
 #pragma once
 #include "ImGUI/Drawing/Window.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Widget class.

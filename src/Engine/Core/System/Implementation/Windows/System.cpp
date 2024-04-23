@@ -3,7 +3,7 @@
 #include <shellapi.h>
 #include "Core/System/System.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void System::Shell(const std::string& command)
 	{

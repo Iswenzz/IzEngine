@@ -1,3 +1,3 @@
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Event.hpp
 	Events.hpp)

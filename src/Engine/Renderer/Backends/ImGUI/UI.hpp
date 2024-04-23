@@ -7,7 +7,7 @@
 #include "UI/Memory.hpp"
 #include "UI/Themes.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// UI class.

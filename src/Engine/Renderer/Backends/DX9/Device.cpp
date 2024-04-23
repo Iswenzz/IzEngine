@@ -1,7 +1,7 @@
 #include "Device.hpp"
 #include "ImGUI/UI.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	void Device::Initialize(IDirect3D9* d3d, IDirect3DDevice9* device)
 	{

@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Unique identifier.

@@ -4,7 +4,7 @@
 #include "Renderer/Resources/Font.hpp"
 #include "Renderer/Resources/Texture.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Draw 2D class.

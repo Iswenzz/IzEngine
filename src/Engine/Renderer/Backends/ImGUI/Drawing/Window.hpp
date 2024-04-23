@@ -1,7 +1,7 @@
 #pragma once
 #include "ImGUI/Components.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Window drawing.

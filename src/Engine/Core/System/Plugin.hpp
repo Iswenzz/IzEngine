@@ -2,7 +2,7 @@
 #include "Core/Base.hpp"
 #include "Core/Memory/Function.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Plugin class.

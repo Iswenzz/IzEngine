@@ -1,4 +1,4 @@
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	GLM.hpp
 	Math.hpp
 	Math.cpp

@@ -1,7 +1,7 @@
 #pragma once
 #include "ImGUI/Drawing/Widget.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Plots drawing.

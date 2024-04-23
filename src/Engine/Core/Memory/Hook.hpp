@@ -3,7 +3,7 @@
 
 #include <polyhook2/Detour/NatDetour.hpp>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Hook class.

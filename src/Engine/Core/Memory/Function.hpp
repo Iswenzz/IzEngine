@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Function wrapper.

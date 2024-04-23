@@ -2,7 +2,7 @@
 
 #include "Renderer/Resources/Texture.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	Ref<Texture>& Texture::Create(const std::filesystem::path& path)
 	{

@@ -1,4 +1,4 @@
 add_subdirectory(Implementation)
 
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Keyboard.hpp)

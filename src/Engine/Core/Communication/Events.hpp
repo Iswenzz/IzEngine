@@ -1,7 +1,7 @@
 #pragma once
 #include "Event.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	class EventPluginGame : public Event
 	{

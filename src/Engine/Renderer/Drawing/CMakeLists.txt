@@ -1,6 +1,6 @@
 add_subdirectory(Implementation)
 
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Draw2D.hpp
 	HUD.hpp
 	HUD.cpp

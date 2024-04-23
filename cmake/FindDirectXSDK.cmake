@@ -2,8 +2,8 @@ find_path(DXSDK_INCLUDE_DIRS "directxsdk/d3dx9.h")
 find_library(D3DX9_LIB d3dx9)
 
 set(DXSDK_LIBS
-	${D3DX9_LIB}
-	d3d9)
+	$<$<BOOL:${GRAPHICS_API_DX9}>:${D3DX9_LIB}>
+	$<$<BOOL:${GRAPHICS_API_DX9}>:d3d9>)
 
 set(DXSDK_INCLUDE_DIRS
 	${DXSDK_INCLUDE_DIRS}

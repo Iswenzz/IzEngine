@@ -1,8 +1,8 @@
 {
-	"name": "iw3sr",
+	"name": "izengine",
 	"version": "1.0.0",
-	"description": "A Call of Duty 4 Modification.",
-  	"homepage": "https://github.com/Iswenzz/IW3SR",
+	"description": "A modern cross-platform engine framework for creating modded game clients.",
+  	"homepage": "https://github.com/Iswenzz/IzEngine",
 	"features": {
 		"tests": {
 			"description": "Build tests",

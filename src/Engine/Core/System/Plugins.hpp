@@ -3,7 +3,7 @@
 
 #include <map>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Plugins class.

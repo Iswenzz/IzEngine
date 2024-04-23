@@ -4,7 +4,7 @@
 
 #include "Renderer/Resources/Font.hpp"
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Text element.

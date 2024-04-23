@@ -16,7 +16,7 @@ public:                                                    \
 		return type;                                       \
 	}
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Event class.

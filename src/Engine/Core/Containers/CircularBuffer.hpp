@@ -3,7 +3,7 @@
 #include <numeric>
 #include <type_traits>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Circular buffer.

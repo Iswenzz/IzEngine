@@ -3,7 +3,7 @@
 
 #include <nlohmann/json.hpp>
 
-namespace IW3SR::Engine
+namespace IzEngine
 {
 	/// <summary>
 	/// Serializable class.

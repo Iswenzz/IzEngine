@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(IW3SR VERSION 1.0.0 LANGUAGES CXX)
+project(IzEngine VERSION 1.0.0 LANGUAGES CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,7 +11,6 @@ include(ClangTools)
 # Compilers
 if(MSVC)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
-	set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD true)
 endif()
 
 # CPack
@@ -28,13 +27,14 @@ find_package(glm CONFIG REQUIRED)
 find_package(PolyHook_2 CONFIG REQUIRED)
 
 # Platform
-if(WIN32)
-	set(PLATFORM_WINDOWS TRUE)
-	set(GRAPHICS_API_DXSDK TRUE)
-	set(GRAPHICS_API_DX9 TRUE)
+if(PLATFORM_WINDOWS)
+	add_definitions(-DPLATFORM_WINDOWS)
+endif()
 
+# Backends
+if(GRAPHICS_API_DX9)
 	find_package(DirectXSDK REQUIRED)
-	add_definitions(-DPLATFORM_WINDOWS -DGRAPHICS_API_DX9)
+	add_definitions(-DGRAPHICS_API_DX9)
 endif()
 
 # Tests
@@ -45,8 +45,3 @@ endif()
 
 # Build
 add_subdirectory(src)
-add_subdirectory(plugins)
-
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/private")
-    add_subdirectory(private)
-endif()

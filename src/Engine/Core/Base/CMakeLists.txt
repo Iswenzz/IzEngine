@@ -1,4 +1,4 @@
-target_sources(IW3SR.Engine PRIVATE
+target_sources(IzEngine PRIVATE
 	Log.hpp
 	Log.cpp
 	Macros.hpp
