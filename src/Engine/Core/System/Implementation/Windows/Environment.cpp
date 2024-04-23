@@ -7,14 +7,14 @@
 
 namespace IzEngine
 {
-	void Environment::Initialize(const std::string& install)
+	void Environment::Initialize()
 	{
 		Build();
 		BuildModulesList();
 
-		InstallDirectory = BaseDirectory / install;
-		PluginsDirectory = InstallDirectory / "plugins";
-		ResourcesDirectory = InstallDirectory / "resources";
+		AppDirectory = BaseDirectory / APPLICATION_ID;
+		PluginsDirectory = AppDirectory / "plugins";
+		ResourcesDirectory = AppDirectory / "resources";
 		FontsDirectory = ResourcesDirectory / "fonts";
 		ImagesDirectory = ResourcesDirectory / "images";
 	}
@@ -47,14 +47,14 @@ namespace IzEngine
 
 	void Environment::Save()
 	{
-		std::ofstream file(Environment::InstallDirectory / "application.json");
+		std::ofstream file(Environment::AppDirectory / "application.json");
 		file << Settings.dump(4);
 		file.close();
 	}
 
 	void Environment::Load()
 	{
-		std::ifstream file(Environment::InstallDirectory / "application.json");
+		std::ifstream file(Environment::AppDirectory / "application.json");
 		if (file.peek() != std::ifstream::traits_type::eof())
 			Settings = nlohmann::json::parse(file);
 	}

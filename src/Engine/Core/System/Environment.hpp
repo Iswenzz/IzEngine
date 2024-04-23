@@ -13,7 +13,7 @@ namespace IzEngine
 		static inline std::vector<std::string> Modules;
 
 		static inline std::filesystem::path BaseDirectory;
-		static inline std::filesystem::path InstallDirectory;
+		static inline std::filesystem::path AppDirectory;
 		static inline std::filesystem::path PluginsDirectory;
 		static inline std::filesystem::path ResourcesDirectory;
 		static inline std::filesystem::path FontsDirectory;
@@ -22,8 +22,7 @@ namespace IzEngine
 		/// <summary>
 		/// Initialize the environment.
 		/// </summary>
-		/// <param name="install">The install folder name.</param>
-		static void Initialize(const std::string& install);
+		static void Initialize();
 
 		/// <summary>
 		/// Load settings.

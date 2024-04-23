@@ -58,6 +58,10 @@
 	#error Unsupported address size
 #endif
 
+#ifndef APPLICATION_ID
+	#define APPLICATION_ID ""
+#endif
+
 #ifndef API
 	#define API EXPORT
 #endif
