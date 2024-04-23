@@ -27,15 +27,8 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(PolyHook_2 CONFIG REQUIRED)
 
-# Platform
-if(PLATFORM_WINDOWS)
-	add_definitions(-DPLATFORM_WINDOWS)
-endif()
-
-# Backends
 if(GRAPHICS_API_DX9)
 	find_package(DirectXSDK REQUIRED)
-	add_definitions(-DGRAPHICS_API_DX9)
 endif()
 
 # Tests

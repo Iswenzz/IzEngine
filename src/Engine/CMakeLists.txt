@@ -1,4 +1,4 @@
-add_library(IzEngine STATIC)
+add_library(IzEngine OBJECT)
 
 add_subdirectory(Core)
 add_subdirectory(Platforms)
@@ -21,8 +21,13 @@ endif()
 
 # Build
 target_include_directories(IzEngine PUBLIC . ..)
-target_compile_definitions(IzEngine PUBLIC CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
-target_compile_definitions(IzEngine PUBLIC CMAKE_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}")
+
+target_compile_definitions(IzEngine PUBLIC
+	APPLICATION_ID="${APPLICATION_ID}"
+	$<$<BOOL:${PLATFORM_WINDOWS}>:PLATFORM_WINDOWS>
+	$<$<BOOL:${GRAPHICS_API_DX9}>:GRAPHICS_API_DX9>
+	CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}"
+	CMAKE_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}")
 
 target_link_libraries(IzEngine PUBLIC
 	$<$<BOOL:${GRAPHICS_API_DX9}>:DirectX::SDK>
