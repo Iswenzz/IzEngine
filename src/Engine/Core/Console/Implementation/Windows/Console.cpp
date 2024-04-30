@@ -35,7 +35,7 @@ namespace IzEngine
 		FreeConsole();
 	}
 
-	void Console::SetTile(const std::string& title)
+	void Console::SetTitle(const std::string& title)
 	{
 		SetConsoleTitle(title.c_str());
 	}

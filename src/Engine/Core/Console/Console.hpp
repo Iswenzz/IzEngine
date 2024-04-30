@@ -42,7 +42,7 @@ namespace IzEngine
 		/// Set the console title.
 		/// </summary>
 		/// <param name="title">The title.</param>
-		static void SetTile(const std::string& title);
+		static void SetTitle(const std::string& title);
 
 		/// <summary>
 		/// Add a command.
