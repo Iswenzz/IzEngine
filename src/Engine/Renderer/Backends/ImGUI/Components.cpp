@@ -176,7 +176,7 @@ namespace ImGui
 			Button("...", size);
 			PopStyleColor();
 
-			int k = 0;
+			int k = Key_None;
 			for (; k < Key_Count; k++)
 			{
 				if (Keyboard::IsPressed(k))
@@ -185,12 +185,18 @@ namespace ImGui
 					break;
 				}
 			}
-			if (k != Key_Count || (!IsItemHovered() && IsMouseClicked(ImGuiMouseButton_Left)))
+			const bool unfocus = !IsItemHovered() && IsMouseClicked(ImGuiMouseButton_Left);
+			if (k != Key_Count || unfocus || Keyboard::IsPressed(Key_Escape))
 				ClearActiveID();
 		}
-		else if (Button(keyName, size))
-			SetActiveID(id, GetCurrentWindow());
-
+		else
+		{
+			Button(keyName, size);
+			if (IsItemClicked(ImGuiMouseButton_Left))
+				SetActiveID(id, GetCurrentWindow());
+			else if (IsItemClicked(ImGuiMouseButton_Right))
+				*key = Key_None;
+		}
 		SameLine();
 		Text(label.c_str());
 
