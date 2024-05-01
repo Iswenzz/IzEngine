@@ -41,15 +41,19 @@ namespace IzEngine
 
 	void Keyboard::Process(int msg, int key)
 	{
+		int index = Map(key);
+		if (!index)
+			return;
+
 		switch (msg)
 		{
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
-			Keys[Map(key)].State = WM_KEYDOWN;
+			Keys[index].State = WM_KEYDOWN;
 			break;
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
-			Keys[Map(key)].State = WM_KEYUP;
+			Keys[index].State = WM_KEYUP;
 			break;
 		}
 	}
