@@ -13,8 +13,9 @@ namespace IzEngine
 	template <typename T, size_t MaxSize>
 	struct CircularBuffer
 	{
-		size_t Offset = 0;
 		std::array<T, MaxSize> Data{};
+		size_t Offset = 0;
+		size_t Size = 0;
 
 		/// <summary>
 		/// Initialize a new CircularBuffer.
@@ -29,7 +30,8 @@ namespace IzEngine
 		inline void Add(const T& element)
 		{
 			Data[Offset] = element;
-			Offset = (Offset + 1) % MaxSize;
+			Size = Offset + 1;
+			Offset = Size % MaxSize;
 		}
 
 		/// <summary>
@@ -48,10 +50,38 @@ namespace IzEngine
 		/// </summary>
 		/// <returns></returns>
 		template <typename U = T>
-		requires std::is_arithmetic_v<U>
+		requires std::is_arithmetic_v<T>
 		inline U Average()
 		{
-			return Offset ? Sum() / Offset : 0;
+			return Size ? Sum() / Size : 0;
+		}
+
+		/// <summary>
+		/// Mode numeric value.
+		/// </summary>
+		/// <returns></returns>
+		template <typename U = T>
+		requires std::is_arithmetic_v<T>
+		inline U Mode()
+		{
+			if (!Size)
+				return 0;
+
+			std::unordered_map<U, size_t> map;
+			for (size_t i = 0; i < Size; ++i)
+				++map[Data[i]];
+
+			U value{};
+			size_t maxFrequency = 0;
+			for (const auto& pair : map)
+			{
+				if (pair.second > maxFrequency)
+				{
+					value = pair.first;
+					maxFrequency = pair.second;
+				}
+			}
+			return value;
 		}
 
 		/// <summary>
@@ -60,6 +90,7 @@ namespace IzEngine
 		constexpr inline void Clear()
 		{
 			Data.fill(0);
+			Size = 0;
 			Offset = 0;
 		}
 
@@ -91,10 +122,10 @@ namespace IzEngine
 		}
 
 		/// <summary>
-		/// Get the buffer size.
+		/// Get the buffer max size.
 		/// </summary>
 		/// <returns></returns>
-		constexpr inline size_t Size() const
+		constexpr inline size_t Max() const
 		{
 			return MaxSize;
 		}
