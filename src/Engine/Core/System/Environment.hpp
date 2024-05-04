@@ -16,6 +16,7 @@ namespace IzEngine
 		static inline std::filesystem::path AppDirectory;
 		static inline std::filesystem::path PluginsDirectory;
 		static inline std::filesystem::path ResourcesDirectory;
+		static inline std::filesystem::path ReportsDirectory;
 		static inline std::filesystem::path FontsDirectory;
 		static inline std::filesystem::path ImagesDirectory;
 

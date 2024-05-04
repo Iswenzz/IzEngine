@@ -28,8 +28,16 @@ namespace IzEngine
 		AppDirectory = BaseDirectory / APPLICATION_ID;
 		PluginsDirectory = AppDirectory / "plugins";
 		ResourcesDirectory = AppDirectory / "resources";
+		ReportsDirectory = AppDirectory / "reports";
 		FontsDirectory = ResourcesDirectory / "fonts";
 		ImagesDirectory = ResourcesDirectory / "images";
+
+		std::filesystem::create_directory(AppDirectory);
+		std::filesystem::create_directory(PluginsDirectory);
+		std::filesystem::create_directory(ResourcesDirectory);
+		std::filesystem::create_directory(ReportsDirectory);
+		std::filesystem::create_directory(FontsDirectory);
+		std::filesystem::create_directory(ImagesDirectory);
 	}
 
 	void Environment::BuildModules()
