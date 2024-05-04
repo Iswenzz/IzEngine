@@ -30,6 +30,7 @@ target_compile_definitions(IzEngine PUBLIC
 	CMAKE_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}")
 
 target_link_libraries(IzEngine PUBLIC
+	$<$<BOOL:${PLATFORM_WINDOWS}>:DbgHelp>
 	$<$<BOOL:${GRAPHICS_API_DX9}>:DirectX::SDK>
 	imgui::imgui
 	implot::implot
