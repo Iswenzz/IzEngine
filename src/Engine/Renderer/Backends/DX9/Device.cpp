@@ -7,27 +7,42 @@ namespace IzEngine
 	{
 		IZ_ASSERT(OSWindow::Handle, "Device needs a main window.");
 
-		D3D = Direct3DCreate9(D3D_SDK_VERSION);
+		Direct3DCreate9Ex(D3D_SDK_VERSION, &D3DEX);
+		D3DEX->QueryInterface(__uuidof(IDirect3D9), reinterpret_cast<void**>(&D3D));
 
 		D3DPRESENT_PARAMETERS d3dpp = { 0 };
 		d3dpp.Windowed = true;
 		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+		d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
 		d3dpp.BackBufferCount = 1;
-		d3dpp.BackBufferWidth = 2560;
-		d3dpp.BackBufferHeight = 1440;
+		d3dpp.BackBufferWidth = OSWindow::Size.x;
+		d3dpp.BackBufferHeight = OSWindow::Size.y;
 
-		D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(OSWindow::Handle),
-			D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &D3Device);
+		D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(OSWindow::Handle),
+			D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &d3dpp, nullptr, &D3DeviceEx);
+		D3DeviceEx->QueryInterface(__uuidof(IDirect3DDevice9), reinterpret_cast<void**>(&D3Device));
+
+		CreateScreen();
+	}
+
+	void Device::Swap(IDirect3D9* d3d, IDirect3DDevice9* device)
+	{
+		D3D = d3d;
+		D3Device = device;
 
 		CreateScreen();
 	}
 
 	void Device::Shutdown()
 	{
-		if (D3Device)
+		if (D3DeviceEx)
+			D3DeviceEx->Release();
+		else if (D3Device)
 			D3Device->Release();
-		if (D3D)
+
+		if (D3DEX)
+			D3DEX->Release();
+		else if (D3D)
 			D3D->Release();
 	}
 
@@ -43,13 +58,5 @@ namespace IzEngine
 		const vec2 display(displayMode.Width, displayMode.Height);
 
 		UI::Get().CreateScreen(position, size, display);
-	}
-
-	void Device::Swap(IDirect3D9* d3d, IDirect3DDevice9* device)
-	{
-		D3D = d3d;
-		D3Device = device;
-
-		CreateScreen();
 	}
 }
