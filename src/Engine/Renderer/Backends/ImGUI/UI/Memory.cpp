@@ -22,7 +22,7 @@ namespace IzEngine::UC
 
 	void Memory::Write(ImU8* data, size_t offset, ImU8 value)
 	{
-		IzEngine::Memory::WriteBytes(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
+		IzEngine::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
 	}
 
 	void Memory::Render()

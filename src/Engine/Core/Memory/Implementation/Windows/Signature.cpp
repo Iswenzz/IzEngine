@@ -43,7 +43,7 @@ namespace IzEngine
 		if (!hModule)
 			return addresses;
 
-		std::string bytes = Memory::HexToBytes(Pattern);
+		std::string bytes = Memory::Pattern(Pattern);
 		const int size = bytes.size();
 
 		MODULEINFO moduleInfo;

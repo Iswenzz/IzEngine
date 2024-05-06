@@ -2,9 +2,6 @@
 
 #include "Core/Memory/Memory.hpp"
 
-#pragma warning(push)
-#pragma warning(disable : 6387)
-
 namespace IzEngine
 {
 	void Memory::Read(uintptr_t address, void* data, int size)
@@ -12,17 +9,14 @@ namespace IzEngine
 		DWORD oldProtect;
 		LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
 
-		VirtualProtect(lpAddress, size, PAGE_READONLY, &oldProtect);
+		if (!VirtualProtect(lpAddress, size, PAGE_READONLY, &oldProtect))
+			return;
+
 		memcpy(data, lpAddress, size);
-		VirtualProtect(lpAddress, size, oldProtect, nullptr);
+		VirtualProtect(lpAddress, size, oldProtect, &oldProtect);
 	}
 
-	void Memory::Write(uintptr_t address, const std::string& pattern)
-	{
-		WriteBytes(address, HexToBytes(pattern));
-	}
-
-	void Memory::WriteBytes(uintptr_t address, const std::string& bytes)
+	void Memory::Write(uintptr_t address, const std::string& bytes)
 	{
 		if (!address)
 			return;
@@ -31,14 +25,16 @@ namespace IzEngine
 		LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
 		int size = bytes.size();
 
-		VirtualProtect(lpAddress, size, PAGE_READWRITE, &oldProtect);
+		if (!VirtualProtect(lpAddress, size, PAGE_READWRITE, &oldProtect))
+			return;
+
 		memcpy(lpAddress, bytes.data(), size);
-		VirtualProtect(lpAddress, size, oldProtect, nullptr);
+		VirtualProtect(lpAddress, size, oldProtect, &oldProtect);
 	}
 
 	void Memory::NOP(uintptr_t address, int size)
 	{
-		WriteBytes(address, std::string(size, '\x90'));
+		Write(address, std::string(size, '\x90'));
 	}
 
 	void Memory::JMP(uintptr_t address, uintptr_t to, int size)
@@ -48,7 +44,7 @@ namespace IzEngine
 		bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
 
 		NOP(address, size);
-		WriteBytes(address, bytes);
+		Write(address, bytes);
 	}
 
 	void Memory::CALL(uintptr_t address, uintptr_t to, int size)
@@ -58,7 +54,7 @@ namespace IzEngine
 		bytes.append(reinterpret_cast<char*>(&nearAddress), sizeof(to));
 
 		NOP(address, size);
-		WriteBytes(address, bytes);
+		Write(address, bytes);
 	}
 
 	uintptr_t Memory::LE(uintptr_t value)
@@ -77,7 +73,7 @@ namespace IzEngine
 		return result;
 	}
 
-	std::string Memory::HexToBytes(const std::string& pattern)
+	std::string Memory::Pattern(const std::string& pattern)
 	{
 		std::string result;
 		for (size_t i = 0; i < pattern.size(); ++i)
@@ -98,5 +94,3 @@ namespace IzEngine
 		return result;
 	}
 }
-
-#pragma warning(pop)

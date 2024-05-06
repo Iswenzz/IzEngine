@@ -21,15 +21,8 @@ namespace IzEngine
 		/// Write memory.
 		/// </summary>
 		/// <param name="address">The target address.</param>
-		/// <param name="pattern">The pattern to write.</param>
-		static void Write(uintptr_t address, const std::string& pattern);
-
-		/// <summary>
-		/// Write memory.
-		/// </summary>
-		/// <param name="address">The target address.</param>
 		/// <param name="bytes">The bytes to write.</param>
-		static void WriteBytes(uintptr_t address, const std::string& bytes);
+		static void Write(uintptr_t address, const std::string& bytes);
 
 		/// <summary>
 		/// Set value.
@@ -95,10 +88,10 @@ namespace IzEngine
 		static uintptr_t BE(uintptr_t value);
 
 		/// <summary>
-		/// Hex to bytes.
+		/// Get the bytes from a pattern.
 		/// </summary>
 		/// <param name="pattern">The pattern.</param>
 		/// <returns></returns>
-		static std::string HexToBytes(const std::string& pattern);
+		static std::string Pattern(const std::string& pattern);
 	};
 }
