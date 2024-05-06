@@ -20,6 +20,7 @@ namespace IzEngine
 	public:
 		static inline std::unordered_map<int, KeyInfo> Keys;
 		int Key = 0;
+		int KeyOS = 0;
 
 		/// <summary>
 		/// Initialize the Keyboard.
@@ -50,6 +51,24 @@ namespace IzEngine
 		/// </summary>
 		/// <returns></returns>
 		bool IsPressed();
+
+		/// <summary>
+		/// Is key up async.
+		/// </summary>
+		/// <returns></returns>
+		bool IsUpAsync();
+
+		/// <summary>
+		/// Is key down async.
+		/// </summary>
+		/// <returns></returns>
+		bool IsDownAsync();
+
+		/// <summary>
+		/// Is key pressed async.
+		/// </summary>
+		/// <returns></returns>
+		bool IsPressedAsync();
 
 		/// <summary>
 		/// Is key up.
@@ -90,6 +109,13 @@ namespace IzEngine
 		/// <param name="key">The key code.</param>
 		/// <returns></returns>
 		static int Map(int key);
+
+		/// <summary>
+		/// Map key to os key.
+		/// </summary>
+		/// <param name="key">The key code.</param>
+		/// <returns></returns>
+		static int MapToOS(int key);
 
 		/// <summary>
 		/// Get key name.
