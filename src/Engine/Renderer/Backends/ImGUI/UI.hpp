@@ -1,11 +1,10 @@
 #pragma once
 #include "ImGUI/Base.hpp"
 
-#include "Core/Input/Keyboard.hpp"
-#include "Core/Screen/VirtualScreen.hpp"
-
 #include "UI/Memory.hpp"
 #include "UI/Themes.hpp"
+
+#include "Core/Screen/VirtualScreen.hpp"
 
 namespace IzEngine
 {
@@ -21,7 +20,6 @@ namespace IzEngine
 		bool DesignMode = false;
 		VirtualScreen Screen;
 		float Size = 1.0f;
-		Keyboard KeyOpen;
 
 		UC::Memory Memory;
 		UC::Themes Themes;
@@ -105,6 +103,6 @@ namespace IzEngine
 		UI();
 		virtual ~UI();
 
-		SERIALIZE(UI, KeyOpen, Scale, Memory, Themes)
+		SERIALIZE(UI, Scale, Memory, Themes)
 	};
 }

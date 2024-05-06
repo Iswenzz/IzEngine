@@ -8,8 +8,6 @@ namespace IzEngine
 {
 	UI::UI()
 	{
-		KeyOpen = Keyboard(Key_F10);
-
 		ImGui::SetAllocatorFunctions(&Allocator, &Free, &Data);
 		Context = ImGui::CreateContext();
 		PlotContext = ImPlot::CreateContext();
@@ -57,13 +55,11 @@ namespace IzEngine
 	{
 		ImGui::NewFrame();
 
-		if (KeyOpen.IsPressed())
-			Open = !Open;
 		if (!Open)
-			return;
-
-		Memory.Render();
-		Themes.Render();
+		{
+			Memory.Render();
+			Themes.Render();
+		}
 	}
 
 	void UI::End()
