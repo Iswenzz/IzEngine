@@ -5,8 +5,6 @@
 #include "Core/System/Window.hpp"
 #include "Renderer/Core/Renderer.hpp"
 
-#include <dwmapi.h>
-
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	return OSWindow::Update(hWnd, uMsg, wParam, lParam);
@@ -59,25 +57,7 @@ namespace IzEngine
 			DestroyWindow(reinterpret_cast<HWND>(Handle));
 	}
 
-	void OSWindow::Overlay(bool state)
-	{
-		const HWND hwnd = reinterpret_cast<HWND>(Handle);
-
-		const int style = GetWindowLong(hwnd, GWL_EXSTYLE);
-		const int flags = WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW;
-		SetWindowLong(hwnd, GWL_EXSTYLE, state ? style | flags : style & ~flags);
-		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-
-		if (state)
-		{
-			const MARGINS Margin = { -1 };
-			SetLayeredWindowAttributes(hwnd, 0, 255, LWA_ALPHA);
-			DwmExtendFrameIntoClientArea(hwnd, &Margin);
-		}
-		IsOverlay = state;
-	}
-
-	void OSWindow::Capture(bool state)
+	void OSWindow::SetCapture(bool state)
 	{
 		IsCapture = state;
 	}
@@ -126,32 +106,6 @@ namespace IzEngine
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
-	void OSWindow::UpdateOverlay()
-	{
-		const auto& UI = UI::Get();
-		const HWND hwnd = reinterpret_cast<HWND>(Handle);
-
-		const int style = GetWindowLong(hwnd, GWL_EXSTYLE);
-		const int flags = WS_EX_LAYERED;
-		SetWindowLong(hwnd, GWL_EXSTYLE, !UI.Open ? style | flags : style & ~flags);
-
-		if (UI.Active)
-		{
-			POINT mouse = { 0 };
-			GetCursorPos(&mouse);
-			ScreenToClient(hwnd, &mouse);
-
-			ImGuiIO& io = ImGui::GetIO();
-			io.MousePos.x = mouse.x;
-			io.MousePos.y = mouse.y;
-
-			static bool prevOpen = false;
-			if (UI.Open && !prevOpen)
-				SetForegroundWindow(hwnd);
-			prevOpen = UI.Open;
-		}
-	}
-
 	void OSWindow::Frame()
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(Handle);
@@ -162,9 +116,6 @@ namespace IzEngine
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		if (IsOverlay)
-			UpdateOverlay();
-
 		SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
 	}
 }

@@ -17,7 +17,6 @@ namespace IzEngine
 		static inline vec2 Size;
 
 		static inline bool Open = false;
-		static inline bool IsOverlay = false;
 		static inline bool IsCapture = true;
 
 		/// <summary>
@@ -38,16 +37,10 @@ namespace IzEngine
 		static void Shutdown();
 
 		/// <summary>
-		/// Overlay window.
-		/// </summary>
-		/// <param name="state">The overlay state.</param>
-		static void Overlay(bool state);
-
-		/// <summary>
 		/// Capture window.
 		/// </summary>
 		/// <param name="state">The capture state.</param>
-		static void Capture(bool state);
+		static void SetCapture(bool state);
 
 		/// <summary>
 		/// Update callback.
@@ -63,11 +56,5 @@ namespace IzEngine
 		/// Window frame.
 		/// </summary>
 		static void Frame();
-
-	private:
-		/// <summary>
-		/// Update overlay.
-		/// </summary>
-		static void UpdateOverlay();
 	};
 }
