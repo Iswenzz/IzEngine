@@ -1,5 +1,6 @@
 #include "Renderer/Common.hpp"
 
+#include "Core/Input/Keyboard.hpp"
 #include "Core/System/Plugins.hpp"
 #include "Core/System/System.hpp"
 
@@ -50,10 +51,10 @@ namespace IzEngine
 
 	void Renderer::Frame()
 	{
-		Device::D3Device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+		Device::D3Device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
 		Device::D3Device->BeginScene();
 		Begin();
-		
+
 		EventRendererRender event;
 		Application::Get().Dispatch(event);
 
