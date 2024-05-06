@@ -55,7 +55,7 @@ namespace IzEngine
 	{
 		ImGui::NewFrame();
 
-		if (!Open)
+		if (Open)
 		{
 			Memory.Render();
 			Themes.Render();
