@@ -35,6 +35,11 @@ namespace IzEngine
 		Textures::Release();
 	}
 
+	void Renderer::Resize(const vec2& size)
+	{
+		Device::Resize(size);
+	}
+
 	void Renderer::Begin()
 	{
 		ImGui_ImplOS_NewFrame();

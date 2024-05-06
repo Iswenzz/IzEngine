@@ -3,6 +3,7 @@
 
 #include "Core/Input/Keyboard.hpp"
 #include "Core/System/Window.hpp"
+#include "Renderer/Core/Renderer.hpp"
 
 #include <dwmapi.h>
 
@@ -95,9 +96,18 @@ namespace IzEngine
 
 		switch (msg)
 		{
+		case WM_MOVE:
+			Position = vec2(LOWORD(lParam), HIWORD(lParam));
+			break;
+
+		case WM_SIZE:
+			Size = vec2(LOWORD(lParam), HIWORD(lParam));
+			Renderer::Resize(Size);
+			break;
+
 		case WM_CLOSE:
-			DestroyWindow(hwnd);
 			Open = false;
+			DestroyWindow(hwnd);
 			break;
 
 		case WM_DESTROY:
@@ -131,6 +141,17 @@ namespace IzEngine
 		const int style = GetWindowLong(hwnd, GWL_EXSTYLE);
 		const int flags = WS_EX_LAYERED;
 		SetWindowLong(hwnd, GWL_EXSTYLE, !UI.Open ? style | flags : style & ~flags);
+
+		if (UI::Get().Active)
+		{
+			POINT mouse = { 0 };
+			GetCursorPos(&mouse);
+			ScreenToClient(hwnd, &mouse);
+
+			ImGuiIO& io = ImGui::GetIO();
+			io.MousePos.x = mouse.x;
+			io.MousePos.y = mouse.y;
+		}
 	}
 
 	void OSWindow::UpdateAttach()

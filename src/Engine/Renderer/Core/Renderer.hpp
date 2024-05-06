@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Math.hpp"
 
 namespace IzEngine
 {
@@ -17,6 +18,12 @@ namespace IzEngine
 		/// Shutdown renderer.
 		/// </summary>
 		static void Shutdown();
+
+		/// <summary>
+		/// Resize the renderer buffer.
+		/// </summary>
+		/// <param name="size">The size.</param>
+		static void Resize(const vec2& size);
 
 		/// <summary>
 		/// Begin frame.

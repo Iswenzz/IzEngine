@@ -59,4 +59,20 @@ namespace IzEngine
 
 		UI::Get().CreateScreen(position, size, display);
 	}
+
+	void Device::Resize(const vec2& size)
+	{
+		if (!D3DeviceEx)
+			return;
+
+		D3DPRESENT_PARAMETERS d3dpp = { 0 };
+		d3dpp.Windowed = true;
+		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
+		d3dpp.BackBufferCount = 1;
+		d3dpp.BackBufferWidth = size.x;
+		d3dpp.BackBufferHeight = size.y;
+
+		D3DeviceEx->Reset(&d3dpp);
+	}
 }
