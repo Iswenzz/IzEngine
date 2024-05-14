@@ -11,7 +11,7 @@ namespace IzEngine
 	{
 		Processes.clear();
 
-		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, NULL);
+		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 		if (hSnapshot == INVALID_HANDLE_VALUE)
 			return;
 
