@@ -50,7 +50,7 @@ namespace IzEngine
 		/// <param name="wParam">The w param.</param>
 		/// <param name="lParam">The l param.</param>
 		/// <returns></returns>
-		static int Update(void* handle, int msg, int wParam, int lParam);
+		static int Update(void* handle, int msg, uintptr_t wParam, uintptr_t lParam);
 
 		/// <summary>
 		/// Window frame.

@@ -62,7 +62,7 @@ namespace IzEngine
 		IsCapture = state;
 	}
 
-	int OSWindow::Update(void* handle, int msg, int wParam, int lParam)
+	int OSWindow::Update(void* handle, int msg, uintptr_t wParam, uintptr_t lParam)
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(handle);
 		const auto& UI = UI::Get();
