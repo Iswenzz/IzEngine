@@ -1,8 +1,9 @@
 #include "UI.hpp"
 
+#include "Drawing/Notification.hpp"
+
 #include "Core/System/Environment.hpp"
 #include "Core/System/System.hpp"
-#include "DX9/Device.hpp"
 
 namespace IzEngine
 {
@@ -60,6 +61,7 @@ namespace IzEngine
 			Memory.Render();
 			Themes.Render();
 		}
+		Notifications::Render();
 	}
 
 	void UI::End()

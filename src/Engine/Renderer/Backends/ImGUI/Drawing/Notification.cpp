@@ -1,26 +1,26 @@
 #include "Notification.hpp"
-#include "ImGUI/Drawing/Window.hpp"
+
+#include "ImGUI/UI.hpp"
 
 namespace IzEngine
 {
-	void NotificationCenter::Push(const std::string& msg, int duration)
+	void Notifications::Push(const std::string& msg, float duration)
 	{
-		Notifications.push_back({ msg, duration });
+		List.push_back({ msg, duration, UI::Get().Time() });
 	}
 
-	void NotificationCenter::Render()
+	void Notifications::Render()
 	{
-		if (Notifications.empty())
+		if (List.empty())
 			return;
 
 		ImDrawList* draw = ImGui::GetBackgroundDrawList();
-		int count = 0;
-		float next = 0;
+		int position = 50;
 
-		for (const auto& notification : Notifications)
+		for (const auto& notification : List)
 		{
-			Window window;
-			window.SetRect(0, count ? next : 50, 80, 20);
+			Window window("##Notfication");
+			window.SetRect(0, position, 140, 20);
 			window.Begin(ImGuiWindowFlags_Notification);
 
 			const ImVec2& pos = window.RenderPosition;
@@ -30,21 +30,15 @@ namespace IzEngine
 			draw->AddRectFilled({ pos.x + size.x, pos.y }, { pos.x + size.x + 5, pos.y + size.y },
 				IM_COL32(140, 20, 252, 255));
 
-			const std::string message = std::format("IzEngine: {}", notification.message);
-			ImGui::SetCursorPos(size / 2 - ImGui::CalcTextSize(message.c_str()) / 2);
-			ImGui::Text(message.c_str());
+			ImGui::TextWrapped(notification.message.c_str());
 			window.End();
 
-			next = pos.y + size.y + 10;
-			count++;
+			position += size.y + 10;
 		}
-		auto remove = [](const Notification& notification)
-		{
-			const Seconds duration(notification.duration);
-			const auto currentTime = Time::now();
-			const static auto endTime = currentTime + duration;
-			return currentTime > endTime;
-		};
-		Notifications.erase(std::remove_if(Notifications.begin(), Notifications.end(), remove), Notifications.end());
+		std::erase_if(List,
+			[](const Notification& notification)
+			{
+				return UI::Get().Time() > notification.time + notification.duration;
+			});
 	}
 }

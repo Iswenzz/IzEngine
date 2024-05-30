@@ -1,44 +1,37 @@
 #pragma once
-#include "ImGUI/Components.hpp"
+#include "ImGUI/Base.hpp"
 
 namespace IzEngine
 {
 	/// <summary>
 	/// Notification center.
 	/// </summary>
-	class API NotificationCenter
+	class API Notifications
 	{
 	private:
+		/// <summary>
+		/// Notification data.
+		/// </summary>
 		struct Notification
 		{
 			std::string message;
-			int duration;
+			float duration;
+			double time;
 		};
 
 	public:
-		std::vector<Notification> Notifications;
-
-		/// <summary>
-		/// Initialize the notification center.
-		/// </summary>
-		NotificationCenter() = default;
-		~NotificationCenter() = default;
+		static inline std::vector<Notification> List;
 
 		/// <summary>
 		/// Create a notification.
 		/// </summary>
 		/// <param name="msg">The message.</param>
 		/// <param name="duration">The duration.</param>
-		void Push(const std::string& msg, int duration = 5);
+		static void Push(const std::string& msg, float duration = 5);
 
 		/// <summary>
 		/// Render the notifications.
 		/// </summary>
-		void Render();
-
-	private:
-		using MilliSeconds = std::chrono::milliseconds;
-		using Seconds = std::chrono::seconds;
-		using Time = std::chrono::steady_clock;
+		static void Render();
 	};
 }
