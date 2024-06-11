@@ -25,8 +25,8 @@
 	#define CMAKE_BINARY_DIR ""
 #endif
 
-#ifndef CMAKE_PROJECT_VERSION
-	#define CMAKE_PROJECT_VERSION "undefined"
+#ifndef APPLICATION_VERSION
+	#define APPLICATION_VERSION "undefined"
 #endif
 
 #define IZ_EXPAND(x) x
