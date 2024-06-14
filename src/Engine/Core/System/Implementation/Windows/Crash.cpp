@@ -57,6 +57,7 @@ namespace IzEngine
 		DWORD displacement = 0;
 		DWORD64 displacement64 = 0;
 		int machine = 0;
+		int frame = 0;
 
 		char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)] = { 0 };
 		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
@@ -97,31 +98,24 @@ namespace IzEngine
 		Log::WriteLine(Channel::Info, "Stacktrace: {}", path.string());
 		std::ofstream file(path);
 
-		for (int frame = 0;; frame++)
+		while (StackWalk64(machine, process, thread, &stack, &copy, nullptr, SymFunctionTableAccess64,
+			SymGetModuleBase64, nullptr))
 		{
-			bool result = StackWalk64(machine, process, thread, &stack, &copy, nullptr, SymFunctionTableAccess64,
-				SymGetModuleBase64, nullptr);
-			if (!result || !stack.AddrPC.Offset)
-				break;
-
 			symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 			symbol->MaxNameLen = MAX_SYM_NAME;
 			SymFromAddr(process, stack.AddrPC.Offset, &displacement64, symbol);
 
+			DWORD64 moduleBase = SymGetModuleBase64(process, stack.AddrPC.Offset);
+			GetModuleFileName(reinterpret_cast<HMODULE>(moduleBase), module.data(), module.capacity());
+
 			IMAGEHLP_LINE64 line = { 0 };
 			line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
-
-			HMODULE hModule = nullptr;
-			module.clear();
-			GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-				reinterpret_cast<LPCSTR>(stack.AddrPC.Offset), &hModule);
-			GetModuleFileName(hModule, module.data(), module.capacity());
-
 			std::string traceLine;
+
 			if (SymGetLineFromAddr64(process, stack.AddrPC.Offset, &displacement, &line))
 				traceLine = std::format(" {}+{} ", line.FileName, line.LineNumber);
 
-			file << std::format("{:>5}: {}({}){}[0x{:X}]\n", frame, module, symbol->Name, traceLine, symbol->Address);
+			file << std::format("{:>5}: {}.{}{}[0x{:X}]\n", frame++, module, symbol->Name, traceLine, symbol->Address);
 		}
 		file.close();
 		SymCleanup(process);
