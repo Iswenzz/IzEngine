@@ -70,7 +70,9 @@ namespace IzEngine
 		/// <returns></returns>
 		void Install()
 		{
-			if (IsEnabled)
+			IZ_ASSERT(Address, "Hook address is nullptr.");
+
+			if (IsEnabled || !Address)
 				return;
 
 			IsEnabled = true;
