@@ -12,6 +12,10 @@ add_subdirectory(Memory)
 add_subdirectory(Screen)
 add_subdirectory(System)
 
+if(BUILD_TESTING)
+	add_subdirectory(Tests)
+endif()
+
 target_precompile_headers(IzEngine PRIVATE
 	Base.hpp
 	Math.hpp)

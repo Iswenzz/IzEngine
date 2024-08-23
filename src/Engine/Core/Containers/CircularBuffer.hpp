@@ -42,7 +42,7 @@ namespace IzEngine
 		requires std::is_arithmetic_v<U>
 		inline U Sum()
 		{
-			return std::accumulate(Begin(), End(), 0);
+			return std::accumulate(Begin(), Begin() + Size, 0);
 		}
 
 		/// <summary>

@@ -18,7 +18,7 @@ namespace IzEngine
 		uint64_t Address = 0;
 		uint64_t Callback = 0;
 		uint64_t Trampoline = 0;
-		std::function<T> Original = nullptr;
+		T* Original = nullptr;
 		Scope<PLH::NatDetour> Detour = nullptr;
 		bool IsEnabled = false;
 
@@ -70,13 +70,15 @@ namespace IzEngine
 		/// <returns></returns>
 		void Install()
 		{
-			if (IsEnabled)
+			IZ_ASSERT(Address, "Hook address is nullptr.");
+
+			if (IsEnabled || !Address)
 				return;
 
 			IsEnabled = true;
 			Detour = CreateScope<PLH::NatDetour>(Address, Callback, &Trampoline);
 			Detour->hook();
-			Original = std::function<T>(reinterpret_cast<T*>(Trampoline));
+			Original = reinterpret_cast<T*>(Trampoline);
 		}
 
 		/// <summary>

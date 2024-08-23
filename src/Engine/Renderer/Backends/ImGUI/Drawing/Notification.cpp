@@ -15,20 +15,20 @@ namespace IzEngine
 			return;
 
 		ImDrawList* draw = ImGui::GetBackgroundDrawList();
+
 		int position = 50;
-		int count = 0;
 		int slideDuration = 1;
 		double currentTime = UI::Get().Time();
 
 		for (const auto& notification : List)
 		{
 			float elapsedTime = currentTime - notification.time;
-			int slidePosition = position + count * 30;
+			int slidePosition = position + size.y;
 
 			if (elapsedTime < slideDuration)
 				slidePosition = static_cast<int>((elapsedTime / slideDuration) * slidePosition);
 
-			Window window(std::format("##Notification {}", count));
+			Window window(UUID().String);
 			window.SetRect(0, slidePosition, 140, 20);
 			window.Begin(ImGuiWindowFlags_Notification);
 
@@ -39,16 +39,12 @@ namespace IzEngine
 			draw->AddRectFilled({ pos.x + size.x, pos.y }, { pos.x + size.x + 5, pos.y + size.y },
 				IM_COL32(140, 20, 252, 255));
 
-			ImGui::TextWrapped("%s", notification.message.c_str());
+			ImGui::TextWrapped(notification.message.c_str());
 			window.End();
 
-			//position += size.y;
-			count++;
+			position += size.y;
 		}
-		std::erase_if(List,
-			[](const Notification& notification)
-			{
-				return UI::Get().Time() > notification.time + notification.duration;
-			});
+		std::erase_if(List, [](const Notification& notification)
+			{ return UI::Get().Time() > notification.time + notification.duration; });
 	}
 }

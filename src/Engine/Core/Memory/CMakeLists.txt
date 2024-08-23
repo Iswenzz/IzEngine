@@ -6,4 +6,5 @@ target_sources(IzEngine PRIVATE
 	Hook.hpp
 	Memory.hpp
 	Signature.hpp
+	StackCanary.cpp
 	StackCanary.hpp)

@@ -14,7 +14,7 @@ namespace IzEngine
 
 	public:
 		uintptr_t Address = 0;
-		std::function<T> Func = nullptr;
+		T* Func = nullptr;
 
 		/// <summary>
 		/// Initialize a new function wrapper.
@@ -42,7 +42,7 @@ namespace IzEngine
 		Function<T>& operator=(uintptr_t address)
 		{
 			Address = address;
-			Func = std::function<T>(reinterpret_cast<T*>(address));
+			Func = reinterpret_cast<T*>(address);
 			return *this;
 		}
 
@@ -54,7 +54,7 @@ namespace IzEngine
 		void operator<(uintptr_t address)
 		{
 			Address = address;
-			Func = std::function<T>(reinterpret_cast<T*>(address));
+			Func = reinterpret_cast<T*>(address);
 		}
 
 		/// <summary>

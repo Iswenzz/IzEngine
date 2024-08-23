@@ -23,6 +23,15 @@ endif()
 if(BUILD_TESTING)
 	include(CTest)
 	find_package(GTest CONFIG REQUIRED)
+	add_executable(IzEngine.Tests)
+	add_test(NAME IzEngine COMMAND IzEngine.Tests)
+
+	target_link_libraries(IzEngine.Tests PRIVATE
+		IzEngine
+		GTest::gtest
+		GTest::gtest_main
+		GTest::gmock
+		GTest::gmock_main)
 endif()
 
 # Build

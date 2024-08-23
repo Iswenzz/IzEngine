@@ -11,21 +11,12 @@ namespace IzEngine
 		/// <summary>
 		/// Initialize buffer.
 		/// </summary>
-		StackCanary()
-		{
-			for (int i = 0; i < 50; i++)
-				Buffer[i] = 0xCE;
-		}
+		StackCanary();
 
 		/// <summary>
 		/// Check stack corruption.
 		/// </summary>
-		~StackCanary() noexcept(false)
-		{
-			for (int i = 0; i < 50; i++)
-				if (Buffer[i] != 0xCE)
-					throw "Stack corruption";
-		}
+		~StackCanary() noexcept(false);
 
 	private:
 		unsigned char Buffer[50];
