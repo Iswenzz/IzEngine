@@ -16,20 +16,20 @@ namespace IzEngine
 
 		ImDrawList* draw = ImGui::GetBackgroundDrawList();
 
-		int position = 50;
-		int slideDuration = 1;
-		double currentTime = UI::Get().Time();
+		vec2 position = { 0, 50 };
+		const int slideDuration = 1;
+		const double currentTime = UI::Get().Time();
 
 		for (const auto& notification : List)
 		{
-			float elapsedTime = currentTime - notification.time;
-			int slidePosition = position + size.y;
+			const float elapsedTime = currentTime - notification.time;
 
+			position.x = 0;
 			if (elapsedTime < slideDuration)
-				slidePosition = static_cast<int>((elapsedTime / slideDuration) * slidePosition);
+				position.x += elapsedTime / slideDuration;
 
 			Window window(UUID().String);
-			window.SetRect(0, slidePosition, 140, 20);
+			window.SetRect(position.x, position.y, 140, 20);
 			window.Begin(ImGuiWindowFlags_Notification);
 
 			const ImVec2& pos = window.RenderPosition;
@@ -42,7 +42,7 @@ namespace IzEngine
 			ImGui::TextWrapped(notification.message.c_str());
 			window.End();
 
-			position += size.y;
+			position += size.y + 10;
 		}
 		std::erase_if(List, [](const Notification& notification)
 			{ return UI::Get().Time() > notification.time + notification.duration; });

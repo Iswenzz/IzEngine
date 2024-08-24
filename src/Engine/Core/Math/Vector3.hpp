@@ -115,22 +115,6 @@ namespace IzEngine
 			return *this;
 		}
 
-		vec3i& ToShort()
-		{
-			this->x = ANGLE2SHORT(this->x);
-			this->y = ANGLE2SHORT(this->y);
-			this->z = ANGLE2SHORT(this->z);
-			return reinterpret_cast<vec3i&>(*this);
-		}
-
-		vec3f& FromShort()
-		{
-			this->x = SHORT2ANGLE(this->x);
-			this->y = SHORT2ANGLE(this->y);
-			this->z = SHORT2ANGLE(this->z);
-			return reinterpret_cast<vec3f&>(*this);
-		}
-
 		/// <summary>
 		/// Calculate the distance between this vector and another vector.
 		/// </summary>
@@ -207,26 +191,6 @@ namespace IzEngine
 		bool operator!() const
 		{
 			return !operator bool();
-		}
-
-		/// <summary>
-		/// Multiply two vectors element-wise.
-		/// </summary>
-		/// <param name="other">The other vector.</param>
-		/// <returns>The result of the multiplication.</returns>
-		vec3 operator*(const vec3& other) const
-		{
-			return vec3(this->x * other.x, this->y * other.y, this->z * other.z);
-		}
-
-		/// <summary>
-		/// Multiply a vector element-wise by a scalar.
-		/// </summary>
-		/// <param name="num">The scalar number.</param>
-		/// <returns>The result of the multiplication.</returns>
-		vec3 operator*(T num) const
-		{
-			return vec3(this->x * num, this->y * num, this->z * num);
 		}
 
 		SERIALIZE(vec3, x, y, z)

@@ -237,19 +237,10 @@ namespace IzEngine
 		/// <summary>
 		/// Angular distance between 2 values.
 		/// </summary>
-		/// <param name="value1">1st val</param>
-		/// <param name="value2">2nd val</param>
+		/// <param name="value1">1st value.</param>
+		/// <param name="value2">2nd value.</param>
 		/// <returns></returns>
 		static float AngularDistance(float value1, float value2);
-
-		/// <summary>
-		/// MA the vector.
-		/// </summary>
-		/// <param name="veca">Vector A.</param>
-		/// <param name="scale">The scale.</param>
-		/// <param name="vecb">Vector B.</param>
-		/// <param name="vecc">Vector C.</param>
-		static void VectorMA(vec3 veca, float scale, vec3 vecb, vec3 vecc);
 
 		/// <summary>
 		/// Converts a 3D vector to Euler angles (pitch, yaw, and roll) in radians.

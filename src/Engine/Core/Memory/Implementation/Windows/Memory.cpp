@@ -22,6 +22,9 @@ namespace IzEngine
 	{
 		IZ_ASSERT(address, "Addresss nullptr.");
 
+		if (!address)
+			return;
+
 		DWORD oldProtect;
 		LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
 		int size = bytes.size();

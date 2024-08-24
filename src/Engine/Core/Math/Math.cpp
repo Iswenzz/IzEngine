@@ -186,13 +186,6 @@ namespace IzEngine
 		return std::abs(diff);
 	}
 
-	void Math::VectorMA(vec3 veca, float scale, vec3 vecb, vec3 vecc)
-	{
-		vecc[0] = veca[0] + scale * vecb[0];
-		vecc[1] = veca[1] + scale * vecb[1];
-		vecc[2] = veca[2] + scale * vecb[2];
-	}
-
 	vec3 Math::VectorToAngles(const float* v)
 	{
 		vec3 angles;
