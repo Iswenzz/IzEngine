@@ -5,7 +5,6 @@
 #include "UI/Themes.hpp"
 
 #include "Core/System/Environment.hpp"
-#include "Core/System/System.hpp"
 
 namespace IzEngine
 {

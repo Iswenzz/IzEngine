@@ -1,13 +1,12 @@
 #include "Renderer/Common.hpp"
 
+#include "DX9/Device.hpp"
+#include "ImGUI/UI.hpp"
+
 #include "Core/Communication/Actions.hpp"
 #include "Core/Input/Keyboard.hpp"
 #include "Core/System/Plugins.hpp"
-#include "Core/System/System.hpp"
 #include "Core/System/Window.hpp"
-
-#include "DX9/Device.hpp"
-#include "ImGUI/UI.hpp"
 
 namespace IzEngine
 {
@@ -22,10 +21,14 @@ namespace IzEngine
 
 		ImGui_ImplOS_Init(OSWindow::Handle);
 		ImGui_ImplAPI_Init(Device::D3Device);
+
+		Plugins::Initialize();
 	}
 
 	void Renderer::Shutdown()
 	{
+		Plugins::Shutdown();
+
 		ImGui_ImplAPI_Shutdown();
 		ImGui_ImplOS_Shutdown();
 
