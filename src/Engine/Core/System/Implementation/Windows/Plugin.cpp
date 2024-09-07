@@ -1,5 +1,6 @@
 #include "Windows/Base.hpp"
 
+#include "Core/Console/Console.hpp"
 #include "Core/Memory/Signature.hpp"
 #include "Core/System/Plugin.hpp"
 
@@ -32,6 +33,9 @@ namespace IzEngine
 
 	Plugin::~Plugin()
 	{
+		if (Console::Terminated)
+			return;
+
 		if (CallbackShutdown)
 			CallbackShutdown();
 

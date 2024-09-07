@@ -15,6 +15,7 @@ namespace IzEngine
 		static inline void* OutputHandle = nullptr;
 		static inline int ModeIn = 0;
 		static inline int ModeOut = 0;
+		static inline bool Terminated = false;
 
 		static inline std::string InputBuffer;
 		static inline std::vector<std::string> Commands;
@@ -117,5 +118,12 @@ namespace IzEngine
 		/// Print break.
 		/// </summary>
 		static void PrintBreak();
+
+		/// <summary>
+		/// Signal handler.
+		/// </summary>
+		/// <param name="signal">The signal.</param>
+		/// <returns></returns>
+		static int SignalHandler(int signal);
 	};
 }

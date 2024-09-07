@@ -8,6 +8,7 @@ namespace IzEngine
 	void Console::Initialize(const std::string& name)
 	{
 		AllocConsole();
+		SetConsoleCtrlHandler(reinterpret_cast<PHANDLER_ROUTINE>(SignalHandler), TRUE);
 		Handle = GetConsoleWindow();
 		SetConsoleTitle(name.c_str());
 
@@ -218,6 +219,13 @@ namespace IzEngine
 			PrintForward();
 		for (int i = 0; i < InputBuffer.size() + 1; i++)
 			PrintBreak();
+	}
+
+	int Console::SignalHandler(int signal)
+	{
+		if (signal == CTRL_CLOSE_EVENT)
+			Terminated = true;
+		return TRUE;
 	}
 
 	void Console::Frame()
