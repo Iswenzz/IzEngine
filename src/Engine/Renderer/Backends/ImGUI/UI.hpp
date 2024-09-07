@@ -3,6 +3,7 @@
 
 #include "Drawing/Window.hpp"
 
+#include "Core/Input/Keyboard.hpp"
 #include "Core/Screen/VirtualScreen.hpp"
 
 namespace IzEngine
@@ -15,6 +16,7 @@ namespace IzEngine
 	public:
 		static inline std::unordered_map<std::string, Ref<Window>> Windows;
 		static inline nlohmann::json Serialized;
+		static inline Keyboard KeyOpen;
 
 		static inline bool Active = false;
 		static inline bool Open = false;
@@ -26,6 +28,12 @@ namespace IzEngine
 		/// Initialize UI.
 		/// </summary>
 		static void Initialize();
+
+		/// <summary>
+		/// Initialize context.
+		/// </summary>
+		/// <remarks>Share context with DLLs.</remarks>
+		static void InitializeContext();
 
 		/// <summary>
 		/// Release UI.
@@ -59,16 +67,6 @@ namespace IzEngine
 		static void CreateScreen(const vec2& position, const vec2& size, const vec2& display);
 
 		/// <summary>
-		/// Begin frame.
-		/// </summary>
-		static void Begin();
-
-		/// <summary>
-		/// End frame.
-		/// </summary>
-		static void End();
-
-		/// <summary>
 		/// Get time.
 		/// </summary>
 		/// <returns></returns>
@@ -87,10 +85,26 @@ namespace IzEngine
 		static int DeltaTimeMS();
 
 		/// <summary>
-		/// Initialize context.
+		/// Begin frame.
 		/// </summary>
-		/// <remarks>Share context with DLLs.</remarks>
-		static void InitializeContext();
+		static void Begin();
+
+		/// <summary>
+		/// End frame.
+		/// </summary>
+		static void End();
+
+		/// <summary>
+		/// Dispatch event.
+		/// </summary>
+		/// <param name="event">The event.</param>
+		static void Dispatch(Event& event);
+
+	private:
+		static inline void* Data = nullptr;
+		static inline ImGuiContext* Context = nullptr;
+		static inline ImPlotContext* PlotContext = nullptr;
+		static inline float Scale = 1.0f;
 
 		/// <summary>
 		/// ImGUI allocator.
@@ -106,17 +120,5 @@ namespace IzEngine
 		/// <param name="ptr">The pointer.</param>
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
-
-		/// <summary>
-		/// Dispatch event.
-		/// </summary>
-		/// <param name="event">The event.</param>
-		static void Dispatch(Event& event);
-
-	private:
-		static inline void* Data = nullptr;
-		static inline ImGuiContext* Context = nullptr;
-		static inline ImPlotContext* PlotContext = nullptr;
-		static inline float Scale = 1.0f;
 	};
 }

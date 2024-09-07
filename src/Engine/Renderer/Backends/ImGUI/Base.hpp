@@ -30,6 +30,10 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 
 	#define ImGui_ImplAPI_Init(device) ImGui_ImplDX9_Init(device)
 	#define ImGui_ImplAPI_Shutdown() ImGui_ImplDX9_Shutdown()
+	#define ImGui_ImplAPI_InvalidateDeviceObjects() ImGui_ImplDX9_InvalidateDeviceObjects()
+	#define ImGui_ImplAPI_CreateDeviceObjects() ImGui_ImplDX9_CreateDeviceObjects()
+	#define ImGui_ImplAPI_NewFrame() ImGui_ImplDX9_NewFrame()
+	#define ImGui_ImplAPI_RenderDrawData(data) ImGui_ImplDX9_RenderDrawData(data)
 #endif
 
 #pragma warning(pop)

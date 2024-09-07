@@ -13,15 +13,15 @@ namespace IzEngine
 	{
 		IZ_ASSERT(!Active, "UI already initialized.");
 
-		ImGui::SetAllocatorFunctions(&Allocator, &Free, &Data);
 		Context = ImGui::CreateContext();
 		PlotContext = ImPlot::CreateContext();
-
-		ImGui::SetCurrentContext(Context);
-		ImPlot::SetImGuiContext(Context);
-		ImPlot::SetCurrentContext(PlotContext);
+		InitializeContext();
 
 		Environment::Load(Serialized, "ui.json");
+
+		KeyOpen = Keyboard(Key_F10);
+		if (Serialized.contains("KeyOpen"))
+			KeyOpen = Serialized["KeyOpen"];
 
 		CreateWindow<UC::Themes>();
 		CreateWindow<UC::Memory>();
@@ -29,10 +29,12 @@ namespace IzEngine
 		Active = true;
 	}
 
-	void UI::CreateScreen(const vec2& position, const vec2& size, const vec2& display)
+	void UI::InitializeContext()
 	{
-		Screen = VirtualScreen(position, size, display);
-		Size = Screen.VirtualToReal.y * Scale;
+		ImGui::SetAllocatorFunctions(Allocator, Free, &Data);
+		ImGui::SetCurrentContext(Context);
+		ImPlot::SetImGuiContext(Context);
+		ImPlot::SetCurrentContext(PlotContext);
 	}
 
 	void UI::Shutdown()
@@ -47,22 +49,17 @@ namespace IzEngine
 			window->Serialize(Serialized[window->Name]);
 			window->Release();
 		}
+		Serialized["KeyOpen"] = KeyOpen;
 		Environment::Save(Serialized, "ui.json");
 		Windows.clear();
 
 		Active = false;
 	}
 
-	void UI::Begin()
+	void UI::CreateScreen(const vec2& position, const vec2& size, const vec2& display)
 	{
-		ImGui::NewFrame();
-		UC::Themes::ComputeRainbow();
-		Notifications::Render();
-	}
-
-	void UI::End()
-	{
-		ImGui::Render();
+		Screen = VirtualScreen(position, size, display);
+		Size = Screen.VirtualToReal.y * Scale;
 	}
 
 	double UI::Time()
@@ -80,14 +77,6 @@ namespace IzEngine
 		return ImGui::GetIO().DeltaTime * 1000;
 	}
 
-	void UI::InitializeContext()
-	{
-		ImGui::SetAllocatorFunctions(UI::Allocator, UI::Free, UI::Data);
-		ImGui::SetCurrentContext(UI::Context);
-		ImPlot::SetImGuiContext(UI::Context);
-		ImPlot::SetCurrentContext(UI::PlotContext);
-	}
-
 	void* UI::Allocator(size_t size, void* data)
 	{
 		return malloc(size);
@@ -96,6 +85,24 @@ namespace IzEngine
 	void UI::Free(void* ptr, void* data)
 	{
 		free(ptr);
+	}
+
+	void UI::Begin()
+	{
+		ImGui::NewFrame();
+		UC::Themes::ComputeRainbow();
+		Notifications::Render();
+
+		if (Keyboard::IsPressed(Key_Escape))
+			Open = false;
+
+		if (KeyOpen.IsPressed())
+			Open = !Open;
+	}
+
+	void UI::End()
+	{
+		ImGui::Render();
 	}
 
 	void UI::Dispatch(Event& event)

@@ -9,8 +9,8 @@ namespace IzEngine
 	class API System
 	{
 	public:
-		static inline std::unordered_map<std::string, uintptr_t> Processes;
-		static inline std::unordered_map<std::string, uintptr_t> Modules;
+		static inline std::map<std::string, uintptr_t> Processes;
+		static inline std::map<std::string, uintptr_t> Modules;
 
 		/// <summary>
 		/// Map processes.

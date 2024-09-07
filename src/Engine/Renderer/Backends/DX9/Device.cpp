@@ -27,25 +27,18 @@ namespace IzEngine
 		CreateScreen();
 	}
 
-	void Device::Swap(IDirect3D9* d3d, IDirect3DDevice9* device)
-	{
-		D3D = d3d;
-		D3Device = device;
-
-		CreateScreen();
-	}
-
 	void Device::Shutdown()
 	{
-		if (D3DeviceEx)
-			D3DeviceEx->Release();
-		else if (D3Device)
+		if (D3Device)
 			D3Device->Release();
-
-		if (D3DEX)
-			D3DEX->Release();
-		else if (D3D)
+		if (D3D)
 			D3D->Release();
+	}
+
+	void Device::Reset(D3DPRESENT_PARAMETERS* d3dpp)
+	{
+		if (D3Device)
+			D3Device->Reset(d3dpp);
 	}
 
 	void Device::CreateScreen()
@@ -64,9 +57,6 @@ namespace IzEngine
 
 	void Device::Resize(const vec2& size)
 	{
-		if (!D3DeviceEx)
-			return;
-
 		D3DPRESENT_PARAMETERS d3dpp = { 0 };
 		d3dpp.Windowed = true;
 		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
@@ -75,6 +65,34 @@ namespace IzEngine
 		d3dpp.BackBufferWidth = size.x;
 		d3dpp.BackBufferHeight = size.y;
 
-		D3DeviceEx->Reset(&d3dpp);
+		if (D3Device)
+			D3Device->Reset(&d3dpp);
+	}
+
+	void Device::Begin()
+	{
+		if (Swapped)
+			return;
+
+		D3Device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
+		D3Device->BeginScene();
+	}
+
+	void Device::End()
+	{
+		if (Swapped)
+			return;
+
+		D3Device->EndScene();
+		D3Device->Present(nullptr, nullptr, nullptr, nullptr);
+	}
+
+	void Device::Swap(IDirect3D9* d3d, IDirect3DDevice9* device)
+	{
+		D3D = d3d;
+		D3Device = device;
+		Swapped = true;
+
+		CreateScreen();
 	}
 }
