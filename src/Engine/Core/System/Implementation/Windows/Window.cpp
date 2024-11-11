@@ -137,4 +137,12 @@ namespace IzEngine
 		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
 		return style == value;
 	}
+
+	bool OSWindow::IsCursorVisible()
+	{
+		CURSORINFO cursor = { 0 };
+		cursor.cbSize = sizeof(CURSORINFO);
+		GetCursorInfo(&cursor);
+		return cursor.flags & CURSOR_SHOWING;
+	}
 }

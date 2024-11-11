@@ -40,8 +40,8 @@ namespace IzEngine
 
 			X += raw.data.mouse.lLastX;
 			Y += raw.data.mouse.lLastY;
+			break;
 		}
-		break;
 		}
 	}
 }

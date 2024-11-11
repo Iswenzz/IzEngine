@@ -77,5 +77,11 @@ namespace IzEngine
 		/// <param name="value">The style value.</param>
 		/// <returns></returns>
 		static bool IsFullscreen(int value);
+
+		/// <summary>
+		/// Is cursor visible.
+		/// </summary>
+		/// <returns></returns>
+		static bool IsCursorVisible();
 	};
 }
