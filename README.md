@@ -2,8 +2,6 @@
 
 IzEngine is a modern cross-platform engine framework for creating modded game clients. Inspired by modern game engines such as UE5, Hazel, and ezEngine, IzEngine is designed to be generic and easily adaptable to different platforms and backends. It features a plugin system that allows for dynamic module reloading at runtime, incorporates a just-in-time assembler for efficient runtime code generation, making it suitable for various architectures providing flexibility and extensibility to your projects.
 
-![](https://i.imgur.com/Etc036m.jpeg)
-
 ## Building
 _Pre-Requisites:_
 1. [Visual Studio](https://visualstudio.microsoft.com/)
