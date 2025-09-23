@@ -67,6 +67,17 @@ namespace IzEngine
 
 		switch (msg)
 		{
+		case WM_INPUT:
+			Mouse::Process(msg, lParam);
+			break;
+
+		case WM_KEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+			Keyboard::Process(msg, wParam);
+			break;
+
 		case WM_MOVE:
 			Position = vec2(LOWORD(lParam), HIWORD(lParam));
 			break;
@@ -83,13 +94,6 @@ namespace IzEngine
 
 		case WM_DESTROY:
 			PostQuitMessage(0);
-			break;
-
-		case WM_KEYDOWN:
-		case WM_KEYUP:
-		case WM_SYSKEYDOWN:
-		case WM_SYSKEYUP:
-			Keyboard::Process(msg, wParam);
 			break;
 		}
 		if (!UI::Active)
@@ -117,25 +121,18 @@ namespace IzEngine
 		SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
 	}
 
-	bool OSWindow::IsWindowed(int value)
+	bool OSWindow::IsStyle(int value)
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(OSWindow::Handle);
 		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
 		return style == value;
 	}
 
-	bool OSWindow::IsBorderless(int value)
+	bool OSWindow::HasStyle(int value)
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(OSWindow::Handle);
 		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
-		return style == value;
-	}
-
-	bool OSWindow::IsFullscreen(int value)
-	{
-		const HWND hwnd = reinterpret_cast<HWND>(OSWindow::Handle);
-		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
-		return style == value;
+		return style & value;
 	}
 
 	bool OSWindow::IsCursorVisible()
