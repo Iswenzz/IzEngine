@@ -40,6 +40,8 @@ namespace IzEngine
 
 			DeltaX = raw.data.mouse.lLastX;
 			DeltaY = raw.data.mouse.lLastY;
+			X += DeltaX;
+			Y += DeltaY;
 			break;
 		}
 		}

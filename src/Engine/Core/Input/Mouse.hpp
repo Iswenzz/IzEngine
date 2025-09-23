@@ -13,6 +13,7 @@ namespace IzEngine
 		static inline int Y = 0;
 		static inline int DeltaX = 0;
 		static inline int DeltaY = 0;
+		static inline bool IsCentered = false;
 
 		/// <summary>
 		/// Register mouse.
