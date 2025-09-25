@@ -1,28 +1,26 @@
 #include "Windows/Base.hpp"
 
 #include "Core/Input/Bind.hpp"
-#include "Core/Input/Keyboard.hpp"
-#include "Core/Input/Mouse.hpp"
 
 namespace IzEngine
 {
-	Bind::Bind(int key)
+	Bind::Bind(InputEnum input)
 	{
-		Key = key;
+		Input = input;
 	}
 
 	bool Bind::IsUp()
 	{
-		return Keyboard::IsUp(Key);
+		return Input::IsUp(Input);
 	}
 
 	bool Bind::IsDown()
 	{
-		return Keyboard::IsDown(Key);
+		return Input::IsDown(Input);
 	}
 
 	bool Bind::IsPressed()
 	{
-		return Keyboard::IsPressed(Key);
+		return Input::IsPressed(Input);
 	}
 }

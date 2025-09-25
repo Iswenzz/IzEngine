@@ -1,7 +1,7 @@
 #include "Windows/Base.hpp"
 
 #include "Core/Console/Console.hpp"
-#include "Core/Input/Keyboard.hpp"
+#include "Core/Input/Input.hpp"
 
 namespace IzEngine
 {
@@ -57,7 +57,7 @@ namespace IzEngine
 		if (record.EventType != KEY_EVENT || !record.Event.KeyEvent.bKeyDown)
 			return command;
 
-		Key = Keyboard::Map(record.Event.KeyEvent.wVirtualKeyCode);
+		Key = Input::Map(record.Event.KeyEvent.wVirtualKeyCode);
 		const char character = record.Event.KeyEvent.uChar.AsciiChar;
 		const bool print = std::isprint(character);
 

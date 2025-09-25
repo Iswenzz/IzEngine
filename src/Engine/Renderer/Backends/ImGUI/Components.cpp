@@ -159,9 +159,9 @@ namespace ImGui
 		PopStyleVar();
 	}
 
-	void Keybind(const std::string& label, int* key, bool unbind, const ImVec2& defaultSize)
+	void Keybind(const std::string& label, InputEnum* key, bool unbind, const ImVec2& defaultSize)
 	{
-		const auto keyName = Keyboard::GetName(*key);
+		const auto keyName = Input::GetName(*key);
 		const auto id = GetID(label.c_str());
 
 		float width = 50 * UI::Size;
@@ -176,17 +176,17 @@ namespace ImGui
 			Button("...", size);
 			PopStyleColor();
 
-			int k = Key_None;
-			for (; k < Key_Count; k++)
+			int k = Input_None;
+			for (; k < Input_Count; k++)
 			{
-				if (Keyboard::IsPressed(k))
+				if (Input::IsPressed(static_cast<InputEnum>(k)))
 				{
-					*key = k;
+					*key = static_cast<InputEnum>(k);
 					break;
 				}
 			}
 			const bool unfocus = !IsItemHovered() && IsMouseClicked(ImGuiMouseButton_Left);
-			if (k != Key_Count || unfocus || Keyboard::IsPressed(Key_Escape))
+			if (k != Input_Count || unfocus || Input::IsPressed(Key_Escape))
 				ClearActiveID();
 		}
 		else
@@ -195,7 +195,7 @@ namespace ImGui
 			if (IsItemClicked(ImGuiMouseButton_Left))
 				SetActiveID(id, GetCurrentWindow());
 			else if (IsItemClicked(ImGuiMouseButton_Right) && unbind)
-				*key = Key_None;
+				*key = Input_None;
 		}
 		SameLine();
 		Text(label.c_str());

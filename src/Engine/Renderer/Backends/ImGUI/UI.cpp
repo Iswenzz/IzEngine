@@ -92,7 +92,7 @@ namespace IzEngine
 		UC::Themes::ComputeRainbow();
 		Notifications::Render();
 
-		if (Keyboard::IsPressed(Key_Escape))
+		if (Input::IsPressed(Key_Escape))
 			Open = false;
 
 		if (KeyOpen.IsPressed())

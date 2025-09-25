@@ -1,6 +1,8 @@
 #pragma once
 #include "Core/Base.hpp"
 
+#include "Core/Input/Input.hpp"
+
 namespace IzEngine
 {
 	/// <summary>
@@ -9,7 +11,7 @@ namespace IzEngine
 	class API Bind
 	{
 	public:
-		int Key = 0;
+		InputEnum Input = InputEnum::Input_None;
 
 		/// <summary>
 		/// Initialize the bind.
@@ -19,28 +21,25 @@ namespace IzEngine
 		/// <summary>
 		/// Initialize the bind.
 		/// </summary>
-		/// <param name="key">The key.</param>
-		Bind(int key);
+		/// <param name="input">The input.</param>
+		Bind(InputEnum input);
 		~Bind() = default;
 
 		/// <summary>
 		/// Is up.
 		/// </summary>
-		/// <returns></returns>
 		bool IsUp();
 
 		/// <summary>
 		/// Is down.
 		/// </summary>
-		/// <returns></returns>
 		bool IsDown();
 
 		/// <summary>
 		/// Is pressed.
 		/// </summary>
-		/// <returns></returns>
 		bool IsPressed();
 
-		SERIALIZE(Bind, Key)
+		SERIALIZE(Bind, Input)
 	};
 }

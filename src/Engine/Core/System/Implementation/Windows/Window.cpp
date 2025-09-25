@@ -42,12 +42,20 @@ namespace IzEngine
 
 		Handle = hwnd;
 		Open = Handle;
+
+		Input::Initialize();
+		Keyboard::Register(hwnd);
+		Mouse::Register(hwnd);
 	}
 
 	void OSWindow::Swap(void* handle)
 	{
 		Handle = handle;
-		Open = Handle;
+		Open = handle;
+
+		Input::Initialize();
+		Keyboard::Register(handle);
+		Mouse::Register(handle);
 	}
 
 	void OSWindow::Shutdown()

@@ -1,6 +1,7 @@
 #pragma once
 #include "ImGUI/Base.hpp"
 
+#include "Core/Input/Input.hpp"
 #include "Core/Containers/CircularBuffer.hpp"
 #include "Core/Math.hpp"
 
@@ -117,7 +118,7 @@ namespace ImGui
 	/// <param name="unbind">Can unbind with right click.</param>
 	/// <param name="size">The button size.</param>
 	/// <returns></returns>
-	API void Keybind(const std::string& label, int* key, bool unbind = true, const ImVec2& size = ImVec2(0, 0));
+	API void Keybind(const std::string& label, InputEnum* key, bool unbind = true, const ImVec2& size = ImVec2(0, 0));
 
 	/// <summary>
 	/// Movable frame.
