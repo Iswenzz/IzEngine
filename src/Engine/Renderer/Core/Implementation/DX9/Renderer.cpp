@@ -56,6 +56,7 @@ namespace IzEngine
 		UI::End();
 		ImGui_ImplAPI_RenderDrawData(ImGui::GetDrawData());
 		Device::End();
+		Input::Reset();
 	}
 
 	void Renderer::Frame()

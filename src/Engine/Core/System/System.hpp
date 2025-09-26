@@ -9,19 +9,16 @@ namespace IzEngine
 	class API System
 	{
 	public:
-		static inline std::map<std::string, uintptr_t> Processes;
-		static inline std::map<std::string, uintptr_t> Modules;
-
 		/// <summary>
 		/// Map processes.
 		/// </summary>
-		static void MapProcesses();
+		static std::map<std::string, uintptr_t> MapProcesses();
 
 		/// <summary>
 		/// Map modules.
 		/// </summary>
 		/// <param name="process">The process.</param>
-		static void MapModules(uintptr_t process);
+		static std::map<std::string, uintptr_t> MapModules(uintptr_t process);
 
 		/// <summary>
 		/// Execute shell command.

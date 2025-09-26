@@ -12,11 +12,18 @@ namespace IzEngine
 			reinterpret_cast<ID3DXFont*>(Surface)->Release();
 	}
 
+	Ref<Texture>& Texture::Default()
+	{
+		return Textures::List[TEXTURE_NULL];
+	}
+
 	Ref<Texture>& Texture::Create(const std::filesystem::path& path)
 	{
 		if (!std::filesystem::exists(path))
-			throw std::runtime_error("File not found.");
-
+		{
+			Log::WriteLine(Channel::Error, "Texture not found: {}", path.string());
+			return Default();
+		}
 		std::string id = path.stem().filename().string();
 		if (auto cache = Textures::List.find(id); cache != Textures::List.end())
 			return cache->second;
@@ -28,11 +35,6 @@ namespace IzEngine
 		if (hr != S_OK)
 			return Default();
 		return Textures::List[id] = texture;
-	}
-
-	Ref<Texture>& Texture::Default()
-	{
-		return Textures::List[TEXTURE_NULL];
 	}
 
 	void Textures::Initialize() { }

@@ -11,54 +11,6 @@ namespace IzEngine::UC
 		Default();
 	}
 
-	void Themes::Initialize()
-	{
-		IZ_ASSERT(Environment::Initialized, "Environment not initialized.");
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.IniFilename = nullptr;
-
-		ImGui::GetStyle() = Style;
-		ImPlot::GetStyle() = PlotStyle;
-
-		const float fontSize = 12.f * UI::Size;
-		const float iconSize = 8.f * UI::Size;
-
-		static const ImWchar rangesFa[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-		static const ImWchar rangesFab[] = { ICON_MIN_FAB, ICON_MAX_FAB, 0 };
-
-		ImFontConfig config;
-		config.MergeMode = true;
-		config.PixelSnapH = true;
-		config.OversampleH = true;
-		config.GlyphMinAdvanceX = iconSize;
-
-		const auto openSans = Environment::FontsDirectory / "OpenSans-Regular.ttf";
-		const auto faRegular = Environment::FontsDirectory / "fa-regular-400.ttf";
-		const auto faSolid = Environment::FontsDirectory / "fa-solid-900.ttf";
-		const auto faBrands = Environment::FontsDirectory / "fa-brands-400.ttf";
-
-		io.Fonts->Clear();
-		io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize);
-		io.Fonts->AddFontFromFileTTF(faRegular.string().c_str(), iconSize, &config, rangesFa);
-		io.Fonts->AddFontFromFileTTF(faSolid.string().c_str(), iconSize, &config, rangesFa);
-		io.Fonts->AddFontFromFileTTF(faBrands.string().c_str(), iconSize, &config, rangesFab);
-
-		H1 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.5);
-		H2 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.25);
-		H3 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.125);
-
-		Markdown.linkIcon = ICON_FA_LINK;
-		Markdown.linkCallback = MarkdownLink;
-		Markdown.imageCallback = MarkdownImage;
-		Markdown.formatCallback = MarkdownFormat;
-		Markdown.tooltipCallback = nullptr;
-		Markdown.headingFormats[0] = { H1, true };
-		Markdown.headingFormats[1] = { H2, true };
-		Markdown.headingFormats[2] = { H3, false };
-		Markdown.userData = nullptr;
-	}
-
 	void Themes::Default()
 	{
 		ImVec4* colors = Style.Colors;
@@ -207,55 +159,6 @@ namespace IzEngine::UC
 
 		ImGui::GetStyle() = Style;
 		ImPlot::GetStyle() = PlotStyle;
-	}
-
-	void Themes::ComputeRainbow()
-	{
-		const float speed = 0.15f;
-		static float offset = 0;
-
-		Rainbow = std::make_tuple(ImColor::HSV(fmod(offset, 1.0f), 1.0f, 1.0f),
-			ImColor::HSV(fmod(offset + 0.33f, 1.0f), 1.0f, 1.0f));
-		offset += speed * UI::DeltaTime();
-	}
-
-	void Themes::MarkdownLink(ImGui::MarkdownLinkCallbackData data)
-	{
-		std::string url(data.link, data.linkLength);
-		if (!data.isImage)
-			System::Shell(url);
-	}
-
-	ImGui::MarkdownImageData Themes::MarkdownImage(ImGui::MarkdownLinkCallbackData data)
-	{
-		ImTextureID image = ImGui::GetIO().Fonts->TexID;
-		ImGui::MarkdownImageData imageData;
-		imageData.isValid = true;
-		imageData.useLinkCallback = false;
-		imageData.user_texture_id = image;
-		imageData.size = ImVec2(40.0f, 20.0f);
-
-		ImVec2 const contentSize = ImGui::GetContentRegionAvail();
-		if (imageData.size.x > contentSize.x)
-		{
-			const float ratio = imageData.size.y / imageData.size.x;
-			imageData.size.x = contentSize.x;
-			imageData.size.y = contentSize.x * ratio;
-		}
-		return imageData;
-	}
-
-	void Themes::MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start)
-	{
-		ImGui::defaultMarkdownFormatCallback(info, start);
-
-		switch (info.type)
-		{
-		case ImGui::MarkdownFormatType::LINK:
-			start ? ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive])
-				  : ImGui::PopStyleColor();
-			break;
-		}
 	}
 
 	void Themes::OnRender()

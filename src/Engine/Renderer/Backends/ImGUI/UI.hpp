@@ -121,5 +121,30 @@ namespace IzEngine
 		/// <param name="ptr">The pointer.</param>
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
+
+		/// <summary>
+		/// Setup fonts and configs.
+		/// </summary>
+		static void Setup();
+
+		/// <summary>
+		/// Markdown link callback.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		static void MarkdownLink(ImGui::MarkdownLinkCallbackData data);
+
+		/// <summary>
+		/// Markdown image callback.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns></returns>
+		static ImGui::MarkdownImageData MarkdownImage(ImGui::MarkdownLinkCallbackData data);
+
+		/// <summary>
+		/// Markdown format callback.
+		/// </summary>
+		/// <param name="info">The format info.</param>
+		/// <param name="start">Is the start of the token.</param>
+		static void MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start);
 	};
 }

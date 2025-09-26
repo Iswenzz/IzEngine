@@ -32,10 +32,11 @@ namespace IzEngine
 
 		RECT screen;
 		GetWindowRect(GetDesktopWindow(), &screen);
-		Size = vec2(screen.right, screen.bottom);
+		Position = vec2((screen.right - Size.x) / 2, (screen.bottom - Size.y) / 2);
 
-		HWND hwnd = CreateWindowEx(0, wc.lpszClassName, name.c_str(), WS_POPUP, 0, 0, Size.x, Size.y, nullptr, nullptr,
-			instance, nullptr);
+		DWORD style = WS_OVERLAPPEDWINDOW;
+		HWND hwnd = CreateWindowEx(0, wc.lpszClassName, name.c_str(), style, Position.x, Position.y,
+			Size.x, Size.y, nullptr, nullptr, instance, nullptr);
 
 		ShowWindow(hwnd, SW_SHOW);
 		UpdateWindow(hwnd);
@@ -129,18 +130,37 @@ namespace IzEngine
 		SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
 	}
 
-	bool Window::IsStyle(int value)
+	void Window::BorderlessFullscreen()
+	{
+		RECT screen;
+		GetWindowRect(GetDesktopWindow(), &screen);
+		Size = vec2(screen.right, screen.bottom);
+
+		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
+		SetWindowPos(hwnd, nullptr, Position.x, Position.y, Size.x, Size.y, SWP_NOMOVE | SWP_NOZORDER);
+		SetStyle(WS_POPUP);
+	}
+
+	int Window::GetStyle()
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
-		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
-		return style == value;
+		return GetWindowLongPtr(hwnd, GWL_STYLE);
+	}
+
+	void Window::SetStyle(int value)
+	{
+		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
+		SetWindowLongPtr(hwnd, GWL_STYLE, value);
+	}
+
+	bool Window::IsStyle(int value)
+	{
+		return GetStyle() == value;
 	}
 
 	bool Window::HasStyle(int value)
 	{
-		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
-		const LONG style = GetWindowLongPtr(hwnd, GWL_STYLE);
-		return style & value;
+		return GetStyle() & value;
 	}
 
 	bool Window::IsCursorVisible()

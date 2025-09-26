@@ -14,7 +14,7 @@ namespace IzEngine
 		static inline void* Handle = nullptr;
 		static inline std::string Name;
 		static inline vec2 Position;
-		static inline vec2 Size;
+		static inline vec2 Size = { 1280, 720 };
 
 		static inline bool Open = false;
 		static inline bool IsCapture = true;
@@ -56,6 +56,24 @@ namespace IzEngine
 		/// Window frame.
 		/// </summary>
 		static void Frame();
+
+		/// <summary>
+		/// Set window to borderless fullscreen.
+		/// </summary>
+		static void BorderlessFullscreen();
+
+		/// <summary>
+		/// Get style.
+		/// </summary>
+		/// <returns></returns>
+		static int GetStyle();
+
+		/// <summary>
+		/// Set style.
+		/// </summary>
+		/// <param name="value">The style value.</param>
+		/// <returns></returns>
+		static void SetStyle(int value);
 
 		/// <summary>
 		/// Is style.

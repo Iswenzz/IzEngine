@@ -11,6 +11,11 @@ namespace IzEngine
 			reinterpret_cast<ID3DXFont*>(Data)->Release();
 	}
 
+	Ref<Font>& Font::Default()
+	{
+		return Fonts::List[FONT_OPENSANS];
+	}
+
 	Ref<Font>& Font::Create(const std::string& name, int height)
 	{
 		std::string id = std::format("{}_{}", name, height);
@@ -30,8 +35,10 @@ namespace IzEngine
 	Ref<Font>& Font::Create(const std::filesystem::path& path, int height)
 	{
 		if (!std::filesystem::exists(path))
-			throw std::runtime_error("File not found.");
-
+		{
+			Log::WriteLine(Channel::Error, "Font not found: {}", path.string());
+			return Default();
+		}
 		std::string name = path.stem().filename().string();
 		std::string id = std::format("{}_{}", name, height);
 		if (auto cache = Fonts::List.find(id); cache != Fonts::List.end())
@@ -53,17 +60,9 @@ namespace IzEngine
 		return Fonts::List[id] = font;
 	}
 
-	Ref<Font>& Font::Default()
-	{
-		return Fonts::List[FONT_OPENSANS];
-	}
-
 	void Fonts::Initialize()
 	{
 		IZ_ASSERT(Environment::Initialized, "Environment not initialized.");
-
-		Font::Create(Environment::FontsDirectory / "OpenSans-Regular.ttf", 22);
-		Font::Create(Environment::FontsDirectory / "SpaceRanger.ttf", 22);
 
 		HDC hdc = GetDC(nullptr);
 		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)

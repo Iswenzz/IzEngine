@@ -5,6 +5,13 @@
 
 namespace ImGui
 {
+	MarkdownConfig MarkConfig;
+	std::tuple<ImColor, ImColor> RainbowTuple;
+
+	ImFont* H1 = nullptr;
+	ImFont* H2 = nullptr;
+	ImFont* H3 = nullptr;
+
 	void PushID(const UUID& uuid)
 	{
 		PushID(uuid.String.c_str());
@@ -234,17 +241,27 @@ namespace ImGui
 		PopStyleColor();
 	}
 
+	void ComputeRainbow()
+	{
+		const float speed = 0.15f;
+		static float offset = 0;
+
+		RainbowTuple = std::make_tuple(ImColor::HSV(fmod(offset, 1.0f), 1.0f, 1.0f),
+			ImColor::HSV(fmod(offset + 0.33f, 1.0f), 1.0f, 1.0f));
+		offset += speed * UI::DeltaTime();
+	}
+
 	void Rainbow(const vec2& position, const vec2& size)
 	{
 		ImDrawList* draw = GetForegroundDrawList();
 
-		const auto& [rainbow1, rainbow2] = UC::Themes::Rainbow;
+		const auto& [rainbow1, rainbow2] = RainbowTuple;
 		draw->AddRectFilledMultiColor(position, size, rainbow1, rainbow2, rainbow2, rainbow1);
 	}
 
 	void Markdown(const std::string& markdown)
 	{
-		Markdown(markdown.c_str(), markdown.size(), UC::Themes::Markdown);
+		Markdown(markdown.c_str(), markdown.size(), MarkConfig);
 	}
 
 	void LoadingIndicator(const std::string& label, const ImVec2& pos, const ImU32& color, bool state)

@@ -5,6 +5,7 @@
 #include "UI/Themes.hpp"
 
 #include "Core/System/Environment.hpp"
+#include "Core/System/System.hpp"
 
 namespace IzEngine
 {
@@ -21,6 +22,8 @@ namespace IzEngine
 		KeyOpen = Bind(Key_F10);
 		if (Serialized.contains("KeyOpen"))
 			KeyOpen = Serialized["KeyOpen"];
+
+		Setup();
 
 		Add<UC::Themes>();
 		Add<UC::Memory>();
@@ -89,7 +92,7 @@ namespace IzEngine
 	void UI::Begin()
 	{
 		ImGui::NewFrame();
-		UC::Themes::ComputeRainbow();
+		ImGui::ComputeRainbow();
 		Notifications::Render();
 
 		if (Input::IsPressed(Key_Escape))
@@ -108,5 +111,92 @@ namespace IzEngine
 	{
 		for (const auto& [_, frame] : Frames)
 			frame->OnEvent(event);
+	}
+
+	void UI::Setup()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.IniFilename = nullptr;
+
+		const auto openSans = Environment::FontsDirectory / "OpenSans-Regular.ttf";
+		const auto faRegular = Environment::FontsDirectory / "fa-regular-400.ttf";
+		const auto faSolid = Environment::FontsDirectory / "fa-solid-900.ttf";
+		const auto faBrands = Environment::FontsDirectory / "fa-brands-400.ttf";
+
+		const float fontSize = 12.f * UI::Size;
+		const float iconSize = 8.f * UI::Size;
+
+		static const ImWchar rangesFa[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+		static const ImWchar rangesFab[] = { ICON_MIN_FAB, ICON_MAX_FAB, 0 };
+
+		ImFontConfig iconConfig;
+		iconConfig.MergeMode = true;
+		iconConfig.PixelSnapH = true;
+		iconConfig.OversampleH = true;
+		iconConfig.GlyphMinAdvanceX = iconSize;
+
+		io.Fonts->Clear();
+		if (std::filesystem::exists(openSans))
+			io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize);
+		if (std::filesystem::exists(faRegular))
+			io.Fonts->AddFontFromFileTTF(faRegular.string().c_str(), iconSize, &iconConfig, rangesFa);
+		if (std::filesystem::exists(faSolid))
+			io.Fonts->AddFontFromFileTTF(faSolid.string().c_str(), iconSize, &iconConfig, rangesFa);
+		if (std::filesystem::exists(faBrands))
+			io.Fonts->AddFontFromFileTTF(faBrands.string().c_str(), iconSize, &iconConfig, rangesFab);
+		if (std::filesystem::exists(openSans))
+		{
+			ImGui::H1 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.5);
+			ImGui::H2 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.25);
+			ImGui::H3 = io.Fonts->AddFontFromFileTTF(openSans.string().c_str(), fontSize * 1.125);
+		}
+		ImGui::MarkConfig.linkIcon = ICON_FA_LINK;
+		ImGui::MarkConfig.linkCallback = MarkdownLink;
+		ImGui::MarkConfig.imageCallback = MarkdownImage;
+		ImGui::MarkConfig.formatCallback = MarkdownFormat;
+		ImGui::MarkConfig.tooltipCallback = nullptr;
+		ImGui::MarkConfig.headingFormats[0] = { ImGui::H1, true };
+		ImGui::MarkConfig.headingFormats[1] = { ImGui::H2, true };
+		ImGui::MarkConfig.headingFormats[2] = { ImGui::H3, false };
+		ImGui::MarkConfig.userData = nullptr;
+	}
+
+	void UI::MarkdownLink(ImGui::MarkdownLinkCallbackData data)
+	{
+		std::string url(data.link, data.linkLength);
+		if (!data.isImage)
+			System::Shell(url);
+	}
+
+	ImGui::MarkdownImageData UI::MarkdownImage(ImGui::MarkdownLinkCallbackData data)
+	{
+		ImTextureID image = ImGui::GetIO().Fonts->TexID;
+		ImGui::MarkdownImageData imageData;
+		imageData.isValid = true;
+		imageData.useLinkCallback = false;
+		imageData.user_texture_id = image;
+		imageData.size = ImVec2(40.0f, 20.0f);
+
+		ImVec2 const contentSize = ImGui::GetContentRegionAvail();
+		if (imageData.size.x > contentSize.x)
+		{
+			const float ratio = imageData.size.y / imageData.size.x;
+			imageData.size.x = contentSize.x;
+			imageData.size.y = contentSize.x * ratio;
+		}
+		return imageData;
+	}
+
+	void UI::MarkdownFormat(const ImGui::MarkdownFormatInfo& info, bool start)
+	{
+		ImGui::defaultMarkdownFormatCallback(info, start);
+
+		switch (info.type)
+		{
+		case ImGui::MarkdownFormatType::LINK:
+			start ? ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_ButtonActive])
+				  : ImGui::PopStyleColor();
+			break;
+		}
 	}
 }

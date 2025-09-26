@@ -19,7 +19,7 @@
 #endif
 
 #ifndef APPLICATION_ID
-	#define APPLICATION_ID "izengine"
+	#define APPLICATION_ID "IzEngine"
 #endif
 #ifndef CMAKE_BINARY_DIR
 	#define CMAKE_BINARY_DIR ""

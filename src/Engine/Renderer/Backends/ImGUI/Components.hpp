@@ -22,6 +22,13 @@ constexpr std::array<const char*, 3> Verticals = { "Top", "Center", "Bottom" };
 
 namespace ImGui
 {
+	API extern MarkdownConfig MarkConfig;
+	API extern std::tuple<ImColor, ImColor> RainbowTuple;
+
+	API extern ImFont* H1;
+	API extern ImFont* H2;
+	API extern ImFont* H3;
+
 	/// <summary>
 	/// Push ID.
 	/// </summary>
@@ -130,6 +137,12 @@ namespace ImGui
 	/// <param name="renderSize">The render size.</param>
 	/// <returns></returns>
 	API void Movable(const UUID& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize);
+
+	/// <summary>
+	/// Compute rainbow animation.
+	/// </summary>
+	/// <returns></returns>
+	API void ComputeRainbow();
 
 	/// <summary>
 	/// Rainbow rect.

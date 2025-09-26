@@ -7,13 +7,13 @@
 
 namespace IzEngine
 {
-	void System::MapProcesses()
+	std::map<std::string, uintptr_t> System::MapProcesses()
 	{
-		Processes.clear();
+		std::map<std::string, uintptr_t> map = {};
 
 		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 		if (hSnapshot == INVALID_HANDLE_VALUE)
-			return;
+			return map;
 
 		PROCESSENTRY32 entry = { 0 };
 		entry.dwSize = sizeof(PROCESSENTRY32);
@@ -21,19 +21,20 @@ namespace IzEngine
 		{
 			do
 			{
-				Processes[entry.szExeFile] = entry.th32ProcessID;
+				map[entry.szExeFile] = entry.th32ProcessID;
 			} while (Process32Next(hSnapshot, &entry));
 		}
 		CloseHandle(hSnapshot);
+		return map;
 	}
 
-	void System::MapModules(uintptr_t process)
+	std::map<std::string, uintptr_t> System::MapModules(uintptr_t process)
 	{
-		Modules.clear();
+		std::map<std::string, uintptr_t> map = {};
 
 		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process);
 		if (hSnapshot == INVALID_HANDLE_VALUE)
-			return;
+			return map;
 
 		MODULEENTRY32 entry = { 0 };
 		entry.dwSize = sizeof(MODULEENTRY32);
@@ -41,10 +42,11 @@ namespace IzEngine
 		{
 			do
 			{
-				Modules[entry.szModule] = reinterpret_cast<uintptr_t>(entry.modBaseAddr);
+				map[entry.szModule] = reinterpret_cast<uintptr_t>(entry.modBaseAddr);
 			} while (Module32Next(hSnapshot, &entry));
 		}
 		CloseHandle(hSnapshot);
+		return map;
 	}
 
 	void System::Shell(const std::string& command)
