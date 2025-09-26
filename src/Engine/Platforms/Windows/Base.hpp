@@ -6,5 +6,3 @@
 
 #include <Windows.h>
 #include <filesystem>
-
-#undef CreateWindow
