@@ -1,0 +1,7 @@
+if(PLATFORM_WINDOWS AND GRAPHICS_API_DX9)
+	add_executable(WindowsDX9 WIN32 WindowsDX9.cpp)
+	target_link_libraries(WindowsDX9 PRIVATE IzEngine)
+	set_target_properties(WindowsDX9 PROPERTIES FOLDER Examples)
+	get_target_property(SOURCES WindowsDX9 SOURCES)
+	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
+endif()
