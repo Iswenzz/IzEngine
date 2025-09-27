@@ -101,6 +101,9 @@ namespace IzEngine
 
 		if (KeyOpen.IsPressed())
 			Open = !Open;
+
+		ImGui::GetIO().MousePos = Mouse::Position;
+		ImGui::GetIO().MouseDrawCursor = UI::Open;
 	}
 
 	void UI::End()
