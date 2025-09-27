@@ -1,6 +1,7 @@
 #include "ImGUI/UI.hpp"
 #include "Windows/Base.hpp"
 
+#include "Core/Communication/Actions.hpp"
 #include "Core/System/Window.hpp"
 #include "Renderer/Core/Renderer.hpp"
 
@@ -35,8 +36,8 @@ namespace IzEngine
 		Position = vec2((screen.right - Size.x) / 2, (screen.bottom - Size.y) / 2);
 
 		DWORD style = WS_OVERLAPPEDWINDOW;
-		HWND hwnd = CreateWindowEx(0, wc.lpszClassName, name.c_str(), style, Position.x, Position.y,
-			Size.x, Size.y, nullptr, nullptr, instance, nullptr);
+		HWND hwnd = CreateWindowEx(0, wc.lpszClassName, name.c_str(), style, Position.x, Position.y, Size.x, Size.y,
+			nullptr, nullptr, instance, nullptr);
 
 		ShowWindow(hwnd, SW_SHOW);
 		UpdateWindow(hwnd);
@@ -51,8 +52,17 @@ namespace IzEngine
 
 	void Window::Swap(void* handle)
 	{
+		Swapped = true;
+
+		const HWND hwnd = reinterpret_cast<HWND>(handle);
 		Handle = handle;
 		Open = handle;
+
+		RECT rect;
+		GetWindowRect(hwnd, &rect);
+		Position = vec2(rect.left, rect.top);
+		GetClientRect(hwnd, &rect);
+		Size = vec2(rect.right, rect.bottom);
 
 		Input::Initialize();
 		Keyboard::Register();

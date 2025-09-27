@@ -94,5 +94,8 @@ namespace IzEngine
 		/// </summary>
 		/// <returns></returns>
 		static bool IsCursorVisible();
+
+	private:
+		static inline bool Swapped = false;
 	};
 }
