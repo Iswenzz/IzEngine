@@ -105,15 +105,10 @@ namespace IzEngine
 			PostQuitMessage(0);
 			break;
 		}
-		if (!UI::Active)
-			return DefWindowProc(hwnd, msg, wParam, lParam);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDrawCursor = UI::Open;
-
+		if (UI::KeyOpen.IsPressed())
+			return true;
 		if (UI::Open && ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
 			return true;
-
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
