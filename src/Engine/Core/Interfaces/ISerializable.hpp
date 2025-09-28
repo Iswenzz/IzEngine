@@ -20,13 +20,13 @@ namespace IzEngine
 		/// Serialize to json.
 		/// </summary>
 		/// <param name="json">The json object.</param>
-		virtual void Serialize(nlohmann::json& json) {};
+		virtual void Serialize(nlohmann::json& json) { };
 
 		/// <summary>
 		/// Deserialize to json.
 		/// </summary>
 		/// <param name="json">The json object.</param>
-		virtual void Deserialize(const nlohmann::json& json) {};
+		virtual void Deserialize(const nlohmann::json& json) { };
 
 		/// <summary>
 		/// Assign value from json.
@@ -50,7 +50,14 @@ namespace IzEngine
 		template <typename T>
 		static inline void From(const nlohmann::json& json, T& value)
 		{
-			json.get_to(value);
+			try
+			{
+				json.get_to(value);
+			}
+			catch (const std::exception& e) 
+			{
+				Log::WriteLine(Channel::Error, "{}", e.what());
+			}
 		}
 
 		/// <summary>
@@ -75,7 +82,14 @@ namespace IzEngine
 		template <typename T>
 		static inline void To(nlohmann::json& json, const T& value)
 		{
-			json = value;
+			try
+			{
+				json = value;
+			}
+			catch (const std::exception& e) 
+			{
+				Log::WriteLine(Channel::Error, "{}", e.what());
+			}
 		}
 
 	protected:
