@@ -160,7 +160,10 @@ namespace IzEngine
 		Size = Screen.VirtualToReal.y * Scale;
 
 		if (Active)
+		{
+			Open = false;
 			ImGui::GetStyle().FontScaleMain = Size / 2;
+		}
 	}
 
 	void UI::Dispatch(Event& event)
