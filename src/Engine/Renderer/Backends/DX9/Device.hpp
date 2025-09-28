@@ -13,9 +13,9 @@ namespace IzEngine
 	public:
 		static inline IDirect3D9* D3D = nullptr;
 		static inline IDirect3DDevice9* D3Device = nullptr;
-
 		static inline IDirect3D9Ex* D3DEX = nullptr;
 		static inline IDirect3DDevice9Ex* D3DeviceEx = nullptr;
+		static inline D3DPRESENT_PARAMETERS PresentParameters;
 
 		/// <summary>
 		/// Initialize the device.
@@ -28,21 +28,15 @@ namespace IzEngine
 		static void Shutdown();
 
 		/// <summary>
-		/// Create the screen.
+		/// Reset the device.
 		/// </summary>
-		static void CreateScreen();
+		static void Reset();
 
 		/// <summary>
 		/// Resize the renderer buffer.
 		/// </summary>
 		/// <param name="size">The size.</param>
 		static void Resize(const vec2& size);
-
-		/// <summary>
-		/// Reset the device.
-		/// </summary>
-		/// <param name="d3dpp">The presentation parameters.</param>
-		static void Reset(D3DPRESENT_PARAMETERS* d3dpp);
 
 		/// <summary>
 		/// Swap pointers.

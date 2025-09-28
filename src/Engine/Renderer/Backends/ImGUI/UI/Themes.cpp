@@ -92,6 +92,7 @@ namespace IzEngine::UC
 		plotColors[ImPlotCol_Selection] = IMPLOT_AUTO_COL;
 		plotColors[ImPlotCol_Crosshairs] = IMPLOT_AUTO_COL;
 
+		Style.FontScaleMain = 1.2;
 		Style.WindowMenuButtonPosition = ImGuiDir_None;
 		Style.WindowPadding = ImVec2(10, 10);
 		Style.FramePadding = ImVec2(8, 8);

@@ -31,10 +31,8 @@ namespace IzEngine
 		/// <summary>
 		/// Initialize the virtual screen.
 		/// </summary>
-		/// <param name="position">The position.</param>
 		/// <param name="size">The size.</param>
-		/// <param name="display">The display size.</param>
-		VirtualScreen(const vec2& position, const vec2& size, const vec2& display);
+		VirtualScreen(const vec2& size);
 		~VirtualScreen() = default;
 
 		/// <summary>

@@ -45,9 +45,9 @@ namespace IzEngine
 
 	void Renderer::Resize(const vec2& size)
 	{
-		Device::Resize(size);
-		UI::Resize(size);
-		Frame();
+		//Device::Resize(size);
+		//UI::Resize(size);
+		//Frame();
 	}
 
 	void Renderer::Begin()

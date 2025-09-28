@@ -13,14 +13,14 @@ namespace IzEngine::UC
 		Editor.WriteFn = Write;
 	}
 
-	ImU8 Memory::Read(const ImU8* data, size_t offset)
+	ImU8 Memory::Read(const ImU8* data, size_t offset, void* userData)
 	{
 		ImU8 byte = 0;
 		IzEngine::Memory::Read(reinterpret_cast<uintptr_t>(data + offset), &byte, 1);
 		return byte;
 	}
 
-	void Memory::Write(ImU8* data, size_t offset, ImU8 value)
+	void Memory::Write(ImU8* data, size_t offset, ImU8 value, void* userData)
 	{
 		IzEngine::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
 	}

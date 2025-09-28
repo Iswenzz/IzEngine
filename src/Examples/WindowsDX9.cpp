@@ -16,21 +16,24 @@ public:
 		Open = true;
 		SetRectAlignment(HORIZONTAL_FULLSCREEN, VERTICAL_FULLSCREEN);
 		SetFlags(ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar
-			| ImGuiWindowFlags_NoMove);
+			| ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
 	}
 
 	void OnRender() override
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 0 });
-		SetRect(0, 0, 640, 14);
+		SetRect(0, 0, 640, 20);
 
 		Begin();
 
 		static bool isDebug = false;
 		const vec2& position = RenderPosition;
 		const vec2& size = RenderSize;
-		const vec2 buttonSize = vec2{ 14, 14 } * UI::Size;
+		const vec2 buttonSize = { size.y, size.y };
+
+		ImDrawList* draw = ImGui::GetBackgroundDrawList();
+		draw->AddRectFilled(position, vec2(position + size), ImColor(ImGui::GetStyleColorVec4(ImGuiCol_FrameBg)));
 
 		ImGui::Rainbow(position + vec2{ 0, size.y }, position + vec2{ size.x, size.y + 2 });
 		ImGui::ButtonToggle(ICON_FA_GRIP, "Design", &UI::DesignMode, buttonSize);
@@ -67,6 +70,7 @@ void Application::Start()
 	Device::Initialize();
 	Renderer::Initialize();
 
+	UI::Open = true;
 	UI::Add<Toolbar>();
 
 	while (Window::Open)

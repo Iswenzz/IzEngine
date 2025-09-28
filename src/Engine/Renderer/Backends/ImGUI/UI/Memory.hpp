@@ -24,8 +24,9 @@ namespace IzEngine::UC
 		/// </summary>
 		/// <param name="data">The base address.</param>
 		/// <param name="offset">The offset.</param>
+		/// <param name="userData">The user data.</param>
 		/// <returns></returns>
-		static ImU8 Read(const ImU8* data, size_t offset);
+		static ImU8 Read(const ImU8* data, size_t offset, void* userData);
 
 		/// <summary>
 		/// Write memory.
@@ -33,7 +34,8 @@ namespace IzEngine::UC
 		/// <param name="data">The base address.</param>
 		/// <param name="offset">The offset.</param>
 		/// <param name="value">The value.</param>
-		static void Write(ImU8* data, size_t offset, ImU8 value);
+		/// <param name="userData">The user data.</param>
+		static void Write(ImU8* data, size_t offset, ImU8 value, void* userData);
 
 		/// <summary>
 		/// Render frame.

@@ -304,9 +304,9 @@ namespace ImGui
 
 		for (int i = 0; i < 4; i++)
 		{
-			if (GetWindowResizeCornerID(window, i) == active)
+			if (GetWindowResizeCornerID(window, static_cast<ImGuiDir>(i)) == active)
 				return true;
-			if (GetWindowResizeBorderID(window, i) == active)
+			if (GetWindowResizeBorderID(window, static_cast<ImGuiDir>(i)) == active)
 				return true;
 		}
 		return false;

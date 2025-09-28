@@ -38,6 +38,11 @@ namespace IzEngine
 		static void InitializeContext();
 
 		/// <summary>
+		/// Initialize fonts.
+		/// </summary>
+		static void Setup();
+
+		/// <summary>
 		/// Release UI.
 		/// </summary>
 		static void Shutdown();
@@ -58,14 +63,6 @@ namespace IzEngine
 
 			Frames[frame->Name] = frame;
 		}
-
-		/// <summary>
-		/// Create the screen.
-		/// </summary>
-		/// <param name="position">The position.</param>
-		/// <param name="size">The size.</param>
-		/// <param name="display">The display size.</param>
-		static void CreateScreen(const vec2& position, const vec2& size, const vec2& display);
 
 		/// <summary>
 		/// Get time.
@@ -96,6 +93,12 @@ namespace IzEngine
 		static void End();
 
 		/// <summary>
+		/// Resize UI.
+		/// </summary>
+		/// <param name="size">The size.</param>
+		static void Resize(const vec2& size);
+
+		/// <summary>
 		/// Dispatch event.
 		/// </summary>
 		/// <param name="event">The event.</param>
@@ -121,11 +124,6 @@ namespace IzEngine
 		/// <param name="ptr">The pointer.</param>
 		/// <param name="data">The data.</param>
 		static void Free(void* ptr, void* data);
-
-		/// <summary>
-		/// Setup fonts and configs.
-		/// </summary>
-		static void Setup();
 
 		/// <summary>
 		/// Markdown link callback.
