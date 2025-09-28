@@ -35,6 +35,9 @@ namespace IzEngine
 
 	void Device::Reset()
 	{
+		if (Swapped)
+			return;
+
 		if (D3Device)
 			D3Device->Reset(&PresentParameters);
 	}

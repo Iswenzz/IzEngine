@@ -5,21 +5,19 @@
 #include "Core/System/Window.hpp"
 #include "Renderer/Core/Renderer.hpp"
 
-static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	return Window::Update(hWnd, uMsg, wParam, lParam);
-}
-
 namespace IzEngine
 {
 	void Window::Initialize(const std::string& name)
 	{
 		HINSTANCE instance = GetModuleHandle(nullptr);
 
+		const auto WndProc = [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		{ return static_cast<LRESULT>(Window::Update(hWnd, uMsg, wParam, lParam)); };
+
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
 		wc.style = CS_CLASSDC;
-		wc.lpfnWndProc = WndProc;
+		wc.lpfnWndProc = static_cast<WNDPROC>(WndProc);
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = instance;
@@ -80,9 +78,11 @@ namespace IzEngine
 		IsCapture = state;
 	}
 
-	int Window::Update(void* handle, int msg, uintptr_t wParam, uintptr_t lParam)
+	int Window::Update(void* handle, int msg, uintptr_t arg1, uintptr_t arg2)
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(handle);
+		const WPARAM wParam = arg1;
+		const LPARAM lParam = arg2;
 
 		switch (msg)
 		{

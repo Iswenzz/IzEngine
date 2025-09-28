@@ -47,10 +47,10 @@ namespace IzEngine
 		/// </summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="msg">The message.</param>
-		/// <param name="wParam">The w param.</param>
-		/// <param name="lParam">The l param.</param>
+		/// <param name="arg1">Args.</param>
+		/// <param name="arg2">Args</param>
 		/// <returns></returns>
-		static int Update(void* handle, int msg, uintptr_t wParam, uintptr_t lParam);
+		static int Update(void* handle, int msg, uintptr_t arg1, uintptr_t arg2);
 
 		/// <summary>
 		/// Window frame.

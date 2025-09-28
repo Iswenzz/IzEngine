@@ -66,7 +66,7 @@ namespace IzEngine
 		Font::Create(Environment::Path(Directory::Fonts) / "SpaceRanger.ttf", 22);
 
 		HDC hdc = GetDC(nullptr);
-		auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
+		const auto callback = [](const LOGFONT* lpelf, const TEXTMETRIC* lpntm, DWORD FontType, LPARAM lParam)
 		{
 			Fonts::Names.push_back(lpelf->lfFaceName);
 			return TRUE;
