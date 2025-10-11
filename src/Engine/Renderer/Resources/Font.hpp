@@ -60,6 +60,6 @@ namespace IzEngine
 		/// <summary>
 		/// Release fonts.
 		/// </summary>
-		static void Release();
+		static void Shutdown();
 	};
 }

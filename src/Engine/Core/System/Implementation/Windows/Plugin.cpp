@@ -11,44 +11,51 @@ namespace IzEngine
 	Plugin::Plugin(std::string filePath)
 	{
 		FilePath = filePath;
-		HINSTANCE instance = LoadLibrary(FilePath.c_str());
+		HMODULE mod = LoadLibrary(FilePath.c_str());
 
-		if (!instance)
+		if (!mod)
 		{
 			Log::WriteLine(Channel::Error, "Invalid plugin {}", filePath);
 			return;
 		}
-		CallbackInfo < uintptr_t(GetProcAddress(instance, "Info"));
-		CallbackInitialize < uintptr_t(GetProcAddress(instance, "Initialize"));
-		CallbackShutdown < uintptr_t(GetProcAddress(instance, "Shutdown"));
+		CallbackInitialize < uintptr_t(GetProcAddress(mod, "Initialize"));
+		CallbackShutdown < uintptr_t(GetProcAddress(mod, "Shutdown"));
 
-		Instance = instance;
-		Loaded = CallbackInfo;
-
-		if (CallbackInfo)
-			CallbackInfo(this);
-		if (CallbackInitialize)
-			CallbackInitialize();
+		if (!CallbackInitialize || !CallbackShutdown)
+		{
+			Log::WriteLine(Channel::Error, "Invalid plugin {}", filePath);
+			FreeLibrary(mod);
+			return;
+		}
+		Instance = mod;
+		Loaded = true;
 	}
 
 	Plugin::~Plugin()
 	{
-		if (Console::Terminated)
+		if (!Instance)
 			return;
 
-		if (CallbackShutdown)
-			CallbackShutdown();
-
-		if (Instance)
-		{
-			FreeLibrary(reinterpret_cast<HINSTANCE>(Instance));
-			Instance = nullptr;
-		}
+		Shutdown();
+		FreeLibrary(reinterpret_cast<HMODULE>(Instance));
+		Instance = nullptr;
 	}
 
-	void Plugin::SetInfos(const std::string& id, const std::string& name)
+	void Plugin::Initialize()
 	{
-		ID = id;
-		Name = name;
+		if (Active)
+			return;
+
+		CallbackInitialize();
+		Active = true;
+	}
+
+	void Plugin::Shutdown()
+	{
+		if (!Active)
+			return;
+
+		CallbackShutdown();
+		Active = false;
 	}
 }

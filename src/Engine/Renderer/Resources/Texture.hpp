@@ -70,6 +70,6 @@ namespace IzEngine
 		/// <summary>
 		/// Release textures.
 		/// </summary>
-		static void Release();
+		static void Shutdown();
 	};
 }

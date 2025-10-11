@@ -7,19 +7,15 @@ namespace IzEngine
 	/// <summary>
 	/// Plugin class.
 	/// </summary>
-	class API Plugin : public IObject
+	class Plugin : public IObject
 	{
 	public:
-		std::string ID;
-		std::string Name;
-		std::string FilePath;
-		bool Loaded = false;
+		static const char* Extension;
 
 		void* Instance = nullptr;
-		Function<void(Plugin* plugin)> CallbackInfo;
-		Function<void()> CallbackInitialize;
-		Function<void()> CallbackShutdown;
-		static const char* Extension;
+		std::string FilePath;
+		bool Loaded = false;
+		bool Active = false;
 
 		/// <summary>
 		/// Create a new plugin.
@@ -35,13 +31,21 @@ namespace IzEngine
 		/// <summary>
 		/// Release the plugin.
 		/// </summary>
-		~Plugin();
+		virtual ~Plugin();
 
 		/// <summary>
-		/// Set plugin infos.
+		/// Initialize the plugin.
 		/// </summary>
-		/// <param name="id">The ID.</param>
-		/// <param name="name">The name.</param>
-		void SetInfos(const std::string& id, const std::string& name);
+		void Initialize();
+
+		/// <summary>
+		/// Shutdown the plugin.
+		/// </summary>
+		void Shutdown();
+
+	private:
+		Function<void()> CallbackInitialize;
+		Function<void()> CallbackShutdown;
+
 	};
 }

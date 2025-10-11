@@ -4,7 +4,7 @@
 
 namespace IzEngine
 {
-	void Plugins::Initialize()
+	void Plugins::Load()
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(Environment::Path(Directory::Plugins)))
 		{
@@ -19,8 +19,20 @@ namespace IzEngine
 		}
 	}
 
-	void Plugins::Shutdown()
+	void Plugins::Free()
 	{
 		Modules.clear();
+	}
+
+	void Plugins::Initialize()
+	{
+		for (const auto& [_, mod] : Modules)
+			mod->Initialize();
+	}
+
+	void Plugins::Shutdown()
+	{
+		for (const auto& [_, mod] : Modules)
+			mod->Shutdown();
 	}
 }

@@ -13,6 +13,16 @@ namespace IzEngine
 		static inline bool IsReloading = false;
 
 		/// <summary>
+		/// Load the plugins.
+		/// </summary>
+		static void Load();
+
+		/// <summary>
+		/// Free the plugins.
+		/// </summary>
+		static void Free();
+
+		/// <summary>
 		/// Initialize the plugins.
 		/// </summary>
 		static void Initialize();

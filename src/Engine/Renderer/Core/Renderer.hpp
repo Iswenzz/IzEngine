@@ -17,9 +17,19 @@ namespace IzEngine
 		static void Initialize();
 
 		/// <summary>
+		/// Initialize assets.
+		/// </summary>
+		static void InitializeAssets();
+
+		/// <summary>
 		/// Shutdown renderer.
 		/// </summary>
 		static void Shutdown();
+
+		/// <summary>
+		/// Shutdown assets.
+		/// </summary>
+		static void ShutdownAssets();
 
 		/// <summary>
 		/// Resize the renderer buffer.

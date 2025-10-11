@@ -1,4 +1,5 @@
 #include "Device.hpp"
+#include "Renderer/Core/Renderer.hpp"
 
 #include "Core/System/Window.hpp"
 
@@ -39,7 +40,11 @@ namespace IzEngine
 			return;
 
 		if (D3Device)
+		{
+			Renderer::ShutdownAssets();
 			D3Device->Reset(&PresentParameters);
+			Renderer::InitializeAssets();
+		}
 	}
 
 	void Device::Resize(const vec2& size)

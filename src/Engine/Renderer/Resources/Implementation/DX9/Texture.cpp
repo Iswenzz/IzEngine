@@ -88,7 +88,7 @@ namespace IzEngine
 
 	void Textures::Initialize() { }
 
-	void Textures::Release()
+	void Textures::Shutdown()
 	{
 		List.clear();
 	}

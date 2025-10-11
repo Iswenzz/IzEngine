@@ -78,7 +78,7 @@ namespace IzEngine
 		ReleaseDC(nullptr, hdc);
 	}
 
-	void Fonts::Release()
+	void Fonts::Shutdown()
 	{
 		List.clear();
 		Names.clear();

@@ -15,32 +15,40 @@ namespace IzEngine
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
 		IZ_ASSERT(Device::D3Device, "Device is not initialized.");
 
-		Textures::Initialize();
-		Fonts::Initialize();
-		UI::Initialize();
+		InitializeAssets();
 
+		UI::Initialize();
 		ImGui_ImplOS_Init(Window::Handle);
 		ImGui_ImplAPI_Init(Device::D3Device);
 
-		Plugins::Initialize();
-
 		Active = true;
+	}
+
+	void Renderer::InitializeAssets()
+	{
+		Textures::Initialize();
+		Fonts::Initialize();
+		Plugins::Initialize();
 	}
 
 	void Renderer::Shutdown()
 	{
 		IZ_ASSERT(Active, "Renderer already shutdown.");
 
-		Plugins::Shutdown();
-
 		ImGui_ImplAPI_Shutdown();
 		ImGui_ImplOS_Shutdown();
-
 		UI::Shutdown();
-		Fonts::Release();
-		Textures::Release();
+
+		ShutdownAssets();
 
 		Active = false;
+	}
+
+	void Renderer::ShutdownAssets()
+	{
+		Textures::Shutdown();
+		Fonts::Shutdown();
+		Plugins::Shutdown();
 	}
 
 	void Renderer::Resize(const vec2& size)
@@ -64,6 +72,7 @@ namespace IzEngine
 		UI::End();
 		ImGui_ImplAPI_RenderDrawData(ImGui::GetDrawData());
 		Device::End();
+
 		Input::Reset();
 	}
 
