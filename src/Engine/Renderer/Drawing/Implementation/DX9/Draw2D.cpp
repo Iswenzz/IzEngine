@@ -22,9 +22,22 @@ namespace IzEngine
 
 	void Draw2D::Rect(const Ref<Texture>& texture, const vec2& position, const vec2& size)
 	{
-		auto surface = reinterpret_cast<IDirect3DSurface9*>(texture->Surface);
-		RECT rect = { static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(size.x),
-			static_cast<int>(size.y) };
-		Device::D3Device->StretchRect(surface, nullptr, nullptr, &rect, D3DTEXF_NONE);
+		DWORD oldFVF;
+		Device::D3Device->GetFVF(&oldFVF);
+		 
+		auto tex = reinterpret_cast<IDirect3DTexture9*>(texture->Data);
+		Device::D3Device->SetTexture(0, tex);
+		Device::D3Device->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
+
+		// clang-format off
+		float vertices[24] = {
+			position.x, position.y, 0.0f, 1.0f, 0.0f, 0.0f,
+			position.x + size.x, position.y, 0.0f, 1.0f, 1.0f, 0.0f,
+			position.x + size.x, position.y + size.y, 0.0f, 1.0f, 1.0f, 1.0f,
+			position.x, position.y + size.y, 0.0f, 1.0f, 0.0f, 1.0f
+		};
+		// clang-format on
+		Device::D3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, vertices, 6 * sizeof(float));
+		Device::D3Device->SetFVF(oldFVF);
 	}
 }
