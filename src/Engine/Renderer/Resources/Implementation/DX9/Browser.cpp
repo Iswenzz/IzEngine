@@ -48,6 +48,14 @@ namespace IzEngine
 
 	void Browser::Shutdown()
 	{
+		if (Instance)
+		{
+			Instance->GetHost()->CloseBrowser(false);
+			Instance = nullptr;
+		}
+		while (!Client->IsClosed())
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
 		CefShutdown();
 	}
 
@@ -69,19 +77,19 @@ namespace IzEngine
 	void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 		const void* buffer, int width, int height)
 	{
-		//if (!buffer)
-			//return;
+		if (!buffer)
+			return;
 
-		//std::scoped_lock lock(Browser::TextureMutex);
+		std::scoped_lock lock(Browser::TextureMutex);
 
-		//if (!Browser::Texture)
-			//Browser::Texture = Texture::Create("browser", Window::Size);
+		if (!Browser::Texture)
+			Browser::Texture = Texture::Create("browser", Window::Size);
 
-		//IDirect3DTexture9* texture = reinterpret_cast<IDirect3DTexture9*>(Browser::Texture->Data);
-		//D3DLOCKED_RECT rect;
-		//texture->LockRect(0, &rect, nullptr, 0);
-		//memcpy(rect.pBits, buffer, width * height * 4);
-		//texture->UnlockRect(0);
+		IDirect3DTexture9* texture = reinterpret_cast<IDirect3DTexture9*>(Browser::Texture->Data);
+		D3DLOCKED_RECT rect;
+		texture->LockRect(0, &rect, nullptr, 0);
+		memcpy(rect.pBits, buffer, width * height * 4);
+		texture->UnlockRect(0);
 	}
 
 	void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)
