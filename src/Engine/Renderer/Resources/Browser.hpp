@@ -26,16 +26,18 @@ namespace IzEngine
 			const void* buffer, int width, int height) override;
 		void OnAfterCreated(CefRefPtr<CefBrowser> browser) override;
 		void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
+
+		bool IsOpened();
 		bool IsClosed();
 
 	private:
-		std::atomic<bool> Painted;
+		std::atomic<bool> Opened;
 		std::atomic<bool> Closed;
 
 		IMPLEMENT_REFCOUNTING(BrowserClient);
 	};
 
-	class Browser
+	class API Browser
 	{
 	public:
 		static inline CefRefPtr<CefBrowser> Instance;
@@ -43,8 +45,16 @@ namespace IzEngine
 		static inline CefRefPtr<BrowserClient> Client;
 		static inline Ref<Texture> Texture;
 		static inline std::mutex TextureMutex;
+		static inline vec2 Size = { 1280, 720 };
+		static inline bool Active = false;
+		static inline bool Open = false;
 
 		static void Initialize();
 		static void Shutdown();
+
+		static void Start();
+		static void Stop();
+
+		static void SetURL(const std::string& url);
 	};
 }
