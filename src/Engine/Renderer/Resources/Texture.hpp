@@ -16,6 +16,8 @@ namespace IzEngine
 		Texture() = default;
 		virtual ~Texture();
 
+		vec2 GetSize();
+
 		static Ref<Texture>& Create(const std::filesystem::path& path);
 		static Ref<Texture>& Create(const std::string& id, const vec2& size);
 		static Ref<Texture>& Create(const std::string& id, const vec2& size, int level, int usage, int pool);

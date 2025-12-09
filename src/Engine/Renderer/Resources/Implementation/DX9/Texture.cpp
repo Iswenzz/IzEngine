@@ -86,6 +86,14 @@ namespace IzEngine
 		return Textures::List[id] = texture;
 	}
 
+	vec2 Texture::GetSize()
+	{
+		IDirect3DTexture9* texture = reinterpret_cast<IDirect3DTexture9*>(Data);
+		D3DSURFACE_DESC desc;
+		texture->GetLevelDesc(0, &desc);
+		return { desc.Width, desc.Height };
+	}
+
 	void Textures::Initialize() { }
 
 	void Textures::Shutdown()
