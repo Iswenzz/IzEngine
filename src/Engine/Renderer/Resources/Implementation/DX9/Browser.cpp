@@ -92,7 +92,10 @@ namespace IzEngine
 	void BrowserApp::OnBeforeCommandLineProcessing(const CefString& processType, CefRefPtr<CefCommandLine> commandLine)
 	{
 		if (processType.empty())
+		{
 			commandLine->AppendSwitchWithValue("autoplay-policy", "no-user-gesture-required");
+			commandLine->AppendSwitch("try-supported-channel-layouts");
+		}
 	}
 
 	CefRefPtr<CefRenderHandler> BrowserClient::GetRenderHandler()
