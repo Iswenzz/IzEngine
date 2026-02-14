@@ -14,6 +14,6 @@ namespace IzEngine
 		static void Text(const std::string& text, const Ref<Font>& font, const vec2& position, const vec2& size,
 			const vec2& skew, const vec4& color);
 		static vec2 TextSize(const std::string& text, const Ref<Font>& font);
-		static void Rect(const Ref<Texture>& texture, const vec2& position, const vec2& size);
+		static void Rect(const Ref<Texture>& texture, const vec2& position, const vec2& size, const vec4& color);
 	};
 }

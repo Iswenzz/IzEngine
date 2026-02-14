@@ -74,6 +74,6 @@ namespace IzEngine
 		RenderPosition = position;
 		RenderSize = size;
 
-		Draw2D::Rect(Texture, RenderPosition, RenderSize);
+		Draw2D::Rect(Texture, RenderPosition, RenderSize, Color);
 	}
 }

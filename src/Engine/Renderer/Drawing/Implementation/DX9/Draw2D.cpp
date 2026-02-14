@@ -41,24 +41,28 @@ namespace IzEngine
 		return { static_cast<float>(rect.right - rect.left), static_cast<float>(rect.bottom - rect.top) };
 	}
 
-	void Draw2D::Rect(const Ref<Texture>& texture, const vec2& position, const vec2& size)
+	void Draw2D::Rect(const Ref<Texture>& texture, const vec2& position, const vec2& size, const vec4& color)
 	{
 		DWORD oldFVF;
 		Device::D3Device->GetFVF(&oldFVF);
 
 		auto tex = reinterpret_cast<IDirect3DTexture9*>(texture->Data);
 		Device::D3Device->SetTexture(0, tex);
-		Device::D3Device->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
+		Device::D3Device->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+		DWORD col = Math::RGBA(color);
 
-		// clang-format off
-		float vertices[24] = {
-			position.x, position.y, 0.0f, 1.0f, 0.0f, 0.0f,
-			position.x + size.x, position.y, 0.0f, 1.0f, 1.0f, 0.0f,
-			position.x + size.x, position.y + size.y, 0.0f, 1.0f, 1.0f, 1.0f,
-			position.x, position.y + size.y, 0.0f, 1.0f, 0.0f, 1.0f
+		struct Vertex
+		{
+			float x, y, z, rhw;
+			DWORD color;
+			float u, v;
 		};
-		// clang-format on
-		Device::D3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, vertices, 6 * sizeof(float));
+		Vertex vertices[4] = { { position.x, position.y, 0.0f, 1.0f, col, 0.0f, 0.0f },
+			{ position.x + size.x, position.y, 0.0f, 1.0f, col, 1.0f, 0.0f },
+			{ position.x + size.x, position.y + size.y, 0.0f, 1.0f, col, 1.0f, 1.0f },
+			{ position.x, position.y + size.y, 0.0f, 1.0f, col, 0.0f, 1.0f } };
+
+		Device::D3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, vertices, sizeof(Vertex));
 		Device::D3Device->SetFVF(oldFVF);
 	}
 }
