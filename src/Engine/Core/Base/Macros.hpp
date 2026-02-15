@@ -82,13 +82,3 @@
 #else
 	#define IZ_ASSERT(...)
 #endif
-
-#ifndef PROXY_LIBRARY
-	#define PROXY_LIBRARY
-	#define PROXY(CallingConv, ReturnType, FuncName, Params, Args)                   \
-		API ReturnType CallingConv _##FuncName Params                                \
-		{                                                                            \
-			static auto address = GetProcAddress(PROXY_LIBRARY, #FuncName);          \
-			return reinterpret_cast<ReturnType(CallingConv *) Params>(address) Args; \
-		}
-#endif
