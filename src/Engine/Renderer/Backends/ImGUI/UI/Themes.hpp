@@ -8,7 +8,7 @@ namespace IzEngine::UC
 	/// <summary>
 	/// Themes window.
 	/// </summary>
-	class Themes : public Window
+	class API Themes : public Window
 	{
 	public:
 		static inline std::tuple<ImColor, ImColor> Rainbow;
@@ -17,6 +17,10 @@ namespace IzEngine::UC
 		static inline ImFont* H1 = nullptr;
 		static inline ImFont* H2 = nullptr;
 		static inline ImFont* H3 = nullptr;
+		static inline ImFont* BBMFFont = nullptr;
+		static inline ImFont* ConsolasFont = nullptr;
+		static inline ImFont* VerdanaFont = nullptr;
+		static inline ImFont* JBMonoFont = nullptr;
 
 		ImGuiStyle Style;
 		ImPlotStyle PlotStyle;

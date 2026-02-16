@@ -58,6 +58,20 @@ namespace ImGui
 	API bool ButtonToggle(const std::string& label, const std::string& id, bool* v, const ImVec2& size = ImVec2(0, 0));
 
 	/// <summary>
+	/// Begin Group Box.
+	/// </summary>
+	/// <param name="name"></param>
+	/// <param name="size"></param>
+	/// <returns></returns>
+	API bool BeginGroupBox(const std::string& name, const ImVec2& size = ImVec2(0, 0));
+
+	/// <summary>
+	/// End Group Box.
+	/// </summary>
+	/// <returns></returns>
+	API void EndGroupBox();
+
+	/// <summary>
 	/// Toggle button.
 	/// </summary>
 	/// <param name="id">The ID.</param>
@@ -152,6 +166,25 @@ namespace ImGui
 	/// <param name="color">The color.</param>
 	/// <param name="state">The visible state.</param>
 	API void LoadingIndicator(const std::string& label, const ImVec2& pos, const ImU32& color, bool state);
+
+	/// <summary>
+	/// Rotate a point.
+	/// </summary>
+	/// <param name="p">The point.</param>
+	/// <param name="center">The center.</param>
+	/// <param name="angle">The angle.</param>
+	/// <returns></returns>
+	vec2 RotatePoint(const ImVec2& p, const ImVec2& center, float angle);
+
+	/// <summary>
+	/// Draw Rotating Image.
+	/// </summary>
+	/// <param name="draw">The draw list.</param>
+	/// <param name="tex">The texture</param>
+	/// <param name="min">The min.</param>
+	/// <param name="max">The max.</param>
+	/// <param name="angle">The angle.</param>
+	API void DrawRotatingImage(ImDrawList* draw, ImTextureID tex, ImVec2 min, ImVec2 max, float angle);
 
 	/// <summary>
 	/// Is window resizing.

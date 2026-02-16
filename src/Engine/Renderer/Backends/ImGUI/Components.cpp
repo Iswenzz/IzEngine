@@ -52,6 +52,23 @@ namespace ImGui
 		return clicked;
 	}
 
+	bool BeginGroupBox(const std::string& name, const ImVec2& size)
+	{
+		ImGui::BeginGroup();
+
+		ImGui::TextUnformatted(name.c_str());
+		ImGui::Separator();
+
+		ImGui::BeginChild(name.c_str(), size, true, ImGuiWindowFlags_NoScrollbar);
+		return true;
+	}
+
+	void EndGroupBox()
+	{
+		ImGui::EndChild();
+		ImGui::EndGroup();
+	}
+
 	bool Toggle(const std::string& id, bool* v, const ImVec2& defaultSize)
 	{
 		ImGuiContext& g = *GImGui;
@@ -278,6 +295,30 @@ namespace ImGui
 		}
 		draw->PathStroke(color, 0, thickness);
 		draw->AddText(position + ImVec2{ size.x, -radius }, color, label.c_str());
+	}
+
+	vec2 RotatePoint(const ImVec2& p, const ImVec2& center, float angle)
+	{
+		const float s = sin(angle);
+		const float c = cos(angle);
+
+		ImVec2 r;
+		r.x = center.x + (p.x - center.x) * c - (p.y - center.y) * s;
+		r.y = center.y + (p.x - center.x) * s + (p.y - center.y) * c;
+		return r;
+	}
+
+	void DrawRotatingImage(ImDrawList* draw, ImTextureID tex, ImVec2 min, ImVec2 max, float angle)
+	{
+		const ImVec2 center = (min + max) * 0.5f;
+		const ImVec2 uv0(0, 0), uv1(1, 0), uv2(1, 1), uv3(0, 1);
+		const std::array<ImVec2, 4> points = {
+			RotatePoint(ImVec2(min.x, min.y), center, angle),
+			RotatePoint(ImVec2(max.x, min.y), center, angle),
+			RotatePoint(ImVec2(max.x, max.y), center, angle),
+			RotatePoint(ImVec2(min.x, max.y), center, angle) };
+
+		draw->AddImageQuad(tex, points[0], points[1], points[2], points[3], uv0, uv1, uv2, uv3, IM_COL32_WHITE);
 	}
 
 	bool IsWindowResizing()

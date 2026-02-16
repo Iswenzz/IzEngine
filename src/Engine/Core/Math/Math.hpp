@@ -235,12 +235,27 @@ namespace IzEngine
 		static vec3 AnglesToRight(const float* angles);
 
 		/// <summary>
+		/// Convert euler angles to axis.
+		/// </summary>
+		/// <param name="angles">Euler angles in radians.</param>
+		/// <param name="axis">The Axis.</param>
+		static void AnglesToAxis(const vec3& angles, float axis[3][3]);
+
+		/// <summary>
 		/// Angular distance between 2 values.
 		/// </summary>
 		/// <param name="value1">1st value.</param>
 		/// <param name="value2">2nd value.</param>
 		/// <returns></returns>
 		static float AngularDistance(float value1, float value2);
+
+		/// <summary>
+		/// Signed angular distance between 2 values.
+		/// </summary>
+		/// <param name="value1">1st value.</param>
+		/// <param name="value2">2nd value.</param>
+		/// <returns></returns>
+		static float SignedAngularDistance(float value1, float value2);
 
 		/// <summary>
 		/// Converts a 3D vector to Euler angles (pitch, yaw, and roll) in radians.

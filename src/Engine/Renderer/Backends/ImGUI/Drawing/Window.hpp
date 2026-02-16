@@ -17,7 +17,7 @@ namespace IzEngine
 		bool Open = false;
 		bool Designer = false;
 
-		ImGuiWindowFlags Flags = ImGuiWindowFlags_NoCollapse;
+		ImGuiWindowFlags Flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar;
 		Horizontal HorizontalAlign = HORIZONTAL_LEFT;
 		Vertical VerticalAlign = VERTICAL_TOP;
 

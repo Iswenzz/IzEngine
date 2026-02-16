@@ -178,12 +178,46 @@ namespace IzEngine
 		return { -1 * sr * sp * cy + -1 * cr * -sy, -1 * sr * sp * sy + -1 * cr * cy, -1 * sr * cp };
 	}
 
+	void Math::AnglesToAxis(const vec3& angles, float axis[3][3])
+	{
+		float pitch = angles.x;
+		float yaw = angles.y;
+		float roll = angles.z;
+
+		float sp = sinf(pitch * (3.14159265f / 180.0f));
+		float cp = cosf(pitch * (3.14159265f / 180.0f));
+		float sy = sinf(yaw * (3.14159265f / 180.0f));
+		float cy = cosf(yaw * (3.14159265f / 180.0f));
+		float sr = sinf(roll * (3.14159265f / 180.0f));
+		float cr = cosf(roll * (3.14159265f / 180.0f));
+
+		axis[0][0] = cp * cy;
+		axis[0][1] = cp * sy;
+		axis[0][2] = -sp;
+
+		axis[1][0] = sr * sp * cy - cr * sy;
+		axis[1][1] = sr * sp * sy + cr * cy;
+		axis[1][2] = sr * cp;
+
+		axis[2][0] = cr * sp * cy + sr * sy;
+		axis[2][1] = cr * sp * sy - sr * cy;
+		axis[2][2] = cr * cp;
+	}
+
 	float Math::AngularDistance(float value1, float value2)
 	{
 		float diff = fmod(value2 - value1 + 180, 360) - 180;
 		if (diff < -180)
 			diff += 360;
 		return std::abs(diff);
+	}
+
+	float Math::SignedAngularDistance(float value1, float value2)
+	{
+		float diff = fmod(value2 - value1 + 180, 360) - 180;
+		if (diff < -180)
+			diff += 360;
+		return diff;
 	}
 
 	vec3 Math::VectorToAngles(const float* v)
