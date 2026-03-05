@@ -79,7 +79,7 @@ namespace IzEngine
 		IDirect3DTexture9* dTexture = nullptr;
 		IDirect3DSurface9* dSurface = nullptr;
 
-		if (FAILED(Device::D3Device->CreateTexture(size.x, size.y, 0, 0, D3DFMT_X8R8G8B8, D3DPOOL_MANAGED, &dTexture,
+		if (FAILED(Device::D3Device->CreateTexture(size.x, size.y, 0, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &dTexture,
 				nullptr)))
 			return Default();
 
@@ -100,7 +100,7 @@ namespace IzEngine
 		IDirect3DTexture9* dTexture = nullptr;
 		IDirect3DSurface9* dSurface = nullptr;
 
-		if (FAILED(Device::D3Device->CreateTexture(size.x, size.y, level, usage, D3DFMT_X8R8G8B8,
+		if (FAILED(Device::D3Device->CreateTexture(size.x, size.y, level, usage, D3DFMT_A8R8G8B8,
 				static_cast<D3DPOOL>(pool), &dTexture, nullptr)))
 			return Default();
 
