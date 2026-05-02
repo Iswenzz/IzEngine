@@ -57,7 +57,7 @@ namespace IzEngine
 		if (record.EventType != KEY_EVENT || !record.Event.KeyEvent.bKeyDown)
 			return command;
 
-		Key = Input::Map(record.Event.KeyEvent.wVirtualKeyCode);
+		Key = Input::MapKey(record.Event.KeyEvent.wVirtualKeyCode);
 		const char character = record.Event.KeyEvent.uChar.AsciiChar;
 		const bool print = std::isprint(character);
 

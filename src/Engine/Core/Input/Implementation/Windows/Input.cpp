@@ -115,7 +115,12 @@ namespace IzEngine
 			{ Button_Middle, InputInfo(Button_Middle, RI_MOUSE_BUTTON_3_DOWN, "Middle Click") },
 		};
 		for (const auto& [_, input] : Inputs)
-			OSToID[input.OS] = input.ID;
+		{
+			if (input.ID >= Button_Left)
+				MouseOSToID[input.OS] = input.ID;
+			else
+				KeyboardOSToID[input.OS] = input.ID;
+		}
 	}
 
 	void Input::Reset()
@@ -146,9 +151,14 @@ namespace IzEngine
 		return Inputs[input].PrevState == INPUT_NONE && Inputs[input].State == INPUT_DOWN;
 	}
 
-	InputEnum Input::Map(int input)
+	InputEnum Input::MapKey(int input)
 	{
-		return OSToID[input];
+		return KeyboardOSToID[input];
+	}
+
+	InputEnum Input::MapMouse(int input)
+	{
+		return MouseOSToID[input];
 	}
 
 	const char* Input::GetName(InputEnum input)

@@ -171,7 +171,8 @@ namespace IzEngine
 	{
 	public:
 		static inline std::unordered_map<InputEnum, InputInfo> Inputs;
-		static inline std::unordered_map<int, InputEnum> OSToID;
+		static inline std::unordered_map<int, InputEnum> KeyboardOSToID;
+		static inline std::unordered_map<int, InputEnum> MouseOSToID;
 
 		static void Initialize();
 		static void Reset();
@@ -180,7 +181,8 @@ namespace IzEngine
 		static bool IsDown(InputEnum input);
 		static bool IsPressed(InputEnum input);
 
-		static InputEnum Map(int input);
+		static InputEnum MapKey(int input);
+		static InputEnum MapMouse(int input);
 		static const char* GetName(InputEnum input);
 	};
 }
