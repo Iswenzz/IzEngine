@@ -24,9 +24,16 @@ namespace IzEngine
 	{
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
 
+		if (msg == WM_MOUSEMOVE)
+		{
+			const int x = static_cast<int16_t>(LOWORD(static_cast<DWORD>(state)));
+			const int y = static_cast<int16_t>(HIWORD(static_cast<DWORD>(state)));
+			Position = { x, y };
+			return;
+		}
+
 		if (msg == WM_INPUT)
 		{
-			HWND hWnd = reinterpret_cast<HWND>(Window::Handle);
 			HRAWINPUT hRaw = reinterpret_cast<HRAWINPUT>(state);
 			RAWINPUT raw = { 0 };
 			UINT size = 0;
@@ -41,11 +48,6 @@ namespace IzEngine
 				return;
 
 			Delta += vec2{ raw.data.mouse.lLastX, raw.data.mouse.lLastY };
-
-			POINT position;
-			GetCursorPos(&position);
-			ScreenToClient(hWnd, &position);
-			Position = { position.x, position.y };
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_WHEEL)
 				ScrollDelta += static_cast<short>(raw.data.mouse.usButtonData) / WHEEL_DELTA;
