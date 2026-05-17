@@ -12,6 +12,8 @@ namespace IzEngine
 		static void InitializeAssets();
 		static void Shutdown();
 		static void ShutdownAssets();
+		static void DeviceLost();
+		static void DeviceReset();
 
 		static void Resize(const vec2& size);
 		static void Begin();

@@ -49,6 +49,18 @@ namespace IzEngine
 		Plugins::Shutdown();
 	}
 
+	void Renderer::DeviceLost()
+	{
+		Fonts::OnLostDevice();
+		ImGui_ImplAPI_InvalidateDeviceObjects();
+	}
+
+	void Renderer::DeviceReset()
+	{
+		ImGui_ImplAPI_CreateDeviceObjects();
+		Fonts::OnResetDevice();
+	}
+
 	void Renderer::Resize(const vec2& size)
 	{
 		Device::Resize(size);

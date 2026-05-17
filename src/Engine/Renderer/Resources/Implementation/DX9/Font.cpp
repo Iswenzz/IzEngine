@@ -103,4 +103,16 @@ namespace IzEngine
 		List.clear();
 		Names.clear();
 	}
+
+	void Fonts::OnLostDevice()
+	{
+		for (auto& [id, font] : List)
+			reinterpret_cast<ID3DXFont*>(font->Data)->OnLostDevice();
+	}
+
+	void Fonts::OnResetDevice()
+	{
+		for (auto& [id, font] : List)
+			reinterpret_cast<ID3DXFont*>(font->Data)->OnResetDevice();
+	}
 }

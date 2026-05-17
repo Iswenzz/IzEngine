@@ -51,9 +51,9 @@ namespace IzEngine
 		if (Swapped || !D3Device)
 			return;
 
-		Renderer::ShutdownAssets();
+		Renderer::DeviceLost();
 		D3Device->Reset(&PresentParameters);
-		Renderer::InitializeAssets();
+		Renderer::DeviceReset();
 	}
 
 	void Device::Resize(const vec2& size)

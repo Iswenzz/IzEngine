@@ -31,5 +31,7 @@ namespace IzEngine
 
 		static void Initialize();
 		static void Shutdown();
+		static void OnLostDevice();
+		static void OnResetDevice();
 	};
 }
