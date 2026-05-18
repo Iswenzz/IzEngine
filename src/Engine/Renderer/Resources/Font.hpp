@@ -1,35 +1,34 @@
 #pragma once
-#include "Core/Common.hpp"
-
-#include "Core/IO/File.hpp"
+#include "Engine/Core/IO/File.hpp"
+#include "Engine/Renderer/Base/GPUResource.hpp"
 
 #define FONT_OPENSANS "OpenSans-Regular"
 #define FONT_SPACERANGER "Space Ranger"
 
 namespace IzEngine
 {
-	class API Font : public IObject
+	struct FontSpecification
 	{
-	public:
-		void* Data = nullptr;
-
-		Font() = default;
-		virtual ~Font();
-
-		void Release();
-
-		static Ref<Font>& Create(const File& file, int height);
-		static Ref<Font>& Create(const std::string& name, int height);
-		static Ref<Font>& Default();
+		std::string ID;
+		int Height = 22;
+		int Weight = 400;
+		bool Italic = false;
+		File Source;
 	};
 
-	class Fonts
+	class API Font : public GPUResource
 	{
 	public:
-		static inline std::unordered_map<std::string, Ref<Font>> List;
-		static inline std::vector<std::string> Names;
+		FontSpecification Spec;
 
-		static void Initialize();
-		static void Shutdown();
+		Font() = default;
+		virtual ~Font() = default;
+
+		virtual void Release() = 0;
+		virtual vec2 GetTextSize(const std::string& text) const = 0;
+
+		static Ref<Font> Load(const std::string& path, int size);
+		static Ref<Font> Create(const FontSpecification& spec);
+		static Ref<Font> Default();
 	};
 }

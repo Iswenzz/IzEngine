@@ -1,37 +1,51 @@
 #pragma once
-#include "Core/Common.hpp"
-
-#include "Core/IO/File.hpp"
+#include "Engine/Core/IO/File.hpp"
+#include "Engine/Renderer/Base/GPUResource.hpp"
 
 #define TEXTURE_BLACK "black"
-#define TEXTURE_WHITE "white"
 
 namespace IzEngine
 {
-	class API Texture : public IObject
+	enum class TexturePool
 	{
-	public:
-		void* Data = nullptr;
-		void* Surface = nullptr;
-
-		Texture() = default;
-		virtual ~Texture();
-
-		void Release();
-		vec2 GetSize();
-
-		static Ref<Texture>& Create(const File& file);
-		static Ref<Texture>& Create(const std::string& id, const vec2& size);
-		static Ref<Texture>& Create(const std::string& id, const vec2& size, int level, int usage, int pool);
-		static Ref<Texture>& Default();
+		Default,
+		Managed,
+		SystemMem
 	};
 
-	class Textures
+	enum class TextureUsage
+	{
+		None,
+		RenderTarget,
+		Dynamic
+	};
+
+	struct TextureSpecification
+	{
+		std::string ID;
+		vec2 Size;
+		int Level = 0;
+		TextureUsage Usage = TextureUsage::None;
+		TexturePool Pool = TexturePool::Managed;
+		File Source;
+	};
+
+	class API Texture : public GPUResource
 	{
 	public:
-		static inline std::unordered_map<std::string, Ref<Texture>> List;
+		TextureSpecification Spec;
 
-		static void Initialize();
-		static void Shutdown();
+		Texture() = default;
+		virtual ~Texture() = default;
+
+		virtual void Bind(uint32_t slot) const = 0;
+		virtual void Unbind(uint32_t slot) const = 0;
+		virtual void Release() = 0;
+
+		virtual vec2 GetSize() const = 0;
+
+		static Ref<Texture> Load(const std::string& path);
+		static Ref<Texture> Create(const TextureSpecification& spec);
+		static Ref<Texture> Default();
 	};
 }

@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
-
-#include "Core/Interfaces/ISerializable.hpp"
+#include "Engine/Core/Interfaces/ISerializable.hpp"
 
 #define GLM_FORCE_CTOR_INIT
 #define GLM_FORCE_XYZW_ONLY

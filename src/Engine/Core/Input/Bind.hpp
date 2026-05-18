@@ -1,6 +1,4 @@
 #pragma once
-#include "Core/Common.hpp"
-
 #include "Input.hpp"
 
 namespace IzEngine

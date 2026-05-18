@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Engine/Core/Common.hpp"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480

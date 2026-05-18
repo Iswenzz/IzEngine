@@ -1,4 +1,19 @@
-add_subdirectory(Implementation)
-
 target_sources(IzEngine PRIVATE
-	Renderer.hpp)
+	Buffer.hpp
+	Buffer.cpp
+	FrameBuffer.hpp
+	FrameBuffer.cpp
+	GPUResource.hpp
+	GPUResource.cpp
+	GraphicsContext.hpp
+	GraphicsContext.cpp
+	RenderCommand.hpp
+	RenderCommand.cpp
+	Renderer.hpp
+	Renderer.cpp
+	RendererAPI.hpp
+	RendererAPI.cpp
+	UniformBuffer.hpp
+	UniformBuffer.cpp
+	VertexArray.hpp
+	VertexArray.cpp)

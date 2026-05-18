@@ -1,7 +1,6 @@
 #include "Zip.hpp"
 
 #include <libzippp/libzippp.h>
-#include <fstream>
 
 using namespace libzippp;
 

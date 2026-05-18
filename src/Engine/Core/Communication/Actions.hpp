@@ -1,9 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
-
-#include <functional>
-#include <mutex>
-#include <queue>
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {

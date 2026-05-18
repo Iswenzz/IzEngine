@@ -1,7 +1,6 @@
-add_subdirectory(Implementation)
-
 target_sources(IzEngine PRIVATE
 	Draw2D.hpp
+	Draw2D.cpp
 	HUD.hpp
 	HUD.cpp
 	Text.hpp

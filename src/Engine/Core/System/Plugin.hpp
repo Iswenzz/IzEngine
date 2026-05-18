@@ -1,7 +1,5 @@
 #pragma once
-#include "Core/Memory/Function.hpp"
-
-#include <string>
+#include "Engine/Core/Memory/Function.hpp"
 
 namespace IzEngine
 {
@@ -25,5 +23,18 @@ namespace IzEngine
 	private:
 		Function<void()> CallbackInitialize;
 		Function<void()> CallbackShutdown;
+	};
+
+	class Plugins
+	{
+	public:
+		static inline std::unordered_map<std::string, Scope<Plugin>> Modules;
+		static inline bool IsReloading = false;
+
+		static void Load();
+		static void Free();
+
+		static void Initialize();
+		static void Shutdown();
 	};
 }

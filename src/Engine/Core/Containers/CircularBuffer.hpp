@@ -1,7 +1,5 @@
 #pragma once
-#include <array>
-#include <numeric>
-#include <type_traits>
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {

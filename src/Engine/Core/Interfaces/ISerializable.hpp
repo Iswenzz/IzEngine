@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
-
-#include "Core/Base/Log.hpp"
+#include "Engine/Core/Base/Log.hpp"
 
 #pragma warning(push)
 #pragma warning(disable : 26819)

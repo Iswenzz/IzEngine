@@ -1,12 +1,11 @@
-#include "Core/Console/Console.hpp"
-#include "Core/System/Crash.hpp"
-#include "Core/System/Environment.hpp"
-#include "Core/System/System.hpp"
-#include "Core/System/Window.hpp"
+#include "Engine/Core/Application/Application.hpp"
+#include "Engine/Core/Console/Console.hpp"
+#include "Engine/Core/System/Crash.hpp"
+#include "Engine/Core/System/Environment.hpp"
+#include "Engine/Core/System/Window.hpp"
 
-#include "DX9/Common.hpp"
-#include "ImGUI/Common.hpp"
-#include "Renderer/Common.hpp"
+#include "Engine/Backend/ImGUI/Common.hpp"
+#include "Engine/Renderer/Common.hpp"
 
 void Application::Start()
 {
@@ -15,11 +14,10 @@ void Application::Start()
 
 	Console::Initialize("IzEngine");
 	Window::Initialize("IzEngine");
-	Device::Initialize();
-	Renderer::Initialize();
+	Renderer::Initialize(RendererBackend::DX9);
 
-	UI::Open = true;
-	UI::Frames["Memory"]->Open = true;
+	UI::OpenMenu();
+	UI::OpenWindow("Memory");
 
 	while (Window::Open)
 	{
@@ -32,7 +30,6 @@ void Application::Start()
 void Application::Shutdown()
 {
 	Renderer::Shutdown();
-	Device::Shutdown();
 	Window::Shutdown();
 	Console::Shutdown();
 }

@@ -1,10 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
-
-#include <format>
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {

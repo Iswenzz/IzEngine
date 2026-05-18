@@ -1,6 +1,5 @@
 #pragma once
-#include <concepts>
-#include <string_view>
+#include "Engine/Core/Base.hpp"
 
 #define EVENT_BIND(function) [this](auto&&... args) { this->function(std::forward<decltype(args)>(args)...); }
 #define EVENT_BIND_VOID(function) [this]() { this->function(); }

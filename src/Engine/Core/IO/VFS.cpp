@@ -1,5 +1,6 @@
 #include "VFS.hpp"
-#include "Core/Utils/StringUtils.hpp"
+
+#include "Engine/Core/Utils/StringUtils.hpp"
 
 #include <libzippp/libzippp.h>
 

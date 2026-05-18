@@ -1,12 +1,14 @@
-add_subdirectory(Implementation)
-
 target_sources(IzEngine PRIVATE
+	AssetManager.hpp
+	AssetManager.cpp
 	Crash.hpp
 	Environment.hpp
+	Environment.cpp
 	Plugin.hpp
-	Plugins.hpp
-	Plugins.cpp
+	Plugin.cpp
 	System.hpp
+	System.cpp
 	ThreadPool.hpp
 	ThreadPool.cpp
-	Window.hpp)
+	Window.hpp
+	Window.cpp)

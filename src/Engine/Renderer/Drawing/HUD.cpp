@@ -1,7 +1,8 @@
 #include "HUD.hpp"
 #include "Draw2D.hpp"
 
-#include "ImGUI/Common.hpp"
+#include "Engine/Backend/ImGUI/Common.hpp"
+#include "Engine/Core/System/AssetManager.hpp"
 
 namespace IzEngine
 {
@@ -27,7 +28,7 @@ namespace IzEngine
 
 	void HUD::SetTexture(const std::string& texture)
 	{
-		Texture = Textures::List[texture];
+		Texture = AssetManager::Get<class Texture>(texture);
 		TextureName = texture;
 	}
 
@@ -74,6 +75,6 @@ namespace IzEngine
 		RenderPosition = position;
 		RenderSize = size;
 
-		Draw2D::Rect(Texture, RenderPosition, RenderSize, Color);
+		Draw2D::DrawQuad(vec3(RenderPosition, 0), RenderSize, Texture, Color);
 	}
 }
