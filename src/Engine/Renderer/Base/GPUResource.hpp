@@ -8,14 +8,14 @@ namespace IzEngine
 	public:
 		virtual ~GPUResource() = default;
 
-		virtual void OnDeviceLost();
-		virtual void OnDeviceReset();
+		virtual void OnBeforeReset();
+		virtual void OnAfterReset();
 
 		static void RegisterResource(GPUResource* resource);
 		static void UnregisterResource(GPUResource* resource);
 
-		static void NotifyDeviceLost();
-		static void NotifyDeviceReset();
+		static void NotifyBeforeReset();
+		static void NotifyAfterReset();
 
 	private:
 		static inline std::vector<GPUResource*> Resources;

@@ -14,8 +14,8 @@ namespace IzEngine
 		void Bind() const override;
 		void Unbind() const override;
 		void Release() override;
-		void OnDeviceLost() override;
-		void OnDeviceReset() override;
+		void OnBeforeReset() override;
+		void OnAfterReset() override;
 
 		void SetInt(const std::string& name, int value) override;
 		void SetIntArray(const std::string& name, int* values, uint32_t count) override;

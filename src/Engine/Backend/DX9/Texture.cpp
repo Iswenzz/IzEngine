@@ -106,15 +106,15 @@ namespace IzEngine
 		}
 	}
 
-	void DX9Texture::OnDeviceLost()
+	void DX9Texture::OnBeforeReset()
 	{
 		if (Spec.Pool == TexturePool::Default)
 			Release();
 	}
 
-	void DX9Texture::OnDeviceReset()
+	void DX9Texture::OnAfterReset()
 	{
-		if (Spec.Pool != TexturePool::Default || Data)
+		if (Spec.Pool != TexturePool::Default)
 			return;
 
 		IDirect3DTexture9* dTexture = nullptr;

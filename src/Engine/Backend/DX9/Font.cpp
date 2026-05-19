@@ -56,30 +56,16 @@ namespace IzEngine
 		}
 	}
 
-	void DX9Font::OnDeviceLost()
+	void DX9Font::OnBeforeReset()
 	{
 		if (Data)
 			Data->OnLostDevice();
 	}
 
-	void DX9Font::OnDeviceReset()
+	void DX9Font::OnAfterReset()
 	{
 		if (Data)
-		{
 			Data->OnResetDevice();
-			return;
-		}
-		std::string name = !Spec.ID.empty() ? Spec.ID : Spec.Source.Path.string();
-		ID3DXFont* dFont = nullptr;
-
-		if (FAILED(D3DXCreateFont(DX9GraphicsContext::Device, Spec.Height, 0, Spec.Weight, 1,
-				Spec.Italic ? TRUE : FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY,
-				DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &dFont)))
-		{
-			Log::WriteLine(Channel::Error, "Failed to recreate font after device reset: {}", name);
-			return;
-		}
-		Data = dFont;
 	}
 
 	vec2 DX9Font::GetTextSize(const std::string& text) const

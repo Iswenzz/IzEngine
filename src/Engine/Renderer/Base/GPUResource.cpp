@@ -2,9 +2,9 @@
 
 namespace IzEngine
 {
-	void GPUResource::OnDeviceLost() { }
+	void GPUResource::OnBeforeReset() { }
 
-	void GPUResource::OnDeviceReset() { }
+	void GPUResource::OnAfterReset() { }
 
 	void GPUResource::RegisterResource(GPUResource* resource)
 	{
@@ -18,15 +18,15 @@ namespace IzEngine
 		Resources.erase(std::remove(Resources.begin(), Resources.end(), resource), Resources.end());
 	}
 
-	void GPUResource::NotifyDeviceLost()
+	void GPUResource::NotifyBeforeReset()
 	{
 		for (auto& resource : Resources)
-			resource->OnDeviceLost();
+			resource->OnBeforeReset();
 	}
 
-	void GPUResource::NotifyDeviceReset()
+	void GPUResource::NotifyAfterReset()
 	{
 		for (auto& resource : Resources)
-			resource->OnDeviceReset();
+			resource->OnAfterReset();
 	}
 }

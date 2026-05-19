@@ -72,16 +72,20 @@ namespace IzEngine
 
 	void DX9GraphicsContext::Reset()
 	{
-		if (Swapped || !Device)
+		if (Swapped)
 			return;
 
-		GPUResource::NotifyDeviceLost();
+		HRESULT hr = Device->TestCooperativeLevel();
+		if (hr != D3D_OK && hr != D3DERR_DEVICENOTRESET)
+			return;
+
+		GPUResource::NotifyBeforeReset();
 		ImGui_ImplAPI_InvalidateDeviceObjects();
-		HRESULT hr = Device->Reset(&PresentParameters);
+		hr = Device->Reset(&PresentParameters);
 
 		if (SUCCEEDED(hr))
 		{
-			GPUResource::NotifyDeviceReset();
+			GPUResource::NotifyAfterReset();
 			ImGui_ImplAPI_CreateDeviceObjects();
 		}
 	}
@@ -101,7 +105,7 @@ namespace IzEngine
 		Device->EndScene();
 
 		HRESULT hr = Device->Present(nullptr, nullptr, nullptr, nullptr);
-		if (hr == D3DERR_DEVICELOST && Device->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
+		if (hr == D3DERR_DEVICELOST)
 			Reset();
 	}
 

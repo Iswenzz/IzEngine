@@ -14,8 +14,8 @@ namespace IzEngine
 		~DX9Font() override;
 
 		void Release() override;
-		void OnDeviceLost() override;
-		void OnDeviceReset() override;
+		void OnBeforeReset() override;
+		void OnAfterReset() override;
 
 		vec2 GetTextSize(const std::string& text) const override;
 

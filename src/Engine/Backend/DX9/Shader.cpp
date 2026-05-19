@@ -116,12 +116,12 @@ namespace IzEngine
 		DX9GraphicsContext::Device->SetPixelShader(nullptr);
 	}
 
-	void DX9Shader::OnDeviceLost()
+	void DX9Shader::OnBeforeReset()
 	{
 		Release();
 	}
 
-	void DX9Shader::OnDeviceReset()
+	void DX9Shader::OnAfterReset()
 	{
 		Compile();
 	}

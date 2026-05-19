@@ -17,8 +17,8 @@ namespace IzEngine
 		void Bind(uint32_t slot) const override;
 		void Unbind(uint32_t slot) const override;
 		void Release() override;
-		void OnDeviceLost() override;
-		void OnDeviceReset() override;
+		void OnBeforeReset() override;
+		void OnAfterReset() override;
 
 		vec2 GetSize() const override;
 
