@@ -14,11 +14,13 @@ namespace IzEngine
 		if (!DX9GraphicsContext::Swapped)
 			DX9GraphicsContext::Setup(Window::Handle);
 
+		ImGui_ImplOS_Init(Window::Handle);
 		ImGui_ImplAPI_Init(DX9GraphicsContext::Device);
 	}
 
 	void DX9RendererAPI::Shutdown()
 	{
+		ImGui_ImplOS_Shutdown();
 		ImGui_ImplAPI_Shutdown();
 
 		if (!DX9GraphicsContext::Swapped)
@@ -27,6 +29,9 @@ namespace IzEngine
 
 	void DX9RendererAPI::Begin()
 	{
+		ImGui_ImplOS_NewFrame();
+		ImGui_ImplAPI_NewFrame();
+
 		if (!DX9GraphicsContext::Swapped)
 		{
 			DX9GraphicsContext::Device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_COLORVALUE(0, 0, 0, 1), 1.0f, 0);
@@ -36,6 +41,8 @@ namespace IzEngine
 
 	void DX9RendererAPI::End()
 	{
+		ImGui_ImplAPI_RenderDrawData(ImGui::GetDrawData());
+
 		if (!DX9GraphicsContext::Swapped)
 		{
 			DX9GraphicsContext::Device->EndScene();

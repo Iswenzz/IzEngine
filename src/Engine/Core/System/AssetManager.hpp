@@ -1,6 +1,15 @@
 #pragma once
 #include "Engine/Core/Common.hpp"
 
+#define TEXTURE_BLACK "black"
+#define TEXTURE_WHITE "white"
+
+#define SHADER_QUAD "Draw2D_Quad"
+#define SHADER_LINE "Draw2D_Line"
+
+#define FONT_OPENSANS "OpenSans-Regular"
+#define FONT_SPACERANGER "Space Ranger"
+
 namespace IzEngine
 {
 	class AssetManager

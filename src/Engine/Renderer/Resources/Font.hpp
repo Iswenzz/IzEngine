@@ -2,9 +2,6 @@
 #include "Engine/Core/IO/File.hpp"
 #include "Engine/Renderer/Base/GPUResource.hpp"
 
-#define FONT_OPENSANS "OpenSans-Regular"
-#define FONT_SPACERANGER "Space Ranger"
-
 namespace IzEngine
 {
 	struct FontSpecification

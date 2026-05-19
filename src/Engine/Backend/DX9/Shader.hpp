@@ -17,8 +17,6 @@ namespace IzEngine
 		void OnDeviceLost() override;
 		void OnDeviceReset() override;
 
-		const std::string& GetName() const override;
-
 		void SetInt(const std::string& name, int value) override;
 		void SetIntArray(const std::string& name, int* values, uint32_t count) override;
 		void SetFloat(const std::string& name, float value) override;
@@ -31,14 +29,11 @@ namespace IzEngine
 		static Ref<Shader> Create(const ShaderSpecification& spec);
 
 	private:
-		std::string Name;
-		std::string VertexSource;
-		std::string PixelSource;
 		IDirect3DVertexShader9* VertexShader = nullptr;
 		IDirect3DPixelShader9* PixelShader = nullptr;
 		ID3DXConstantTable* VertexConstants = nullptr;
 		ID3DXConstantTable* PixelConstants = nullptr;
 
-		void Compile(const std::string& vertexSrc, const std::string& pixelSrc);
+		void Compile();
 	};
 }

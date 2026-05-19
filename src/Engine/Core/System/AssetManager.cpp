@@ -28,6 +28,7 @@ namespace IzEngine
 	void AssetManager::LoadTextures()
 	{
 		Texture::Create({ .ID = TEXTURE_BLACK, .Source = VFS::GetFile("Textures/Engine/black.jpg") });
+		Texture::Create({ .ID = TEXTURE_WHITE, .Source = VFS::GetFile("Textures/Engine/white.jpg") });
 	}
 
 	void AssetManager::LoadFonts()
@@ -38,11 +39,11 @@ namespace IzEngine
 
 	void AssetManager::LoadShaders()
 	{
-		Shader::Create({ .ID = "Draw2D_Quad",
+		Shader::Create({ .ID = SHADER_QUAD,
 			.VertexSource = VFS::GetFile(RendererAPI::GetShaderPath("Quad.vertex")),
 			.PixelSource = VFS::GetFile(RendererAPI::GetShaderPath("Quad.pixel")) });
 
-		Shader::Create({ .ID = "Draw2D_Line",
+		Shader::Create({ .ID = SHADER_LINE,
 			.VertexSource = VFS::GetFile(RendererAPI::GetShaderPath("Line.vertex")),
 			.PixelSource = VFS::GetFile(RendererAPI::GetShaderPath("Line.pixel")) });
 	}

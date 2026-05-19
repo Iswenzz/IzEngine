@@ -11,14 +11,13 @@ namespace IzEngine
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
 
 		Camera2D = Camera::CreateOrthographic(Window::Size.x, Window::Size.y);
-		Camera3D = Camera::CreatePerspective(60.0f, Window::Size.x / Window::Size.y, 0.1f, 1000.0f);
+		Camera3D = Camera::CreatePerspective(65.0f, Window::Size.x / Window::Size.y, 0.1f, 1000.0f);
 
 		UI::Initialize();
 		RenderCommand::Initialize(api);
 		AssetManager::Initialize();
 		Draw2D::Initialize();
 
-		ImGui_ImplOS_Init(Window::Handle);
 		Active = true;
 	}
 
@@ -27,7 +26,6 @@ namespace IzEngine
 		IZ_ASSERT(Active, "Renderer already shutdown.");
 
 		Active = false;
-		ImGui_ImplOS_Shutdown();
 
 		Draw2D::Shutdown();
 		AssetManager::Shutdown();
@@ -39,16 +37,15 @@ namespace IzEngine
 	{
 		Camera2D.Resize(size.x, size.y);
 		Camera3D.Resize(size.x, size.y);
+
 		RenderCommand::Resize(size);
 		UI::Resize(size);
 	}
 
 	void Renderer::Begin()
 	{
-		Draw2D::Begin(Camera2D);
 		RenderCommand::Begin();
-		ImGui_ImplOS_NewFrame();
-		ImGui_ImplAPI_NewFrame();
+		Draw2D::Begin(Camera2D);
 		UI::Begin();
 
 		Actions::Submit();
@@ -56,9 +53,8 @@ namespace IzEngine
 
 	void Renderer::End()
 	{
-		Draw2D::End();
 		UI::End();
-		ImGui_ImplAPI_RenderDrawData(ImGui::GetDrawData());
+		Draw2D::End();
 		RenderCommand::End();
 
 		Input::Reset();

@@ -4,7 +4,7 @@
 
 namespace IzEngine
 {
-	static D3DDECLTYPE ShaderDataTypeToDX9(ShaderDataType type)
+	static D3DDECLTYPE GetType(ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -25,7 +25,7 @@ namespace IzEngine
 		return D3DDECLTYPE_UNUSED;
 	}
 
-	static D3DDECLUSAGE ShaderDataTypeToUsage(const std::string& name)
+	static D3DDECLUSAGE GetUsage(const std::string& name)
 	{
 		if (name == "POSITION")
 			return D3DDECLUSAGE_POSITION;
@@ -59,7 +59,7 @@ namespace IzEngine
 
 	void DX9VertexArray::Bind() const
 	{
-		IZ_ASSERT(VertexDeclaration, "VertexDeclaration is null. Did you call AddVertexBuffer?");
+		IZ_ASSERT(VertexDeclaration, "VertexDeclaration is null.");
 
 		DX9GraphicsContext::Device->SetVertexDeclaration(VertexDeclaration);
 
@@ -89,6 +89,8 @@ namespace IzEngine
 		std::vector<D3DVERTEXELEMENT9> elements;
 		uint8_t usageIndex = 0;
 
+		std::map<D3DDECLUSAGE, uint8_t> usageIndices;
+
 		for (const auto& buffer : Vertices)
 		{
 			for (const auto& element : buffer->GetLayout())
@@ -96,10 +98,10 @@ namespace IzEngine
 				D3DVERTEXELEMENT9 ve;
 				ve.Stream = 0;
 				ve.Offset = static_cast<WORD>(element.Offset);
-				ve.Type = static_cast<BYTE>(ShaderDataTypeToDX9(element.Type));
+				ve.Type = static_cast<BYTE>(GetType(element.Type));
 				ve.Method = D3DDECLMETHOD_DEFAULT;
-				ve.Usage = static_cast<BYTE>(ShaderDataTypeToUsage(element.Name));
-				ve.UsageIndex = usageIndex++;
+				ve.Usage = static_cast<BYTE>(GetUsage(element.Name));
+				ve.UsageIndex = usageIndices[static_cast<D3DDECLUSAGE>(ve.Usage)]++;
 				elements.push_back(ve);
 			}
 		}

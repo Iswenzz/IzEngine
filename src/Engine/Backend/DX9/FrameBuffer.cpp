@@ -3,7 +3,7 @@
 
 namespace IzEngine
 {
-	static D3DFORMAT FrameBufferTextureFormatToDX9(FrameBufferTextureFormat format)
+	static D3DFORMAT GetFormat(FrameBufferTextureFormat format)
 	{
 		switch (format)
 		{
@@ -45,8 +45,7 @@ namespace IzEngine
 			{
 				IDirect3DTexture9* texture = nullptr;
 				DX9GraphicsContext::Device->CreateTexture(Specification.Width, Specification.Height, 1,
-					D3DUSAGE_RENDERTARGET, FrameBufferTextureFormatToDX9(attachment.Format), D3DPOOL_DEFAULT, &texture,
-					nullptr);
+					D3DUSAGE_RENDERTARGET, GetFormat(attachment.Format), D3DPOOL_DEFAULT, &texture, nullptr);
 
 				IDirect3DSurface9* surface = nullptr;
 				texture->GetSurfaceLevel(0, &surface);

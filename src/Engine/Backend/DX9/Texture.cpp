@@ -5,7 +5,7 @@
 
 namespace IzEngine
 {
-	static D3DPOOL TexturePoolToDX9(TexturePool pool)
+	static D3DPOOL GetPool(TexturePool pool)
 	{
 		switch (pool)
 		{
@@ -20,7 +20,7 @@ namespace IzEngine
 		return D3DPOOL_DEFAULT;
 	}
 
-	static DWORD TextureUsageToDX9(TextureUsage usage)
+	static DWORD GetUsage(TextureUsage usage)
 	{
 		switch (usage)
 		{
@@ -59,8 +59,8 @@ namespace IzEngine
 			IZ_ASSERT(spec.Size.x > 0 && spec.Size.y > 0, "TextureSpecification requires a valid Size.");
 
 			if (FAILED(DX9GraphicsContext::Device->CreateTexture(static_cast<UINT>(spec.Size.x),
-					static_cast<UINT>(spec.Size.y), spec.Level, TextureUsageToDX9(spec.Usage), D3DFMT_A8R8G8B8,
-					TexturePoolToDX9(spec.Pool), &dTexture, nullptr)))
+					static_cast<UINT>(spec.Size.y), spec.Level, GetUsage(spec.Usage), D3DFMT_A8R8G8B8,
+					GetPool(spec.Pool), &dTexture, nullptr)))
 				return Texture::Default();
 		}
 		if (FAILED(dTexture->GetSurfaceLevel(0, &dSurface)))
@@ -114,18 +114,15 @@ namespace IzEngine
 
 	void DX9Texture::OnDeviceReset()
 	{
-		if (Spec.Pool != TexturePool::Default)
-			return;
-
-		if (Data)
+		if (Spec.Pool != TexturePool::Default || Data)
 			return;
 
 		IDirect3DTexture9* dTexture = nullptr;
 		IDirect3DSurface9* dSurface = nullptr;
 
 		if (FAILED(DX9GraphicsContext::Device->CreateTexture(static_cast<UINT>(Spec.Size.x),
-				static_cast<UINT>(Spec.Size.y), Spec.Level, TextureUsageToDX9(Spec.Usage), D3DFMT_A8R8G8B8,
-				D3DPOOL_DEFAULT, &dTexture, nullptr)))
+				static_cast<UINT>(Spec.Size.y), Spec.Level, GetUsage(Spec.Usage), D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT,
+				&dTexture, nullptr)))
 		{
 			Log::WriteLine(Channel::Error, "Failed to recreate texture after device reset: {}", Spec.ID);
 			return;

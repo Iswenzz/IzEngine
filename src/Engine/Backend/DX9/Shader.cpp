@@ -6,11 +6,13 @@
 
 namespace IzEngine
 {
-	static ID3DXConstantTable* CompileShader(const std::string& src, const std::string& target, IUnknown** shader)
+	static ID3DXConstantTable* CompileShader(const File& file, const std::string& target, IUnknown** shader)
 	{
 		ID3DBlob* bytecode = nullptr;
 		ID3DBlob* errors = nullptr;
 		ID3DXConstantTable* constants = nullptr;
+
+		std::string src = std::string(file.Data.begin(), file.Data.end());
 
 		HRESULT hr = D3DCompile(src.c_str(), src.size(), nullptr, nullptr, nullptr, "main", target.c_str(),
 			D3DCOMPILE_ENABLE_STRICTNESS, 0, &bytecode, &errors);
@@ -42,10 +44,10 @@ namespace IzEngine
 		return constants;
 	}
 
-	void DX9Shader::Compile(const std::string& vertexSrc, const std::string& pixelSrc)
+	void DX9Shader::Compile()
 	{
-		VertexConstants = CompileShader(vertexSrc, "vs_3_0", reinterpret_cast<IUnknown**>(&VertexShader));
-		PixelConstants = CompileShader(pixelSrc, "ps_3_0", reinterpret_cast<IUnknown**>(&PixelShader));
+		VertexConstants = CompileShader(Spec.VertexSource, "vs_3_0", reinterpret_cast<IUnknown**>(&VertexShader));
+		PixelConstants = CompileShader(Spec.PixelSource, "ps_3_0", reinterpret_cast<IUnknown**>(&PixelShader));
 	}
 
 	Ref<Shader> DX9Shader::Create(const ShaderSpecification& spec)
@@ -62,9 +64,8 @@ namespace IzEngine
 		IZ_ASSERT(spec.PixelSource.IsValid(), "Pixel shader source is invalid.");
 
 		Ref<DX9Shader> shader = CreateRef<DX9Shader>();
-		shader->VertexSource = std::string(spec.VertexSource.Data.begin(), spec.VertexSource.Data.end());
-		shader->PixelSource = std::string(spec.PixelSource.Data.begin(), spec.PixelSource.Data.end());
-		shader->Compile(shader->VertexSource, shader->PixelSource);
+		shader->Spec = spec;
+		shader->Compile();
 
 		GPUResource::RegisterResource(shader.get());
 		return AssetManager::Add(id, shader);
@@ -122,12 +123,7 @@ namespace IzEngine
 
 	void DX9Shader::OnDeviceReset()
 	{
-		Compile(VertexSource, PixelSource);
-	}
-
-	const std::string& DX9Shader::GetName() const
-	{
-		return Name;
+		Compile();
 	}
 
 	void DX9Shader::SetInt(const std::string& name, int value)

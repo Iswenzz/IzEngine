@@ -19,7 +19,7 @@ namespace IzEngine
 		vec3 Position;
 		vec4 Color;
 		vec2 TexCoord;
-		float TEXCOORD;
+		float TexIndex;
 	};
 
 	struct LineVertex
@@ -90,7 +90,7 @@ namespace IzEngine
 		Data.LineVertexBufferBase = new LineVertex[MaxLineVertices];
 
 		// Black texture
-		Data.TextureSlots[0] = Texture::Default();
+		Data.TextureSlots[0] = AssetManager::Get<Texture>(TEXTURE_WHITE);
 
 		// Unit quad positions — top-left origin
 		Data.QuadVertexPositions[0] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -99,8 +99,8 @@ namespace IzEngine
 		Data.QuadVertexPositions[3] = { 0.0f, 1.0f, 0.0f, 1.0f };
 
 		// Shaders
-		Data.QuadShader = AssetManager::Get<Shader>("Draw2D_Quad");
-		Data.LineShader = AssetManager::Get<Shader>("Draw2D_Line");
+		Data.QuadShader = AssetManager::Get<Shader>(SHADER_QUAD);
+		Data.LineShader = AssetManager::Get<Shader>(SHADER_LINE);
 	}
 
 	void Draw2D::Shutdown()
@@ -214,7 +214,7 @@ namespace IzEngine
 			Data.QuadVertexBufferPtr->Position = transform * Data.QuadVertexPositions[i];
 			Data.QuadVertexBufferPtr->Color = color;
 			Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
-			Data.QuadVertexBufferPtr->TEXCOORD = textureIndex;
+			Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			Data.QuadVertexBufferPtr++;
 		}
 		Data.QuadIndexCount += 6;
@@ -263,7 +263,7 @@ namespace IzEngine
 			Data.QuadVertexBufferPtr->Position = transform * Data.QuadVertexPositions[i];
 			Data.QuadVertexBufferPtr->Color = color;
 			Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
-			Data.QuadVertexBufferPtr->TEXCOORD = textureIndex;
+			Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			Data.QuadVertexBufferPtr++;
 		}
 		Data.QuadIndexCount += 6;

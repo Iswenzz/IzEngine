@@ -2,8 +2,6 @@
 #include "Engine/Core/IO/File.hpp"
 #include "Engine/Renderer/Base/GPUResource.hpp"
 
-#define TEXTURE_BLACK "black"
-
 namespace IzEngine
 {
 	enum class TexturePool
