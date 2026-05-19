@@ -1,10 +1,11 @@
 #pragma once
 #include "Engine/Core/Common.hpp"
 
+#include "Engine/Renderer/Base/Font.hpp"
+#include "Engine/Renderer/Base/Shader.hpp"
+#include "Engine/Renderer/Base/Texture.hpp"
 #include "Engine/Renderer/Camera/Camera.hpp"
-#include "Engine/Renderer/Resources/Font.hpp"
-#include "Engine/Renderer/Resources/Shader.hpp"
-#include "Engine/Renderer/Resources/Texture.hpp"
+
 
 namespace IzEngine
 {

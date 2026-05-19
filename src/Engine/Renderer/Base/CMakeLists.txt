@@ -1,6 +1,8 @@
 target_sources(IzEngine PRIVATE
 	Buffer.hpp
 	Buffer.cpp
+	Font.hpp
+	Font.cpp
 	FrameBuffer.hpp
 	FrameBuffer.cpp
 	GPUResource.hpp
@@ -13,6 +15,10 @@ target_sources(IzEngine PRIVATE
 	Renderer.cpp
 	RendererAPI.hpp
 	RendererAPI.cpp
+	Shader.hpp
+	Shader.cpp
+	Texture.hpp
+	Texture.cpp
 	UniformBuffer.hpp
 	UniformBuffer.cpp
 	VertexArray.hpp

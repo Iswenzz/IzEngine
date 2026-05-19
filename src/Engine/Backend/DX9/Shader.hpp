@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.hpp"
 
-#include "Engine/Renderer/Resources/Shader.hpp"
+#include "Engine/Renderer/Base/Shader.hpp"
 
 namespace IzEngine
 {

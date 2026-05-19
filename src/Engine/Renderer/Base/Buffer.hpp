@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Core/Common.hpp"
 
+#include "Engine/Renderer/Base/GPUResource.hpp"
+
 namespace IzEngine
 {
 	enum class ShaderDataType
@@ -55,13 +57,14 @@ namespace IzEngine
 		uint32_t Stride = 0;
 	};
 
-	class VertexBuffer
+	class VertexBuffer : public GPUResource
 	{
 	public:
 		virtual ~VertexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+		virtual void Release() = 0;
 
 		virtual void SetData(const void* data, uint32_t size) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
@@ -71,13 +74,15 @@ namespace IzEngine
 		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
-	class IndexBuffer
+	class IndexBuffer : public GPUResource
 	{
 	public:
 		virtual ~IndexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+		virtual void Release() = 0;
+
 		virtual uint32_t GetCount() const = 0;
 
 		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);

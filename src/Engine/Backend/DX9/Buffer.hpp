@@ -14,6 +14,9 @@ namespace IzEngine
 
 		void Bind() const override;
 		void Unbind() const override;
+		void Release() override;
+		void OnBeforeReset() override;
+		void OnAfterReset() override;
 
 		void SetData(const void* data, uint32_t size) override;
 		const BufferLayout& GetLayout() const override;
@@ -33,10 +36,15 @@ namespace IzEngine
 
 		void Bind() const override;
 		void Unbind() const override;
+		void Release() override;
+		void OnBeforeReset() override;
+		void OnAfterReset() override;
+
 		uint32_t GetCount() const override;
 
 	private:
 		IDirect3DIndexBuffer9* IndexBuffer = nullptr;
+		std::vector<uint32_t> Indices;
 		uint32_t Count = 0;
 	};
 }

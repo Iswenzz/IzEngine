@@ -9,6 +9,8 @@ namespace IzEngine
 
 		DX9GraphicsContext::Device->CreateVertexBuffer(size, D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT,
 			&VertexBuffer, nullptr);
+
+		GPUResource::RegisterResource(this);
 	}
 
 	DX9VertexBuffer::DX9VertexBuffer(float* vertices, uint32_t size) : Size(size)
@@ -22,15 +24,14 @@ namespace IzEngine
 		VertexBuffer->Lock(0, size, &data, 0);
 		memcpy(data, vertices, size);
 		VertexBuffer->Unlock();
+
+		GPUResource::RegisterResource(this);
 	}
 
 	DX9VertexBuffer::~DX9VertexBuffer()
 	{
-		if (VertexBuffer)
-		{
-			VertexBuffer->Release();
-			VertexBuffer = nullptr;
-		}
+		GPUResource::UnregisterResource(this);
+		Release();
 	}
 
 	void DX9VertexBuffer::Bind() const
@@ -42,6 +43,26 @@ namespace IzEngine
 	void DX9VertexBuffer::Unbind() const
 	{
 		DX9GraphicsContext::Device->SetStreamSource(0, nullptr, 0, 0);
+	}
+
+	void DX9VertexBuffer::Release()
+	{
+		if (VertexBuffer)
+		{
+			VertexBuffer->Release();
+			VertexBuffer = nullptr;
+		}
+	}
+
+	void DX9VertexBuffer::OnBeforeReset()
+	{
+		Release();
+	}
+
+	void DX9VertexBuffer::OnAfterReset()
+	{
+		DX9GraphicsContext::Device->CreateVertexBuffer(Size, D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT,
+			&VertexBuffer, nullptr);
 	}
 
 	void DX9VertexBuffer::SetData(const void* data, uint32_t size)
@@ -76,15 +97,15 @@ namespace IzEngine
 		IndexBuffer->Lock(0, count * sizeof(uint32_t), &data, 0);
 		memcpy(data, indices, count * sizeof(uint32_t));
 		IndexBuffer->Unlock();
+
+		Indices.assign(indices, indices + count);
+		GPUResource::RegisterResource(this);
 	}
 
 	DX9IndexBuffer::~DX9IndexBuffer()
 	{
-		if (IndexBuffer)
-		{
-			IndexBuffer->Release();
-			IndexBuffer = nullptr;
-		}
+		GPUResource::UnregisterResource(this);
+		Release();
 	}
 
 	void DX9IndexBuffer::Bind() const
@@ -96,6 +117,31 @@ namespace IzEngine
 	void DX9IndexBuffer::Unbind() const
 	{
 		DX9GraphicsContext::Device->SetIndices(nullptr);
+	}
+
+	void DX9IndexBuffer::Release()
+	{
+		if (IndexBuffer)
+		{
+			IndexBuffer->Release();
+			IndexBuffer = nullptr;
+		}
+	}
+
+	void DX9IndexBuffer::OnBeforeReset()
+	{
+		Release();
+	}
+
+	void DX9IndexBuffer::OnAfterReset()
+	{
+		DX9GraphicsContext::Device->CreateIndexBuffer(Count * sizeof(uint32_t), D3DUSAGE_WRITEONLY, D3DFMT_INDEX32,
+			D3DPOOL_DEFAULT, &IndexBuffer, nullptr);
+
+		void* data = nullptr;
+		IndexBuffer->Lock(0, Count * sizeof(uint32_t), &data, 0);
+		memcpy(data, Indices.data(), Count * sizeof(uint32_t));
+		IndexBuffer->Unlock();
 	}
 
 	uint32_t DX9IndexBuffer::GetCount() const

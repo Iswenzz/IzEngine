@@ -2,10 +2,10 @@
 #include "Plugin.hpp"
 
 #include "Engine/Core/IO/VFS.hpp"
+#include "Engine/Renderer/Base/Font.hpp"
 #include "Engine/Renderer/Base/RendererAPI.hpp"
-#include "Engine/Renderer/Resources/Font.hpp"
-#include "Engine/Renderer/Resources/Shader.hpp"
-#include "Engine/Renderer/Resources/Texture.hpp"
+#include "Engine/Renderer/Base/Shader.hpp"
+#include "Engine/Renderer/Base/Texture.hpp"
 
 namespace IzEngine
 {
