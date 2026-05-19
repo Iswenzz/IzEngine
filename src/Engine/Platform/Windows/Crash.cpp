@@ -21,6 +21,7 @@ namespace IzEngine
 
 		StackTrace(ex);
 		MiniDump(ex);
+		exit(-1);
 	}
 
 	void Crash::MiniDump(void *exception)
