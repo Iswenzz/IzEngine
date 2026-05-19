@@ -84,6 +84,10 @@ namespace IzEngine
 			Keyboard::Process(msg, lParam);
 			break;
 
+		case WM_MOUSEMOVE:
+			Mouse::Process(msg, lParam);
+			break;
+
 		case WM_CHAR:
 			Keyboard::Process(msg, wParam);
 			break;
@@ -117,7 +121,7 @@ namespace IzEngine
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
-	void Window::Frame()
+	bool Window::Frame()
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(Handle);
 
@@ -128,6 +132,7 @@ namespace IzEngine
 			DispatchMessage(&msg);
 		}
 		SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
+		return Open;
 	}
 
 	void Window::BorderlessFullscreen()
