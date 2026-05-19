@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {

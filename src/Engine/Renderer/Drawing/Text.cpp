@@ -1,7 +1,8 @@
 #include "Text.hpp"
 #include "Draw2D.hpp"
 
-#include "ImGUI/Common.hpp"
+#include "Engine/Backend/ImGUI/Common.hpp"
+#include "Engine/Core/System/AssetManager.hpp"
 
 namespace IzEngine
 {
@@ -30,9 +31,10 @@ namespace IzEngine
 	{
 		int fontSize = floor(UI::Size * FontSize * FontRescale);
 
-		Font = Font::Create(font, fontSize);
+		Font = Font::Create({ .ID = font, .Height = fontSize });
 		FontName = font;
-		FontIndex = std::distance(Fonts::Names.begin(), std::ranges::find(Fonts::Names, FontName));
+		FontIndex =
+			std::distance(AssetManager::FontNames.begin(), std::ranges::find(AssetManager::FontNames, FontName));
 	}
 
 	void Text::ComputeAlignment(vec2& position)
@@ -62,7 +64,7 @@ namespace IzEngine
 		if (ImGui::InputFloat("Font Size", &FontSize, 0.1))
 			SetFont(FontName);
 
-		const auto& fonts = Fonts::Names;
+		const auto& fonts = AssetManager::FontNames;
 		if (ImGui::Combo("Font", &FontIndex, fonts))
 			SetFont(fonts[FontIndex]);
 
@@ -77,7 +79,7 @@ namespace IzEngine
 		if (!Font)
 			SetFont(FontName);
 
-		RenderSize = Draw2D::TextSize(Value, Font);
+		RenderSize = Draw2D::GetTextSize(Value, Font);
 		Size = UI::Screen.RealToVirtual * RenderSize;
 
 		vec2 position = Position;
@@ -88,6 +90,6 @@ namespace IzEngine
 		RenderPosition = position;
 
 		ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
-		Draw2D::Text(Value, Font, RenderPosition, RenderSize, Skew, Color);
+		Draw2D::DrawText(Value, Font, vec3(RenderPosition, 0), RenderSize.x, Color, Skew);
 	}
 }

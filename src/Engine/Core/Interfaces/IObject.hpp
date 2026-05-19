@@ -1,8 +1,8 @@
 #pragma once
 #include "ISerializable.hpp"
 
-#include "Core/Base/UUID.hpp"
-#include "Core/Communication/Event.hpp"
+#include "Engine/Core/Base/UUID.hpp"
+#include "Engine/Core/Communication/Event.hpp"
 
 namespace IzEngine
 {

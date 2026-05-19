@@ -1,5 +1,5 @@
 #pragma once
-#include <functional>
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {

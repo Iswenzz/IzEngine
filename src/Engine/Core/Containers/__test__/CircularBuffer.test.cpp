@@ -1,6 +1,6 @@
-#include "Core/Tests/Base.hpp"
+#include "Engine/Core/Tests/Base.hpp"
 
-#include "Core/Containers/CircularBuffer.hpp"
+#include "Engine/Core/Containers/CircularBuffer.hpp"
 
 TEST(CircularBuffer, SizeAndOffset)
 {

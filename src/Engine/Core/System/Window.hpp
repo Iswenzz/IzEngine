@@ -1,7 +1,5 @@
 #pragma once
-#include "Core/Common.hpp"
-
-#include <string>
+#include "Engine/Core/Common.hpp"
 
 namespace IzEngine
 {
@@ -21,7 +19,7 @@ namespace IzEngine
 		static void Shutdown();
 
 		static int Update(void* handle, int msg, uintptr_t arg1, uintptr_t arg2);
-		static void Frame();
+		static bool Frame();
 		static void BorderlessFullscreen();
 
 		static int GetStyle();

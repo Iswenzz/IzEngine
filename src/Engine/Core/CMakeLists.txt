@@ -17,5 +17,9 @@ if(BUILD_TESTING)
 	add_subdirectory(Tests)
 endif()
 
-target_precompile_headers(IzEngine PRIVATE Common.hpp)
-target_sources(IzEngine PRIVATE Common.hpp)
+if(BUILD_CEF)
+	add_subdirectory(Browser)
+endif()
+
+target_precompile_headers(IzEngine PRIVATE Base.hpp Common.hpp)
+target_sources(IzEngine PRIVATE Base.hpp Common.hpp Macros.hpp)

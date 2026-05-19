@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
+#include "Engine/Core/Base.hpp"
 
 namespace IzEngine
 {
@@ -10,5 +10,8 @@ namespace IzEngine
 		std::vector<uint8_t> Data;
 
 		bool IsValid() const;
+
+		static std::string ReadText(const std::filesystem::path& path);
+		static File Read(const std::filesystem::path& path);
 	};
 }

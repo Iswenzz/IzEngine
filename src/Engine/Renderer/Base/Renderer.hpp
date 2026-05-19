@@ -1,5 +1,6 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Engine/Core/Common.hpp"
+#include "Engine/Renderer/Camera/Camera.hpp"
 
 namespace IzEngine
 {
@@ -7,13 +8,11 @@ namespace IzEngine
 	{
 	public:
 		static inline bool Active = false;
+		static inline Camera Camera2D;
+		static inline Camera Camera3D;
 
-		static void Initialize();
-		static void InitializeAssets();
+		static void Initialize(RendererBackend api);
 		static void Shutdown();
-		static void ShutdownAssets();
-		static void DeviceLost();
-		static void DeviceReset();
 
 		static void Resize(const vec2& size);
 		static void Begin();

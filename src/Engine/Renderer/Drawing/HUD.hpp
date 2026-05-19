@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Common.hpp"
+#include "Engine/Core/Common.hpp"
 
-#include "Renderer/Resources/Texture.hpp"
+#include "Engine/Renderer/Base/Texture.hpp"
 
 namespace IzEngine
 {

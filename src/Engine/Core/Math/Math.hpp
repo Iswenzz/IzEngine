@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Base.hpp"
-
-#include "Core/Interfaces/ISerializable.hpp"
+#include "Engine/Core/Interfaces/ISerializable.hpp"
 
 #define GLM_FORCE_CTOR_INIT
 #define GLM_FORCE_XYZW_ONLY
@@ -11,6 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/norm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 using vec2 = glm::vec2;
 using vec3 = glm::vec3;
