@@ -6,6 +6,8 @@ add_subdirectory(Platform)
 add_subdirectory(Renderer)
 
 # Build
+target_precompile_headers(IzEngine PRIVATE Common.hpp)
+target_sources(IzEngine PRIVATE Common.hpp)
 target_include_directories(IzEngine PUBLIC ..)
 
 target_compile_definitions(IzEngine PUBLIC
