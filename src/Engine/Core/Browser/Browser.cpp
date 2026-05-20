@@ -215,6 +215,7 @@ namespace IzEngine
 			}
 		}
 		std::scoped_lock lock(instance->TextureMutex);
+		Draw2D::DrawQuad(vec3(position, 0), size, vec4(0, 0, 0, 1));
 		Draw2D::DrawQuad(vec3(position, 0), size, 0, instance->Texture, vec4(1));
 	}
 
