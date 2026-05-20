@@ -98,11 +98,9 @@ namespace IzEngine
 
 		case WM_SIZE:
 			Size = vec2(LOWORD(lParam), HIWORD(lParam));
-			if (Renderer::Active)
-			{
+			IsMinimized = wParam == SIZE_MINIMIZED;
+			if (Renderer::Active && !IsMinimized)
 				Renderer::Resize(Size);
-				Renderer::Frame();
-			}
 			break;
 
 		case WM_CLOSE:
