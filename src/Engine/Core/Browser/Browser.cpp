@@ -48,6 +48,7 @@ namespace IzEngine
 
 		Instances.clear();
 		CefShutdown();
+		Kill();
 		Active = false;
 	}
 

@@ -8,7 +8,7 @@ namespace IzEngine
 	void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 		const void* buffer, int width, int height)
 	{
-		if (!buffer || dirtyRects.empty() || !Instance)
+		if (!Renderer::Active || !Instance || !buffer || dirtyRects.empty())
 			return;
 
 		std::scoped_lock lock(Instance->TextureMutex);
@@ -38,6 +38,18 @@ namespace IzEngine
 				dst += lockedRect.Pitch;
 			}
 			dxTexture->Data->UnlockRect(0);
+		}
+	}
+
+	void Browser::Kill()
+	{
+		auto processes = System::MapProcesses();
+		HANDLE process = OpenProcess(PROCESS_TERMINATE, FALSE, processes["CEF.exe"]);
+
+		if (process)
+		{
+			TerminateProcess(process, 0);
+			CloseHandle(process);
 		}
 	}
 }
