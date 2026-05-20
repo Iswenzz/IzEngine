@@ -4,12 +4,13 @@
 
 namespace IzEngine
 {
-	void Browser::Initialize()
+	void Browser::Initialize(bool multithreaded)
 	{
 		IZ_ASSERT(!Active, "Browser already initialized.");
 
 		CefMainArgs args(GetModuleHandle(nullptr));
 		App = new BrowserApp();
+		Multithreaded = multithreaded;
 		int code = CefExecuteProcess(args, App, nullptr);
 		if (code >= 0)
 			return;
@@ -21,8 +22,8 @@ namespace IzEngine
 		const auto pathSubProcess = Environment::Path(Directory::Bin) / "CEF.exe";
 
 		CefSettings settings;
-		settings.log_severity = LOGSEVERITY_ERROR;
-		settings.multi_threaded_message_loop = true;
+		settings.log_severity = LOGSEVERITY_FATAL;
+		settings.multi_threaded_message_loop = Multithreaded;
 		settings.windowless_rendering_enabled = true;
 		settings.no_sandbox = true;
 		CefString(&settings.resources_dir_path).FromString(pathResources.string());
@@ -35,7 +36,6 @@ namespace IzEngine
 		if (!CefInitialize(args, settings, App, nullptr))
 			return;
 
-		Client = new BrowserClient();
 		Active = true;
 	}
 
@@ -43,15 +43,53 @@ namespace IzEngine
 	{
 		IZ_ASSERT(Active, "Browser already shutdown.");
 
-		Stop();
+		for (auto& instance : Instances)
+			Stop(instance);
+
+		Instances.clear();
 		CefShutdown();
 		Active = false;
 	}
 
-	void Browser::Start()
+	Ref<BrowserInstance> Browser::Add(const std::string& id, const std::string& url, const vec2& position,
+		const vec2& size, const vec2& frameSize)
 	{
-		if (!Active || Open)
+		IZ_ASSERT(!Get(id), "Browser instance already exists");
+
+		auto instance = CreateRef<BrowserInstance>();
+		instance->ID = id;
+		instance->URL = url;
+		instance->Position = position;
+		instance->Size = size;
+		instance->FrameSize = frameSize;
+
+		Instances.push_back(instance);
+		Start(instance);
+		return instance;
+	}
+
+	void Browser::Remove(const std::string& id)
+	{
+		auto it = std::ranges::find_if(Instances, [&](const Ref<BrowserInstance>& i) { return i->ID == id; });
+		if (it == Instances.end())
 			return;
+
+		Stop(*it);
+		Instances.erase(it);
+	}
+
+	Ref<BrowserInstance> Browser::Get(const std::string& id)
+	{
+		auto it = std::ranges::find_if(Instances, [&](const Ref<BrowserInstance>& i) { return i->ID == id; });
+		return it != Instances.end() ? *it : nullptr;
+	}
+
+	void Browser::Start(const Ref<BrowserInstance>& instance)
+	{
+		if (!Active || instance->Open)
+			return;
+
+		instance->Client = new BrowserClient(instance);
 
 		CefBrowserSettings browserSettings;
 		browserSettings.windowless_frame_rate = 120;
@@ -59,45 +97,60 @@ namespace IzEngine
 		CefWindowInfo windowInfo;
 		windowInfo.SetAsWindowless(nullptr);
 
-		CefBrowserHost::CreateBrowser(windowInfo, Client, "about:blank", browserSettings, nullptr, nullptr);
+		CefBrowserHost::CreateBrowser(windowInfo, instance->Client, instance->URL, browserSettings, nullptr, nullptr);
 
-		auto start = std::chrono::steady_clock::now();
-		while (!Client->IsOpened())
+		if (Multithreaded)
 		{
-			auto elapsed = std::chrono::steady_clock::now() - start;
-			if (elapsed > std::chrono::seconds(3))
-				return;
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			auto start = std::chrono::steady_clock::now();
+			while (!instance->Client->IsOpened())
+			{
+				auto elapsed = std::chrono::steady_clock::now() - start;
+				if (elapsed > std::chrono::seconds(3))
+					return;
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			}
 		}
-		Open = true;
+		else
+		{
+			CefDoMessageLoopWork();
+		}
+		instance->Open = true;
 	}
 
-	void Browser::Stop()
+	void Browser::Stop(const Ref<BrowserInstance>& instance)
 	{
-		if (!Active || !Open)
+		if (!Active || !instance->Open)
 			return;
 
-		Instance->GetHost()->CloseBrowser(true);
-		Instance = nullptr;
+		instance->Browser->GetHost()->CloseBrowser(true);
+		instance->Browser = nullptr;
+		instance->Open = false;
 
-		auto start = std::chrono::steady_clock::now();
-		while (!Client->IsClosed())
+		if (Multithreaded)
 		{
-			auto elapsed = std::chrono::steady_clock::now() - start;
-			if (elapsed > std::chrono::seconds(3))
-				break;
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			auto start = std::chrono::steady_clock::now();
+			while (!instance->Client->IsClosed())
+			{
+				auto elapsed = std::chrono::steady_clock::now() - start;
+				if (elapsed > std::chrono::seconds(3))
+					break;
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			}
 		}
-		Open = false;
+		else
+		{
+			CefDoMessageLoopWork();
+		}
 	}
 
-	void Browser::Frame()
+	void Browser::Frame(const Ref<BrowserInstance>& instance)
 	{
-		auto host = Instance->GetHost();
-		vec2 position = MenuPosition;
-		vec2 size = MenuSize;
+		if (!instance->Open || !instance->Show || !instance->Browser)
+			return;
+
+		auto host = instance->Browser->GetHost();
+		vec2 position = instance->Position;
+		vec2 size = instance->Size;
 		UI::Screen.Apply(position, size, Horizontal::Left, Vertical::Top);
 
 		uint32_t modifiers = 0;
@@ -112,8 +165,8 @@ namespace IzEngine
 		if (Math::Contains(relative, size))
 		{
 			CefMouseEvent mouseEvent;
-			mouseEvent.x = static_cast<int>(relative.x / size.x * FrameSize.x);
-			mouseEvent.y = static_cast<int>(relative.y / size.y * FrameSize.y);
+			mouseEvent.x = static_cast<int>(relative.x / size.x * instance->FrameSize.x);
+			mouseEvent.y = static_cast<int>(relative.y / size.y * instance->FrameSize.y);
 			mouseEvent.modifiers = modifiers;
 
 			host->SendMouseMoveEvent(mouseEvent, false);
@@ -129,6 +182,7 @@ namespace IzEngine
 			if (Mouse::ScrollDelta)
 				host->SendMouseWheelEvent(mouseEvent, 0, Mouse::ScrollDelta * 120);
 		}
+
 		for (auto& [id, info] : Input::Inputs)
 		{
 			if (id == Button_Left || id == Button_Right || id == Button_Middle)
@@ -160,13 +214,23 @@ namespace IzEngine
 				host->SendKeyEvent(keyEvent);
 			}
 		}
-		std::scoped_lock lock(TextureMutex);
-		Draw2D::DrawQuad(vec3(position, 0), size, 0, Texture, vec4(1));
+		std::scoped_lock lock(instance->TextureMutex);
+		Draw2D::DrawQuad(vec3(position, 0), size, 0, instance->Texture, vec4(1));
 	}
 
-	void Browser::SetURL(const std::string& url)
+	void Browser::Frame()
 	{
-		Instance->GetMainFrame()->LoadURL(url);
+		if (!Multithreaded)
+			CefDoMessageLoopWork();
+
+		for (auto& instance : Instances)
+			Frame(instance);
+	}
+
+	void Browser::SetURL(const Ref<BrowserInstance>& instance, const std::string& url)
+	{
+		instance->URL = url;
+		instance->Browser->GetMainFrame()->LoadURL(url);
 	}
 
 	void BrowserApp::OnBeforeCommandLineProcessing(const CefString& processType, CefRefPtr<CefCommandLine> commandLine)
@@ -182,7 +246,6 @@ namespace IzEngine
 	{
 		return this;
 	}
-
 	CefRefPtr<CefLifeSpanHandler> BrowserClient::GetLifeSpanHandler()
 	{
 		return this;
@@ -190,12 +253,12 @@ namespace IzEngine
 
 	void BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 	{
-		rect = CefRect(0, 0, Browser::FrameSize.x, Browser::FrameSize.y);
+		rect = CefRect(0, 0, Instance->FrameSize.x, Instance->FrameSize.y);
 	}
 
 	void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 	{
-		Browser::Instance = browser;
+		Instance->Browser = browser;
 		Opened.store(true);
 		Closed.store(false);
 	}

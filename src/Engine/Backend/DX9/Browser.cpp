@@ -8,22 +8,25 @@ namespace IzEngine
 	void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 		const void* buffer, int width, int height)
 	{
-		if (!buffer || dirtyRects.empty())
+		if (!buffer || dirtyRects.empty() || !Instance)
 			return;
 
-		std::scoped_lock lock(Browser::TextureMutex);
+		std::scoped_lock lock(Instance->TextureMutex);
 
-		Browser::Texture = Texture::Create({ .ID = "browser",
-			.Size = Browser::FrameSize,
+		Instance->Texture = Texture::Create({ .ID = "browser_" + Instance->ID,
+			.Size = Instance->FrameSize,
 			.Usage = TextureUsage::Dynamic,
 			.Pool = TexturePool::Default });
 
-		IDirect3DTexture9* texture = std::static_pointer_cast<DX9Texture>(Browser::Texture)->Data;
+		auto dxTexture = std::static_pointer_cast<DX9Texture>(Instance->Texture);
+		if (!dxTexture->Data)
+			return;
+
 		for (const auto& dirtyRect : dirtyRects)
 		{
 			D3DLOCKED_RECT lockedRect;
 			RECT rect = { dirtyRect.x, dirtyRect.y, dirtyRect.x + dirtyRect.width, dirtyRect.y + dirtyRect.height };
-			texture->LockRect(0, &lockedRect, &rect, 0);
+			dxTexture->Data->LockRect(0, &lockedRect, &rect, 0);
 
 			const uint8_t* src = reinterpret_cast<const uint8_t*>(buffer) + (dirtyRect.y * width + dirtyRect.x) * 4;
 			uint8_t* dst = reinterpret_cast<uint8_t*>(lockedRect.pBits);
@@ -34,7 +37,7 @@ namespace IzEngine
 				src += width * 4;
 				dst += lockedRect.Pitch;
 			}
-			texture->UnlockRect(0);
+			dxTexture->Data->UnlockRect(0);
 		}
 	}
 }
