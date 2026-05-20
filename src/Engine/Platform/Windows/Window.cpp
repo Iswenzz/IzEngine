@@ -105,6 +105,7 @@ namespace IzEngine
 
 		case WM_CLOSE:
 			Open = false;
+			UI::Open = false;
 			DestroyWindow(hwnd);
 			break;
 
