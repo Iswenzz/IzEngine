@@ -124,7 +124,6 @@ namespace IzEngine
 
 		instance->Browser->GetHost()->CloseBrowser(true);
 		instance->Browser = nullptr;
-		instance->Open = false;
 
 		if (Multithreaded)
 		{
@@ -141,6 +140,7 @@ namespace IzEngine
 		{
 			CefDoMessageLoopWork();
 		}
+		instance->Open = false;
 	}
 
 	void Browser::Frame(const Ref<BrowserInstance>& instance)
