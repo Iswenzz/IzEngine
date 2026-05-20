@@ -1,7 +1,5 @@
 #include "Engine/Common.hpp"
 
-#include "Engine/Core/Browser/Browser.hpp"
-
 void Application::Start()
 {
 	Crash::Setup();
