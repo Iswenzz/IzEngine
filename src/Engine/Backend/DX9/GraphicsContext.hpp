@@ -30,6 +30,8 @@ namespace IzEngine
 		static inline Scope<DX9GraphicsContext> Instance = nullptr;
 		static inline IDirect3D9Ex* D3DEX = nullptr;
 		static inline IDirect3DDevice9Ex* DeviceEx = nullptr;
+		static inline bool PendingResize;
+		static inline vec2 PendingSize;
 		HWND Window = nullptr;
 	};
 }

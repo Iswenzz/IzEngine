@@ -92,9 +92,11 @@ namespace IzEngine
 
 	void DX9GraphicsContext::Resize(const vec2& size)
 	{
-		PresentParameters.BackBufferWidth = static_cast<UINT>(size.x);
-		PresentParameters.BackBufferHeight = static_cast<UINT>(size.y);
-		Reset();
+		if (Swapped)
+			return;
+
+		PendingResize = true;
+		PendingSize = size;
 	}
 
 	void DX9GraphicsContext::Swap()
@@ -103,9 +105,16 @@ namespace IzEngine
 			return;
 
 		Device->EndScene();
-
 		HRESULT hr = Device->Present(nullptr, nullptr, nullptr, nullptr);
-		if (hr == D3DERR_DEVICELOST)
+
+		if (PendingResize)
+		{
+			PendingResize = false;
+			PresentParameters.BackBufferWidth = static_cast<UINT>(PendingSize.x);
+			PresentParameters.BackBufferHeight = static_cast<UINT>(PendingSize.y);
+			Reset();
+		}
+		else if (hr == D3DERR_DEVICELOST)
 			Reset();
 	}
 
