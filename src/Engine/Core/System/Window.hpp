@@ -9,7 +9,7 @@ namespace IzEngine
 		static inline void* Handle = nullptr;
 		static inline std::string Name;
 		static inline vec2 Position;
-		static inline vec2 Size = { 1280, 720 };
+		static inline vec2 Size = { 1920, 1080 };
 
 		static inline bool Open = false;
 		static inline bool IsCapture = true;

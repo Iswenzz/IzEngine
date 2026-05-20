@@ -12,9 +12,13 @@ namespace IzEngine
 			return;
 
 		std::scoped_lock lock(Browser::TextureMutex);
-		Browser::Texture = Texture::Create({ .ID = "browser", .Size = Browser::Size });
-		IDirect3DTexture9* texture = std::static_pointer_cast<DX9Texture>(Browser::Texture)->Data;
 
+		Browser::Texture = Texture::Create({ .ID = "browser",
+			.Size = Browser::FrameSize,
+			.Usage = TextureUsage::Dynamic,
+			.Pool = TexturePool::Default });
+
+		IDirect3DTexture9* texture = std::static_pointer_cast<DX9Texture>(Browser::Texture)->Data;
 		for (const auto& dirtyRect : dirtyRects)
 		{
 			D3DLOCKED_RECT lockedRect;

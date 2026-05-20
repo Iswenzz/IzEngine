@@ -47,7 +47,9 @@ namespace IzEngine
 		static inline CefRefPtr<BrowserClient> Client;
 		static inline Ref<Texture> Texture = nullptr;
 		static inline std::mutex TextureMutex;
-		static inline vec2 Size = { 1920, 1080 };
+		static inline vec2 FrameSize = { 1920, 1080 };
+		static inline vec2 MenuPosition = { 20, 20 };
+		static inline vec2 MenuSize = { 500, 300 };
 		static inline bool Active = false;
 		static inline bool Open = false;
 
@@ -56,6 +58,7 @@ namespace IzEngine
 
 		static void Start();
 		static void Stop();
+		static void Frame();
 
 		static void SetURL(const std::string& url);
 	};

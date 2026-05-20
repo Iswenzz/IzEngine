@@ -1,5 +1,7 @@
 #include "Engine/Common.hpp"
 
+#include "Engine/Core/Browser/Browser.hpp"
+
 void Application::Start()
 {
 	Crash::Setup();
@@ -12,11 +14,9 @@ void Application::Start()
 	UI::OpenMenu();
 	UI::OpenWindow("Memory");
 
-	while (Window::Open)
-	{
-		Window::Frame();
+	while (Window::Frame())
 		Renderer::Frame();
-	}
+
 	Shutdown();
 }
 

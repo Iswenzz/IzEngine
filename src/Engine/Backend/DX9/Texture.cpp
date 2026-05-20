@@ -108,8 +108,10 @@ namespace IzEngine
 
 	void DX9Texture::OnBeforeReset()
 	{
-		if (Spec.Pool == TexturePool::Default)
-			Release();
+		if (Spec.Pool != TexturePool::Default)
+			return;
+
+		Release();
 	}
 
 	void DX9Texture::OnAfterReset()

@@ -93,6 +93,77 @@ namespace IzEngine
 		Open = false;
 	}
 
+	void Browser::Frame()
+	{
+		auto host = Instance->GetHost();
+		vec2 position = MenuPosition;
+		vec2 size = MenuSize;
+		UI::Screen.Apply(position, size, Horizontal::Left, Vertical::Top);
+
+		uint32_t modifiers = 0;
+		if (Input::IsDown(Key_Ctrl) || Input::IsDown(Key_RightCtrl))
+			modifiers |= EVENTFLAG_CONTROL_DOWN;
+		if (Input::IsDown(Key_Shift) || Input::IsDown(Key_RightShift))
+			modifiers |= EVENTFLAG_SHIFT_DOWN;
+		if (Input::IsDown(Key_Alt) || Input::IsDown(Key_RightAlt))
+			modifiers |= EVENTFLAG_ALT_DOWN;
+
+		vec2 relative = Mouse::Position - position;
+		if (Math::Contains(relative, size))
+		{
+			CefMouseEvent mouseEvent;
+			mouseEvent.x = static_cast<int>(relative.x / size.x * FrameSize.x);
+			mouseEvent.y = static_cast<int>(relative.y / size.y * FrameSize.y);
+			mouseEvent.modifiers = modifiers;
+
+			host->SendMouseMoveEvent(mouseEvent, false);
+
+			if (Input::IsDown(Button_Left))
+				host->SendMouseClickEvent(mouseEvent, MBT_LEFT, false, 1);
+			if (Input::IsUp(Button_Left))
+				host->SendMouseClickEvent(mouseEvent, MBT_LEFT, true, 1);
+			if (Input::IsDown(Button_Right))
+				host->SendMouseClickEvent(mouseEvent, MBT_RIGHT, false, 1);
+			if (Input::IsUp(Button_Right))
+				host->SendMouseClickEvent(mouseEvent, MBT_RIGHT, true, 1);
+			if (Mouse::ScrollDelta)
+				host->SendMouseWheelEvent(mouseEvent, 0, Mouse::ScrollDelta * 120);
+		}
+		for (auto& [id, info] : Input::Inputs)
+		{
+			if (id == Button_Left || id == Button_Right || id == Button_Middle)
+				continue;
+			if (!Input::IsDown(id) && !Input::IsUp(id))
+				continue;
+
+			CefKeyEvent keyEvent;
+			keyEvent.modifiers = modifiers;
+			keyEvent.windows_key_code = info.OS;
+			keyEvent.native_key_code = info.OS;
+
+			if (Input::IsPressed(id))
+			{
+				keyEvent.type = KEYEVENT_RAWKEYDOWN;
+				host->SendKeyEvent(keyEvent);
+
+				if (Keyboard::Char)
+				{
+					keyEvent.type = KEYEVENT_CHAR;
+					keyEvent.windows_key_code = Keyboard::Char;
+					keyEvent.character = Keyboard::Char;
+					host->SendKeyEvent(keyEvent);
+				}
+			}
+			if (Input::IsUp(id))
+			{
+				keyEvent.type = KEYEVENT_KEYUP;
+				host->SendKeyEvent(keyEvent);
+			}
+		}
+		std::scoped_lock lock(TextureMutex);
+		Draw2D::DrawQuad(vec3(position, 0), size, 0, Texture, vec4(1));
+	}
+
 	void Browser::SetURL(const std::string& url)
 	{
 		Instance->GetMainFrame()->LoadURL(url);
@@ -119,7 +190,7 @@ namespace IzEngine
 
 	void BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
 	{
-		rect = CefRect(0, 0, Browser::Size.x, Browser::Size.y);
+		rect = CefRect(0, 0, Browser::FrameSize.x, Browser::FrameSize.y);
 	}
 
 	void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)
