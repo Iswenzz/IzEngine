@@ -40,16 +40,4 @@ namespace IzEngine
 			dxTexture->Data->UnlockRect(0);
 		}
 	}
-
-	void Browser::Kill()
-	{
-		auto processes = System::MapProcesses();
-		HANDLE process = OpenProcess(PROCESS_TERMINATE, FALSE, processes["CEF.exe"]);
-
-		if (process)
-		{
-			TerminateProcess(process, 0);
-			CloseHandle(process);
-		}
-	}
 }

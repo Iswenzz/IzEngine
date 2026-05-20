@@ -69,7 +69,6 @@ namespace IzEngine
 
 		static void Initialize(bool multithreaded);
 		static void Shutdown();
-		static void Kill();
 
 		static Ref<BrowserInstance> Add(const std::string& id, const std::string& url, const vec2& position,
 			const vec2& size, const vec2& frameSize = { 1920.0f, 1080.0f });
