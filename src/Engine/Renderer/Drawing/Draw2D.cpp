@@ -110,6 +110,21 @@ namespace IzEngine
 
 		Data.QuadVertexBufferBase = nullptr;
 		Data.LineVertexBufferBase = nullptr;
+
+		Data.QuadVertexArray = nullptr;
+		Data.QuadVertexBuffer = nullptr;
+		Data.QuadShader = nullptr;
+
+		Data.LineVertexArray = nullptr;
+		Data.LineVertexBuffer = nullptr;
+		Data.LineShader = nullptr;
+
+		for (auto& slot : Data.TextureSlots)
+			slot = nullptr;
+
+		Data.QuadIndexCount = 0;
+		Data.LineVertexCount = 0;
+		Data.TextureSlotIndex = 1;
 	}
 
 	void Draw2D::Begin(const Camera& camera)
