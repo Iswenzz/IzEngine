@@ -5,11 +5,9 @@
 
 namespace IzEngine
 {
-	DX9GraphicsContext::DX9GraphicsContext(void* window) : Window(reinterpret_cast<HWND>(window)) { }
-
 	void DX9GraphicsContext::Initialize()
 	{
-		IZ_ASSERT(Window, "DX9GraphicsContext needs a valid window handle.");
+		IZ_ASSERT(Window::Handle, "DX9GraphicsContext needs a valid window handle.");
 
 		Direct3DCreate9Ex(D3D_SDK_VERSION, &D3DEX);
 		D3DEX->QueryInterface(__uuidof(IDirect3D9), reinterpret_cast<void**>(&D3D));
@@ -22,7 +20,7 @@ namespace IzEngine
 		PresentParameters.BackBufferWidth = Window::Size.x;
 		PresentParameters.BackBufferHeight = Window::Size.y;
 
-		D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Window,
+		D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(Window::Handle),
 			D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &PresentParameters, nullptr, &DeviceEx);
 		DeviceEx->QueryInterface(__uuidof(IDirect3DDevice9), reinterpret_cast<void**>(&Device));
 
@@ -36,8 +34,6 @@ namespace IzEngine
 
 	void DX9GraphicsContext::Shutdown()
 	{
-		ReleaseStateBlock();
-
 		if (Device)
 		{
 			Device->Release();
@@ -60,9 +56,9 @@ namespace IzEngine
 		}
 	}
 
-	void DX9GraphicsContext::Setup(void* window)
+	void DX9GraphicsContext::Setup()
 	{
-		Instance = CreateScope<DX9GraphicsContext>(window);
+		Instance = CreateScope<DX9GraphicsContext>();
 		Instance->Initialize();
 	}
 
@@ -81,7 +77,6 @@ namespace IzEngine
 		if (hr != D3D_OK && hr != D3DERR_DEVICENOTRESET)
 			return;
 
-		ReleaseStateBlock();
 		GPUResource::NotifyBeforeReset();
 		ImGui_ImplAPI_InvalidateDeviceObjects();
 		hr = Device->Reset(&PresentParameters);
@@ -135,26 +130,11 @@ namespace IzEngine
 
 	void DX9GraphicsContext::SaveState()
 	{
-		if (!Device)
-			return;
-		if (!StateBlock)
-			Device->CreateStateBlock(D3DSBT_ALL, &StateBlock);
-		if (StateBlock)
-			StateBlock->Capture();
+		StateBlock.Capture();
 	}
 
 	void DX9GraphicsContext::RestoreState()
 	{
-		if (StateBlock)
-			StateBlock->Apply();
-	}
-
-	void DX9GraphicsContext::ReleaseStateBlock()
-	{
-		if (StateBlock)
-		{
-			StateBlock->Release();
-			StateBlock = nullptr;
-		}
+		StateBlock.Apply();
 	}
 }

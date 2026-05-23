@@ -1,5 +1,6 @@
 #pragma once
 #include "Base.hpp"
+#include "StateBlock.hpp"
 
 #include "Engine/Renderer/Base/GraphicsContext.hpp"
 
@@ -13,13 +14,13 @@ namespace IzEngine
 		static inline D3DPRESENT_PARAMETERS PresentParameters = { 0 };
 		static inline bool Swapped = false;
 
-		DX9GraphicsContext(void* window);
+		DX9GraphicsContext() = default;
 		~DX9GraphicsContext() override = default;
 
 		void Initialize() override;
 		void Shutdown() override;
 
-		static void Setup(void* window);
+		static void Setup();
 		static void Destroy();
 		static void Reset();
 		static void Swap();
@@ -28,15 +29,13 @@ namespace IzEngine
 
 		static void SaveState();
 		static void RestoreState();
-		static void ReleaseStateBlock();
 
 	private:
 		static inline Scope<DX9GraphicsContext> Instance = nullptr;
 		static inline IDirect3D9Ex* D3DEX = nullptr;
 		static inline IDirect3DDevice9Ex* DeviceEx = nullptr;
-		static inline IDirect3DStateBlock9* StateBlock = nullptr;
+		static inline DX9StateBlock StateBlock;
 		static inline bool PendingResize;
 		static inline vec2 PendingSize;
-		HWND Window = nullptr;
 	};
 }

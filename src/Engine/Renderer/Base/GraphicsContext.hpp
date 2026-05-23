@@ -11,6 +11,6 @@ namespace IzEngine
 		virtual void Initialize() = 0;
 		virtual void Shutdown() = 0;
 
-		static Scope<GraphicsContext> Create(void* window);
+		static Scope<GraphicsContext> Create();
 	};
 }

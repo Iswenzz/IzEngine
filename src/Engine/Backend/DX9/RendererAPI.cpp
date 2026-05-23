@@ -12,7 +12,7 @@ namespace IzEngine
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
 
 		if (!DX9GraphicsContext::Swapped)
-			DX9GraphicsContext::Setup(Window::Handle);
+			DX9GraphicsContext::Setup();
 
 		ImGui_ImplOS_Init(Window::Handle);
 		ImGui_ImplAPI_Init(DX9GraphicsContext::Device);
@@ -29,21 +29,28 @@ namespace IzEngine
 
 	void DX9RendererAPI::Begin()
 	{
-		ImGui_ImplOS_NewFrame();
-		ImGui_ImplAPI_NewFrame();
-
-		if (!DX9GraphicsContext::Swapped)
+		if (DX9GraphicsContext::Swapped)
+		{
+			DX9GraphicsContext::SaveState();
+		}
+		else
 		{
 			DX9GraphicsContext::Device->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_COLORVALUE(0, 0, 0, 1), 1.0f, 0);
 			DX9GraphicsContext::Device->BeginScene();
 		}
+		ImGui_ImplOS_NewFrame();
+		ImGui_ImplAPI_NewFrame();
 	}
 
 	void DX9RendererAPI::End()
 	{
 		ImGui_ImplAPI_RenderDrawData(ImGui::GetDrawData());
 
-		if (!DX9GraphicsContext::Swapped)
+		if (DX9GraphicsContext::Swapped)
+		{
+			DX9GraphicsContext::RestoreState();
+		}
+		else
 		{
 			DX9GraphicsContext::Device->EndScene();
 			DX9GraphicsContext::Swap();

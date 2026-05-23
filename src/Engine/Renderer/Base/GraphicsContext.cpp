@@ -5,12 +5,12 @@
 
 namespace IzEngine
 {
-	Scope<GraphicsContext> GraphicsContext::Create(void* window)
+	Scope<GraphicsContext> GraphicsContext::Create()
 	{
 		switch (RendererAPI::GetAPI())
 		{
 		case RendererBackend::DX9:
-			return CreateScope<DX9GraphicsContext>(window);
+			return CreateScope<DX9GraphicsContext>();
 		}
 		return nullptr;
 	}
