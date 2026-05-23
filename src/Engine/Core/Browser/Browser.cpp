@@ -117,6 +117,27 @@ namespace IzEngine
 		instance->Open = true;
 	}
 
+	void Browser::ReleaseTextures()
+	{
+		for (const auto& instance : Instances)
+		{
+			if (!instance)
+				continue;
+			std::scoped_lock lock(instance->TextureMutex);
+			instance->Texture = nullptr;
+		}
+	}
+
+	std::vector<std::unique_lock<std::mutex>> Browser::LockTextures()
+	{
+		std::vector<std::unique_lock<std::mutex>> locks;
+		locks.reserve(Instances.size());
+		for (const auto& instance : Instances)
+			if (instance)
+				locks.emplace_back(instance->TextureMutex);
+		return locks;
+	}
+
 	void Browser::Stop(const Ref<BrowserInstance>& instance)
 	{
 		if (!Active || !instance->Open)

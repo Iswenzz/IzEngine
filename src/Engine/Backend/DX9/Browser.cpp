@@ -27,7 +27,7 @@ namespace IzEngine
 
 		for (const auto& dirtyRect : dirtyRects)
 		{
-			D3DLOCKED_RECT lockedRect;
+			D3DLOCKED_RECT lockedRect = {};
 			RECT rect = { dirtyRect.x, dirtyRect.y, dirtyRect.x + dirtyRect.width, dirtyRect.y + dirtyRect.height };
 			if (FAILED(dxTexture->Data->LockRect(0, &lockedRect, &rect, 0)) || !lockedRect.pBits)
 				continue;

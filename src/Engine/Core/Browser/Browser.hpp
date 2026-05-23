@@ -81,5 +81,7 @@ namespace IzEngine
 		static void Frame();
 
 		static void SetURL(const Ref<BrowserInstance>& instance, const std::string& url);
+		static void ReleaseTextures();
+		static std::vector<std::unique_lock<std::mutex>> LockTextures();
 	};
 }
