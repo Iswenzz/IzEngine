@@ -18,6 +18,8 @@ target_sources(IzEngine PRIVATE
 	RendererAPI.cpp
 	Shader.hpp
 	Shader.cpp
+	StateBlock.hpp
+	StateBlock.cpp
 	Texture.hpp
 	Texture.cpp
 	UniformBuffer.hpp
