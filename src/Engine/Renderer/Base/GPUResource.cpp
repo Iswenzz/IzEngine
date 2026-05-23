@@ -2,7 +2,10 @@
 
 namespace IzEngine
 {
-	void GPUResource::OnBeforeReset() { }
+	void GPUResource::OnBeforeReset()
+	{
+		Release();
+	}
 
 	void GPUResource::OnAfterReset() { }
 
