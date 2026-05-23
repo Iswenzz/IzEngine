@@ -140,6 +140,7 @@ namespace IzEngine
 		{
 			CefDoMessageLoopWork();
 		}
+		instance->Client = nullptr;
 		instance->Open = false;
 	}
 

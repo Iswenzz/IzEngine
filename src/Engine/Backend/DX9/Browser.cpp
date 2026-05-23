@@ -13,20 +13,24 @@ namespace IzEngine
 
 		std::scoped_lock lock(Instance->TextureMutex);
 
+		if (!Renderer::Active)
+			return;
+
 		Instance->Texture = Texture::Create({ .ID = "browser_" + Instance->ID,
 			.Size = Instance->FrameSize,
 			.Usage = TextureUsage::Dynamic,
 			.Pool = TexturePool::Default });
 
 		auto dxTexture = std::static_pointer_cast<DX9Texture>(Instance->Texture);
-		if (!dxTexture->Data)
+		if (!dxTexture || !dxTexture->Data)
 			return;
 
 		for (const auto& dirtyRect : dirtyRects)
 		{
 			D3DLOCKED_RECT lockedRect;
 			RECT rect = { dirtyRect.x, dirtyRect.y, dirtyRect.x + dirtyRect.width, dirtyRect.y + dirtyRect.height };
-			dxTexture->Data->LockRect(0, &lockedRect, &rect, 0);
+			if (FAILED(dxTexture->Data->LockRect(0, &lockedRect, &rect, 0)) || !lockedRect.pBits)
+				continue;
 
 			const uint8_t* src = reinterpret_cast<const uint8_t*>(buffer) + (dirtyRect.y * width + dirtyRect.x) * 4;
 			uint8_t* dst = reinterpret_cast<uint8_t*>(lockedRect.pBits);
