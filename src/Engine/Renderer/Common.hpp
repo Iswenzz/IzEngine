@@ -2,7 +2,6 @@
 #include "Engine/Renderer/Base/Buffer.hpp"
 #include "Engine/Renderer/Base/Font.hpp"
 #include "Engine/Renderer/Base/FrameBuffer.hpp"
-#include "Engine/Renderer/Base/GraphicsContext.hpp"
 #include "Engine/Renderer/Base/RenderCommand.hpp"
 #include "Engine/Renderer/Base/Renderer.hpp"
 #include "Engine/Renderer/Base/Shader.hpp"

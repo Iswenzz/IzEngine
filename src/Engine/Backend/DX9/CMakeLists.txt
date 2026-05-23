@@ -14,6 +14,8 @@ target_sources(IzEngine PRIVATE
 	FrameBuffer.cpp
 	GraphicsContext.hpp
 	GraphicsContext.cpp
+	PipelineState.hpp
+	PipelineState.cpp
 	RendererAPI.hpp
 	RendererAPI.cpp
 	Shader.hpp

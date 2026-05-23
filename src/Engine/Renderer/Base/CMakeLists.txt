@@ -7,8 +7,8 @@ target_sources(IzEngine PRIVATE
 	FrameBuffer.cpp
 	GPUResource.hpp
 	GPUResource.cpp
-	GraphicsContext.hpp
-	GraphicsContext.cpp
+	PipelineState.hpp
+	PipelineState.cpp
 	RenderCommand.hpp
 	RenderCommand.cpp
 	Renderer.hpp

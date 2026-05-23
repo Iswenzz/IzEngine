@@ -1,5 +1,6 @@
 #include "GraphicsContext.hpp"
 
+#include "Engine/Backend/ImGUI/Common.hpp"
 #include "Engine/Core/System/Window.hpp"
 #include "Engine/Renderer/Base/GPUResource.hpp"
 
@@ -9,63 +10,53 @@ namespace IzEngine
 	{
 		IZ_ASSERT(Window::Handle, "DX9GraphicsContext needs a valid window handle.");
 
-		Direct3DCreate9Ex(D3D_SDK_VERSION, &D3DEX);
-		D3DEX->QueryInterface(__uuidof(IDirect3D9), reinterpret_cast<void**>(&D3D));
+		if (!Swapped)
+		{
+			Direct3DCreate9Ex(D3D_SDK_VERSION, &D3DEX);
+			D3DEX->QueryInterface(__uuidof(IDirect3D9), reinterpret_cast<void**>(&D3D));
 
-		PresentParameters = { 0 };
-		PresentParameters.Windowed = TRUE;
-		PresentParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		PresentParameters.BackBufferFormat = D3DFMT_A8R8G8B8;
-		PresentParameters.BackBufferCount = 1;
-		PresentParameters.BackBufferWidth = Window::Size.x;
-		PresentParameters.BackBufferHeight = Window::Size.y;
+			PresentParameters = { 0 };
+			PresentParameters.Windowed = TRUE;
+			PresentParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
+			PresentParameters.BackBufferFormat = D3DFMT_A8R8G8B8;
+			PresentParameters.BackBufferCount = 1;
+			PresentParameters.BackBufferWidth = static_cast<UINT>(Window::Size.x);
+			PresentParameters.BackBufferHeight = static_cast<UINT>(Window::Size.y);
 
-		D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(Window::Handle),
-			D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &PresentParameters, nullptr, &DeviceEx);
-		DeviceEx->QueryInterface(__uuidof(IDirect3DDevice9), reinterpret_cast<void**>(&Device));
-
-		Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-		Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-		Device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-		Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+			D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(Window::Handle),
+				D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &PresentParameters, nullptr, &DeviceEx);
+			DeviceEx->QueryInterface(__uuidof(IDirect3DDevice9), reinterpret_cast<void**>(&Device));
+		}
+		StateBlock = CreateScope<DX9StateBlock>();
 	}
 
 	void DX9GraphicsContext::Shutdown()
 	{
-		if (Device)
-		{
-			Device->Release();
-			Device = nullptr;
-		}
-		if (D3D)
-		{
-			D3D->Release();
-			D3D = nullptr;
-		}
-		if (DeviceEx)
-		{
-			DeviceEx->Release();
-			DeviceEx = nullptr;
-		}
-		if (D3DEX)
-		{
-			D3DEX->Release();
-			D3DEX = nullptr;
-		}
-	}
+		StateBlock = nullptr;
 
-	void DX9GraphicsContext::Setup()
-	{
-		Instance = CreateScope<DX9GraphicsContext>();
-		Instance->Initialize();
-	}
-
-	void DX9GraphicsContext::Destroy()
-	{
-		Instance->Shutdown();
-		Instance = nullptr;
+		if (!Swapped)
+		{
+			if (Device)
+			{
+				Device->Release();
+				Device = nullptr;
+			}
+			if (D3D)
+			{
+				D3D->Release();
+				D3D = nullptr;
+			}
+			if (DeviceEx)
+			{
+				DeviceEx->Release();
+				DeviceEx = nullptr;
+			}
+			if (D3DEX)
+			{
+				D3DEX->Release();
+				D3DEX = nullptr;
+			}
+		}
 	}
 
 	void DX9GraphicsContext::Reset()
@@ -97,7 +88,7 @@ namespace IzEngine
 		PendingSize = size;
 	}
 
-	void DX9GraphicsContext::Swap()
+	void DX9GraphicsContext::Present()
 	{
 		if (Swapped)
 			return;
@@ -130,11 +121,13 @@ namespace IzEngine
 
 	void DX9GraphicsContext::SaveState()
 	{
-		StateBlock.Capture();
+		if (StateBlock)
+			StateBlock->Capture();
 	}
 
 	void DX9GraphicsContext::RestoreState()
 	{
-		StateBlock.Apply();
+		if (StateBlock)
+			StateBlock->Apply();
 	}
 }
