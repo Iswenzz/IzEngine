@@ -8,6 +8,7 @@ namespace IzEngine
 	public:
 		virtual ~GPUResource() = default;
 
+		virtual void Release() = 0;
 		virtual void OnBeforeReset();
 		virtual void OnAfterReset();
 

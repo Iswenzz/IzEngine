@@ -21,7 +21,6 @@ namespace IzEngine
 		Font() = default;
 		virtual ~Font() = default;
 
-		virtual void Release() = 0;
 		virtual vec2 GetTextSize(const std::string& text) const = 0;
 
 		static Ref<Font> Load(const std::string& path, int size);

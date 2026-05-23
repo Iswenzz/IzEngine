@@ -38,7 +38,6 @@ namespace IzEngine
 
 		virtual void Bind(uint32_t slot) const = 0;
 		virtual void Unbind(uint32_t slot) const = 0;
-		virtual void Release() = 0;
 
 		virtual vec2 GetSize() const = 0;
 
