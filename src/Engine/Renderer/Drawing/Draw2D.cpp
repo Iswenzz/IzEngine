@@ -2,6 +2,7 @@
 
 #include "Engine/Core/System/AssetManager.hpp"
 #include "Engine/Renderer/Base/Buffer.hpp"
+#include "Engine/Renderer/Base/PipelineState.hpp"
 #include "Engine/Renderer/Base/RenderCommand.hpp"
 #include "Engine/Renderer/Base/VertexArray.hpp"
 
@@ -30,6 +31,10 @@ namespace IzEngine
 
 	struct Draw2DData
 	{
+		Ref<PipelineState> Pipeline;
+		mat4 ViewProjection = mat4(1.0f);
+		Draw2DStatistics Stats;
+
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
 		Ref<Shader> QuadShader;
@@ -49,15 +54,14 @@ namespace IzEngine
 
 		std::array<Ref<Texture>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;
-
-		mat4 ViewProjection = mat4(1.0f);
-		Draw2DStatistics Stats;
 	};
 
 	static Draw2DData Data;
 
 	void Draw2D::Initialize()
 	{
+		Data.Pipeline = PipelineState::Default2D();
+
 		// Quad
 		Data.QuadVertexArray = VertexArray::Create();
 		Data.QuadVertexBuffer = VertexBuffer::Create(MaxQuadVertices * sizeof(QuadVertex));
@@ -157,6 +161,8 @@ namespace IzEngine
 
 	void Draw2D::Flush()
 	{
+		Data.Pipeline->Bind();
+
 		FlushQuads();
 		FlushLines();
 	}
