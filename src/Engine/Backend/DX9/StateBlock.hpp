@@ -8,7 +8,7 @@ namespace IzEngine
 	class API DX9StateBlock : public GPUResource
 	{
 	public:
-		DX9StateBlock() = default;
+		DX9StateBlock();
 		~DX9StateBlock() override;
 
 		void Capture();

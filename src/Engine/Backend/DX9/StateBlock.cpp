@@ -3,6 +3,11 @@
 
 namespace IzEngine
 {
+	DX9StateBlock::DX9StateBlock()
+	{
+		GPUResource::RegisterResource(this);
+	}
+
 	DX9StateBlock::~DX9StateBlock()
 	{
 		GPUResource::UnregisterResource(this);
@@ -11,10 +16,9 @@ namespace IzEngine
 
 	void DX9StateBlock::Capture()
 	{
-		if (StateBlock)
-			Release();
+		if (!StateBlock)
+			DX9GraphicsContext::Device->CreateStateBlock(D3DSBT_ALL, &StateBlock);
 
-		DX9GraphicsContext::Device->CreateStateBlock(D3DSBT_ALL, &StateBlock);
 		StateBlock->Capture();
 	}
 
