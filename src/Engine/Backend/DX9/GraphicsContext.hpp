@@ -26,10 +26,15 @@ namespace IzEngine
 		static void Swap(IDirect3D9* d3d, IDirect3DDevice9* device);
 		static void Resize(const vec2& size);
 
+		static void SaveState();
+		static void RestoreState();
+		static void ReleaseStateBlock();
+
 	private:
 		static inline Scope<DX9GraphicsContext> Instance = nullptr;
 		static inline IDirect3D9Ex* D3DEX = nullptr;
 		static inline IDirect3DDevice9Ex* DeviceEx = nullptr;
+		static inline IDirect3DStateBlock9* StateBlock = nullptr;
 		static inline bool PendingResize;
 		static inline vec2 PendingSize;
 		HWND Window = nullptr;

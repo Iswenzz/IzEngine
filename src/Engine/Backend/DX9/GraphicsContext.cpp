@@ -36,6 +36,8 @@ namespace IzEngine
 
 	void DX9GraphicsContext::Shutdown()
 	{
+		ReleaseStateBlock();
+
 		if (Device)
 		{
 			Device->Release();
@@ -79,6 +81,7 @@ namespace IzEngine
 		if (hr != D3D_OK && hr != D3DERR_DEVICENOTRESET)
 			return;
 
+		ReleaseStateBlock();
 		GPUResource::NotifyBeforeReset();
 		ImGui_ImplAPI_InvalidateDeviceObjects();
 		hr = Device->Reset(&PresentParameters);
@@ -128,5 +131,30 @@ namespace IzEngine
 		device->GetSwapChain(0, &swapChain);
 		swapChain->GetPresentParameters(&PresentParameters);
 		swapChain->Release();
+	}
+
+	void DX9GraphicsContext::SaveState()
+	{
+		if (!Device)
+			return;
+		if (!StateBlock)
+			Device->CreateStateBlock(D3DSBT_ALL, &StateBlock);
+		if (StateBlock)
+			StateBlock->Capture();
+	}
+
+	void DX9GraphicsContext::RestoreState()
+	{
+		if (StateBlock)
+			StateBlock->Apply();
+	}
+
+	void DX9GraphicsContext::ReleaseStateBlock()
+	{
+		if (StateBlock)
+		{
+			StateBlock->Release();
+			StateBlock = nullptr;
+		}
 	}
 }
