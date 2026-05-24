@@ -66,6 +66,7 @@ namespace IzEngine
 		static inline std::vector<Ref<BrowserInstance>> Instances;
 		static inline bool Multithreaded = false;
 		static inline bool Active = false;
+		static inline std::atomic<bool> Paused = false;
 
 		static void Initialize(bool multithreaded);
 		static void Shutdown();
@@ -80,8 +81,9 @@ namespace IzEngine
 		static void Frame(const Ref<BrowserInstance>& instance);
 		static void Frame();
 
+		static void Lock();
+		static void Unlock();
+
 		static void SetURL(const Ref<BrowserInstance>& instance, const std::string& url);
-		static void ReleaseTextures();
-		static std::vector<std::unique_lock<std::mutex>> LockTextures();
 	};
 }

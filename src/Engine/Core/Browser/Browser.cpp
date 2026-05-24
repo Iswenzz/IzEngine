@@ -117,27 +117,6 @@ namespace IzEngine
 		instance->Open = true;
 	}
 
-	void Browser::ReleaseTextures()
-	{
-		for (const auto& instance : Instances)
-		{
-			if (!instance)
-				continue;
-			std::scoped_lock lock(instance->TextureMutex);
-			instance->Texture = nullptr;
-		}
-	}
-
-	std::vector<std::unique_lock<std::mutex>> Browser::LockTextures()
-	{
-		std::vector<std::unique_lock<std::mutex>> locks;
-		locks.reserve(Instances.size());
-		for (const auto& instance : Instances)
-			if (instance)
-				locks.emplace_back(instance->TextureMutex);
-		return locks;
-	}
-
 	void Browser::Stop(const Ref<BrowserInstance>& instance)
 	{
 		if (!Active || !instance->Open)
@@ -248,6 +227,20 @@ namespace IzEngine
 
 		for (auto& instance : Instances)
 			Frame(instance);
+	}
+
+	void Browser::Lock()
+	{
+		Paused = true;
+
+		for (const auto& instance : Instances)
+			if (instance)
+				std::scoped_lock lock(instance->TextureMutex);
+	}
+
+	void Browser::Unlock()
+	{
+		Paused = false;
 	}
 
 	void Browser::SetURL(const Ref<BrowserInstance>& instance, const std::string& url)

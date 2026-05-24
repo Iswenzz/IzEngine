@@ -8,12 +8,12 @@ namespace IzEngine
 	void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 		const void* buffer, int width, int height)
 	{
-		if (!Renderer::Active || !Instance || !buffer || dirtyRects.empty())
+		if (!Renderer::Active || !Instance || !buffer || dirtyRects.empty() || Browser::Paused)
 			return;
 
 		std::scoped_lock lock(Instance->TextureMutex);
 
-		if (!Renderer::Active)
+		if (!Renderer::Active || Browser::Paused)
 			return;
 
 		Instance->Texture = Texture::Create({ .ID = "browser_" + Instance->ID,
