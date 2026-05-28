@@ -22,7 +22,7 @@ namespace IzEngine
 		const auto pathSubProcess = Environment::Path(Directory::Bin) / "CEF.exe";
 
 		CefSettings settings;
-		settings.log_severity = LOGSEVERITY_FATAL;
+		settings.log_severity = LOGSEVERITY_DISABLE;
 		settings.multi_threaded_message_loop = Multithreaded;
 		settings.windowless_rendering_enabled = true;
 		settings.no_sandbox = true;
