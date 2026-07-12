@@ -11,12 +11,22 @@ namespace IzEngine
 
 	void Actions::Submit()
 	{
-		std::scoped_lock lock(Mutex);
-
-		while (!Queue.empty())
+		std::queue<std::function<void()>> pending;
 		{
-			Queue.front()();
-			Queue.pop();
+			std::scoped_lock lock(Mutex);
+			pending.swap(Queue);
+		}
+		while (!pending.empty())
+		{
+			try
+			{
+				pending.front()();
+			}
+			catch (...)
+			{
+				Log::WriteLine(Channel::Error, "Action aborted");
+			}
+			pending.pop();
 		}
 	}
 }
