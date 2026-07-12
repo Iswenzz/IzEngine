@@ -33,6 +33,8 @@ namespace IzEngine
 		}
 		if (msg == WM_INPUT)
 		{
+			LastDelta = {};
+
 			HWND hWnd = reinterpret_cast<HWND>(Window::Handle);
 			HRAWINPUT hRaw = reinterpret_cast<HRAWINPUT>(state);
 			RAWINPUT raw = { 0 };
@@ -47,7 +49,8 @@ namespace IzEngine
 			if (raw.header.dwType != RIM_TYPEMOUSE)
 				return;
 
-			Delta += vec2{ raw.data.mouse.lLastX, raw.data.mouse.lLastY };
+			LastDelta = vec2{ raw.data.mouse.lLastX, raw.data.mouse.lLastY };
+			Delta += LastDelta;
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_WHEEL)
 				ScrollDelta += static_cast<short>(raw.data.mouse.usButtonData) / WHEEL_DELTA;
