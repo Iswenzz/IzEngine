@@ -1,10 +1,13 @@
 #include "Engine/Common.hpp"
 
-void Application::Start()
+void Application::Prepare()
 {
 	Crash::Setup();
 	Environment::Binary();
+}
 
+void Application::Initialize()
+{
 	Console::Initialize("IzEngine");
 	Window::Initialize("IzEngine");
 	Renderer::Initialize(RendererBackend::DX9);
@@ -17,8 +20,6 @@ void Application::Start()
 
 	Shutdown();
 }
-
-void Application::LateStart() { }
 
 void Application::Shutdown()
 {
@@ -34,6 +35,7 @@ void Application::Dispatch(Event& event)
 
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-	Application::Start();
+	Application::Prepare();
+	Application::Initialize();
 	return 0;
 }
