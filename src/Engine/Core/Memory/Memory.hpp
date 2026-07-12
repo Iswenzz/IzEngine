@@ -12,8 +12,13 @@ namespace IzEngine
 
 		static void NOP(uintptr_t address, int size);
 		static void JMP(uintptr_t address, uintptr_t to, int size = 5);
+		static void JMPABS(uintptr_t address, uintptr_t to, int size = 14);
 		static void CALL(uintptr_t address, uintptr_t to, int size = 5);
 
+		static void** FindImport(uintptr_t base, const char* dllName, const char* funcName);
+		static void* PatchImport(uintptr_t base, const char* dllName, const char* funcName, void* detour);
+
+		static uintptr_t Swap(uintptr_t value);
 		static uintptr_t LE(uintptr_t value);
 		static uintptr_t BE(uintptr_t value);
 
