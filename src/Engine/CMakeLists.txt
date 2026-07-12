@@ -30,7 +30,8 @@ target_link_libraries(IzEngine PUBLIC
     $<$<BOOL:${BUILD_CEF}>:CEF::CEF>
     $<$<BOOL:${GRAPHICS_API_DX9}>:DirectX::SDK>
     $<$<BOOL:${PLATFORM_WINDOWS}>:DbgHelp>
-    $<$<BOOL:${PLATFORM_WINDOWS}>:dwmapi>)
+    $<$<BOOL:${PLATFORM_WINDOWS}>:dwmapi>
+    $<$<BOOL:${PLATFORM_WINDOWS}>:ws2_32>)
 
 # Tree
 get_target_property(SOURCES IzEngine SOURCES)
