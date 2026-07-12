@@ -8,13 +8,15 @@ namespace IzEngine
 	void Console::Initialize(const std::string& name)
 	{
 		AllocConsole();
-		SetConsoleCtrlHandler(reinterpret_cast<PHANDLER_ROUTINE>(SignalHandler), TRUE);
+		auto handler = [](DWORD signal) { return static_cast<BOOL>(SignalHandler(static_cast<int>(signal))); };
+		SetConsoleCtrlHandler(handler, TRUE);
 		Handle = GetConsoleWindow();
 		SetConsoleTitle(name.c_str());
 
-		freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
-		freopen_s(reinterpret_cast<FILE**>(stdout), "CONOUT$", "w", stdout);
-		freopen_s(reinterpret_cast<FILE**>(stderr), "CONOUT$", "w", stderr);
+		FILE* stream = nullptr;
+		freopen_s(&stream, "CONIN$", "r", stdin);
+		freopen_s(&stream, "CONOUT$", "w", stdout);
+		freopen_s(&stream, "CONOUT$", "w", stderr);
 
 		InputHandle = GetStdHandle(STD_INPUT_HANDLE);
 		OutputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -54,7 +56,7 @@ namespace IzEngine
 
 		Key = Input::MapKey(record.Event.KeyEvent.wVirtualKeyCode);
 		const char character = record.Event.KeyEvent.uChar.AsciiChar;
-		const bool print = std::isprint(character);
+		const bool print = std::isprint(static_cast<unsigned char>(character));
 
 		switch (Key)
 		{

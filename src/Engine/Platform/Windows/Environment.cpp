@@ -15,7 +15,13 @@ namespace IzEngine
 
 	void Environment::Local()
 	{
-		Directories.insert({ Directory::Base, std::filesystem::path(getenv("LOCALAPPDATA")) });
+		const char* localAppData = getenv("LOCALAPPDATA");
+		if (!localAppData)
+		{
+			Binary();
+			return;
+		}
+		Directories.insert({ Directory::Base, std::filesystem::path(localAppData) });
 		Initialize();
 	}
 }

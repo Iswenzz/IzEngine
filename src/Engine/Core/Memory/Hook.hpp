@@ -38,9 +38,15 @@ namespace IzEngine
 			if (IsEnabled || !Address)
 				return;
 
-			IsEnabled = true;
 			Detour = CreateScope<PLH::NatDetour>(Address, Callback, &Trampoline);
-			Detour->hook();
+			if (!Detour->hook() || !Trampoline)
+			{
+				Log::WriteLine(Channel::Error, "Failed to hook address {:#x}.", Address);
+				Detour.reset();
+				Trampoline = 0;
+				return;
+			}
+			IsEnabled = true;
 			Original = reinterpret_cast<T*>(Trampoline);
 		}
 
@@ -64,7 +70,8 @@ namespace IzEngine
 		template <typename... Args>
 		inline R operator()(Args&&... args)
 		{
-			return Original(args...);
+			IZ_ASSERT(Original, "Calling a hook that is not installed.");
+			return Original(std::forward<Args>(args)...);
 		}
 
 		inline operator bool() const

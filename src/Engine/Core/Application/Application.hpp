@@ -7,7 +7,11 @@ namespace IzEngine
 	{
 	public:
 		static void Start();
+		static void LateStart();
 		static void Shutdown();
 		static void Dispatch(Event& event);
+
+	private:
+		static inline bool LateStarted = false;
 	};
 }

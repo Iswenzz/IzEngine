@@ -176,14 +176,23 @@ namespace IzEngine
 			if (pattern[i] == ' ')
 				continue;
 
+			// Support both "?" and "??" for a wildcard byte.
 			if (pattern[i] == '?')
 			{
 				result += '?';
-				++i;
+				if (i + 1 < pattern.size() && pattern[i + 1] == '?')
+					++i;
 				continue;
 			}
-			std::string byte = pattern.substr(i, 2);
-			result.append(1, std::stoi(byte, nullptr, 16));
+			const std::string byte = pattern.substr(i, 2);
+			char* end = nullptr;
+			const long value = std::strtol(byte.c_str(), &end, 16);
+			if (end == byte.c_str())
+			{
+				Log::WriteLine(Channel::Error, "Invalid byte pattern: {}", pattern);
+				return {};
+			}
+			result.append(1, static_cast<char>(value));
 			++i;
 		}
 		return result;

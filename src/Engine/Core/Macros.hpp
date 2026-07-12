@@ -63,12 +63,15 @@
 #endif
 
 #ifdef IZ_ASSERT_ENABLED
-	#define IZ_ASSERT_INTERNAL(check, msg, ...)               \
-		if (!(check))                                         \
-		{                                                     \
-			Log::WriteLine(Channel::Error, msg, __VA_ARGS__); \
-			IZ_DEBUGBREAK();                                  \
-		}
+	#define IZ_ASSERT_INTERNAL(check, msg, ...)                   \
+		do                                                        \
+		{                                                         \
+			if (!(check))                                         \
+			{                                                     \
+				Log::WriteLine(Channel::Error, msg, __VA_ARGS__); \
+				IZ_DEBUGBREAK();                                  \
+			}                                                     \
+		} while (0)
 
 	#define IZ_ASSERT_MESSAGE(check, ...) IZ_ASSERT_INTERNAL(check, "Assertion failed: {0}", __VA_ARGS__)
 	#define IZ_ASSERT_VALUE(check) \

@@ -20,7 +20,7 @@ namespace IzEngine
 		IZ_ASSERT(data, "Data is null.");
 		IZ_ASSERT(offset + size <= Size, "Data exceeds buffer size.");
 
-		memcpy(Data.data() + offset, data, size);
+		memcpy(reinterpret_cast<uint8_t*>(Data.data()) + offset, data, size);
 
 		uint32_t float4Count = (Data.size() * sizeof(float) + 15) / 16;
 		uint32_t startRegister = Binding;

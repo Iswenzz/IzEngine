@@ -13,8 +13,9 @@ namespace IzEngine
 		Directories.insert({ Directory::Resources, Directories[Directory::App] / "Resources" });
 		Directories.insert({ Directory::Reports, Directories[Directory::App] / "Reports" });
 
+		std::error_code ec;
 		for (const auto& [_, path] : Directories)
-			std::filesystem::create_directory(path);
+			std::filesystem::create_directories(path, ec);
 
 		VFS::Index(Directories[Directory::Resources].string(), ".zip");
 
@@ -27,7 +28,13 @@ namespace IzEngine
 
 		std::ifstream file(Path(Directory::Configs) / filename);
 		if (file.is_open() && file.peek() != std::ifstream::traits_type::eof())
-			json = nlohmann::json::parse(file);
+		{
+			nlohmann::json parsed = nlohmann::json::parse(file, nullptr, false);
+			if (parsed.is_discarded())
+				Log::WriteLine(Channel::Warning, "Invalid config file, using defaults: {}", filename);
+			else
+				json = std::move(parsed);
+		}
 	}
 
 	void Environment::Save(const nlohmann::json& json, const std::string& filename)

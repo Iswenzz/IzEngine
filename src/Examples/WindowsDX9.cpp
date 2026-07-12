@@ -18,6 +18,8 @@ void Application::Start()
 	Shutdown();
 }
 
+void Application::LateStart() { }
+
 void Application::Shutdown()
 {
 	Renderer::Shutdown();

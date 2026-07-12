@@ -4,6 +4,12 @@ namespace IzEngine
 {
 	void ThreadPool::Initialize(int threads)
 	{
+		if (Running)
+			return;
+
+		if (threads < 1)
+			threads = 2;
+
 		Running = true;
 		for (int i = 0; i < threads; i++)
 			Threads.emplace_back(Worker);

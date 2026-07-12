@@ -16,15 +16,16 @@ namespace IzEngine
 		inline void Add(const T& element)
 		{
 			Data[Offset] = element;
-			Size = Offset + 1;
-			Offset = Size % MaxSize;
+			Offset = (Offset + 1) % MaxSize;
+			if (Size < MaxSize)
+				++Size;
 		}
 
 		template <typename U = T>
 		requires std::is_arithmetic_v<U>
 		inline U Sum()
 		{
-			return std::accumulate(Begin(), Begin() + Size, 0);
+			return std::accumulate(Begin(), Begin() + Size, U{});
 		}
 
 		template <typename U = T>

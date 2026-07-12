@@ -1,55 +1,92 @@
 #include "Base.hpp"
 
+#include "Engine/Core/Memory/Memory.hpp"
 #include "Engine/Core/System/Crash.hpp"
 #include "Engine/Core/System/Environment.hpp"
 
 #include <DbgHelp.h>
+#include <csignal>
+#include <exception>
 #include <fstream>
 
 namespace IzEngine
 {
+	static LPTOP_LEVEL_EXCEPTION_FILTER WINAPI LockedSetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER)
+	{
+		return nullptr;
+	}
+
 	void Crash::Setup()
 	{
-		SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(ExceptionHandler));
+		SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
+		SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(&Crash::ExceptionHandler));
+
+		// Reserve stack so the handler can still run after a stack overflow.
+		ULONG stackGuarantee = 32 * 1024;
+		SetThreadStackGuarantee(&stackGuarantee);
+
+		// Route CRT failure paths (abort, terminate, pure virtual call, invalid parameter)
+		// into the same handler so they also produce dumps.
+		signal(SIGABRT, [](int) { RaiseException(0xE0000001, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
+		std::set_terminate([] { RaiseException(0xE0000002, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
+
+		// Prevent anyone from replacing the filter after us.
+		Patch(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)));
 	}
 
-	void Crash::ExceptionHandler(void *exception)
+	long Crash::ExceptionHandler(void* exception)
 	{
-		EXCEPTION_POINTERS *ex = reinterpret_cast<EXCEPTION_POINTERS *>(exception);
-		Log::WriteLine(Channel::Error, "The program has crashed with code: {:X}", ex->ExceptionRecord->ExceptionCode);
+		// A crash inside the handler must not recurse forever.
+		if (Handling.test_and_set())
+			TerminateProcess(GetCurrentProcess(), static_cast<UINT>(-2));
+
+		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
 		ID = UUID();
 
-		StackTrace(ex);
+		// Write the minidump first: it only needs a file handle and dbghelp,
+		// while logging/stacktrace allocate and can fail on a corrupted heap.
 		MiniDump(ex);
-		exit(-1);
+		StackTrace(ex);
+		Log::WriteLine(Channel::Error, "The program has crashed with code: {:X}",
+			ex->ExceptionRecord ? ex->ExceptionRecord->ExceptionCode : 0);
+
+		// exit() runs atexit/static destructors in a corrupted process and can
+		// hang or crash again before the dump is flushed.
+		TerminateProcess(GetCurrentProcess(), static_cast<UINT>(-1));
+		return EXCEPTION_EXECUTE_HANDLER;
 	}
 
-	void Crash::MiniDump(void *exception)
+	void Crash::MiniDump(void* exception)
 	{
-		EXCEPTION_POINTERS *ex = reinterpret_cast<EXCEPTION_POINTERS *>(exception);
+		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
 		const auto path = Environment::Path(Directory::Reports) / (ID.String + "_minidump.dmp");
 		const auto wpath = path.wstring();
 		HANDLE file = CreateFileW(wpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		if (file != INVALID_HANDLE_VALUE)
-		{
-			MINIDUMP_EXCEPTION_INFORMATION info = { 0 };
-			info.ThreadId = GetCurrentThreadId();
-			info.ExceptionPointers = ex;
-			info.ClientPointers = false;
+		if (file == INVALID_HANDLE_VALUE)
+			return;
 
-			Log::WriteLine(Channel::Info, "Minidump: {}", path.string());
-			MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), file, MiniDumpNormal, &info, NULL, NULL);
-		}
+		MINIDUMP_EXCEPTION_INFORMATION info = { 0 };
+		info.ThreadId = GetCurrentThreadId();
+		info.ExceptionPointers = ex;
+		info.ClientPointers = false;
+
+		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), file,
+			static_cast<MINIDUMP_TYPE>(MiniDumpNormal | MiniDumpWithIndirectlyReferencedMemory), &info, NULL, NULL);
+		FlushFileBuffers(file);
 		CloseHandle(file);
+
+		Log::WriteLine(Channel::Info, "Minidump: {}", path.string());
 	}
 
-	void Crash::StackTrace(void *exception)
+	void Crash::StackTrace(void* exception)
 	{
-		EXCEPTION_POINTERS *ex = reinterpret_cast<EXCEPTION_POINTERS *>(exception);
+		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
 		HANDLE process = GetCurrentProcess();
 		HANDLE thread = GetCurrentThread();
-		CONTEXT *ctx = ex->ContextRecord;
+		CONTEXT* ctx = ex->ContextRecord;
+		if (!ctx)
+			return;
 		CONTEXT copy = *ctx;
 		DWORD displacement = 0;
 		DWORD64 displacement64 = 0;
@@ -59,8 +96,7 @@ namespace IzEngine
 		char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)] = { 0 };
 		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
 
-		std::string module;
-		module.reserve(256);
+		char module[MAX_PATH] = { 0 };
 
 		STACKFRAME64 stack = { 0 };
 		stack.AddrPC.Mode = AddrModeFlat;
@@ -92,7 +128,6 @@ namespace IzEngine
 		SymInitialize(process, nullptr, true);
 
 		const auto path = Environment::Path(Directory::Reports) / (ID.String + "_stacktrace.log");
-		Log::WriteLine(Channel::Info, "Stacktrace: {}", path.string());
 		std::ofstream file(path);
 
 		while (StackWalk64(machine, process, thread, &stack, &copy, nullptr, SymFunctionTableAccess64,
@@ -103,7 +138,8 @@ namespace IzEngine
 			SymFromAddr(process, stack.AddrPC.Offset, &displacement64, symbol);
 
 			DWORD64 moduleBase = SymGetModuleBase64(process, stack.AddrPC.Offset);
-			GetModuleFileName(reinterpret_cast<HMODULE>(moduleBase), module.data(), module.capacity());
+			module[0] = 0;
+			GetModuleFileNameA(reinterpret_cast<HMODULE>(moduleBase), module, sizeof(module));
 
 			IMAGEHLP_LINE64 line = { 0 };
 			line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
@@ -113,7 +149,21 @@ namespace IzEngine
 				traceLine = std::format(" {}+{} ", line.FileName, line.LineNumber);
 
 			file << std::format("{:>5}: {}.{}{}[0x{:X}]\n", frame++, module, symbol->Name, traceLine, symbol->Address);
+
+			if (frame > 256)
+				break;
 		}
+		file.flush();
 		SymCleanup(process);
+
+		Log::WriteLine(Channel::Info, "Stacktrace: {}", path.string());
+	}
+
+	void Crash::Patch(uintptr_t base)
+	{
+		Memory::PatchImport(base, "kernel32.dll", "SetUnhandledExceptionFilter",
+			reinterpret_cast<void*>(&LockedSetUnhandledExceptionFilter));
+		Memory::PatchImport(base, "KERNELBASE.dll", "SetUnhandledExceptionFilter",
+			reinterpret_cast<void*>(&LockedSetUnhandledExceptionFilter));
 	}
 }
