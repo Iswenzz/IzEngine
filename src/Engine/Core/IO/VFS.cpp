@@ -8,40 +8,48 @@ using namespace libzippp;
 
 namespace IzEngine
 {
-	void VFS::Index(const std::string& directory, const std::string& extension)
+	void VFS::Index(const IndexDescriptor& desc)
 	{
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(directory))
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(desc.Directory))
 		{
 			if (!entry.is_regular_file())
 				continue;
 
 			const auto& path = entry.path();
-			if (path.extension() != extension)
+			const bool isArchive = !desc.ArchiveExtension.empty() && path.extension() == desc.ArchiveExtension;
+
+			auto relativeDir = std::filesystem::relative(path.parent_path(), desc.Directory);
+			if (relativeDir == ".")
+				relativeDir.clear();
+
+			if (!desc.Patterns.empty()
+				&& !std::ranges::any_of(desc.Patterns, [&](const auto& p)
+					{ return StringUtils::NormalizePath(path.string()).contains(StringUtils::NormalizePath(p)); }))
 				continue;
 
-			const std::string archivePath = StringUtils::NormalizePath(path.string());
-			ZipArchive archive(archivePath);
-			if (!archive.open(ZipArchive::ReadOnly))
-				continue;
-
-			std::filesystem::path relativeDir = std::filesystem::relative(path.parent_path(), directory);
-			std::vector<ZipEntry> entries = archive.getEntries();
-
-			for (const auto& zipEntry : entries)
+			if (isArchive)
 			{
-				if (zipEntry.isDirectory())
+				const std::string archivePath = StringUtils::NormalizePath(path.string());
+
+				ZipArchive archive(archivePath);
+				if (!archive.open(ZipArchive::ReadOnly))
 					continue;
+				for (const auto& zipEntry : archive.getEntries())
+				{
+					if (zipEntry.isDirectory())
+						continue;
 
-				std::string key;
-				if (relativeDir == ".")
-					key = StringUtils::NormalizePath(zipEntry.getName());
-				else
-					key = StringUtils::NormalizePath((relativeDir / zipEntry.getName()).string());
+					std::string key = StringUtils::NormalizePath((relativeDir / zipEntry.getName()).string());
+					FileInfo value{ archivePath, zipEntry.getName() };
 
-				ArchiveFileInfo value{ archivePath, zipEntry.getName() };
-				Tree.emplace(std::move(key), std::move(value));
+					Tree.emplace(std::move(key), std::move(value));
+				}
+				archive.close();
+				continue;
 			}
-			archive.close();
+			std::string key = StringUtils::NormalizePath((relativeDir / path.filename()).string());
+			FileInfo value{ "", StringUtils::NormalizePath(path.string()) };
+			Tree.emplace(std::move(key), std::move(value));
 		}
 	}
 
@@ -54,12 +62,22 @@ namespace IzEngine
 		if (it == Tree.end())
 			return file;
 
-		const ArchiveFileInfo& info = it->second;
-		ZipArchive archive(info.archivePath);
+		const FileInfo& info = it->second;
+
+		if (info.ArchivePath.empty())
+		{
+			std::ifstream stream(info.SourcePath, std::ios::binary);
+			if (!stream)
+				return file;
+
+			file.Data.assign(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>());
+			return file;
+		}
+		ZipArchive archive(info.ArchivePath);
 		if (!archive.open(ZipArchive::ReadOnly))
 			return file;
 
-		ZipEntry entry = archive.getEntry(info.entryPath);
+		ZipEntry entry = archive.getEntry(info.SourcePath);
 		if (entry.isNull())
 		{
 			archive.close();
@@ -79,9 +97,34 @@ namespace IzEngine
 		return file;
 	}
 
-	std::optional<ArchiveFileInfo> VFS::GetFileEntry(const std::string& filePath)
+	File VFS::GetFirstFile(const std::string& query)
+	{
+		const std::string normalizedQuery = StringUtils::NormalizePath(query);
+
+		for (const auto& [key, info] : Tree)
+		{
+			if (key.find(normalizedQuery) != std::string::npos)
+				return GetFile(key);
+		}
+		return {};
+	}
+
+	std::optional<FileInfo> VFS::GetFileEntry(const std::string& filePath)
 	{
 		auto it = Tree.find(StringUtils::NormalizePath(filePath));
-		return it == Tree.end() ? std::nullopt : std::optional<ArchiveFileInfo>(it->second);
+		return it == Tree.end() ? std::nullopt : std::optional<FileInfo>(it->second);
+	}
+
+	std::vector<std::pair<std::string, FileInfo>> VFS::SearchFiles(const std::string& query)
+	{
+		std::vector<std::pair<std::string, FileInfo>> results;
+		const std::string normalizedQuery = StringUtils::NormalizePath(query);
+
+		for (const auto& [key, info] : Tree)
+		{
+			if (key.find(normalizedQuery) != std::string::npos)
+				results.emplace_back(key, info);
+		}
+		return results;
 	}
 }

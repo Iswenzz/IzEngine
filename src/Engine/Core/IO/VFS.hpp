@@ -3,19 +3,28 @@
 
 namespace IzEngine
 {
-	struct ArchiveFileInfo
+	struct FileInfo
 	{
-		std::string archivePath;
-		std::string entryPath;
+		std::string ArchivePath;
+		std::string SourcePath;
 	};
 
-	class API VFS
+	struct IndexDescriptor
+	{
+		std::string Directory;
+		std::string ArchiveExtension;
+		std::vector<std::string> Patterns;
+	};
+
+	class VFS
 	{
 	public:
-		static inline std::unordered_map<std::string, ArchiveFileInfo> Tree;
+		static inline std::unordered_map<std::string, FileInfo> Tree;
 
-		static void Index(const std::string& directory, const std::string& extension);
+		static void Index(const IndexDescriptor& desc);
 		static File GetFile(const std::string& filePath);
-		static std::optional<ArchiveFileInfo> GetFileEntry(const std::string& filePath);
+		static File GetFirstFile(const std::string& query);
+		static std::optional<FileInfo> GetFileEntry(const std::string& filePath);
+		static std::vector<std::pair<std::string, FileInfo>> SearchFiles(const std::string& query);
 	};
 }

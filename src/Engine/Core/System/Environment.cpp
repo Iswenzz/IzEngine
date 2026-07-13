@@ -17,7 +17,7 @@ namespace IzEngine
 		for (const auto& [_, path] : Directories)
 			std::filesystem::create_directories(path, ec);
 
-		VFS::Index(Directories[Directory::Resources].string(), ".zip");
+		VFS::Index({ Directories[Directory::Resources].string(), ".zip" });
 
 		Initialized = true;
 	}
