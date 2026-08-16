@@ -85,5 +85,8 @@ namespace IzEngine
 		static void Unlock();
 
 		static void SetURL(const Ref<BrowserInstance>& instance, const std::string& url);
+
+	private:
+		static inline std::vector<std::unique_lock<std::mutex>> TextureLocks;
 	};
 }

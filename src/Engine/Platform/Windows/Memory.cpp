@@ -160,12 +160,18 @@ namespace IzEngine
 
 	uintptr_t Memory::LE(uintptr_t value)
 	{
-		return Swap(value);
+		if constexpr (std::endian::native == std::endian::little)
+			return value;
+		else
+			return Swap(value);
 	}
 
 	uintptr_t Memory::BE(uintptr_t value)
 	{
-		return Swap(value);
+		if constexpr (std::endian::native == std::endian::big)
+			return value;
+		else
+			return Swap(value);
 	}
 
 	std::string Memory::Pattern(const std::string& pattern)

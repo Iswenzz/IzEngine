@@ -122,6 +122,12 @@ namespace IzEngine
 		if (!Active || !instance->Open)
 			return;
 
+		if (!instance->Browser)
+		{
+			instance->Client = nullptr;
+			instance->Open = false;
+			return;
+		}
 		instance->Browser->GetHost()->CloseBrowser(true);
 		instance->Browser = nullptr;
 
@@ -184,8 +190,11 @@ namespace IzEngine
 				host->SendMouseWheelEvent(mouseEvent, 0, Mouse::ScrollDelta * 120);
 		}
 
-		for (auto& [id, info] : Input::Inputs)
+		for (const auto& info : Input::Inputs)
 		{
+			const InputEnum id = info.ID;
+			if (!info.IsRegistered())
+				continue;
 			if (id == Button_Left || id == Button_Right || id == Button_Middle)
 				continue;
 			if (!Input::IsDown(id) && !Input::IsUp(id))
@@ -217,7 +226,9 @@ namespace IzEngine
 		}
 		std::scoped_lock lock(instance->TextureMutex);
 		Draw2D::DrawQuad(vec3(position, 0), size, vec4(0, 0, 0, 1));
-		Draw2D::DrawQuad(vec3(position, 0), size, 0, instance->Texture, vec4(1));
+
+		if (instance->Texture)
+			Draw2D::DrawQuad(vec3(position, 0), size, 0, instance->Texture, vec4(1));
 	}
 
 	void Browser::Frame()
@@ -231,22 +242,31 @@ namespace IzEngine
 
 	void Browser::Lock()
 	{
+		if (!TextureLocks.empty())
+			return;
+
 		Paused = true;
 
 		for (const auto& instance : Instances)
 			if (instance)
-				std::scoped_lock lock(instance->TextureMutex);
+				TextureLocks.emplace_back(instance->TextureMutex);
 	}
 
 	void Browser::Unlock()
 	{
+		TextureLocks.clear();
 		Paused = false;
 	}
 
 	void Browser::SetURL(const Ref<BrowserInstance>& instance, const std::string& url)
 	{
 		instance->URL = url;
-		instance->Browser->GetMainFrame()->LoadURL(url);
+
+		if (!instance->Browser)
+			return;
+
+		if (const auto frame = instance->Browser->GetMainFrame())
+			frame->LoadURL(url);
 	}
 
 	void BrowserApp::OnBeforeCommandLineProcessing(const CefString& processType, CefRefPtr<CefCommandLine> commandLine)

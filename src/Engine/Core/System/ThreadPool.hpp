@@ -3,6 +3,13 @@
 
 namespace IzEngine
 {
+	struct WorkerThreads
+	{
+		std::vector<std::thread> Threads;
+
+		~WorkerThreads();
+	};
+
 	class API ThreadPool
 	{
 	public:
@@ -13,7 +20,7 @@ namespace IzEngine
 	private:
 		static void Worker();
 
-		static inline std::vector<std::thread> Threads;
+		static inline WorkerThreads Workers;
 		static inline std::queue<std::function<void()>> Tasks;
 		static inline std::mutex Mutex;
 		static inline std::condition_variable Condition;

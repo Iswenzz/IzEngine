@@ -158,6 +158,8 @@ namespace IzEngine
 		Input_Count,
 	};
 
+	constexpr size_t KEYBOARD_OS_COUNT = 256;
+
 	struct InputInfo
 	{
 		InputEnum ID = InputEnum::Input_None;
@@ -165,13 +167,18 @@ namespace IzEngine
 		std::string Name;
 		int State = 0;
 		int PrevState = 0;
+
+		bool IsRegistered() const
+		{
+			return ID != InputEnum::Input_None;
+		}
 	};
 
 	class API Input
 	{
 	public:
-		static inline std::unordered_map<InputEnum, InputInfo> Inputs;
-		static inline std::unordered_map<int, InputEnum> KeyboardOSToID;
+		static inline std::array<InputInfo, Input_Count> Inputs;
+		static inline std::array<InputEnum, KEYBOARD_OS_COUNT> KeyboardOSToID{};
 		static inline std::unordered_map<int, InputEnum> MouseOSToID;
 
 		static void Initialize();
@@ -180,9 +187,13 @@ namespace IzEngine
 		static bool IsUp(InputEnum input);
 		static bool IsDown(InputEnum input);
 		static bool IsPressed(InputEnum input);
+		static void SetState(InputEnum input, int state);
 
 		static InputEnum MapKey(int input);
 		static InputEnum MapMouse(int input);
 		static const char* GetName(InputEnum input);
+
+	private:
+		static const InputInfo* Find(InputEnum input);
 	};
 }

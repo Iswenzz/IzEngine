@@ -130,7 +130,11 @@ namespace IzEngine
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
+		if (AppliedCapture != IsCapture)
+		{
+			SetWindowDisplayAffinity(hwnd, IsCapture ? WDA_NONE : WDA_EXCLUDEFROMCAPTURE);
+			AppliedCapture = IsCapture;
+		}
 		return Open;
 	}
 

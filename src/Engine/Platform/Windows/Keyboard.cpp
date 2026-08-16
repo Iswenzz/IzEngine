@@ -53,9 +53,7 @@ namespace IzEngine
 			else if (vk == VK_MENU)
 				vk = (flags & RI_KEY_E0) ? VK_RMENU : VK_MENU;
 
-			InputEnum index = Input::MapKey(vk);
-			if (index)
-				Input::Inputs[index].State = (flags & RI_KEY_BREAK) ? INPUT_UP : INPUT_DOWN;
+			Input::SetState(Input::MapKey(vk), (flags & RI_KEY_BREAK) ? INPUT_UP : INPUT_DOWN);
 		}
 	}
 }

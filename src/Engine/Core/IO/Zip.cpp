@@ -6,6 +6,24 @@ using namespace libzippp;
 
 namespace IzEngine
 {
+	static bool ResolveEntryPath(const std::filesystem::path& destDir, const std::string& entryName,
+		std::filesystem::path& out)
+	{
+		const std::filesystem::path name(entryName);
+		if (name.is_absolute() || name.has_root_name())
+			return false;
+
+		const auto root = (destDir / "").lexically_normal();
+		const auto dest = (destDir / name).lexically_normal();
+
+		if (dest.native().starts_with(root.native()))
+		{
+			out = dest;
+			return true;
+		}
+		return false;
+	}
+
 	bool Zip::Extract(const std::filesystem::path& zipPath, const std::filesystem::path& destDir)
 	{
 		ZipArchive archive(zipPath.string());
@@ -17,15 +35,25 @@ namespace IzEngine
 			if (entry.isDirectory())
 				continue;
 
-			std::filesystem::path dest = destDir / entry.getName();
-			std::filesystem::create_directories(dest.parent_path());
+			std::filesystem::path dest;
+			if (!ResolveEntryPath(destDir, entry.getName(), dest))
+			{
+				Log::WriteLine(Channel::Warning, "Skipping zip entry outside the destination: {}", entry.getName());
+				continue;
+			}
+			std::error_code ec;
+			std::filesystem::create_directories(dest.parent_path(), ec);
 
 			void* data = entry.readAsBinary();
 			if (!data)
 				continue;
 
 			std::ofstream file(dest, std::ios::binary);
-			file.write(reinterpret_cast<char*>(data), entry.getSize());
+			if (file)
+				file.write(reinterpret_cast<char*>(data), entry.getSize());
+			else
+				Log::WriteLine(Channel::Error, "Failed to write zip entry: {}", dest.string());
+
 			free(data);
 		}
 		archive.close();

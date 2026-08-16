@@ -65,6 +65,9 @@ namespace IzEngine
 
 			Detour->unHook();
 			Detour.reset();
+
+			Trampoline = 0;
+			Original = nullptr;
 		}
 
 		template <typename... Args>

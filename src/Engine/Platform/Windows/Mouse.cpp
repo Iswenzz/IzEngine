@@ -56,19 +56,19 @@ namespace IzEngine
 				ScrollDelta += static_cast<short>(raw.data.mouse.usButtonData) / WHEEL_DELTA;
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_DOWN)
-				Input::Inputs[Button_Left].State = INPUT_DOWN;
+				Input::SetState(Button_Left, INPUT_DOWN);
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_UP)
-				Input::Inputs[Button_Left].State = INPUT_UP;
+				Input::SetState(Button_Left, INPUT_UP);
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_DOWN)
-				Input::Inputs[Button_Right].State = INPUT_DOWN;
+				Input::SetState(Button_Right, INPUT_DOWN);
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_2_UP)
-				Input::Inputs[Button_Right].State = INPUT_UP;
+				Input::SetState(Button_Right, INPUT_UP);
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_DOWN)
-				Input::Inputs[Button_Middle].State = INPUT_DOWN;
+				Input::SetState(Button_Middle, INPUT_DOWN);
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_3_UP)
-				Input::Inputs[Button_Middle].State = INPUT_UP;
+				Input::SetState(Button_Middle, INPUT_UP);
 		}
 	}
 }

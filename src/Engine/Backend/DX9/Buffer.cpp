@@ -3,29 +3,42 @@
 
 namespace IzEngine
 {
-	DX9VertexBuffer::DX9VertexBuffer(uint32_t size) : Size(size)
+	DX9VertexBuffer::DX9VertexBuffer(uint32_t size) : Size(size), Dynamic(true)
 	{
 		IZ_ASSERT(DX9GraphicsContext::Device, "DX9VertexBuffer requires an initialized device.");
 
-		DX9GraphicsContext::Device->CreateVertexBuffer(size, D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT,
-			&VertexBuffer, nullptr);
-
+		Create();
 		GPUResource::RegisterResource(this);
 	}
 
-	DX9VertexBuffer::DX9VertexBuffer(float* vertices, uint32_t size) : Size(size)
+	DX9VertexBuffer::DX9VertexBuffer(float* vertices, uint32_t size) : Size(size), Dynamic(false)
 	{
 		IZ_ASSERT(DX9GraphicsContext::Device, "DX9VertexBuffer requires an initialized device.");
 
-		DX9GraphicsContext::Device->CreateVertexBuffer(size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &VertexBuffer,
-			nullptr);
-
-		void* data = nullptr;
-		VertexBuffer->Lock(0, size, &data, 0);
-		memcpy(data, vertices, size);
-		VertexBuffer->Unlock();
-
+		if (Create())
+		{
+			void* data = nullptr;
+			if (SUCCEEDED(VertexBuffer->Lock(0, size, &data, 0)) && data)
+			{
+				memcpy(data, vertices, size);
+				VertexBuffer->Unlock();
+			}
+		}
 		GPUResource::RegisterResource(this);
+	}
+
+	bool DX9VertexBuffer::Create()
+	{
+		const DWORD usage = Dynamic ? D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY : D3DUSAGE_WRITEONLY;
+		const D3DPOOL pool = Dynamic ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
+
+		if (FAILED(DX9GraphicsContext::Device->CreateVertexBuffer(Size, usage, 0, pool, &VertexBuffer, nullptr)))
+		{
+			Log::WriteLine(Channel::Error, "Failed to create a {} byte vertex buffer.", Size);
+			VertexBuffer = nullptr;
+			return false;
+		}
+		return true;
 	}
 
 	DX9VertexBuffer::~DX9VertexBuffer()
@@ -56,22 +69,31 @@ namespace IzEngine
 
 	void DX9VertexBuffer::OnBeforeReset()
 	{
+		if (!Dynamic)
+			return;
+
 		Release();
 	}
 
 	void DX9VertexBuffer::OnAfterReset()
 	{
-		DX9GraphicsContext::Device->CreateVertexBuffer(Size, D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT,
-			&VertexBuffer, nullptr);
+		if (!Dynamic)
+			return;
+
+		Create();
 	}
 
 	void DX9VertexBuffer::SetData(const void* data, uint32_t size)
 	{
-		IZ_ASSERT(VertexBuffer, "VertexBuffer is null.");
 		IZ_ASSERT(size <= Size, "Data exceeds buffer size.");
 
+		if (!VertexBuffer || size > Size)
+			return;
+
 		void* buffer = nullptr;
-		VertexBuffer->Lock(0, size, &buffer, D3DLOCK_DISCARD);
+		if (FAILED(VertexBuffer->Lock(0, size, &buffer, D3DLOCK_DISCARD)) || !buffer)
+			return;
+
 		memcpy(buffer, data, size);
 		VertexBuffer->Unlock();
 	}
@@ -90,16 +112,38 @@ namespace IzEngine
 	{
 		IZ_ASSERT(DX9GraphicsContext::Device, "DX9IndexBuffer requires an initialized device.");
 
-		DX9GraphicsContext::Device->CreateIndexBuffer(count * sizeof(uint32_t), D3DUSAGE_WRITEONLY, D3DFMT_INDEX32,
-			D3DPOOL_DEFAULT, &IndexBuffer, nullptr);
+		Indices.assign(indices, indices + count);
+
+		if (Create())
+			Upload();
+
+		GPUResource::RegisterResource(this);
+	}
+
+	bool DX9IndexBuffer::Create()
+	{
+		if (FAILED(DX9GraphicsContext::Device->CreateIndexBuffer(Count * sizeof(uint32_t), D3DUSAGE_WRITEONLY,
+				D3DFMT_INDEX32, D3DPOOL_DEFAULT, &IndexBuffer, nullptr)))
+		{
+			Log::WriteLine(Channel::Error, "Failed to create a {} index buffer.", Count);
+			IndexBuffer = nullptr;
+			return false;
+		}
+		return true;
+	}
+
+	bool DX9IndexBuffer::Upload()
+	{
+		if (!IndexBuffer)
+			return false;
 
 		void* data = nullptr;
-		IndexBuffer->Lock(0, count * sizeof(uint32_t), &data, 0);
-		memcpy(data, indices, count * sizeof(uint32_t));
-		IndexBuffer->Unlock();
+		if (FAILED(IndexBuffer->Lock(0, Count * sizeof(uint32_t), &data, 0)) || !data)
+			return false;
 
-		Indices.assign(indices, indices + count);
-		GPUResource::RegisterResource(this);
+		memcpy(data, Indices.data(), Count * sizeof(uint32_t));
+		IndexBuffer->Unlock();
+		return true;
 	}
 
 	DX9IndexBuffer::~DX9IndexBuffer()
@@ -135,13 +179,8 @@ namespace IzEngine
 
 	void DX9IndexBuffer::OnAfterReset()
 	{
-		DX9GraphicsContext::Device->CreateIndexBuffer(Count * sizeof(uint32_t), D3DUSAGE_WRITEONLY, D3DFMT_INDEX32,
-			D3DPOOL_DEFAULT, &IndexBuffer, nullptr);
-
-		void* data = nullptr;
-		IndexBuffer->Lock(0, Count * sizeof(uint32_t), &data, 0);
-		memcpy(data, Indices.data(), Count * sizeof(uint32_t));
-		IndexBuffer->Unlock();
+		if (Create())
+			Upload();
 	}
 
 	uint32_t DX9IndexBuffer::GetCount() const

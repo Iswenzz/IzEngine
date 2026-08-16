@@ -115,6 +115,9 @@ namespace IzEngine
 		Data.QuadVertexBufferBase = nullptr;
 		Data.LineVertexBufferBase = nullptr;
 
+		Data.QuadVertexBufferPtr = nullptr;
+		Data.LineVertexBufferPtr = nullptr;
+
 		Data.QuadVertexArray = nullptr;
 		Data.QuadVertexBuffer = nullptr;
 		Data.QuadShader = nullptr;
@@ -205,28 +208,33 @@ namespace IzEngine
 		DrawQuad(position, size, Data.TextureSlots[0], color);
 	}
 
+	float Draw2D::ResolveTextureSlot(const Ref<Texture>& texture)
+	{
+		const Ref<Texture>& target = texture ? texture : Data.TextureSlots[0];
+
+		for (uint32_t i = 0; i < Data.TextureSlotIndex; i++)
+		{
+			if (Data.TextureSlots[i] == target)
+				return (float)i;
+		}
+		if (Data.TextureSlotIndex >= MaxTextureSlots)
+			NextBatch();
+
+		const float index = (float)Data.TextureSlotIndex;
+		Data.TextureSlots[Data.TextureSlotIndex++] = target;
+		return index;
+	}
+
 	void Draw2D::DrawQuad(const vec3& position, const vec2& size, const Ref<Texture>& texture, const vec4& color)
 	{
+		if (!Data.QuadVertexBufferPtr)
+			return;
+
 		if (Data.QuadIndexCount >= MaxQuadIndices)
 			NextBatch();
 
-		float textureIndex = 0.0f;
-		for (uint32_t i = 1; i < Data.TextureSlotIndex; i++)
-		{
-			if (Data.TextureSlots[i] == texture)
-			{
-				textureIndex = (float)i;
-				break;
-			}
-		}
-		if (textureIndex == 0.0f)
-		{
-			if (Data.TextureSlotIndex >= MaxTextureSlots)
-				NextBatch();
+		const float textureIndex = ResolveTextureSlot(texture);
 
-			textureIndex = (float)Data.TextureSlotIndex;
-			Data.TextureSlots[Data.TextureSlotIndex++] = texture;
-		}
 		mat4 transform = glm::translate(mat4(1.0f), position) * glm::scale(mat4(1.0f), { size.x, size.y, 1.0f });
 		constexpr vec2 texCoords[4] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
@@ -250,26 +258,14 @@ namespace IzEngine
 	void Draw2D::DrawQuad(const vec3& position, const vec2& size, float rotation, const Ref<Texture>& texture,
 		const vec4& color)
 	{
+		if (!Data.QuadVertexBufferPtr)
+			return;
+
 		if (Data.QuadIndexCount >= MaxQuadIndices)
 			NextBatch();
 
-		float textureIndex = 0.0f;
-		for (uint32_t i = 1; i < Data.TextureSlotIndex; i++)
-		{
-			if (Data.TextureSlots[i] == texture)
-			{
-				textureIndex = (float)i;
-				break;
-			}
-		}
-		if (textureIndex == 0.0f)
-		{
-			if (Data.TextureSlotIndex >= MaxTextureSlots)
-				NextBatch();
+		const float textureIndex = ResolveTextureSlot(texture);
 
-			textureIndex = (float)Data.TextureSlotIndex;
-			Data.TextureSlots[Data.TextureSlotIndex++] = texture;
-		}
 		vec3 center = { position.x + size.x * 0.5f, position.y + size.y * 0.5f, position.z };
 
 		mat4 transform = glm::translate(mat4(1.0f), center)
@@ -293,6 +289,9 @@ namespace IzEngine
 
 	void Draw2D::DrawLine(const vec3& start, const vec3& end, const vec4& color)
 	{
+		if (!Data.LineVertexBufferPtr)
+			return;
+
 		if (Data.LineVertexCount >= MaxLineVertices)
 			NextBatch();
 

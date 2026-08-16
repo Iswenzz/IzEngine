@@ -2,6 +2,13 @@
 
 namespace IzEngine
 {
+	WorkerThreads::~WorkerThreads()
+	{
+		for (auto& thread : Threads)
+			if (thread.joinable())
+				thread.detach();
+	}
+
 	void ThreadPool::Initialize(int threads)
 	{
 		if (Running)
@@ -12,7 +19,7 @@ namespace IzEngine
 
 		Running = true;
 		for (int i = 0; i < threads; i++)
-			Threads.emplace_back(Worker);
+			Workers.Threads.emplace_back(Worker);
 	}
 
 	void ThreadPool::Shutdown()
@@ -22,9 +29,12 @@ namespace IzEngine
 			Running = false;
 		}
 		Condition.notify_all();
-		for (auto& thread : Threads)
-			thread.join();
-		Threads.clear();
+
+		for (auto& thread : Workers.Threads)
+			if (thread.joinable())
+				thread.join();
+
+		Workers.Threads.clear();
 	}
 
 	void ThreadPool::Queue(std::function<void()> task)

@@ -18,6 +18,11 @@ constexpr ImPlotAxisFlags ImPlotAxisFlags_Canvas =
 constexpr std::array<const char*, 3> Horizontals = { "Left", "Center", "Right" };
 constexpr std::array<const char*, 3> Verticals = { "Top", "Center", "Bottom" };
 
+constexpr std::array<const char*, 8> HorizontalAnchors = { "Sub Left", "Left", "Center", "Right", "Fullscreen",
+	"No Scale", "To 640", "Center Safe Area" };
+constexpr std::array<const char*, 8> VerticalAnchors = { "Sub Top", "Top", "Center", "Bottom", "Fullscreen",
+	"No Scale", "To 480", "Center Safe Area" };
+
 namespace ImGui
 {
 	API extern MarkdownConfig MarkConfig;

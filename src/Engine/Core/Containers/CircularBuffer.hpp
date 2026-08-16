@@ -29,18 +29,18 @@ namespace IzEngine
 		}
 
 		template <typename U = T>
-		requires std::is_arithmetic_v<T>
+		requires std::is_arithmetic_v<U>
 		inline U Average()
 		{
-			return Size ? Sum() / Size : 0;
+			return Size ? static_cast<U>(Sum<U>() / static_cast<U>(Size)) : U{};
 		}
 
 		template <typename U = T>
-		requires std::is_arithmetic_v<T>
+		requires std::is_arithmetic_v<U>
 		inline U Mode()
 		{
 			if (!Size)
-				return 0;
+				return U{};
 
 			std::unordered_map<U, size_t> map;
 			for (size_t i = 0; i < Size; ++i)
@@ -61,7 +61,7 @@ namespace IzEngine
 
 		constexpr inline void Clear()
 		{
-			Data.fill(0);
+			Data.fill(T{});
 			Size = 0;
 			Offset = 0;
 		}

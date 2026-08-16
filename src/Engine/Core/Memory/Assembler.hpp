@@ -37,11 +37,11 @@ namespace IzEngine
 
 			function(code, a);
 
-			int address = 0;
+			void* address = nullptr;
 			auto error = Runtime.add(&address, &code);
 			if (error)
 				throw std::runtime_error("AsmJit compile error.");
-			return address;
+			return reinterpret_cast<uintptr_t>(address);
 		}
 	};
 }

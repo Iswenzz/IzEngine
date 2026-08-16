@@ -6,6 +6,9 @@ namespace IzEngine
 {
 	void Log::Write(const std::string& msg)
 	{
+		if (!Console::Handle)
+			return;
+
 		Console::Hide();
 		const bool eol = msg.find('\n') != std::string::npos;
 		const auto endl = eol ? FormatColor(LogColor::Default) : "";

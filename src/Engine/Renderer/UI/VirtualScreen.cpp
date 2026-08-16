@@ -10,6 +10,17 @@ namespace IzEngine
 
 	void VirtualScreen::Setup()
 	{
+		if (Size.x <= 0.0f || Size.y <= 0.0f)
+		{
+			AdjustedRealWidth = 0.0f;
+			VirtualToReal = { 1, 1 };
+			VirtualToFull = { 1, 1 };
+			RealToVirtual = { 1, 1 };
+			SubScreen = { 0, 0 };
+
+			SafeArea();
+			return;
+		}
 		AdjustedRealWidth = (4.0f / 3.0f) * Size.y;
 		if (AdjustedRealWidth > Size.x)
 			AdjustedRealWidth = Size.x;
@@ -24,16 +35,20 @@ namespace IzEngine
 
 	void VirtualScreen::SafeArea()
 	{
-		const float horizontalAspectRatio = Size.x / AdjustedRealWidth;
-		const float verticalAspectRatio = Size.y / Size.y;
-
 		RealMin = Position;
 		RealMax = Position + Size;
 
-		VirtualMin = { RealMin.x * horizontalAspectRatio * (SCREEN_WIDTH / Size.x),
-			RealMin.y * verticalAspectRatio * (SCREEN_HEIGHT / Size.y) };
-		VirtualMax = { RealMax.x * horizontalAspectRatio * (SCREEN_WIDTH / Size.x),
-			RealMax.y * verticalAspectRatio * (SCREEN_HEIGHT / Size.y) };
+		if (Size.x <= 0.0f || Size.y <= 0.0f || AdjustedRealWidth <= 0.0f)
+		{
+			VirtualMin = { 0, 0 };
+			VirtualMax = { SCREEN_WIDTH, SCREEN_HEIGHT };
+			return;
+		}
+		const float horizontalScale = SCREEN_WIDTH / AdjustedRealWidth;
+		const float verticalScale = SCREEN_HEIGHT / Size.y;
+
+		VirtualMin = { RealMin.x * horizontalScale, RealMin.y * verticalScale };
+		VirtualMax = { RealMax.x * horizontalScale, RealMax.y * verticalScale };
 	}
 
 	void VirtualScreen::Apply(vec2& position, Horizontal horizontal, Vertical vertical)
@@ -94,7 +109,6 @@ namespace IzEngine
 			y = VirtualToFull.y * y;
 			h *= VirtualToFull.y;
 			break;
-			;
 		case Vertical::CenterSafeArea:
 			y = VirtualToReal.y * y + (RealMax.y + RealMin.y) * 0.5f;
 			h *= VirtualToReal.y;

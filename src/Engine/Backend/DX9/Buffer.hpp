@@ -26,6 +26,9 @@ namespace IzEngine
 		IDirect3DVertexBuffer9* VertexBuffer = nullptr;
 		BufferLayout Layout;
 		uint32_t Size = 0;
+		bool Dynamic = true;
+
+		bool Create();
 	};
 
 	class DX9IndexBuffer : public IndexBuffer
@@ -46,5 +49,8 @@ namespace IzEngine
 		IDirect3DIndexBuffer9* IndexBuffer = nullptr;
 		std::vector<uint32_t> Indices;
 		uint32_t Count = 0;
+
+		bool Create();
+		bool Upload();
 	};
 }

@@ -125,16 +125,16 @@ namespace ImGui
 	bool ComboAlignRect(Horizontal* horizontal, Vertical* vertical)
 	{
 		bool state = false;
-		int index = static_cast<int>(*horizontal) - 1;
-		if (Combo("Horizontal", &index, Horizontals.data(), Horizontals.size()))
+		int index = static_cast<int>(*horizontal);
+		if (Combo("Horizontal", &index, HorizontalAnchors.data(), HorizontalAnchors.size()))
 		{
-			*horizontal = static_cast<Horizontal>(index + 1);
+			*horizontal = static_cast<Horizontal>(index);
 			state = true;
 		}
-		index = static_cast<int>(*vertical) - 1;
-		if (Combo("Vertical", &index, Verticals.data(), Verticals.size()))
+		index = static_cast<int>(*vertical);
+		if (Combo("Vertical", &index, VerticalAnchors.data(), VerticalAnchors.size()))
 		{
-			*vertical = static_cast<Vertical>(index + 1);
+			*vertical = static_cast<Vertical>(index);
 			state = true;
 		}
 		return state;
@@ -159,7 +159,7 @@ namespace ImGui
 		PushStyleVar(ImGuiStyleVar_WindowPadding, { 6, 6 });
 
 		BeginTooltip();
-		Text(text.c_str());
+		TextUnformatted(text.c_str());
 		EndTooltip();
 
 		PopStyleVar();
@@ -206,7 +206,7 @@ namespace ImGui
 		if (!label.starts_with("##"))
 		{
 			SameLine();
-			Text(label.c_str());
+			TextUnformatted(label.c_str());
 		}
 		PopID();
 	}
@@ -257,7 +257,7 @@ namespace ImGui
 		ImDrawList* draw = GetForegroundDrawList();
 
 		const auto& [rainbow1, rainbow2] = RainbowTuple;
-		draw->AddRectFilledMultiColor(position, size, rainbow1, rainbow2, rainbow2, rainbow1);
+		draw->AddRectFilledMultiColor(position, position + size, rainbow1, rainbow2, rainbow2, rainbow1);
 	}
 
 	void Markdown(const std::string& markdown)

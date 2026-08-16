@@ -68,15 +68,30 @@ namespace IzEngine
 		iconConfig.GlyphMinAdvanceX = iconSize;
 		iconConfig.FontDataOwnedByAtlas = false;
 
-		io.Fonts->Clear();
-		io.Fonts->AddFontFromMemoryTTF(openSans.Data.data(), openSans.Data.size(), 0, &config);
-		io.Fonts->AddFontFromMemoryTTF(faRegular.Data.data(), faRegular.Data.size(), iconSize, &iconConfig);
-		io.Fonts->AddFontFromMemoryTTF(faSolid.Data.data(), faSolid.Data.size(), iconSize, &iconConfig);
-		io.Fonts->AddFontFromMemoryTTF(faBrands.Data.data(), faBrands.Data.size(), iconSize, &iconConfig);
+		const auto addFont = [&](File& file, float size, ImFontConfig* cfg) -> ImFont*
+		{
+			if (file.Data.empty())
+			{
+				Log::WriteLine(Channel::Error, "Missing font resource: {}", file.Path.string());
+				return nullptr;
+			}
+			return io.Fonts->AddFontFromMemoryTTF(file.Data.data(), static_cast<int>(file.Data.size()), size, cfg);
+		};
 
-		ImGui::H1 = io.Fonts->AddFontFromMemoryTTF(openSans.Data.data(), openSans.Data.size(), fontSize * 4, &config);
-		ImGui::H2 = io.Fonts->AddFontFromMemoryTTF(openSans.Data.data(), openSans.Data.size(), fontSize * 3, &config);
-		ImGui::H3 = io.Fonts->AddFontFromMemoryTTF(openSans.Data.data(), openSans.Data.size(), fontSize * 2, &config);
+		io.Fonts->Clear();
+		addFont(openSans, 0, &config);
+		addFont(faRegular, iconSize, &iconConfig);
+		addFont(faSolid, iconSize, &iconConfig);
+		addFont(faBrands, iconSize, &iconConfig);
+
+		if (!io.Fonts->Fonts.empty())
+		{
+			ImGui::H1 = addFont(openSans, fontSize * 4, &config);
+			ImGui::H2 = addFont(openSans, fontSize * 3, &config);
+			ImGui::H3 = addFont(openSans, fontSize * 2, &config);
+		}
+		if (io.Fonts->Fonts.empty())
+			io.Fonts->AddFontDefault();
 
 		ImGui::MarkConfig.linkIcon = ICON_FA_LINK;
 		ImGui::MarkConfig.linkCallback = MarkdownLink;
@@ -183,7 +198,20 @@ namespace IzEngine
 
 	void UI::OpenWindow(const std::string& name)
 	{
-		Frames[name]->Open = true;
+		if (const auto frame = GetWindow(name))
+			frame->Open = true;
+	}
+
+	Ref<Frame> UI::GetWindow(const std::string& name)
+	{
+		const auto it = Frames.find(name);
+		return it != Frames.end() ? it->second : nullptr;
+	}
+
+	bool* UI::GetWindowState(const std::string& name)
+	{
+		const auto frame = GetWindow(name);
+		return frame ? &frame->Open : nullptr;
 	}
 
 	void UI::MarkdownLink(ImGui::MarkdownLinkCallbackData data)

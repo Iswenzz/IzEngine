@@ -32,9 +32,14 @@ namespace IzEngine
 
 	void Console::Shutdown()
 	{
-		fclose(stdin);
-		fclose(stdout);
-		fclose(stderr);
+		Handle = nullptr;
+		InputHandle = nullptr;
+		OutputHandle = nullptr;
+
+		FILE* stream = nullptr;
+		freopen_s(&stream, "NUL", "r", stdin);
+		freopen_s(&stream, "NUL", "w", stdout);
+		freopen_s(&stream, "NUL", "w", stderr);
 
 		FreeConsole();
 	}

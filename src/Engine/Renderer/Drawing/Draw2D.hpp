@@ -56,5 +56,6 @@ namespace IzEngine
 		static void FlushLines();
 		static void StartBatch();
 		static void NextBatch();
+		static float ResolveTextureSlot(const Ref<Texture>& texture);
 	};
 }

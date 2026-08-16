@@ -10,6 +10,11 @@
 
 namespace IzEngine
 {
+	class ISerializable;
+
+	template <class T>
+	concept IsSerializable = std::is_base_of_v<ISerializable, T>;
+
 	class API ISerializable
 	{
 	public:
@@ -40,7 +45,7 @@ namespace IzEngine
 		requires IsSerializable<T>
 		static inline void To(nlohmann::json& json, const T& value)
 		{
-			value.Serialize(json);
+			const_cast<T&>(value).Serialize(json);
 		}
 
 		template <typename T>
@@ -60,9 +65,6 @@ namespace IzEngine
 		ISerializable() = default;
 		virtual ~ISerializable() = default;
 	};
-
-	template <class T>
-	concept IsSerializable = std::is_base_of_v<ISerializable, T>;
 }
 
 #ifdef NLOHMANN_JSON_FROM

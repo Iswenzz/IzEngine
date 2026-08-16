@@ -14,6 +14,7 @@ namespace IzEngine
 		static inline bool Open = false;
 		static inline bool IsCapture = true;
 		static inline bool IsMinimized = false;
+		static inline std::optional<bool> AppliedCapture;
 
 		static void Initialize(const std::string& name);
 		static void Swap(void* handle);

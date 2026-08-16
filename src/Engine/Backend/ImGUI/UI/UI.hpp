@@ -37,6 +37,8 @@ namespace IzEngine
 
 		static void OpenMenu();
 		static void OpenWindow(const std::string& name);
+		static Ref<Frame> GetWindow(const std::string& name);
+		static bool* GetWindowState(const std::string& name);
 
 		template <class T = Frame>
 		static void Add()
