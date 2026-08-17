@@ -242,18 +242,21 @@ namespace IzEngine
 
 	void Browser::Lock()
 	{
-		if (!TextureLocks.empty())
+		if (LockDepth++)
 			return;
 
 		Paused = true;
 
 		for (const auto& instance : Instances)
 			if (instance)
-				TextureLocks.emplace_back(instance->TextureMutex);
+				TextureLocks.push_back({ instance, std::unique_lock(instance->TextureMutex) });
 	}
 
 	void Browser::Unlock()
 	{
+		if (!LockDepth || --LockDepth)
+			return;
+
 		TextureLocks.clear();
 		Paused = false;
 	}

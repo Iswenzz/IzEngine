@@ -59,6 +59,12 @@ namespace IzEngine
 		IMPLEMENT_REFCOUNTING(BrowserClient);
 	};
 
+	struct BrowserLock
+	{
+		Ref<BrowserInstance> Instance;
+		std::unique_lock<std::mutex> Lock;
+	};
+
 	class API Browser
 	{
 	public:
@@ -87,6 +93,7 @@ namespace IzEngine
 		static void SetURL(const Ref<BrowserInstance>& instance, const std::string& url);
 
 	private:
-		static inline std::vector<std::unique_lock<std::mutex>> TextureLocks;
+		static inline std::vector<BrowserLock> TextureLocks;
+		static inline int LockDepth = 0;
 	};
 }
