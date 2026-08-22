@@ -298,10 +298,12 @@ namespace ImGui
 		draw->AddText(position + vec2{ size.x, -radius }, color, label.c_str());
 	}
 
-	bool IsResizing()
+	bool IsResizing(ImGuiWindow* window)
 	{
-		ImGuiWindow* window = GetCurrentWindow();
 		ImGuiID active = GetActiveID();
+
+		if (!window || !active)
+			return false;
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -313,6 +315,11 @@ namespace ImGui
 		return false;
 	}
 
+	bool IsResizing()
+	{
+		return IsResizing(GetCurrentWindow());
+	}
+
 	bool IsMoving()
 	{
 		if (glm::length2(vec2(GetMouseDragDelta())) && (IsWindowHovered() || IsResizing()))
@@ -321,5 +328,19 @@ namespace ImGui
 			return true;
 		}
 		return false;
+	}
+
+	// True while ImGui itself owns the window rect: the user is dragging the window or a resize grip.
+	// Unlike IsMoving this holds for the whole interaction, including frames where the mouse is still.
+	bool IsInteracting(ImGuiWindow* window)
+	{
+		if (!window)
+			return false;
+
+		const ImGuiContext& g = *GImGui;
+		if (g.MovingWindow && g.MovingWindow->RootWindow == window->RootWindow)
+			return true;
+
+		return IsResizing(window);
 	}
 }

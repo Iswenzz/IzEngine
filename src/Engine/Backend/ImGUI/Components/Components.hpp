@@ -48,6 +48,8 @@ namespace ImGui
 	API void Rainbow(const vec2& position, const vec2& size);
 	API void Markdown(const std::string& markdown);
 	API void LoadingIndicator(const std::string& label, const vec2& pos, const ImU32& color, bool state);
+	API bool IsResizing(ImGuiWindow* window);
 	API bool IsResizing();
 	API bool IsMoving();
+	API bool IsInteracting(ImGuiWindow* window);
 }

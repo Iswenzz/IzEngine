@@ -67,9 +67,19 @@ namespace IzEngine
 		RenderPosition = position;
 		RenderSize = size;
 
+		// Placing the window before Begin, decorations included. Moving it afterwards leaves the
+		// first frame drawn wherever ImGui last had the window. While the user drags or resizes it
+		// ImGui owns the rect, so the frame only reads it back.
+		const bool interacting = ImGui::IsInteracting(ImGui::FindWindowByName(Name.c_str()));
+
+		if (!interacting)
+		{
+			ImGui::SetNextWindowPos(position);
+			ImGui::SetNextWindowSize(size);
+		}
 		ImGui::Begin(Name.c_str(), &Open, Flags);
 
-		if (ImGui::IsMoving())
+		if (interacting)
 		{
 			position = ImGui::GetWindowPos();
 			size = ImGui::GetWindowSize();
@@ -77,11 +87,6 @@ namespace IzEngine
 			UI::Screen.Reverse(position, size, HorizontalAlign, VerticalAlign);
 			Position = position;
 			Size = size;
-		}
-		else
-		{
-			ImGui::SetWindowPos(position);
-			ImGui::SetWindowSize(size);
 		}
 		if (Designer)
 			ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
