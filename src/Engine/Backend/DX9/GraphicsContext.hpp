@@ -24,8 +24,6 @@ namespace IzEngine
 		static void RestoreState();
 
 	private:
-		static inline IDirect3D9Ex* D3DEX = nullptr;
-		static inline IDirect3DDevice9Ex* DeviceEx = nullptr;
 		static inline Scope<DX9StateBlock> StateBlock = nullptr;
 		static inline bool PendingResize;
 		static inline vec2 PendingSize;

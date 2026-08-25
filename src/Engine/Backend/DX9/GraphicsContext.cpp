@@ -12,8 +12,12 @@ namespace IzEngine
 
 		if (!Swapped)
 		{
-			Direct3DCreate9Ex(D3D_SDK_VERSION, &D3DEX);
-			D3DEX->QueryInterface(__uuidof(IDirect3D9), reinterpret_cast<void**>(&D3D));
+			D3D = Direct3DCreate9(D3D_SDK_VERSION);
+			if (!D3D)
+			{
+				Log::WriteLine(Channel::Error, "Failed to create the Direct3D 9 interface.");
+				return;
+			}
 
 			PresentParameters = { 0 };
 			PresentParameters.Windowed = TRUE;
@@ -23,9 +27,14 @@ namespace IzEngine
 			PresentParameters.BackBufferWidth = static_cast<UINT>(Window::Size.x);
 			PresentParameters.BackBufferHeight = static_cast<UINT>(Window::Size.y);
 
-			D3DEX->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(Window::Handle),
-				D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &PresentParameters, nullptr, &DeviceEx);
-			DeviceEx->QueryInterface(__uuidof(IDirect3DDevice9), reinterpret_cast<void**>(&Device));
+			if (FAILED(D3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, reinterpret_cast<HWND>(Window::Handle),
+					D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, &PresentParameters, &Device)))
+			{
+				Log::WriteLine(Channel::Error, "Failed to create the Direct3D 9 device.");
+				D3D->Release();
+				D3D = nullptr;
+				return;
+			}
 		}
 		StateBlock = CreateScope<DX9StateBlock>();
 	}
@@ -45,16 +54,6 @@ namespace IzEngine
 			{
 				D3D->Release();
 				D3D = nullptr;
-			}
-			if (DeviceEx)
-			{
-				DeviceEx->Release();
-				DeviceEx = nullptr;
-			}
-			if (D3DEX)
-			{
-				D3DEX->Release();
-				D3DEX = nullptr;
 			}
 		}
 	}
