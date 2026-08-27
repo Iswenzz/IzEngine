@@ -54,6 +54,12 @@ namespace IzEngine
 		{
 			Remove();
 			Address = address;
+
+			if (!Address)
+			{
+				Log::WriteLine(Channel::Error, "No address to retarget a hook to; it stays off.");
+				return;
+			}
 			Install();
 		}
 
