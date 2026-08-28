@@ -19,8 +19,8 @@ namespace IzEngine::UC
 		colors[ImGuiCol_TextDisabled] = vec4(0.52f, 0.54f, 0.59f, 0.80f);
 		colors[ImGuiCol_WindowBg] = vec4(0.09f, 0.09f, 0.11f, 0.71f);
 		colors[ImGuiCol_ChildBg] = vec4(0.00f, 0.00f, 0.00f, 0.12f);
-		colors[ImGuiCol_PopupBg] = vec4(0.18f, 0.19f, 0.20f, 0.60f);
-		colors[ImGuiCol_Border] = vec4(0.15f, 0.17f, 0.19f, 0.29f);
+		colors[ImGuiCol_PopupBg] = vec4(0.07f, 0.07f, 0.09f, 0.98f);
+		colors[ImGuiCol_Border] = vec4(0.35f, 0.37f, 0.42f, 0.60f);
 		colors[ImGuiCol_BorderShadow] = vec4(0.00f, 0.00f, 0.00f, 0.24f);
 		colors[ImGuiCol_FrameBg] = vec4(0.05f, 0.05f, 0.05f, 0.78f);
 		colors[ImGuiCol_FrameBgHovered] = vec4(0.15f, 0.16f, 0.20f, 0.54f);
@@ -103,7 +103,7 @@ namespace IzEngine::UC
 		Style.GrabMinSize = 12;
 		Style.WindowBorderSize = 0;
 		Style.ChildBorderSize = 0;
-		Style.PopupBorderSize = 0;
+		Style.PopupBorderSize = 1;
 		Style.FrameBorderSize = 0;
 		Style.TabBorderSize = 0;
 		Style.SeparatorTextBorderSize = 1;
