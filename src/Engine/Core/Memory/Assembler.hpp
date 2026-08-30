@@ -17,6 +17,8 @@ namespace arch = asmjit::aarch64;
 	#endif
 #endif
 
+using namespace asmjit;
+
 #define ASM_FUNCTION(function) void ASM_##function(asmjit::CodeHolder& code, arch::Assembler& a)
 #define ASM_LOAD(function) Assembler::NewCode(ASM_##function)
 #define ASM_TRAMPOLINE(hook) arch::ptr(uintptr_t(&hook.Trampoline))
