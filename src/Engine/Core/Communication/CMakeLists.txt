@@ -1,5 +1,5 @@
 target_sources(IzEngine PRIVATE
-	Actions.hpp
-	Actions.cpp
+	Dispatcher.hpp
+	Dispatcher.cpp
 	Event.hpp
 	Events.hpp)

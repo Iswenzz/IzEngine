@@ -47,8 +47,6 @@ namespace IzEngine
 		RenderCommand::Begin();
 		Draw2D::Begin(Camera2D);
 		UI::Begin();
-
-		Actions::Submit();
 	}
 
 	void Renderer::End()
