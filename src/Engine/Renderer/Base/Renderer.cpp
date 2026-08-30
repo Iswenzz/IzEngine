@@ -54,8 +54,6 @@ namespace IzEngine
 		UI::End();
 		Draw2D::End();
 		RenderCommand::End();
-
-		Input::Reset();
 	}
 
 	void Renderer::Frame()

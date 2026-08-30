@@ -16,7 +16,10 @@ void Application::Initialize()
 	UI::OpenWindow("Memory");
 
 	while (Window::Frame())
+	{
 		Renderer::Frame();
+		Input::Reset();
+	}
 
 	Shutdown();
 }
