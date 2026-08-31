@@ -66,8 +66,8 @@ namespace IzEngine
 				break;
 
 			const uintptr_t regionEnd = reinterpret_cast<uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
-			const bool readable = mbi.State == MEM_COMMIT && !(mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD))
-				&& mbi.Protect != 0;
+			const bool readable =
+				mbi.State == MEM_COMMIT && !(mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD)) && mbi.Protect != 0;
 
 			if (!readable)
 			{

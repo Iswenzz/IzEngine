@@ -6,7 +6,6 @@
 #include "Engine/Renderer/Base/Texture.hpp"
 #include "Engine/Renderer/Camera/Camera.hpp"
 
-
 namespace IzEngine
 {
 	struct Draw2DStatistics
