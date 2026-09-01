@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Backend/ImGUI/Components/Frame.hpp"
 #include "Engine/Core/Common.hpp"
 #include "Engine/Renderer/Base/Texture.hpp"
 
@@ -9,6 +10,22 @@
 namespace IzEngine
 {
 	class BrowserClient;
+	struct BrowserInstance;
+
+	class API BrowserFrame : public Frame
+	{
+	public:
+		BrowserInstance* Instance = nullptr;
+		vec2 PagePosition;
+		vec2 PageSize;
+		bool Hovered = false;
+		bool Focused = false;
+
+		BrowserFrame();
+		virtual ~BrowserFrame() = default;
+
+		void OnRender() override;
+	};
 
 	struct BrowserInstance
 	{
@@ -18,8 +35,7 @@ namespace IzEngine
 		CefRefPtr<BrowserClient> Client;
 		Ref<Texture> Texture;
 		std::mutex TextureMutex;
-		vec2 Position = { 20.0f, 20.0f };
-		vec2 Size = { 500.0f, 300.0f };
+		Ref<BrowserFrame> Window = CreateRef<BrowserFrame>();
 		vec2 FrameSize = { 1920.0f, 1080.0f };
 		bool Open = false;
 		bool Show = true;

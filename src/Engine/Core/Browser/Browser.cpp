@@ -59,9 +59,10 @@ namespace IzEngine
 		auto instance = CreateRef<BrowserInstance>();
 		instance->ID = id;
 		instance->URL = url;
-		instance->Position = position;
-		instance->Size = size;
 		instance->FrameSize = frameSize;
+		instance->Window->Instance = instance.get();
+		instance->Window->Name = id;
+		instance->Window->SetRect(position, size);
 
 		Instances.push_back(instance);
 		Start(instance);
@@ -150,15 +151,45 @@ namespace IzEngine
 		instance->Open = false;
 	}
 
+	BrowserFrame::BrowserFrame()
+	{
+		SetRectAlignment(Horizontal::Left, Vertical::Top);
+		SetFlags(ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	}
+
+	void BrowserFrame::OnRender()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+		Begin();
+		ImGui::PopStyleVar();
+
+		PagePosition = ImGui::GetCursorScreenPos();
+		PageSize = ImGui::GetContentRegionAvail();
+		Hovered = ImGui::IsWindowHovered() && ImGui::IsMouseHoveringRect(PagePosition, PagePosition + PageSize, false);
+		Focused = ImGui::IsWindowFocused();
+
+		std::scoped_lock lock(Instance->TextureMutex);
+		ImGui::GetWindowDrawList()->AddRectFilled(PagePosition, PagePosition + PageSize, IM_COL32_BLACK);
+
+		if (Instance->Texture)
+			ImGui::Image(reinterpret_cast<ImTextureID>(Instance->Texture->GetHandle()), PageSize);
+
+		End();
+	}
+
 	void Browser::Frame(const Ref<BrowserInstance>& instance)
 	{
 		if (!instance->Open || !instance->Show || !instance->Browser)
 			return;
 
+		instance->Window->OnRender();
+
 		auto host = instance->Browser->GetHost();
-		vec2 position = instance->Position;
-		vec2 size = instance->Size;
-		UI::Screen.Apply(position, size, Horizontal::Left, Vertical::Top);
+		const vec2 position = instance->Window->PagePosition;
+		const vec2 size = instance->Window->PageSize;
+
+		if (size.x <= 0.0f || size.y <= 0.0f)
+			return;
 
 		uint32_t modifiers = 0;
 		if (Input::IsDown(Key_Ctrl) || Input::IsDown(Key_RightCtrl))
@@ -168,8 +199,8 @@ namespace IzEngine
 		if (Input::IsDown(Key_Alt) || Input::IsDown(Key_RightAlt))
 			modifiers |= EVENTFLAG_ALT_DOWN;
 
-		vec2 relative = Mouse::Position - position;
-		if (Math::Contains(relative, size))
+		const vec2 relative = Mouse::Position - position;
+		if (instance->Window->Hovered)
 		{
 			CefMouseEvent mouseEvent;
 			mouseEvent.x = static_cast<int>(relative.x / size.x * instance->FrameSize.x);
@@ -189,6 +220,11 @@ namespace IzEngine
 			if (Mouse::ScrollDelta)
 				host->SendMouseWheelEvent(mouseEvent, 0, Mouse::ScrollDelta * 120);
 		}
+
+		// Keys only reach the page while its window holds the focus, so typing in the rest of the
+		// menu does not leak into it.
+		if (!instance->Window->Focused)
+			return;
 
 		for (const auto& info : Input::Inputs)
 		{
@@ -224,11 +260,6 @@ namespace IzEngine
 				host->SendKeyEvent(keyEvent);
 			}
 		}
-		std::scoped_lock lock(instance->TextureMutex);
-		Draw2D::DrawQuad(vec3(position, 0), size, vec4(0, 0, 0, 1));
-
-		if (instance->Texture)
-			Draw2D::DrawQuad(vec3(position, 0), size, 0, instance->Texture, vec4(1));
 	}
 
 	void Browser::Frame()
