@@ -21,6 +21,7 @@ namespace IzEngine
 		void OnAfterReset() override;
 
 		vec2 GetSize() const override;
+		void* GetHandle() const override;
 
 		static Ref<Texture> Create(const TextureSpecification& spec);
 	};

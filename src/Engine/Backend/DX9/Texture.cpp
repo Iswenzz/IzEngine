@@ -146,4 +146,9 @@ namespace IzEngine
 		Data->GetLevelDesc(0, &desc);
 		return { (float)desc.Width, (float)desc.Height };
 	}
+
+	void* DX9Texture::GetHandle() const
+	{
+		return Data;
+	}
 }
