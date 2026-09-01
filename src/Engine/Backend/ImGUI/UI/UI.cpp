@@ -36,6 +36,15 @@ namespace IzEngine
 		Setup();
 
 		Active = true;
+
+		static bool welcomed = false;
+		if (!welcomed)
+		{
+			welcomed = true;
+			const auto message = std::format("{} {} — Press {} to open the menu", APPLICATION_ID, APPLICATION_VERSION,
+				Input::GetName(KeyOpen.Input));
+			Notifications::Push(message, NotificationLevel::Info, 6.0f, 2.0f);
+		}
 	}
 
 	void UI::UpdateContext()
