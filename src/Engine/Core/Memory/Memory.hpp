@@ -14,6 +14,9 @@ namespace IzEngine
 		static void JMP(uintptr_t address, uintptr_t to, int size = 5);
 		static void JMPABS(uintptr_t address, uintptr_t to, int size = 14);
 		static void CALL(uintptr_t address, uintptr_t to, int size = 5);
+		static bool CALLPTR(uintptr_t address, uintptr_t to, int size = 6);
+
+		static void* Reserve(uintptr_t anchor, size_t size);
 
 		static void** FindImport(uintptr_t base, const char* dllName, const char* funcName);
 		static void* PatchImport(uintptr_t base, const char* dllName, const char* funcName, void* detour);

@@ -100,6 +100,86 @@ namespace IzEngine
 		Write(address, bytes);
 	}
 
+	// The six byte middle ground between CALL and JMPABS: an indirect call through a pointer parked
+	// close enough for the operand to reach it, so the target is absolute where CALL's rel32 would
+	// truncate. A call site with live code behind it rarely has the fourteen bytes JMPABS wants.
+	bool Memory::CALLPTR(uintptr_t address, uintptr_t to, int size)
+	{
+		IZ_ASSERT(size >= 6, "CALLPTR needs at least 6 bytes.");
+
+		auto* slot = static_cast<uintptr_t*>(Reserve(address, sizeof(uintptr_t)));
+		if (!slot)
+			return false;
+
+		*slot = to;
+
+		const intptr_t delta = reinterpret_cast<intptr_t>(slot) - static_cast<intptr_t>(address + 6);
+		if (delta < INT32_MIN || delta > INT32_MAX)
+			return false;
+
+		const int32_t rel = static_cast<int32_t>(delta);
+		std::string bytes("\xFF\x15", 2);
+		bytes.append(reinterpret_cast<const char*>(&rel), sizeof(rel));
+
+		NOP(address, size);
+		Write(address, bytes);
+		return true;
+	}
+
+	// Memory within a rel32 operand's reach of the anchor. One region is kept per anchor and carved up:
+	// VirtualAlloc reserves at allocation granularity, so a region per pointer would spend 64 KB on
+	// eight bytes. Reservations are permanent - they back patched code that lives as long as the process.
+	void* Memory::Reserve(uintptr_t anchor, size_t size)
+	{
+		struct Region
+		{
+			uintptr_t Base;
+			size_t Used;
+			size_t Size;
+		};
+		static std::vector<Region> regions;
+
+		size = (size + sizeof(uintptr_t) - 1) & ~(sizeof(uintptr_t) - 1);
+
+		// Half the range on each side, so a slot handed out now still reaches an anchor patched later.
+		const auto reaches = [anchor](uintptr_t at)
+		{
+			const intptr_t delta = static_cast<intptr_t>(at) - static_cast<intptr_t>(anchor);
+			return delta >= INT32_MIN / 2 && delta <= INT32_MAX / 2;
+		};
+
+		for (Region& region : regions)
+		{
+			if (region.Size - region.Used < size || !reaches(region.Base + region.Used))
+				continue;
+
+			void* slot = reinterpret_cast<void*>(region.Base + region.Used);
+			region.Used += size;
+			return slot;
+		}
+
+		SYSTEM_INFO info = {};
+		GetSystemInfo(&info);
+
+		const uintptr_t granularity = info.dwAllocationGranularity;
+		const uintptr_t window = 0x7FFF0000;
+		uintptr_t at = anchor > window ? anchor - window : granularity;
+
+		// VirtualAlloc answers at or above the address asked for, so the search walks up from the bottom
+		// of the window until a free region lands inside it.
+		for (at -= at % granularity; at < anchor; at += granularity)
+		{
+			void* page
+				= VirtualAlloc(reinterpret_cast<void*>(at), granularity, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+			if (!page)
+				continue;
+
+			regions.push_back({ reinterpret_cast<uintptr_t>(page), size, granularity });
+			return page;
+		}
+		return nullptr;
+	}
+
 	void** Memory::FindImport(uintptr_t base, const char* dllName, const char* funcName)
 	{
 		IZ_ASSERT(base, "Base nullptr.");
