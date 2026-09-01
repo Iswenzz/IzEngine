@@ -160,12 +160,16 @@ namespace IzEngine::UC
 		ImPlot::GetStyle() = PlotStyle;
 	}
 
-	void Themes::OnRender()
+	void Themes::Initialize()
+	{
+		Apply();
+	}
+
+	void Themes::Content()
 	{
 		Style = ImGui::GetStyle();
 		PlotStyle = ImPlot::GetStyle();
 
-		Begin();
 		if (ImGui::Button("Default Theme"))
 			Default();
 
@@ -174,6 +178,12 @@ namespace IzEngine::UC
 
 		ImGui::Separator();
 		ImPlot::ShowStyleEditor();
+	}
+
+	void Themes::OnRender()
+	{
+		Begin();
+		Content();
 		End();
 	}
 }

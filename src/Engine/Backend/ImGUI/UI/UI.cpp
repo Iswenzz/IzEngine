@@ -59,6 +59,7 @@ namespace IzEngine
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.IniFilename = nullptr;
+		io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 		static auto openSans = VFS::GetFile("Fonts/OpenSans-Regular.ttf");
 		static auto faRegular = VFS::GetFile("Fonts/fa-regular-400.ttf");

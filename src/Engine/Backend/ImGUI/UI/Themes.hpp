@@ -12,6 +12,8 @@ namespace IzEngine::UC
 		Themes();
 		virtual ~Themes() = default;
 
+		void Initialize() override;
+		void Content();
 		void OnRender() override;
 
 	private:
