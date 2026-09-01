@@ -1,6 +1,7 @@
 #include "Log.hpp"
 
 #include "Engine/Core/Console/Console.hpp"
+#include "Engine/Core/System/System.hpp"
 
 namespace IzEngine
 {
@@ -8,8 +9,12 @@ namespace IzEngine
 	{
 		static std::ofstream file = []
 		{
-			std::ofstream opened(APPLICATION_ID ".log", std::ios::app);
-			opened << "\n===== session start =====\n" << std::flush;
+			std::ofstream opened;
+			if (!System::IsDebug())
+				return opened;
+
+			opened.open(APPLICATION_ID ".log", std::ios::app);
+			opened << "\nIzEngine started\n" << std::flush;
 			return opened;
 		}();
 		return file;
@@ -42,7 +47,6 @@ namespace IzEngine
 			if (File().is_open())
 				File() << Plain(msg) << std::flush;
 		}
-
 		if (!Console::Handle)
 			return;
 

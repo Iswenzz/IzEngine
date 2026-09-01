@@ -130,6 +130,12 @@ namespace IzEngine
 		const auto path = Environment::Path(Directory::Reports) / (ID.String + "_stacktrace.log");
 		std::ofstream file(path);
 
+		// Written into the report rather than only logged: the log file is a debug build only, so
+		// this is where the code has to be for a crash that happened on a player machine.
+		const EXCEPTION_RECORD* record = ex->ExceptionRecord;
+		file << std::format("Exception 0x{:X} at 0x{:X}\n\n", record ? record->ExceptionCode : 0,
+			record ? reinterpret_cast<uintptr_t>(record->ExceptionAddress) : 0);
+
 		while (StackWalk64(machine, process, thread, &stack, &copy, nullptr, SymFunctionTableAccess64,
 			SymGetModuleBase64, nullptr))
 		{
