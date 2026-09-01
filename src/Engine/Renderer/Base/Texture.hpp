@@ -40,6 +40,7 @@ namespace IzEngine
 		virtual void Unbind(uint32_t slot) const = 0;
 
 		virtual vec2 GetSize() const = 0;
+		virtual void* GetHandle() const = 0;
 
 		static Ref<Texture> Load(const std::string& path);
 		static Ref<Texture> Create(const TextureSpecification& spec);
