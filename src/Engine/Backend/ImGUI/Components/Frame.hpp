@@ -12,6 +12,7 @@ namespace IzEngine
 		vec2 RenderPosition;
 		vec2 RenderSize;
 		bool Open = false;
+		bool Bounded = true;
 		bool Designer = false;
 
 		ImGuiWindowFlags Flags = ImGuiWindowFlags_NoCollapse;
@@ -31,6 +32,8 @@ namespace IzEngine
 		virtual void SetDesigner(bool state);
 		virtual void SetFlags(ImGuiWindowFlags flags);
 
+		virtual bool Bound(vec2& position, vec2& size) const;
+		virtual void Store(vec2 position, vec2 size);
 		virtual void Menu(const std::string& label, bool open = false);
 		virtual void Begin();
 		virtual void End();

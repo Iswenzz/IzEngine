@@ -44,6 +44,32 @@ namespace IzEngine
 		Flags = flags;
 	}
 
+	// Keeps the frame inside the screen. A window dragged past an edge is unreachable afterwards,
+	// and a saved layout outlives the resolution it was made at.
+	bool Frame::Bound(vec2& position, vec2& size) const
+	{
+		const vec2 screen = UI::Screen.Size;
+		if (!Bounded || screen.x <= 0.0f || screen.y <= 0.0f)
+			return false;
+
+		const vec2 bounded = glm::min(size, screen);
+		const vec2 anchor = glm::clamp(position, vec2(0.0f), screen - bounded);
+
+		const bool changed = anchor != position || bounded != size;
+		position = anchor;
+		size = bounded;
+
+		return changed;
+	}
+
+	// Takes a rect back out of screen space into the aligned one the layout is saved in.
+	void Frame::Store(vec2 position, vec2 size)
+	{
+		UI::Screen.Reverse(position, size, HorizontalAlign, VerticalAlign);
+		Position = position;
+		Size = size;
+	}
+
 	void Frame::Menu(const std::string& label, bool open)
 	{
 		if (!ImGui::CollapsingHeader(label, open))
@@ -64,30 +90,35 @@ namespace IzEngine
 		vec2 size = Size;
 
 		UI::Screen.Apply(position, size, HorizontalAlign, VerticalAlign);
+
+		// Placing the window before Begin, decorations included. Correcting it afterwards only moves
+		// the contents: the title bar and the background are already in the draw list by then.
+		ImGuiWindow* window = ImGui::FindWindowByName(Name.c_str());
+		const bool interacting = ImGui::IsInteracting(window);
+
+		// A drag is applied to the window before Begin, so the rect about to be drawn is read from
+		// there rather than from the stored layout, bounded, and handed straight back.
+		if (interacting)
+		{
+			position = window->Pos;
+			size = window->SizeFull;
+		}
+		if (Bound(position, size) || interacting)
+			Store(position, size);
+
+		ImGui::SetNextWindowPos(position);
+		if (!interacting)
+			ImGui::SetNextWindowSize(size);
+
+		// A resize grip is only handled inside Begin, past any size set here, so the size it may
+		// reach is capped instead.
+		if (Bounded && UI::Screen.Size.x > 0.0f && UI::Screen.Size.y > 0.0f)
+			ImGui::SetNextWindowSizeConstraints(vec2(0.0f), UI::Screen.Size);
+
 		RenderPosition = position;
 		RenderSize = size;
 
-		// Placing the window before Begin, decorations included. Moving it afterwards leaves the
-		// first frame drawn wherever ImGui last had the window. While the user drags or resizes it
-		// ImGui owns the rect, so the frame only reads it back.
-		const bool interacting = ImGui::IsInteracting(ImGui::FindWindowByName(Name.c_str()));
-
-		if (!interacting)
-		{
-			ImGui::SetNextWindowPos(position);
-			ImGui::SetNextWindowSize(size);
-		}
 		ImGui::Begin(Name.c_str(), &Open, Flags);
-
-		if (interacting)
-		{
-			position = ImGui::GetWindowPos();
-			size = ImGui::GetWindowSize();
-
-			UI::Screen.Reverse(position, size, HorizontalAlign, VerticalAlign);
-			Position = position;
-			Size = size;
-		}
 		if (Designer)
 			ImGui::Movable(ID, Position, Size, RenderPosition, RenderSize);
 	}

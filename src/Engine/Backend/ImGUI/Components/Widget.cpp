@@ -6,6 +6,7 @@ namespace IzEngine
 	{
 		SetRect(20, 100, 200, 100);
 		SetRectAlignment(Horizontal::Left, Vertical::Top);
+		Bounded = false;
 		SetDesigner(true);
 		SetFlags(ImGuiWindowFlags_Widget);
 	}
