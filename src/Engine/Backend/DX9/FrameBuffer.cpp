@@ -151,10 +151,10 @@ namespace IzEngine
 		DX9GraphicsContext::Device->Clear(0, nullptr, D3DCLEAR_TARGET, static_cast<D3DCOLOR>(value), 1.0f, 0);
 	}
 
-	uint32_t DX9FrameBuffer::GetColorAttachmentID(uint32_t index) const
+	uintptr_t DX9FrameBuffer::GetColorAttachmentID(uint32_t index) const
 	{
 		IZ_ASSERT(index < ColorAttachments.size(), "Attachment index out of range.");
-		return reinterpret_cast<uint32_t>(ColorAttachments[index]);
+		return reinterpret_cast<uintptr_t>(ColorAttachments[index]);
 	}
 
 	const FrameBufferSpecification& DX9FrameBuffer::GetSpecification() const

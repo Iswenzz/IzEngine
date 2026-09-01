@@ -49,7 +49,7 @@ namespace IzEngine
 		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) = 0;
 
 		virtual void ClearAttachment(uint32_t attachmentIndex, int value) = 0;
-		virtual uint32_t GetColorAttachmentID(uint32_t index = 0) const = 0;
+		virtual uintptr_t GetColorAttachmentID(uint32_t index = 0) const = 0;
 		virtual const FrameBufferSpecification& GetSpecification() const = 0;
 
 		static Ref<FrameBuffer> Create(const FrameBufferSpecification& spec);

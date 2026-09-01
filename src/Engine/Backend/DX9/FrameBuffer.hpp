@@ -18,7 +18,7 @@ namespace IzEngine
 		int ReadPixel(uint32_t attachmentIndex, int x, int y) override;
 
 		void ClearAttachment(uint32_t attachmentIndex, int value) override;
-		uint32_t GetColorAttachmentID(uint32_t index = 0) const override;
+		uintptr_t GetColorAttachmentID(uint32_t index = 0) const override;
 		const FrameBufferSpecification& GetSpecification() const override;
 
 	private:
