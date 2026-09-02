@@ -14,12 +14,21 @@ namespace IzEngine::UC
 
 	void Consent::Initialize()
 	{
-		Open = !Crash::Answered();
-		if (!Open)
+		Open = false;
+	}
+
+	void Consent::Prompt()
+	{
+		if (Crash::Answered())
 			return;
 
+		const auto frame = std::dynamic_pointer_cast<Consent>(UI::GetWindow("Crash Reports"));
+		if (!frame || frame->Open)
+			return;
+
+		frame->Open = true;
 		UI::Open = true;
-		UI::Modal = this;
+		UI::Modal = frame.get();
 	}
 
 	void Consent::OnEvent(Event& event)
