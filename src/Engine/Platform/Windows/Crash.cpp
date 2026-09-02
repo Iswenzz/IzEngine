@@ -4,165 +4,128 @@
 #include "Engine/Core/System/Crash.hpp"
 #include "Engine/Core/System/Environment.hpp"
 
-#include <DbgHelp.h>
+#include <sentry.h>
 #include <csignal>
 #include <exception>
-#include <fstream>
 
 namespace IzEngine
 {
+	// How long a dump copied out of the database is kept. Crashpad has its own policy for the
+	// database itself; this is only about the copies.
+	constexpr int RetentionDays = 30;
+
 	static LPTOP_LEVEL_EXCEPTION_FILTER WINAPI LockedSetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER)
 	{
 		return nullptr;
 	}
 
-	void Crash::Setup()
+	void Crash::Initialize()
 	{
-		SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
-		SetUnhandledExceptionFilter(reinterpret_cast<LPTOP_LEVEL_EXCEPTION_FILTER>(&Crash::ExceptionHandler));
+		// SEM_NOGPFAULTERRORBOX is deliberately not set: it turns Windows Error Reporting off for
+		// the process, and the WER module is what catches the fast fail crashes that never reach an
+		// exception filter at all.
+		SetErrorMode(SEM_FAILCRITICALERRORS);
 
-		// Reserve stack so the handler can still run after a stack overflow.
+		// Reserve stack so the crash path can still run after a stack overflow.
 		ULONG stackGuarantee = 32 * 1024;
 		SetThreadStackGuarantee(&stackGuarantee);
 
-		// Route CRT failure paths (abort, terminate, pure virtual call, invalid parameter)
-		// into the same handler so they also produce dumps.
+		// Route the CRT failure paths (abort, terminate, pure virtual call) into an exception, which
+		// is the only thing the handler sees.
 		signal(SIGABRT, [](int) { RaiseException(0xE0000001, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
 		std::set_terminate([] { RaiseException(0xE0000002, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
 
-		// Prevent anyone from replacing the filter after us.
-		Patch(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)));
+		Sweep();
+
+		const auto database = Environment::Path(Directory::Reports) / ".sentry";
+		const auto handler = Environment::Path(Directory::Bin) / "crashpad_handler.exe";
+
+		sentry_options_t* options = sentry_options_new();
+
+		// Measured: with no DSN crashpad still starts and still writes the dump, so a build from a
+		// fork keeps its crash reports locally and only loses the upload. That is worth having, so
+		// the handler comes up either way and only the consent prompt is tied to the DSN.
+		Uploads = !std::string_view(SENTRY_DSN).empty();
+		if (Uploads)
+			sentry_options_set_dsn(options, SENTRY_DSN);
+
+		sentry_options_set_database_pathw(options, database.wstring().c_str());
+		sentry_options_set_handler_pathw(options, handler.wstring().c_str());
+		sentry_options_set_release(options, APPLICATION_ID "@" APPLICATION_VERSION);
+
+		// Nothing is uploaded before the player has answered the prompt. The dump is still written
+		// in the meantime; it simply waits in the database until consent is given or revoked.
+		sentry_options_set_require_user_consent(options, 1);
+		Active = sentry_init(options) == 0;
+
+		// Crashpad owns the exception filter from here, so stop the game from replacing it.
+		if (Active)
+			Patch(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)));
 	}
 
-	long Crash::ExceptionHandler(void* exception)
+	void Crash::Shutdown()
 	{
-		// A crash inside the handler must not recurse forever.
-		if (Handling.test_and_set())
-			TerminateProcess(GetCurrentProcess(), static_cast<UINT>(-2));
-
-		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
-		ID = UUID();
-
-		// Write the minidump first: it only needs a file handle and dbghelp,
-		// while logging/stacktrace allocate and can fail on a corrupted heap.
-		MiniDump(ex);
-		StackTrace(ex);
-		Log::WriteLine(Channel::Error, "The program has crashed with code: {:X}",
-			ex->ExceptionRecord ? ex->ExceptionRecord->ExceptionCode : 0);
-
-		// exit() runs atexit/static destructors in a corrupted process and can
-		// hang or crash again before the dump is flushed.
-		TerminateProcess(GetCurrentProcess(), static_cast<UINT>(-1));
-		return EXCEPTION_EXECUTE_HANDLER;
+		if (Active)
+			sentry_close();
 	}
 
-	void Crash::MiniDump(void* exception)
+	// Nothing to ask, and nothing to offer, when there is nowhere to send: the dumps stay on disk
+	// regardless of the answer.
+	bool Crash::Available()
 	{
-		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
-		const auto path = Environment::Path(Directory::Reports) / (ID.String + "_minidump.dmp");
-		const auto wpath = path.wstring();
-		HANDLE file = CreateFileW(wpath.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		return Active && Uploads;
+	}
 
-		if (file == INVALID_HANDLE_VALUE)
+	bool Crash::Answered()
+	{
+		return !Available() || sentry_user_consent_get() != SENTRY_USER_CONSENT_UNKNOWN;
+	}
+
+	bool Crash::Sending()
+	{
+		return Available() && sentry_user_consent_get() == SENTRY_USER_CONSENT_GIVEN;
+	}
+
+	void Crash::Consent(bool allow)
+	{
+		if (!Active)
 			return;
 
-		MINIDUMP_EXCEPTION_INFORMATION info = { 0 };
-		info.ThreadId = GetCurrentThreadId();
-		info.ExceptionPointers = ex;
-		info.ClientPointers = false;
-
-		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), file,
-			static_cast<MINIDUMP_TYPE>(MiniDumpNormal | MiniDumpWithIndirectlyReferencedMemory), &info, NULL, NULL);
-		FlushFileBuffers(file);
-		CloseHandle(file);
-
-		Log::WriteLine(Channel::Info, "Minidump: {}", path.string());
+		if (allow)
+			sentry_user_consent_give();
+		else
+			sentry_user_consent_revoke();
 	}
 
-	void Crash::StackTrace(void* exception)
+	void Crash::Sweep()
 	{
-		EXCEPTION_POINTERS* ex = reinterpret_cast<EXCEPTION_POINTERS*>(exception);
-		HANDLE process = GetCurrentProcess();
-		HANDLE thread = GetCurrentThread();
-		CONTEXT* ctx = ex->ContextRecord;
-		if (!ctx)
-			return;
-		CONTEXT copy = *ctx;
-		DWORD displacement = 0;
-		DWORD64 displacement64 = 0;
-		int machine = 0;
-		int frame = 0;
+		// Crashpad names dumps by its own uuid, buries them in the database layout and prunes them
+		// on its own schedule, so each one is copied out under the name the tooling reads.
+		const auto reports = Environment::Path(Directory::Reports);
+		const auto now = std::filesystem::file_time_type::clock::now();
+		std::error_code ec;
 
-		char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)] = { 0 };
-		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
-
-		char module[MAX_PATH] = { 0 };
-
-		STACKFRAME64 stack = { 0 };
-		stack.AddrPC.Mode = AddrModeFlat;
-		stack.AddrFrame.Mode = AddrModeFlat;
-		stack.AddrStack.Mode = AddrModeFlat;
-#if defined(PLATFORM_ARCH_X86)
-	#if defined(PLATFORM_32)
-		stack.AddrPC.Offset = ctx->Eip;
-		stack.AddrFrame.Offset = ctx->Ebp;
-		stack.AddrStack.Offset = ctx->Esp;
-		machine = IMAGE_FILE_MACHINE_I386;
-	#elif defined(PLATFORM_64)
-		stack.AddrPC.Offset = ctx->Rip;
-		stack.AddrFrame.Offset = ctx->Rbp;
-		stack.AddrStack.Offset = ctx->Rsp;
-		machine = IMAGE_FILE_MACHINE_AMD64;
-	#endif
-#elif defined(PLATFORM_ARCH_ARM)
-	#if defined(PLATFORM_64)
-		stack.AddrPC.Offset = ctx->Pc;
-		stack.AddrFrame.Offset = ctx->Fp;
-		stack.AddrStack.Offset = ctx->Sp;
-		machine = IMAGE_FILE_MACHINE_ARM64;
-	#endif
-#else
-	#error Unsupported platform
-#endif
-		SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
-		SymInitialize(process, nullptr, true);
-
-		const auto path = Environment::Path(Directory::Reports) / (ID.String + "_stacktrace.log");
-		std::ofstream file(path);
-
-		// Written into the report rather than only logged: the log file is a debug build only, so
-		// this is where the code has to be for a crash that happened on a player machine.
-		const EXCEPTION_RECORD* record = ex->ExceptionRecord;
-		file << std::format("Exception 0x{:X} at 0x{:X}\n\n", record ? record->ExceptionCode : 0,
-			record ? reinterpret_cast<uintptr_t>(record->ExceptionAddress) : 0);
-
-		while (StackWalk64(machine, process, thread, &stack, &copy, nullptr, SymFunctionTableAccess64,
-			SymGetModuleBase64, nullptr))
+		// A dump of a loaded game runs to tens of megabytes, and nothing else ever deletes these:
+		// crashpad prunes its own database, not the copies taken out of it.
+		for (const auto& entry : std::filesystem::directory_iterator(reports, ec))
 		{
-			symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-			symbol->MaxNameLen = MAX_SYM_NAME;
-			SymFromAddr(process, stack.AddrPC.Offset, &displacement64, symbol);
+			if (!entry.path().filename().string().ends_with("_minidump.dmp"))
+				continue;
 
-			DWORD64 moduleBase = SymGetModuleBase64(process, stack.AddrPC.Offset);
-			module[0] = 0;
-			GetModuleFileNameA(reinterpret_cast<HMODULE>(moduleBase), module, sizeof(module));
-
-			IMAGEHLP_LINE64 line = { 0 };
-			line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
-			std::string traceLine;
-
-			if (SymGetLineFromAddr64(process, stack.AddrPC.Offset, &displacement, &line))
-				traceLine = std::format(" {}+{} ", line.FileName, line.LineNumber);
-
-			file << std::format("{:>5}: {}.{}{}[0x{:X}]\n", frame++, module, symbol->Name, traceLine, symbol->Address);
-
-			if (frame > 256)
-				break;
+			const auto written = entry.last_write_time(ec);
+			if (!ec && now - written > std::chrono::days(RetentionDays))
+				std::filesystem::remove(entry.path(), ec);
 		}
-		file.flush();
-		SymCleanup(process);
 
-		Log::WriteLine(Channel::Info, "Stacktrace: {}", path.string());
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(reports / ".sentry", ec))
+		{
+			if (entry.path().extension() != ".dmp")
+				continue;
+
+			const auto copy = reports / (entry.path().stem().string() + "_minidump.dmp");
+			if (!std::filesystem::exists(copy, ec))
+				std::filesystem::copy_file(entry.path(), copy, ec);
+		}
 	}
 
 	void Crash::Patch(uintptr_t base)

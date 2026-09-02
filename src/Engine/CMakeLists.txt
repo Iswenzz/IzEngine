@@ -16,6 +16,7 @@ target_compile_definitions(IzEngine PUBLIC
 	$<$<BOOL:${ENABLE_API}>:ENABLE_API>
 	$<$<BOOL:${PLATFORM_WINDOWS}>:PLATFORM_WINDOWS>
 	$<$<BOOL:${GRAPHICS_API_DX9}>:GRAPHICS_API_DX9>
+	SENTRY_DSN="${SENTRY_DSN}"
 	CMAKE_BINARY_DIR="${CMAKE_BINARY_DIR}")
 
 target_link_libraries(IzEngine PUBLIC
@@ -27,6 +28,7 @@ target_link_libraries(IzEngine PUBLIC
     libzippp::libzippp
     nlohmann_json::nlohmann_json
     PolyHook_2::PolyHook_2
+    sentry::sentry
     $<$<BOOL:${BUILD_CEF}>:CEF::CEF>
     $<$<BOOL:${GRAPHICS_API_DX9}>:DirectX::SDK>
     $<$<BOOL:${PLATFORM_WINDOWS}>:DbgHelp>

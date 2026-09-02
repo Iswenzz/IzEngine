@@ -15,6 +15,7 @@ namespace IzEngine
 		static inline nlohmann::json Serialized;
 		static inline Bind KeyOpen;
 
+		static inline Frame* Modal = nullptr;
 		static inline bool Active = false;
 		static inline bool Open = false;
 		static inline bool DesignMode = false;

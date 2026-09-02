@@ -1,5 +1,6 @@
 #include "UI.hpp"
 
+#include "Consent.hpp"
 #include "Memory.hpp"
 #include "Themes.hpp"
 
@@ -30,6 +31,7 @@ namespace IzEngine
 		if (Serialized.contains("KeyOpen"))
 			KeyOpen = Serialized["KeyOpen"];
 
+		Add<UC::Consent>();
 		Add<UC::Themes>();
 		Add<UC::Memory>();
 
@@ -197,6 +199,11 @@ namespace IzEngine
 
 	void UI::Dispatch(Event& event)
 	{
+		if (Modal)
+		{
+			Modal->OnEvent(event);
+			return;
+		}
 		for (const auto& [_, frame] : Frames)
 			frame->OnEvent(event);
 	}

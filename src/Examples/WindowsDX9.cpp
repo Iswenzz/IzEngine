@@ -2,8 +2,8 @@
 
 void Application::Prepare()
 {
-	Crash::Setup();
 	Environment::Binary();
+	Crash::Initialize();
 }
 
 void Application::Initialize()

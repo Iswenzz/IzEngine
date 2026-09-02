@@ -1,19 +1,23 @@
 #pragma once
-#include "Engine/Core/Base/UUID.hpp"
 
 namespace IzEngine
 {
 	class Crash
 	{
 	public:
-		static void Setup();
-		static long STDCALL ExceptionHandler(void* exception);
-		static void MiniDump(void* exception);
-		static void StackTrace(void* exception);
+		static void Initialize();
+		static void Shutdown();
+
+		static bool Available();
+		static bool Answered();
+		static bool Sending();
+		static void Consent(bool allow);
+
+		static void Sweep();
 		static void Patch(uintptr_t base);
 
 	private:
-		static inline UUID ID;
-		static inline std::atomic_flag Handling;
+		static inline bool Active = false;
+		static inline bool Uploads = false;
 	};
 }
