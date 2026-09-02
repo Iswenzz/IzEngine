@@ -50,19 +50,30 @@ namespace IzEngine
 		IMPLEMENT_REFCOUNTING(BrowserApp);
 	};
 
-	class BrowserClient : public CefClient, public CefLifeSpanHandler, public CefRenderHandler
+	class BrowserClient : public CefClient,
+						  public CefLifeSpanHandler,
+						  public CefRenderHandler,
+						  public CefContextMenuHandler
 	{
 	public:
 		BrowserClient(const Ref<BrowserInstance>& instance) : Instance(instance) { }
 
 		CefRefPtr<CefRenderHandler> GetRenderHandler() override;
 		CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override;
+		CefRefPtr<CefContextMenuHandler> GetContextMenuHandler() override;
 		void GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect) override;
 
 		void OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 			const void* buffer, int width, int height) override;
 		void OnAfterCreated(CefRefPtr<CefBrowser> browser) override;
 		void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
+		void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
+			CefRefPtr<CefContextMenuParams> params, CefRefPtr<CefMenuModel> model) override;
+		bool OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int popupId,
+			const CefString& targetUrl, const CefString& targetFrameName, WindowOpenDisposition targetDisposition,
+			bool userGesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo,
+			CefRefPtr<CefClient>& client, CefBrowserSettings& settings, CefRefPtr<CefDictionaryValue>& extraInfo,
+			bool* noJavascriptAccess) override;
 
 		bool IsOpened();
 		bool IsClosed();

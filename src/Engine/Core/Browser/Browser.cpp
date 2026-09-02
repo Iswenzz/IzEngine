@@ -94,6 +94,7 @@ namespace IzEngine
 
 		CefBrowserSettings browserSettings;
 		browserSettings.windowless_frame_rate = 120;
+		browserSettings.background_color = CefColorSetARGB(255, 255, 255, 255);
 
 		CefWindowInfo windowInfo;
 		windowInfo.SetAsWindowless(nullptr);
@@ -154,7 +155,8 @@ namespace IzEngine
 	BrowserFrame::BrowserFrame()
 	{
 		SetRectAlignment(Horizontal::Left, Vertical::Top);
-		SetFlags(ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		SetFlags(ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize);
 	}
 
 	void BrowserFrame::OnRender()
@@ -319,6 +321,29 @@ namespace IzEngine
 	CefRefPtr<CefLifeSpanHandler> BrowserClient::GetLifeSpanHandler()
 	{
 		return this;
+	}
+	CefRefPtr<CefContextMenuHandler> BrowserClient::GetContextMenuHandler()
+	{
+		return this;
+	}
+
+	// An offscreen browser has no window to hang a menu off, so CEF would open a real one.
+	void BrowserClient::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
+		CefRefPtr<CefContextMenuParams> params, CefRefPtr<CefMenuModel> model)
+	{
+		model->Clear();
+	}
+
+	// Same for a popup: it would come up as a separate top-level window, so keep it in the page.
+	bool BrowserClient::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int popupId,
+		const CefString& targetUrl, const CefString& targetFrameName, WindowOpenDisposition targetDisposition,
+		bool userGesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo,
+		CefRefPtr<CefClient>& client, CefBrowserSettings& settings, CefRefPtr<CefDictionaryValue>& extraInfo,
+		bool* noJavascriptAccess)
+	{
+		if (frame && !targetUrl.empty())
+			frame->LoadURL(targetUrl);
+		return true;
 	}
 
 	void BrowserClient::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect& rect)
