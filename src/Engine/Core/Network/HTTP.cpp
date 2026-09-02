@@ -12,6 +12,15 @@ static size_t WriteCallback(char* ptr, size_t size, size_t nmemb, std::string* d
 	return size * nmemb;
 }
 
+// Returning short of the offered count is how a write callback tells curl to give up, so a sink that
+// refuses a chunk ends the transfer with CURLE_WRITE_ERROR.
+static size_t StreamCallback(char* ptr, size_t size, size_t nmemb,
+	const std::function<bool(const char*, size_t)>* onData)
+{
+	const size_t total = size * nmemb;
+	return (*onData)(ptr, total) ? total : 0;
+}
+
 static size_t HeaderCallback(char* buffer, size_t size, size_t nitems,
 	std::unordered_map<std::string, std::string>* headers)
 {
@@ -98,8 +107,16 @@ namespace IzEngine
 					return;
 				}
 				curl_easy_setopt(curl, CURLOPT_URL, request.URL.c_str());
-				curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-				curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response.Body);
+				if (request.OnData)
+				{
+					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, StreamCallback);
+					curl_easy_setopt(curl, CURLOPT_WRITEDATA, &request.OnData);
+				}
+				else
+				{
+					curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+					curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response.Body);
+				}
 				curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
 				curl_easy_setopt(curl, CURLOPT_HEADERDATA, &response.Headers);
 				curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -107,6 +124,15 @@ namespace IzEngine
 				curl_easy_setopt(curl, CURLOPT_TIMEOUT, request.TimeoutSeconds);
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, request.ConnectTimeoutSeconds);
 				curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+
+				if (request.BufferSizeBytes > 0)
+					curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, request.BufferSizeBytes);
+
+				if (request.LowSpeedLimitBytes > 0 && request.LowSpeedTimeSeconds > 0)
+				{
+					curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, request.LowSpeedLimitBytes);
+					curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, request.LowSpeedTimeSeconds);
+				}
 
 				HTTP::ApplyTLS(curl);
 

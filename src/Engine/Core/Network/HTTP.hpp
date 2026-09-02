@@ -21,8 +21,13 @@ namespace IzEngine
 		std::unordered_map<std::string, std::string> Headers;
 		std::function<void(const HTTPResponse&)> Callback;
 		std::function<void(float)> OnProgress;
+		std::function<bool(const char* data, size_t size)> OnData;
+
 		long TimeoutSeconds = 30;
 		long ConnectTimeoutSeconds = 10;
+		long LowSpeedLimitBytes = 0;
+		long LowSpeedTimeSeconds = 0;
+		long BufferSizeBytes = 0;
 
 		void Send() const;
 	};
