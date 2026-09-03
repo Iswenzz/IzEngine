@@ -24,7 +24,8 @@ namespace IzEngine
 		GetConsoleMode(OutputHandle, reinterpret_cast<LPDWORD>(&ModeOut));
 
 		ModeOut |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-		ModeIn &= ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT);
+		ModeIn |= ENABLE_EXTENDED_FLAGS;
+		ModeIn &= ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT | ENABLE_QUICK_EDIT_MODE);
 
 		SetConsoleMode(InputHandle, ModeIn);
 		SetConsoleMode(OutputHandle, ModeOut);

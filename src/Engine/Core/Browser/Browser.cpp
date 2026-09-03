@@ -41,7 +41,12 @@ namespace IzEngine
 
 	void Browser::Shutdown()
 	{
-		IZ_ASSERT(Active, "Browser already shutdown.");
+		if (!Active)
+			return;
+
+		LockDepth = 0;
+		TextureLocks.clear();
+		Paused = false;
 
 		for (auto& instance : Instances)
 			Stop(instance);

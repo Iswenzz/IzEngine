@@ -1,7 +1,8 @@
-add_executable(CEF WIN32 main.cpp)
+add_executable(CEF WIN32 main.cpp CEF.manifest)
 
 # Build
 target_link_libraries(CEF PRIVATE CEF::CEF)
+target_link_options(CEF PRIVATE /MANIFEST:EMBED "/MANIFESTINPUT:${CMAKE_CURRENT_SOURCE_DIR}/CEF.manifest")
 
 # Tree
 set_target_properties(CEF PROPERTIES FOLDER Tools)
