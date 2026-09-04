@@ -41,6 +41,7 @@ namespace IzEngine
 
 	void DX9GraphicsContext::Shutdown()
 	{
+		GPUResource::ReleaseAll();
 		StateBlock = nullptr;
 
 		if (!Swapped)

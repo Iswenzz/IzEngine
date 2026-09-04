@@ -32,4 +32,10 @@ namespace IzEngine
 		for (auto& resource : Resources)
 			resource->OnAfterReset();
 	}
+
+	void GPUResource::ReleaseAll()
+	{
+		for (auto& resource : Resources)
+			resource->Release();
+	}
 }

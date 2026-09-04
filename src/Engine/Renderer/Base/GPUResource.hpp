@@ -17,6 +17,7 @@ namespace IzEngine
 
 		static void NotifyBeforeReset();
 		static void NotifyAfterReset();
+		static void ReleaseAll();
 
 	private:
 		static inline std::vector<GPUResource*> Resources;
