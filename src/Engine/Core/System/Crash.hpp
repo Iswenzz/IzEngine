@@ -9,7 +9,6 @@ namespace IzEngine
 		static void Shutdown();
 
 		static bool Available();
-		static bool Answered();
 		static bool Sending();
 		static void Consent(bool allow);
 

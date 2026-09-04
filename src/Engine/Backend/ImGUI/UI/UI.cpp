@@ -1,6 +1,5 @@
 #include "UI.hpp"
 
-#include "Consent.hpp"
 #include "Memory.hpp"
 #include "Themes.hpp"
 
@@ -31,7 +30,6 @@ namespace IzEngine
 		if (Serialized.contains("KeyOpen"))
 			KeyOpen = Serialized["KeyOpen"];
 
-		Add<UC::Consent>();
 		Add<UC::Themes>();
 		Add<UC::Memory>();
 

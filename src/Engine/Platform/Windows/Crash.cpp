@@ -44,7 +44,7 @@ namespace IzEngine
 
 		// Measured: with no DSN crashpad still starts and still writes the dump, so a build from a
 		// fork keeps its crash reports locally and only loses the upload. That is worth having, so
-		// the handler comes up either way and only the consent prompt is tied to the DSN.
+		// the handler comes up either way and only the sending is tied to the DSN.
 		Uploads = !std::string_view(SENTRY_DSN).empty();
 		if (Uploads)
 			sentry_options_set_dsn(options, SENTRY_DSN);
@@ -53,14 +53,22 @@ namespace IzEngine
 		sentry_options_set_handler_pathw(options, handler.wstring().c_str());
 		sentry_options_set_release(options, APPLICATION_ID "@" APPLICATION_VERSION);
 
-		// Nothing is uploaded before the player has answered the prompt. The dump is still written
-		// in the meantime; it simply waits in the database until consent is given or revoked.
+		// Consent gating stays on because it is the switch behind the settings checkbox: with it
+		// off, revoking would not actually stop the upload.
 		sentry_options_set_require_user_consent(options, 1);
 		Active = sentry_init(options) == 0;
 
-		// Crashpad owns the exception filter from here, so stop the game from replacing it.
 		if (Active)
+		{
+			// Reports are on unless the player turns them off, so an unanswered database means on.
+			// Crashpad decides upload-or-not once, when the report is written, and never revisits
+			// it, so this has to be settled before any crash can happen rather than at a prompt.
+			if (sentry_user_consent_get() == SENTRY_USER_CONSENT_UNKNOWN)
+				sentry_user_consent_give();
+
+			// Crashpad owns the exception filter from here, so stop the game from replacing it.
 			Patch(reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr)));
+		}
 	}
 
 	void Crash::Shutdown()
@@ -69,16 +77,10 @@ namespace IzEngine
 			sentry_close();
 	}
 
-	// Nothing to ask, and nothing to offer, when there is nowhere to send: the dumps stay on disk
-	// regardless of the answer.
+	// Nothing to offer when there is nowhere to send: the dumps stay on disk either way.
 	bool Crash::Available()
 	{
 		return Active && Uploads;
-	}
-
-	bool Crash::Answered()
-	{
-		return !Available() || sentry_user_consent_get() != SENTRY_USER_CONSENT_UNKNOWN;
 	}
 
 	bool Crash::Sending()
