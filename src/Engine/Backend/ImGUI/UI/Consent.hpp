@@ -11,7 +11,6 @@ namespace IzEngine::UC
 		static void Prompt();
 
 		void Initialize() override;
-		void OnEvent(Event& event) override;
 		void OnRender() override;
 
 	private:

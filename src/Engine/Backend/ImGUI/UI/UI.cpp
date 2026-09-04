@@ -135,6 +135,7 @@ namespace IzEngine
 		Context = nullptr;
 		PlotContext = nullptr;
 
+		Modal = nullptr;
 		Open = false;
 		Active = false;
 	}
@@ -170,11 +171,18 @@ namespace IzEngine
 		ImGui::ComputeRainbow();
 		Notifications::Render();
 
-		if (Input::IsPressed(Key_Escape))
-			Open = false;
+		if (Modal)
+		{
+			Open = true;
+		}
+		else
+		{
+			if (Input::IsPressed(Key_Escape))
+				Open = false;
 
-		if (KeyOpen.IsPressed())
-			Open = !Open;
+			if (KeyOpen.IsPressed())
+				Open = !Open;
+		}
 
 		ImGui::GetIO().MousePos = Mouse::Position;
 		ImGui::GetIO().MouseDrawCursor = UI::Open;
@@ -192,7 +200,7 @@ namespace IzEngine
 
 		if (Active)
 		{
-			Open = false;
+			Open = Modal != nullptr;
 			ImGui::GetStyle().FontScaleMain = Size / 2;
 		}
 	}

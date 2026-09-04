@@ -31,14 +31,6 @@ namespace IzEngine::UC
 		UI::Modal = frame.get();
 	}
 
-	void Consent::OnEvent(Event& event)
-	{
-		if (Open)
-			UI::Open = true;
-
-		Frame::OnEvent(event);
-	}
-
 	void Consent::Answer(bool allow)
 	{
 		Crash::Consent(allow);
@@ -81,7 +73,7 @@ namespace IzEngine::UC
 		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_TextDisabled));
 		ImGui::TextWrapped(
 			"The note is saved on your computer either way. You can change this "
-			"later in settings.");
+			"later in settings, and Escape leaves the question for the next launch.");
 		ImGui::PopStyleColor();
 
 		const float height = ImGui::GetFrameHeight();
@@ -96,5 +88,11 @@ namespace IzEngine::UC
 			Answer(false);
 
 		ImGui::End();
+
+		// The prompt holds the overlay open, so a host that never gets its input as far as ImGui
+		// leaves the buttons with nothing to click them. Escape hands the application back without
+		// recording an answer either way, and the question returns on the next launch.
+		if (Input::IsPressed(Key_Escape) || ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+			Dismiss();
 	}
 }

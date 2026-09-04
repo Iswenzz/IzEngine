@@ -113,11 +113,52 @@ namespace IzEngine
 			PostQuitMessage(0);
 			break;
 		}
-		if (UI::KeyOpen.IsPressed())
-			return true;
-		if (UI::Open && ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
-			return true;
+		if (Intercept(hwnd, msg, wParam, lParam))
+			return 0;
 		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	bool Window::Intercept(void* handle, int msg, uintptr_t arg1, uintptr_t arg2)
+	{
+		const HWND hwnd = reinterpret_cast<HWND>(handle);
+		const WPARAM wParam = arg1;
+		const LPARAM lParam = arg2;
+
+		// The menu key belongs to the overlay, so its own key messages go no further. Only those:
+		// dropping every message of the frame the key goes down also drops the releases ImGui needs,
+		// and a modifier it never sees released stays down for good, which leaves the menu unable to
+		// take text.
+		switch (msg)
+		{
+		case WM_KEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+			if (UI::KeyOpen.Input != Input_None && Input::MapKey(static_cast<int>(wParam)) == UI::KeyOpen.Input)
+				return true;
+			break;
+		}
+
+		if (!UI::Open)
+			return false;
+		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+			return true;
+
+		// Alt and F10 send DefWindowProc into the system menu loop, and that loop swallows every
+		// keystroke until another Alt, an Escape or a click dismisses it. There is no menu bar to
+		// reach that way, and the menu key is F10 by default. Only while the overlay is open: closed,
+		// the key is the host application's to bind.
+		switch (msg)
+		{
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+			return wParam == VK_MENU || wParam == VK_F10;
+		case WM_SYSCHAR:
+			return true;
+		case WM_SYSCOMMAND:
+			return (wParam & 0xFFF0) == SC_KEYMENU || (wParam & 0xFFF0) == SC_MOUSEMENU;
+		}
+		return false;
 	}
 
 	bool Window::Frame()

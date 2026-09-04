@@ -21,6 +21,7 @@ namespace IzEngine
 		static void Shutdown();
 
 		static int Update(void* handle, int msg, uintptr_t arg1, uintptr_t arg2);
+		static bool Intercept(void* handle, int msg, uintptr_t arg1, uintptr_t arg2);
 		static bool Frame();
 		static void BorderlessFullscreen();
 
