@@ -1,3 +1,6 @@
 if(BUILD_CEF)
 	add_subdirectory(CEF)
 endif()
+if(PLATFORM_WINDOWS)
+	add_subdirectory(CrashReporter)
+endif()

@@ -22,6 +22,19 @@ namespace IzEngine
 		Initialized = true;
 	}
 
+	void Environment::Root(const std::filesystem::path& base)
+	{
+		Directories.insert({ Directory::Base, base });
+		Initialize();
+	}
+
+	void Environment::Redirect(Directory directory, const std::filesystem::path& path)
+	{
+		std::error_code ec;
+		std::filesystem::create_directories(path, ec);
+		Directories[directory] = path;
+	}
+
 	void Environment::Load(nlohmann::json& json, const std::string& filename)
 	{
 		IZ_ASSERT(Environment::Initialized, "Environment not initialized.");

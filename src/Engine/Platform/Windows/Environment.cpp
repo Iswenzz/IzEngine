@@ -5,11 +5,16 @@
 
 namespace IzEngine
 {
+	std::filesystem::path Environment::Executable()
+	{
+		wchar_t buffer[MAX_PATH] = {};
+		GetModuleFileNameW(nullptr, buffer, MAX_PATH);
+		return buffer;
+	}
+
 	void Environment::Binary()
 	{
-		TCHAR buffer[MAX_PATH];
-		GetModuleFileName(nullptr, buffer, MAX_PATH);
-		Directories.insert({ Directory::Base, std::filesystem::path(buffer).parent_path() });
+		Directories.insert({ Directory::Base, Executable().parent_path() });
 		Initialize();
 	}
 
