@@ -53,4 +53,16 @@ namespace IzEngine
 	{
 		ShellExecute(nullptr, "open", command.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 	}
+
+	static std::wstring Widen(const std::string& text)
+	{
+		std::wstring out(MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), nullptr, 0), L'\0');
+		MultiByteToWideChar(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), out.data(), static_cast<int>(out.size()));
+		return out;
+	}
+
+	void System::Alert(const std::string& title, const std::string& text)
+	{
+		MessageBoxW(nullptr, Widen(text).c_str(), Widen(title).c_str(), MB_OK | MB_ICONERROR | MB_TOPMOST | MB_SETFOREGROUND);
+	}
 }

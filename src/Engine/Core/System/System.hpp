@@ -9,6 +9,7 @@ namespace IzEngine
 		static std::map<std::string, uintptr_t> MapProcesses();
 		static std::map<std::string, uintptr_t> MapModules(uintptr_t process);
 		static void Shell(const std::string& command);
+		static void Alert(const std::string& title, const std::string& text);
 		static bool IsDebug();
 	};
 }
