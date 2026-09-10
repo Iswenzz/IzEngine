@@ -22,7 +22,6 @@ namespace IzEngine
 		static void Binary();
 		static void Local();
 		static void Root(const std::filesystem::path& base);
-		static void Redirect(Directory directory, const std::filesystem::path& path);
 		static std::filesystem::path Executable();
 
 		static void Load(nlohmann::json& json, const std::string& filename);

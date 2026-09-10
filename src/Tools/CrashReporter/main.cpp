@@ -20,9 +20,6 @@ static int Run(const std::filesystem::path& envelope)
 	// The reporter lives in <root>/<app>/Bin and the engine's fonts in <root>/<app>/Resources.
 	Environment::Root(Environment::Executable().parent_path().parent_path().parent_path());
 
-	// The UI saves its layout on shutdown, and that file belongs to the game.
-	Environment::Redirect(Directory::Configs, Environment::Path(Directory::Reports) / ".reporter");
-
 	IzEngine::CrashReport report;
 	if (!IzEngine::Report::Load(envelope, report))
 		return 0;

@@ -28,6 +28,8 @@ namespace IzEngine
 	{
 		const float scale = Window::GetDisplayScale();
 
+		UI::PersistLayout = false;
+
 		Window::Size = WindowSize * scale;
 		Window::Initialize("Crash Reporter");
 		Window::SetDarkMode(true);

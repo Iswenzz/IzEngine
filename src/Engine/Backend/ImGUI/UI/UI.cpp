@@ -24,7 +24,8 @@ namespace IzEngine
 		PlotContext = ImPlot::CreateContext();
 		UpdateContext();
 
-		Environment::Load(Serialized, "ui.json");
+		if (PersistLayout)
+			Environment::Load(Serialized, "ui.json");
 
 		KeyOpen = Bind(Key_F10);
 		if (Serialized.contains("KeyOpen"))
@@ -124,7 +125,8 @@ namespace IzEngine
 			frame->Release();
 		}
 		Serialized["KeyOpen"] = KeyOpen;
-		Environment::Save(Serialized, "ui.json");
+		if (PersistLayout)
+			Environment::Save(Serialized, "ui.json");
 		Frames.clear();
 
 		UpdateContext();

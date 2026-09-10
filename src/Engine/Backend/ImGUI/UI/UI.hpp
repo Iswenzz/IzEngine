@@ -13,6 +13,7 @@ namespace IzEngine
 	public:
 		static inline std::unordered_map<std::string, Ref<Frame>> Frames;
 		static inline nlohmann::json Serialized;
+		static inline bool PersistLayout = true;
 		static inline Bind KeyOpen;
 
 		static inline Frame* Modal = nullptr;
