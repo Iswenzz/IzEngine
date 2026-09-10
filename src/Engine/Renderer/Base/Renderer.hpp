@@ -11,7 +11,7 @@ namespace IzEngine
 		static inline Camera Camera2D;
 		static inline Camera Camera3D;
 
-		static void Initialize(RendererBackend api);
+		static bool Initialize(RendererBackend api);
 		static void Shutdown();
 
 		static void Resize(const vec2& size);

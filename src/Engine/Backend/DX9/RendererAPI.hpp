@@ -11,7 +11,7 @@ namespace IzEngine
 	public:
 		~DX9RendererAPI() override = default;
 
-		void Initialize() override;
+		bool Initialize() override;
 		void Shutdown() override;
 
 		void Begin() override;

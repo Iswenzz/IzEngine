@@ -5,7 +5,7 @@
 
 namespace IzEngine
 {
-	void Renderer::Initialize(RendererBackend api)
+	bool Renderer::Initialize(RendererBackend api)
 	{
 		IZ_ASSERT(!Active, "Renderer already initialized.");
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
@@ -14,11 +14,16 @@ namespace IzEngine
 		Camera3D = Camera::CreatePerspective(65.0f, Window::Size.x / Window::Size.y, 0.1f, 1000.0f);
 
 		UI::Initialize();
-		RenderCommand::Initialize(api);
+		if (!RenderCommand::Initialize(api))
+		{
+			UI::Shutdown();
+			return false;
+		}
 		AssetManager::Initialize();
 		Draw2D::Initialize();
 
 		Active = true;
+		return true;
 	}
 
 	void Renderer::Shutdown()

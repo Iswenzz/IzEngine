@@ -2,10 +2,15 @@
 
 namespace IzEngine
 {
-	void RenderCommand::Initialize(RendererBackend api)
+	bool RenderCommand::Initialize(RendererBackend api)
 	{
 		RendererAPI = RendererAPI::Create(api);
-		RendererAPI->Initialize();
+		if (RendererAPI->Initialize())
+			return true;
+
+		RendererAPI->Shutdown();
+		RendererAPI = nullptr;
+		return false;
 	}
 
 	void RenderCommand::Shutdown()

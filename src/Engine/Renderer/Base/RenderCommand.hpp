@@ -6,7 +6,7 @@ namespace IzEngine
 	class RenderCommand
 	{
 	public:
-		static void Initialize(RendererBackend api);
+		static bool Initialize(RendererBackend api);
 		static void Shutdown();
 
 		static void Begin();

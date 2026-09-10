@@ -7,20 +7,27 @@
 
 namespace IzEngine
 {
-	void DX9RendererAPI::Initialize()
+	bool DX9RendererAPI::Initialize()
 	{
 		IZ_ASSERT(Window::Handle, "Window is not initialized.");
 
 		DX9GraphicsContext::Initialize();
 
+		if (!DX9GraphicsContext::Device)
+			return false;
+
 		ImGui_ImplOS_Init(Window::Handle);
 		ImGui_ImplAPI_Init(DX9GraphicsContext::Device);
+		return true;
 	}
 
 	void DX9RendererAPI::Shutdown()
 	{
-		ImGui_ImplOS_Shutdown();
-		ImGui_ImplAPI_Shutdown();
+		if (DX9GraphicsContext::Device)
+		{
+			ImGui_ImplOS_Shutdown();
+			ImGui_ImplAPI_Shutdown();
+		}
 
 		DX9GraphicsContext::Shutdown();
 	}
