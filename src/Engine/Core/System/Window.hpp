@@ -28,6 +28,8 @@ namespace IzEngine
 		static int GetStyle();
 		static void SetStyle(int value);
 		static void SetCapture(bool state);
+		static void SetDarkMode(bool state);
+		static float GetDisplayScale();
 		static bool IsStyle(int value);
 		static bool HasStyle(int value);
 		static bool IsCursorVisible();

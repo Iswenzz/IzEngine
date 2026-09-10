@@ -3,6 +3,8 @@
 #include "Engine/Core/System/Window.hpp"
 #include "Engine/Renderer/Base/Renderer.hpp"
 
+#include <dwmapi.h>
+
 namespace IzEngine
 {
 	void Window::Initialize(const std::string& name)
@@ -200,6 +202,19 @@ namespace IzEngine
 	{
 		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
 		SetWindowLongPtr(hwnd, GWL_STYLE, value);
+	}
+
+	void Window::SetDarkMode(bool state)
+	{
+		const HWND hwnd = reinterpret_cast<HWND>(Window::Handle);
+		BOOL dark = state;
+		if (FAILED(DwmSetWindowAttribute(hwnd, 20, &dark, sizeof(dark))))
+			DwmSetWindowAttribute(hwnd, 19, &dark, sizeof(dark));
+	}
+
+	float Window::GetDisplayScale()
+	{
+		return static_cast<float>(GetDpiForSystem()) / 96.0f;
 	}
 
 	bool Window::IsCursorVisible()
