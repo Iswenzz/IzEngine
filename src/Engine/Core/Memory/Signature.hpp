@@ -17,7 +17,8 @@ namespace IzEngine
 
 		Signature& Offset(uintptr_t offset);
 		Signature& DeRef();
-		std::vector<uintptr_t> ScanAll(bool first = false);
+
+		static std::vector<uintptr_t> ScanAll(const std::string& moduleName, const std::string& pattern);
 
 		operator uintptr_t()
 		{

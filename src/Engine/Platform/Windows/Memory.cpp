@@ -254,9 +254,9 @@ namespace IzEngine
 			return Swap(value);
 	}
 
-	std::string Memory::Pattern(const std::string& pattern)
+	std::vector<int> Memory::Pattern(const std::string& pattern)
 	{
-		std::string result;
+		std::vector<int> result;
 		for (size_t i = 0; i < pattern.size(); ++i)
 		{
 			if (pattern[i] == ' ')
@@ -265,7 +265,7 @@ namespace IzEngine
 			// Support both "?" and "??" for a wildcard byte.
 			if (pattern[i] == '?')
 			{
-				result += '?';
+				result.push_back(-1);
 				if (i + 1 < pattern.size() && pattern[i + 1] == '?')
 					++i;
 				continue;
@@ -278,7 +278,7 @@ namespace IzEngine
 				Log::WriteLine(Channel::Error, "Invalid byte pattern: {}", pattern);
 				return {};
 			}
-			result.append(1, static_cast<char>(value));
+			result.push_back(static_cast<int>(value));
 			++i;
 		}
 		return result;

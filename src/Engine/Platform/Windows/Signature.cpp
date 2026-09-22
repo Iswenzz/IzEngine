@@ -3,8 +3,6 @@
 #include "Engine/Core/Memory/Memory.hpp"
 #include "Engine/Core/Memory/Signature.hpp"
 
-#include <Psapi.h>
-
 namespace IzEngine
 {
 	Signature::Signature(uintptr_t address) : Address(address) { }
@@ -30,70 +28,52 @@ namespace IzEngine
 		return *this;
 	}
 
+	// A signature resolves only when it matches exactly once. One loose enough to match twice would
+	// otherwise land on whichever copy came first; a miss leaves the caller with 0, which it can test.
 	uintptr_t Signature::Scan()
 	{
-		std::vector<uintptr_t> addresses = ScanAll(true);
-		return addresses.size() ? addresses.back() : 0;
+		const std::vector<uintptr_t> addresses = ScanAll(Module, Pattern);
+		if (addresses.size() > 1)
+		{
+			Log::WriteLine(Channel::Error, "Signature matches {} places in {}; ignoring it: {}", addresses.size(),
+				Module.empty() ? "the executable" : Module, Pattern);
+		}
+		return addresses.size() == 1 ? addresses.front() : 0;
 	}
 
-	std::vector<uintptr_t> Signature::ScanAll(bool first)
+	// Every match in the module's executable sections. Code only: it is quick, and data that happens
+	// to look like an instruction cannot make a signature ambiguous.
+	std::vector<uintptr_t> Signature::ScanAll(const std::string& moduleName, const std::string& pattern)
 	{
 		std::vector<uintptr_t> addresses;
-		HMODULE hModule = GetModuleHandle(Module.empty() ? nullptr : Module.c_str());
+		const HMODULE module = GetModuleHandle(moduleName.empty() ? nullptr : moduleName.c_str());
+		const std::vector<int> bytes = Memory::Pattern(pattern);
 
-		if (!hModule)
+		if (!module || bytes.empty())
 			return addresses;
 
-		std::string bytes = Memory::Pattern(Pattern);
-		const size_t size = bytes.size();
-		if (!size)
-			return addresses;
+		const uintptr_t base = reinterpret_cast<uintptr_t>(module);
+		const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
+		const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS*>(base + dos->e_lfanew);
+		const IMAGE_SECTION_HEADER* section = IMAGE_FIRST_SECTION(nt);
 
-		MODULEINFO moduleInfo = { 0 };
-		if (!GetModuleInformation(GetCurrentProcess(), hModule, &moduleInfo, sizeof(moduleInfo)))
-			return addresses;
-
-		uintptr_t moduleBase = reinterpret_cast<uintptr_t>(moduleInfo.lpBaseOfDll);
-		uintptr_t moduleEnd = moduleBase + moduleInfo.SizeOfImage;
-
-		// Walk region by region and skip anything not readable: touching a
-		// PAGE_NOACCESS or guard page while scanning is itself a crash.
-		uintptr_t address = moduleBase;
-		while (address < moduleEnd - size)
+		for (int s = 0; s < nt->FileHeader.NumberOfSections; s++, section++)
 		{
-			MEMORY_BASIC_INFORMATION mbi = { 0 };
-			if (!VirtualQuery(reinterpret_cast<LPCVOID>(address), &mbi, sizeof(mbi)))
-				break;
-
-			const uintptr_t regionEnd = reinterpret_cast<uintptr_t>(mbi.BaseAddress) + mbi.RegionSize;
-			const bool readable =
-				mbi.State == MEM_COMMIT && !(mbi.Protect & (PAGE_NOACCESS | PAGE_GUARD)) && mbi.Protect != 0;
-
-			if (!readable)
-			{
-				address = regionEnd;
+			if (!(section->Characteristics & IMAGE_SCN_MEM_EXECUTE) || section->Misc.VirtualSize < bytes.size())
 				continue;
-			}
-			const uintptr_t scanEnd = std::min(regionEnd, moduleEnd) - size;
-			for (; address <= scanEnd; ++address)
+
+			const auto* code = reinterpret_cast<const uint8_t*>(base + section->VirtualAddress);
+			const size_t last = section->Misc.VirtualSize - bytes.size();
+
+			for (size_t at = 0; at <= last; at++)
 			{
 				size_t i = 0;
-				for (; i < size; ++i)
-				{
-					if (bytes[i] == '?')
-						continue;
+				while (i < bytes.size() && (bytes[i] < 0 || code[at + i] == bytes[i]))
+					i++;
 
-					if (bytes[i] != *reinterpret_cast<char*>(address + i))
-						break;
-				}
-				if (i == size)
-				{
-					addresses.push_back(address);
-					if (first)
-						return addresses;
-				}
+				if (i == bytes.size())
+					addresses.push_back(reinterpret_cast<uintptr_t>(code + at));
 			}
-			address = regionEnd;
 		}
 		return addresses;
 	}

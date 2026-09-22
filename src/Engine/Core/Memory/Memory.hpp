@@ -25,7 +25,7 @@ namespace IzEngine
 		static uintptr_t LE(uintptr_t value);
 		static uintptr_t BE(uintptr_t value);
 
-		static std::string Pattern(const std::string& pattern);
+		static std::vector<int> Pattern(const std::string& pattern);
 
 		template <typename T>
 		static inline void Set(uintptr_t address, T value)
