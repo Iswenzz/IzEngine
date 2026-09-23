@@ -19,6 +19,8 @@ namespace IzEngine
 		T* Original = nullptr;
 		Scope<PLH::NatDetour> Detour = nullptr;
 		bool IsEnabled = false;
+		std::array<uint8_t, 8> Pristine = {};
+		std::array<uint8_t, 8> Patched = {};
 
 		Hook() = default;
 		Hook(T callback) : Hook(0ull, callback) { }
@@ -38,6 +40,8 @@ namespace IzEngine
 			if (IsEnabled || !Address)
 				return;
 
+			std::memcpy(Pristine.data(), reinterpret_cast<const void*>(Address), Pristine.size());
+
 			Detour = CreateScope<PLH::NatDetour>(Address, Callback, &Trampoline);
 			if (!Detour->hook() || !Trampoline)
 			{
@@ -48,12 +52,20 @@ namespace IzEngine
 			}
 			IsEnabled = true;
 			Original = reinterpret_cast<T*>(Trampoline);
+			std::memcpy(Patched.data(), reinterpret_cast<const void*>(Address), Patched.size());
 		}
 
+		// Rehooking in place writes stale bytes over whatever chained on top of us, so it only happens
+		// once our patch is gone and the prologue is back to what it was, as after a module reload.
 		void Update(uintptr_t address)
 		{
 			if (IsEnabled && address == Address)
-				return;
+			{
+				const auto current = reinterpret_cast<const uint8_t*>(Address);
+				const bool restored = Patched != Pristine && std::equal(Pristine.begin(), Pristine.end(), current);
+				if (!restored)
+					return;
+			}
 
 			Remove();
 			Address = address;
