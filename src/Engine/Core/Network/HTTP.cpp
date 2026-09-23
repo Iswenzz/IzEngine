@@ -6,10 +6,19 @@
 
 static std::string CABundlePath;
 
+// Nothing may throw out through curl's C frames, so a failure becomes a short write and curl ends the
+// transfer with CURLE_WRITE_ERROR.
 static size_t WriteCallback(char* ptr, size_t size, size_t nmemb, std::string* data)
 {
-	data->append(ptr, size * nmemb);
-	return size * nmemb;
+	try
+	{
+		data->append(ptr, size * nmemb);
+		return size * nmemb;
+	}
+	catch (...)
+	{
+		return 0;
+	}
 }
 
 // Returning short of the offered count is how a write callback tells curl to give up, so a sink that
@@ -18,7 +27,14 @@ static size_t StreamCallback(char* ptr, size_t size, size_t nmemb,
 	const std::function<bool(const char*, size_t)>* onData)
 {
 	const size_t total = size * nmemb;
-	return (*onData)(ptr, total) ? total : 0;
+	try
+	{
+		return (*onData)(ptr, total) ? total : 0;
+	}
+	catch (...)
+	{
+		return 0;
+	}
 }
 
 static size_t HeaderCallback(char* buffer, size_t size, size_t nitems,
@@ -41,12 +57,24 @@ static size_t HeaderCallback(char* buffer, size_t size, size_t nitems,
 	return total;
 }
 
+// Installed on every request: curl calls it about once a second even while stalled or connecting,
+// which makes it the one place an abort can reach a transfer that is not delivering any data.
 static int ProgressCallback(void* clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t, curl_off_t)
 {
-	if (dltotal > 0)
+	if (IzEngine::HTTP::Aborting)
+		return 1;
+
+	const auto* request = static_cast<const IzEngine::HTTPRequest*>(clientp);
+	if (dltotal > 0 && request->OnProgress)
 	{
-		auto* cb = reinterpret_cast<std::function<void(float)>*>(clientp);
-		(*cb)(static_cast<float>(dlnow) / static_cast<float>(dltotal));
+		try
+		{
+			request->OnProgress(static_cast<float>(dlnow) / static_cast<float>(dltotal));
+		}
+		catch (...)
+		{
+			return 1;
+		}
 	}
 	return 0;
 }
@@ -61,6 +89,13 @@ namespace IzEngine
 	void HTTP::Shutdown()
 	{
 		curl_global_cleanup();
+	}
+
+	// Ends every transfer in flight within about a second, so a worker stuck on a stalled host does
+	// not hold up a shutdown that joins it.
+	void HTTP::Abort()
+	{
+		Aborting = true;
 	}
 
 	void HTTP::SetCABundle(const std::string& path)
@@ -125,6 +160,10 @@ namespace IzEngine
 				curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, request.ConnectTimeoutSeconds);
 				curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
 
+				// URLs can come from a game server, which has no business making curl speak FTP or SMB.
+				curl_easy_setopt(curl, CURLOPT_PROTOCOLS_STR, "http,https");
+				curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS_STR, "http,https");
+
 				if (request.BufferSizeBytes > 0)
 					curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, request.BufferSizeBytes);
 
@@ -152,12 +191,10 @@ namespace IzEngine
 					curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request.Body.c_str());
 					curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(request.Body.size()));
 				}
-				if (request.OnProgress)
-				{
-					curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-					curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);
-					curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &request.OnProgress);
-				}
+				curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+				curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, ProgressCallback);
+				curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &request);
+
 				const CURLcode result = curl_easy_perform(curl);
 				response.Success = (result == CURLE_OK);
 				if (result != CURLE_OK)
@@ -170,8 +207,16 @@ namespace IzEngine
 
 				curl_easy_cleanup(curl);
 
-				if (request.Callback)
+				if (!request.Callback)
+					return;
+				try
+				{
 					request.Callback(response);
+				}
+				catch (const std::exception& e)
+				{
+					Log::WriteLine(Channel::Error, "HTTP callback for {} failed: {}", request.URL, e.what());
+				}
 			});
 	}
 

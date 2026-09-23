@@ -39,6 +39,8 @@ namespace IzEngine
 		vec2 FrameSize = { 1920.0f, 1080.0f };
 		bool Open = false;
 		bool Show = true;
+		bool LeftDown = false;
+		bool RightDown = false;
 	};
 
 	class BrowserApp : public CefApp
@@ -77,11 +79,16 @@ namespace IzEngine
 
 		bool IsOpened();
 		bool IsClosed();
+		void RequestClose();
 
 	private:
 		Ref<BrowserInstance> Instance = nullptr;
 		std::atomic<bool> Opened = false;
 		std::atomic<bool> Closed = false;
+
+		std::mutex CreateMutex;
+		CefRefPtr<CefBrowser> Created;
+		bool CloseRequested = false;
 
 		IMPLEMENT_REFCOUNTING(BrowserClient);
 	};

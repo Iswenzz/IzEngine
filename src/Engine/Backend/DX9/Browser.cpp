@@ -8,6 +8,9 @@ namespace IzEngine
 	void BrowserClient::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects,
 		const void* buffer, int width, int height)
 	{
+		// A popup such as an open <select> paints in its own coordinates, and would land in the corner.
+		if (type != PET_VIEW)
+			return;
 		if (!Renderer::Active || !Instance || !buffer || dirtyRects.empty() || Browser::Paused)
 			return;
 
@@ -16,16 +19,8 @@ namespace IzEngine
 		if (!Renderer::Active || Browser::Paused)
 			return;
 
-		// One level only: a chain would leave every level below the paint uninitialized, and a
-		// minified draw such as the preview window blends into those and washes the page out.
-		Instance->Texture = Texture::Create({ .ID = "browser_" + Instance->ID,
-			.Size = Instance->FrameSize,
-			.Level = 1,
-			.Usage = TextureUsage::Dynamic,
-			.Pool = TexturePool::Default });
-
 		auto dxTexture = std::static_pointer_cast<DX9Texture>(Instance->Texture);
-		if (!dxTexture || !dxTexture->Data)
+		if (!dxTexture || !dxTexture->Data || dxTexture->Spec.Usage != TextureUsage::Dynamic)
 			return;
 
 		for (const auto& dirtyRect : dirtyRects)

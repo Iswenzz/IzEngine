@@ -49,6 +49,11 @@ namespace IzEngine
 
 	void DX9Font::Release()
 	{
+		if (Sprite)
+		{
+			Sprite->Release();
+			Sprite = nullptr;
+		}
 		if (Data)
 		{
 			Data->Release();
@@ -56,8 +61,11 @@ namespace IzEngine
 		}
 	}
 
+	// The sprite holds default pool buffers too, and Reset fails while any of those are still alive.
 	void DX9Font::OnBeforeReset()
 	{
+		if (Sprite)
+			Sprite->OnLostDevice();
 		if (Data)
 			Data->OnLostDevice();
 	}
@@ -66,6 +74,8 @@ namespace IzEngine
 	{
 		if (Data)
 			Data->OnResetDevice();
+		if (Sprite)
+			Sprite->OnResetDevice();
 	}
 
 	vec2 DX9Font::GetTextSize(const std::string& text) const

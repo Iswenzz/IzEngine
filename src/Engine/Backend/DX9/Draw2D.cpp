@@ -12,11 +12,13 @@ namespace IzEngine
 		auto dxFont = std::static_pointer_cast<DX9Font>(font);
 		IZ_ASSERT(dxFont->Data, "Font data is null.");
 
+		NextBatch();
+
 		if (skew.x != 0.0f || skew.y != 0.0f)
 		{
-			static ID3DXSprite* sprite = nullptr;
-			if (!sprite)
-				D3DXCreateSprite(DX9GraphicsContext::Device, &sprite);
+			// Owned by the font, which takes it through device Reset and releases it with the device.
+			if (!dxFont->Sprite && FAILED(D3DXCreateSprite(DX9GraphicsContext::Device, &dxFont->Sprite)))
+				return;
 
 			D3DXMATRIX matrix;
 			D3DXMatrixIdentity(&matrix);
@@ -25,10 +27,10 @@ namespace IzEngine
 
 			RECT rect = { static_cast<int>(position.x), static_cast<int>(position.y), 0, 0 };
 
-			sprite->Begin(D3DXSPRITE_ALPHABLEND);
-			sprite->SetTransform(&matrix);
-			dxFont->Data->DrawTextA(sprite, text.c_str(), -1, &rect, DT_NOCLIP, Math::BGRA(color));
-			sprite->End();
+			dxFont->Sprite->Begin(D3DXSPRITE_ALPHABLEND);
+			dxFont->Sprite->SetTransform(&matrix);
+			dxFont->Data->DrawTextA(dxFont->Sprite, text.c_str(), -1, &rect, DT_NOCLIP, Math::BGRA(color));
+			dxFont->Sprite->End();
 		}
 		else
 		{

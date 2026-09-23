@@ -92,7 +92,7 @@ namespace IzEngine
 			return file;
 		}
 		file.Data = std::vector<uint8_t>(static_cast<uint8_t*>(data), static_cast<uint8_t*>(data) + size);
-		free(data);
+		delete[] static_cast<char*>(data); // libzippp allocates it with new[]
 		archive.close();
 		return file;
 	}

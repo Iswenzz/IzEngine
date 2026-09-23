@@ -9,6 +9,7 @@ namespace IzEngine
 	{
 	public:
 		ID3DXFont* Data = nullptr;
+		ID3DXSprite* Sprite = nullptr;
 
 		DX9Font() = default;
 		~DX9Font() override;

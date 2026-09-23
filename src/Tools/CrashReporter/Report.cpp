@@ -158,12 +158,6 @@ namespace IzEngine
 		if (data.empty())
 			return false;
 
-		// Nothing needs the file past this point, and taking it away now is what keeps a second
-		// launch, from the game's sweep or after a killed reporter, from offering the same crash
-		// again. The dump copy written below is what outlives it.
-		std::error_code ec;
-		std::filesystem::remove(path, ec);
-
 		if (!report.Data.Parse(data))
 			return false;
 
@@ -198,6 +192,15 @@ namespace IzEngine
 		std::ofstream out(report.DumpPath, std::ios::binary);
 		out.write(dump->Payload.data(), static_cast<std::streamsize>(dump->Payload.size()));
 		out.close();
+
+		// Taken away only once the dump copy is safely written, since that copy is what outlives it;
+		// it is what keeps a second launch, from the game's sweep or after a killed reporter, from
+		// offering the same crash again. A copy that failed leaves the envelope to be offered later.
+		if (out)
+		{
+			std::error_code ec;
+			std::filesystem::remove(path, ec);
+		}
 
 		Describe(report, event, dump->Payload);
 		return true;
@@ -264,9 +267,9 @@ namespace IzEngine
 		request.Headers["Content-Type"] = "application/x-sentry-envelope";
 		request.Headers["User-Agent"] = Client;
 		request.ConnectTimeoutSeconds = 15;
-		request.TimeoutSeconds = 300;
-		request.LowSpeedLimitBytes = 1;
-		request.LowSpeedTimeSeconds = 30;
+		request.TimeoutSeconds = 0;
+		request.LowSpeedLimitBytes = 1024;
+		request.LowSpeedTimeSeconds = 60;
 		request.Send();
 	}
 

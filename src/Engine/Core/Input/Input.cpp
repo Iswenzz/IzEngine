@@ -7,6 +7,7 @@ namespace IzEngine
 		for (auto& input : Inputs)
 		{
 			input.PrevState = input.State;
+			input.Pressed = false;
 			if (input.State == INPUT_UP)
 				input.State = INPUT_NONE;
 		}
@@ -39,7 +40,7 @@ namespace IzEngine
 	bool Input::IsPressed(InputEnum input)
 	{
 		const auto info = Find(input);
-		return info && info->PrevState == INPUT_NONE && info->State == INPUT_DOWN;
+		return info && info->Pressed;
 	}
 
 	void Input::SetState(InputEnum input, int state)
@@ -47,7 +48,11 @@ namespace IzEngine
 		if (!Find(input))
 			return;
 
-		Inputs[input].State = state;
+		InputInfo& info = Inputs[input];
+		if (state == INPUT_DOWN && info.State != INPUT_DOWN)
+			info.Pressed = true;
+
+		info.State = state;
 	}
 
 	InputEnum Input::MapKey(int input)

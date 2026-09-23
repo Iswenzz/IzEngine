@@ -16,8 +16,8 @@ namespace IzEngine
 
 	void DX9StateBlock::Capture()
 	{
-		if (!StateBlock)
-			DX9GraphicsContext::Device->CreateStateBlock(D3DSBT_ALL, &StateBlock);
+		if (!StateBlock && FAILED(DX9GraphicsContext::Device->CreateStateBlock(D3DSBT_ALL, &StateBlock)))
+			return;
 
 		StateBlock->Capture();
 	}

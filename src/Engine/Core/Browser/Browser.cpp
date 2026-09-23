@@ -113,7 +113,7 @@ namespace IzEngine
 			{
 				auto elapsed = std::chrono::steady_clock::now() - start;
 				if (elapsed > std::chrono::seconds(3))
-					return;
+					break;
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			}
 		}
@@ -131,6 +131,8 @@ namespace IzEngine
 
 		if (!instance->Browser)
 		{
+			if (instance->Client)
+				instance->Client->RequestClose();
 			instance->Client = nullptr;
 			instance->Open = false;
 			return;
@@ -206,27 +208,43 @@ namespace IzEngine
 		if (Input::IsDown(Key_Alt) || Input::IsDown(Key_RightAlt))
 			modifiers |= EVENTFLAG_ALT_DOWN;
 
-		const vec2 relative = Mouse::Position - position;
-		if (instance->Window->Hovered)
-		{
-			CefMouseEvent mouseEvent;
-			mouseEvent.x = static_cast<int>(relative.x / size.x * instance->FrameSize.x);
-			mouseEvent.y = static_cast<int>(relative.y / size.y * instance->FrameSize.y);
-			mouseEvent.modifiers = modifiers;
+		// Held buttons ride on every move, which is what makes it a drag rather than a hover.
+		if (instance->LeftDown)
+			modifiers |= EVENTFLAG_LEFT_MOUSE_BUTTON;
+		if (instance->RightDown)
+			modifiers |= EVENTFLAG_RIGHT_MOUSE_BUTTON;
 
+		const vec2 relative = Mouse::Position - position;
+		const bool hovered = instance->Window->Hovered;
+
+		CefMouseEvent mouseEvent;
+		mouseEvent.x = static_cast<int>(relative.x / size.x * instance->FrameSize.x);
+		mouseEvent.y = static_cast<int>(relative.y / size.y * instance->FrameSize.y);
+		mouseEvent.modifiers = modifiers;
+
+		// A drag keeps reaching the page outside its window, and so does the release that ends it.
+		if (hovered || instance->LeftDown || instance->RightDown)
 			host->SendMouseMoveEvent(mouseEvent, false);
 
-			if (Input::IsDown(Button_Left))
-				host->SendMouseClickEvent(mouseEvent, MBT_LEFT, false, 1);
-			if (Input::IsUp(Button_Left))
-				host->SendMouseClickEvent(mouseEvent, MBT_LEFT, true, 1);
-			if (Input::IsDown(Button_Right))
-				host->SendMouseClickEvent(mouseEvent, MBT_RIGHT, false, 1);
-			if (Input::IsUp(Button_Right))
-				host->SendMouseClickEvent(mouseEvent, MBT_RIGHT, true, 1);
-			if (Mouse::ScrollDelta)
-				host->SendMouseWheelEvent(mouseEvent, 0, Mouse::ScrollDelta * 120);
-		}
+		// One down per press, not one per frame the button is held.
+		const auto button = [&](InputEnum id, cef_mouse_button_type_t type, bool& down)
+		{
+			if (hovered && Input::IsPressed(id))
+			{
+				host->SendMouseClickEvent(mouseEvent, type, false, 1);
+				down = true;
+			}
+			if (down && !Input::IsDown(id))
+			{
+				host->SendMouseClickEvent(mouseEvent, type, true, 1);
+				down = false;
+			}
+		};
+		button(Button_Left, MBT_LEFT, instance->LeftDown);
+		button(Button_Right, MBT_RIGHT, instance->RightDown);
+
+		if (hovered && Mouse::ScrollDelta)
+			host->SendMouseWheelEvent(mouseEvent, 0, static_cast<int>(Mouse::ScrollDelta * WHEEL_DELTA));
 
 		// Keys only reach the page while its window holds the focus, so typing in the rest of the
 		// menu does not leak into it.
@@ -252,20 +270,21 @@ namespace IzEngine
 			{
 				keyEvent.type = KEYEVENT_RAWKEYDOWN;
 				host->SendKeyEvent(keyEvent);
-
-				if (Keyboard::Char)
-				{
-					keyEvent.type = KEYEVENT_CHAR;
-					keyEvent.windows_key_code = Keyboard::Char;
-					keyEvent.character = Keyboard::Char;
-					host->SendKeyEvent(keyEvent);
-				}
 			}
 			if (Input::IsUp(id))
 			{
 				keyEvent.type = KEYEVENT_KEYUP;
 				host->SendKeyEvent(keyEvent);
 			}
+		}
+		if (Keyboard::Char)
+		{
+			CefKeyEvent charEvent;
+			charEvent.type = KEYEVENT_CHAR;
+			charEvent.modifiers = modifiers;
+			charEvent.windows_key_code = Keyboard::Char;
+			charEvent.character = Keyboard::Char;
+			host->SendKeyEvent(charEvent);
 		}
 	}
 
@@ -275,7 +294,21 @@ namespace IzEngine
 			CefDoMessageLoopWork();
 
 		for (auto& instance : Instances)
+		{
+			// Made here on the render thread rather than on CEF's in OnPaint. One level only: a chain
+			// would leave every level below the paint uninitialized, and a minified draw such as the
+			// preview window blends into those and washes the page out.
+			if (instance && instance->Open && !instance->Texture)
+			{
+				std::scoped_lock lock(instance->TextureMutex);
+				instance->Texture = Texture::Create({ .ID = "browser_" + instance->ID,
+					.Size = instance->FrameSize,
+					.Level = 1,
+					.Usage = TextureUsage::Dynamic,
+					.Pool = TexturePool::Default });
+			}
 			Frame(instance);
+		}
 	}
 
 	void Browser::Lock()
@@ -297,6 +330,12 @@ namespace IzEngine
 
 		TextureLocks.clear();
 		Paused = false;
+
+		// A Reset recreates the default pool texture with undefined contents, and CEF only repaints what
+		// changes, so a still page would otherwise stay blank.
+		for (const auto& instance : Instances)
+			if (instance && instance->Browser)
+				instance->Browser->GetHost()->Invalidate(PET_VIEW);
 	}
 
 	void Browser::SetURL(const Ref<BrowserInstance>& instance, const std::string& url)
@@ -358,13 +397,37 @@ namespace IzEngine
 
 	void BrowserClient::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 	{
+		std::scoped_lock lock(CreateMutex);
+
+		if (CloseRequested)
+		{
+			browser->GetHost()->CloseBrowser(true);
+			return;
+		}
+		Created = browser;
 		Instance->Browser = browser;
 		Opened.store(true);
 		Closed.store(false);
 	}
 
+	// For a browser Stop gave up on before CEF finished creating it: CefShutdown with one still open
+	// hangs or crashes, so whichever of the two comes second closes it.
+	void BrowserClient::RequestClose()
+	{
+		std::scoped_lock lock(CreateMutex);
+
+		CloseRequested = true;
+		if (Created)
+			Created->GetHost()->CloseBrowser(true);
+	}
+
 	void BrowserClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 	{
+		// CEF wants every reference to the browser gone by now.
+		{
+			std::scoped_lock lock(CreateMutex);
+			Created = nullptr;
+		}
 		Opened.store(false);
 		Closed.store(true);
 	}

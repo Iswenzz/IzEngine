@@ -46,10 +46,21 @@ namespace IzEngine
 		static void Add()
 		{
 			auto frame = CreateRef<T>();
-			bool isSerialized = Serialized.contains(frame->Name);
 
-			if (isSerialized)
-				frame->Deserialize(Serialized[frame->Name]);
+			// A layout saved by another version must not stop the game from starting; a half applied
+			// one is thrown away for the defaults.
+			if (Serialized.contains(frame->Name))
+			{
+				try
+				{
+					frame->Deserialize(Serialized[frame->Name]);
+				}
+				catch (const std::exception& e)
+				{
+					Log::WriteLine(Channel::Warning, "Discarding the saved layout of {}: {}", frame->Name, e.what());
+					frame = CreateRef<T>();
+				}
+			}
 			frame->Initialize();
 
 			Frames[frame->Name] = frame;

@@ -7,7 +7,8 @@
 #define SHADER_QUAD "Draw2D_Quad"
 #define SHADER_LINE "Draw2D_Line"
 
-#define FONT_OPENSANS "OpenSans-Regular"
+#define FONT_DEFAULT_HEIGHT 22
+#define FONT_OPENSANS "Open Sans"
 #define FONT_SPACERANGER "Space Ranger"
 
 namespace IzEngine

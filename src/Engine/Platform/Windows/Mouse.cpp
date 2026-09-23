@@ -53,7 +53,7 @@ namespace IzEngine
 			Delta += LastDelta;
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_WHEEL)
-				ScrollDelta += static_cast<short>(raw.data.mouse.usButtonData) / WHEEL_DELTA;
+				ScrollDelta += static_cast<short>(raw.data.mouse.usButtonData) / static_cast<float>(WHEEL_DELTA);
 
 			if (raw.data.mouse.usButtonFlags & RI_MOUSE_BUTTON_1_DOWN)
 				Input::SetState(Button_Left, INPUT_DOWN);

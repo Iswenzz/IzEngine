@@ -40,6 +40,10 @@ namespace IzEngine
 			DX9GraphicsContext::Device->CreatePixelShader(static_cast<const DWORD*>(bytecode->GetBufferPointer()),
 				reinterpret_cast<IDirect3DPixelShader9**>(shader));
 		}
+		// Holds the warnings of a compile that succeeded.
+		if (errors)
+			errors->Release();
+
 		bytecode->Release();
 		return constants;
 	}
@@ -116,15 +120,9 @@ namespace IzEngine
 		DX9GraphicsContext::Device->SetPixelShader(nullptr);
 	}
 
-	void DX9Shader::OnBeforeReset()
-	{
-		Release();
-	}
+	void DX9Shader::OnBeforeReset() { }
 
-	void DX9Shader::OnAfterReset()
-	{
-		Compile();
-	}
+	void DX9Shader::OnAfterReset() { }
 
 	void DX9Shader::SetInt(const std::string& name, int value)
 	{

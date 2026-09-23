@@ -25,6 +25,11 @@ namespace IzEngine
 			return Address;
 		}
 
+		explicit operator bool() const
+		{
+			return Address != 0;
+		}
+
 		template <typename T>
 		operator T*()
 		{

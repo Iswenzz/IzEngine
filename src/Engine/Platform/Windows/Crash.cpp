@@ -51,7 +51,16 @@ namespace IzEngine
 		signal(SIGABRT, [](int) { RaiseException(0xE0000001, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
 		std::set_terminate([] { RaiseException(0xE0000002, EXCEPTION_NONCONTINUABLE, 0, nullptr); });
 
-		Sweep();
+		// Housekeeping must never keep the handler from starting: the range-for increments and the
+		// narrow filenames in there throw on a folder another instance removes mid-walk or an odd name.
+		try
+		{
+			Sweep();
+		}
+		catch (const std::exception& e)
+		{
+			Log::WriteLine(Channel::Warning, "Skipped the crash report cleanup: {}", e.what());
+		}
 
 		const auto database = Environment::Path(Directory::Reports) / ".sentry";
 		const auto handler = Environment::Path(Directory::Bin) / "crashpad_handler.exe";

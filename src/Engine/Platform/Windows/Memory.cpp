@@ -8,14 +8,8 @@ namespace IzEngine
 	{
 		IZ_ASSERT(address, "Address nullptr.");
 
-		DWORD oldProtect;
-		LPVOID lpAddress = reinterpret_cast<LPVOID>(address);
-
-		if (!VirtualProtect(lpAddress, size, PAGE_EXECUTE_READ, &oldProtect))
-			return;
-
-		memcpy(data, lpAddress, size);
-		VirtualProtect(lpAddress, size, oldProtect, &oldProtect);
+		SIZE_T read = 0;
+		ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(address), data, size, &read);
 	}
 
 	void Memory::Write(uintptr_t address, const std::string& bytes)

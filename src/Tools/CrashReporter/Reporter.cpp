@@ -102,7 +102,8 @@ namespace IzEngine
 		ImGui::PopStyleColor();
 		ImGui::PopStyleVar(3);
 
-		if (!Sending && ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+		// Not while typing: Escape there leaves the description box, it should not discard the report.
+		if (!Sending && !ImGui::GetIO().WantTextInput && ImGui::IsKeyPressed(ImGuiKey_Escape, false))
 			Closed = true;
 	}
 

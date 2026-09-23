@@ -38,15 +38,16 @@ namespace IzEngine
 		return out;
 	}
 
+	// One lock over the console too, so threads logging at once do not interleave the Hide and Show
+	// that redraw the input line around each message.
 	void Log::Write(const std::string& msg)
 	{
-		{
-			static std::mutex guard;
-			const std::scoped_lock lock(guard);
+		static std::mutex guard;
+		const std::scoped_lock lock(guard);
 
-			if (File().is_open())
-				File() << Plain(msg) << std::flush;
-		}
+		if (File().is_open())
+			File() << Plain(msg) << std::flush;
+
 		if (!Console::Handle)
 			return;
 

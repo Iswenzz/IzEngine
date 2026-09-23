@@ -182,18 +182,25 @@ namespace ImGui
 			Button("...", size);
 			PopStyleColor();
 
-			int k = Input_None;
-			for (; k < Input_Count; k++)
+			// Cancelling comes first: the click that cancels is itself a press of Left Click, and would
+			// otherwise be bound. A mouse button only binds while over the button it is binding.
+			const bool hovered = IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
+			if (Input::IsPressed(Key_Escape) || (!hovered && IsMouseClicked(ImGuiMouseButton_Left)))
+				ClearActiveID();
+			else
 			{
-				if (Input::IsPressed(static_cast<InputEnum>(k)))
+				for (int k = Input_None + 1; k < Input_Count; k++)
 				{
-					*key = static_cast<InputEnum>(k);
-					break;
+					if (!hovered && k >= Button_Left)
+						continue;
+					if (Input::IsPressed(static_cast<InputEnum>(k)))
+					{
+						*key = static_cast<InputEnum>(k);
+						ClearActiveID();
+						break;
+					}
 				}
 			}
-			const bool unfocus = !IsItemHovered() && IsMouseClicked(ImGuiMouseButton_Left);
-			if (k != Input_Count || unfocus || Input::IsPressed(Key_Escape))
-				ClearActiveID();
 		}
 		else
 		{

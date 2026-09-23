@@ -167,6 +167,7 @@ namespace IzEngine
 		std::string Name;
 		int State = 0;
 		int PrevState = 0;
+		bool Pressed = false;
 
 		bool IsRegistered() const
 		{

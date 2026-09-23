@@ -52,6 +52,9 @@ namespace IzEngine
 
 		void Update(uintptr_t address)
 		{
+			if (IsEnabled && address == Address)
+				return;
+
 			Remove();
 			Address = address;
 

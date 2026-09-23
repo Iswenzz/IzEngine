@@ -56,10 +56,7 @@ namespace IzEngine
 			DX9GraphicsContext::RestoreState();
 		}
 		else
-		{
-			DX9GraphicsContext::Device->EndScene();
-			DX9GraphicsContext::Present();
-		}
+			DX9GraphicsContext::Present(); // ends the scene itself
 	}
 
 	void DX9RendererAPI::Resize(const vec2& size)

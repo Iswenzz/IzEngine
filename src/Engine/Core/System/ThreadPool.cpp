@@ -24,9 +24,11 @@ namespace IzEngine
 
 	void ThreadPool::Shutdown()
 	{
+		// Whatever has not started is dropped, so quitting waits only on the tasks already running.
 		{
 			std::scoped_lock lock(Mutex);
 			Running = false;
+			Tasks = {};
 		}
 		Condition.notify_all();
 
@@ -60,7 +62,19 @@ namespace IzEngine
 				task = std::move(Tasks.front());
 				Tasks.pop();
 			}
-			task();
+			// An exception leaving a worker thread would terminate the whole process.
+			try
+			{
+				task();
+			}
+			catch (const std::exception& e)
+			{
+				Log::WriteLine(Channel::Error, "A pooled task failed: {}", e.what());
+			}
+			catch (...)
+			{
+				Log::WriteLine(Channel::Error, "A pooled task failed.");
+			}
 		}
 	}
 }

@@ -22,7 +22,9 @@ namespace IzEngine
 	void AssetManager::Shutdown()
 	{
 		Plugins::Shutdown();
+
 		Assets.clear();
+		FontNames.clear();
 	}
 
 	void AssetManager::LoadTextures()
@@ -33,8 +35,11 @@ namespace IzEngine
 
 	void AssetManager::LoadFonts()
 	{
-		Font::Create({ .ID = FONT_OPENSANS, .Height = 22, .Source = VFS::GetFile("Fonts/OpenSans-Regular.ttf") });
-		Font::Create({ .ID = FONT_SPACERANGER, .Height = 22, .Source = VFS::GetFile("Fonts/SpaceRanger.ttf") });
+		Font::Create({ .ID = FONT_OPENSANS,
+			.Height = FONT_DEFAULT_HEIGHT,
+			.Source = VFS::GetFile("Fonts/OpenSans-Regular.ttf") });
+		Font::Create(
+			{ .ID = FONT_SPACERANGER, .Height = FONT_DEFAULT_HEIGHT, .Source = VFS::GetFile("Fonts/SpaceRanger.ttf") });
 	}
 
 	void AssetManager::LoadShaders()

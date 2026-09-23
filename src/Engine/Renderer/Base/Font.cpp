@@ -26,7 +26,7 @@ namespace IzEngine
 
 	Ref<Font> Font::Default()
 	{
-		auto font = AssetManager::Get<Font>(FONT_OPENSANS);
+		auto font = AssetManager::Get<Font>(std::format("{}_{}", FONT_OPENSANS, FONT_DEFAULT_HEIGHT));
 		IZ_ASSERT(font, "Default font not found.");
 
 		if (!font)

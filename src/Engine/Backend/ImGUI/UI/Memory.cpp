@@ -23,22 +23,27 @@ namespace IzEngine::UC
 
 	void Memory::Write(ImU8* data, size_t offset, ImU8 value, void* userData)
 	{
-		IzEngine::Memory::Write(reinterpret_cast<uintptr_t>(data + offset), reinterpret_cast<char*>(&value));
+		// One byte: the string overload would stop at a zero and run on into whatever follows.
+		IzEngine::Memory::Set<ImU8>(reinterpret_cast<uintptr_t>(data + offset), value);
 	}
 
 	void Memory::OnRender()
 	{
 		const int speed = Editor.Cols * 5;
-		const int scroll = ImGui::GetIO().MouseWheel;
+		const float scroll = ImGui::GetIO().MouseWheel;
 		const int direction = scroll ? scroll > 0 ? 1 : -1 : 0;
-		const int step = 1;
-		const int stepFast = speed * speed;
-		const char* format = sizeof(uintptr_t) == 8 ? "%016X" : "%08X";
 
-		Address += uintptr_t(-direction * speed);
+		// Sized to the pointer: a 64-bit scalar over a 32-bit address wrote into the member after it.
+		const uintptr_t step = 1;
+		const uintptr_t stepFast = speed * speed;
+		const ImGuiDataType type = sizeof(uintptr_t) == 8 ? ImGuiDataType_U64 : ImGuiDataType_U32;
+		const char* format = sizeof(uintptr_t) == 8 ? "%016llX" : "%08X";
 
 		Begin();
-		ImGui::InputScalar("Address", ImGuiDataType_U64, &Address, &step, &stepFast, format);
+		if (ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows))
+			Address += uintptr_t(-direction * speed);
+
+		ImGui::InputScalar("Address", type, &Address, &step, &stepFast, format);
 		Editor.DrawContents(reinterpret_cast<void*>(Address), MaxSize, Address);
 		End();
 	}

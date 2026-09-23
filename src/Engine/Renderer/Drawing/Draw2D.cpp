@@ -162,8 +162,12 @@ namespace IzEngine
 		StartBatch();
 	}
 
+	// Text flushes before every draw, so an empty batch must not cost a pipeline bind.
 	void Draw2D::Flush()
 	{
+		if (!Data.QuadIndexCount && !Data.LineVertexCount)
+			return;
+
 		Data.Pipeline->Bind();
 
 		FlushQuads();

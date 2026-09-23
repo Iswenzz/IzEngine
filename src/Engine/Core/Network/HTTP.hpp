@@ -35,8 +35,11 @@ namespace IzEngine
 	class API HTTP
 	{
 	public:
+		static inline std::atomic<bool> Aborting = false;
+
 		static void Initialize();
 		static void Shutdown();
+		static void Abort();
 
 		static void SetCABundle(const std::string& path);
 		static const std::string& GetCABundle();
