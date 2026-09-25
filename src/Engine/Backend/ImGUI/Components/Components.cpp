@@ -2,6 +2,27 @@
 
 #include "Engine/Backend/ImGUI/Common.hpp"
 
+namespace
+{
+	// Drawn over whatever the window is, so they read on every theme.
+	constexpr auto SectionHeaderColor = ImVec4(0.00f, 0.00f, 0.00f, 0.45f);
+	constexpr auto SectionHeaderHoveredColor = ImVec4(0.00f, 0.00f, 0.00f, 0.35f);
+	constexpr auto SectionBodyColor = ImVec4(0.00f, 0.00f, 0.00f, 0.20f);
+
+	constexpr float PropertyLabelRatio = 0.42f;
+
+	float SectionRounding()
+	{
+		return ImGui::GetFontSize() * 0.3f;
+	}
+
+	vec2 SectionPadding()
+	{
+		const ImGuiStyle& style = ImGui::GetStyle();
+		return { style.ItemSpacing.x * 1.25f, style.ItemSpacing.y };
+	}
+}
+
 namespace ImGui
 {
 	MarkdownConfig MarkConfig;
@@ -108,13 +129,15 @@ namespace ImGui
 	{
 		bool state = false;
 		int index = static_cast<int>(*x) / 4;
-		if (Combo("Align X", &index, Horizontals.data(), Horizontals.size()))
+		Property("Align X");
+		if (Combo("##alignx", &index, Horizontals.data(), Horizontals.size()))
 		{
 			*x = static_cast<Alignment>(index * 4);
 			state = true;
 		}
 		index = static_cast<int>(*y);
-		if (Combo("Align Y", &index, Verticals.data(), Verticals.size()))
+		Property("Align Y");
+		if (Combo("##aligny", &index, Verticals.data(), Verticals.size()))
 		{
 			*y = static_cast<Alignment>(index);
 			state = true;
@@ -126,13 +149,15 @@ namespace ImGui
 	{
 		bool state = false;
 		int index = static_cast<int>(*horizontal);
-		if (Combo("Horizontal", &index, HorizontalAnchors.data(), HorizontalAnchors.size()))
+		Property("Horizontal");
+		if (Combo("##horizontal", &index, HorizontalAnchors.data(), HorizontalAnchors.size()))
 		{
 			*horizontal = static_cast<Horizontal>(index);
 			state = true;
 		}
 		index = static_cast<int>(*vertical);
-		if (Combo("Vertical", &index, VerticalAnchors.data(), VerticalAnchors.size()))
+		Property("Vertical");
+		if (Combo("##vertical", &index, VerticalAnchors.data(), VerticalAnchors.size()))
 		{
 			*vertical = static_cast<Vertical>(index);
 			state = true;
@@ -144,6 +169,97 @@ namespace ImGui
 	{
 		flags |= open ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None;
 		return CollapsingHeader(label.c_str(), flags);
+	}
+
+	// A Blender-style panel: a header bar that folds it, over a padded body. Returns whether it is
+	// open; only then is EndSection called. The open state is kept per title in the window's storage.
+	bool BeginSection(const std::string& title, bool open)
+	{
+		const ImGuiStyle& style = GetStyle();
+		ImDrawList* draw = GetWindowDrawList();
+		ImGuiStorage* storage = GetStateStorage();
+
+		PushID(title.c_str());
+		const ImGuiID id = GetID("##open");
+		bool expanded = storage->GetBool(id, open);
+
+		const vec2 min = GetCursorScreenPos();
+		const float width = GetContentRegionAvail().x;
+		const float height = GetFrameHeight() + style.FramePadding.y;
+
+		if (InvisibleButton("##header", { width, height }))
+		{
+			expanded = !expanded;
+			storage->SetBool(id, expanded);
+		}
+		const ImVec4 color = IsItemHovered() ? SectionHeaderHoveredColor : SectionHeaderColor;
+		draw->AddRectFilled(min, { min.x + width, min.y + height }, GetColorU32(color), SectionRounding(),
+			expanded ? ImDrawFlags_RoundCornersTop : ImDrawFlags_RoundCornersAll);
+
+		const float iconSize = GetFontSize() * 0.7f;
+		const float iconX = min.x + SectionPadding().x;
+		draw->AddText(GetFont(), iconSize, { iconX, min.y + (height - iconSize) * 0.5f },
+			GetColorU32(ImGuiCol_TextDisabled), expanded ? ICON_FA_CHEVRON_DOWN : ICON_FA_CHEVRON_RIGHT);
+		draw->AddText({ iconX + iconSize + style.ItemInnerSpacing.x * 2.0f, min.y + (height - GetFontSize()) * 0.5f },
+			GetColorU32(ImGuiCol_Text), title.c_str());
+
+		if (!expanded)
+		{
+			PopID();
+			Dummy({ 0, style.ItemSpacing.y * 0.25f });
+			return false;
+		}
+
+		// The body sits flush under the header rather than an item spacing below it.
+		SetCursorScreenPos({ min.x, min.y + height });
+		PushStyleVar(ImGuiStyleVar_WindowPadding, SectionPadding());
+		BeginChild("##body", { width, 0 }, ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysUseWindowPadding,
+			ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+		PopStyleVar();
+		return true;
+	}
+
+	// The body's background goes into the parent's draw list after the child has closed: a child
+	// window renders after its parent, so it still lands underneath the rows.
+	void EndSection()
+	{
+		EndChild();
+
+		const vec2 min = GetItemRectMin();
+		const vec2 max = GetItemRectMax();
+		GetWindowDrawList()->AddRectFilled(min, max, GetColorU32(SectionBodyColor), SectionRounding(),
+			ImDrawFlags_RoundCornersBottom);
+
+		PopID();
+		Dummy({ 0, GetStyle().ItemSpacing.y * 0.25f });
+	}
+
+	// Starts a row: the label right-aligned in the left column, and the next item sized to the rest
+	// of the row, less the width asked for something drawn after it on the same line.
+	void Property(const std::string& label, float trailing)
+	{
+		const ImGuiStyle& style = GetStyle();
+		const float start = GetCursorPosX();
+		const float column = std::floor(GetContentRegionAvail().x * PropertyLabelRatio);
+		const float text = CalcTextSize(label.c_str(), nullptr, true).x;
+
+		AlignTextToFramePadding();
+		SetCursorPosX(start + std::max(0.0f, column - style.ItemInnerSpacing.x * 2.0f - text));
+		TextUnformatted(label.c_str());
+
+		SameLine(start + column);
+		SetNextItemWidth(trailing > 0 ? -(trailing + style.ItemSpacing.x) : -FLT_MIN);
+	}
+
+	// A toggle switch centred on the row's frame height, so it lines up with its label.
+	bool Switch(const std::string& id, bool* v)
+	{
+		const float height = GetFontSize() + GetStyle().FramePadding.y * 0.5f;
+		SetCursorPosY(GetCursorPosY() + (GetFrameHeight() - height) * 0.5f);
+
+		const bool before = *v;
+		Toggle(id, v, { height * 1.9f, height });
+		return *v != before;
 	}
 
 	void Tooltip(const std::string& text)

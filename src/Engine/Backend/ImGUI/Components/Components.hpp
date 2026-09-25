@@ -41,6 +41,10 @@ namespace ImGui
 	API bool ComboAlign(Alignment* x, Alignment* y);
 	API bool ComboAlignRect(Horizontal* horizontal, Vertical* vertical);
 	API bool CollapsingHeader(const std::string& label, bool open = false, ImGuiTreeNodeFlags flags = 0);
+	API bool BeginSection(const std::string& title, bool open = true);
+	API void EndSection();
+	API void Property(const std::string& label, float trailing = 0);
+	API bool Switch(const std::string& id, bool* v);
 	API void Tooltip(const std::string& text);
 	API void Keybind(const std::string& label, InputEnum* key, bool unbind = true, const vec2& size = vec2(0, 0));
 	API void Movable(const UUID& id, vec2& position, vec2& size, vec2& renderPosition, vec2& renderSize);

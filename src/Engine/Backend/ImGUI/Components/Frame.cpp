@@ -72,16 +72,16 @@ namespace IzEngine
 
 	void Frame::Menu(const std::string& label, bool open)
 	{
-		if (!ImGui::CollapsingHeader(label, open))
+		if (!ImGui::BeginSection(label, open))
 			return;
 
-		ImGui::PushID(label.c_str());
-
-		ImGui::DragFloat2("Position", &Position.x);
-		ImGui::DragFloat2("Size", &Size.x);
+		ImGui::Property("Position");
+		ImGui::DragFloat2("##position", &Position.x);
+		ImGui::Property("Size");
+		ImGui::DragFloat2("##size", &Size.x);
 		ImGui::ComboAlignRect(&HorizontalAlign, &VerticalAlign);
 
-		ImGui::PopID();
+		ImGui::EndSection();
 	}
 
 	void Frame::Begin()

@@ -52,26 +52,29 @@ namespace IzEngine
 
 	void Text::Menu(const std::string& label, bool open)
 	{
-		if (!ImGui::CollapsingHeader(label, open))
+		if (!ImGui::BeginSection(label, open))
 			return;
 
-		ImGui::PushID(label.c_str());
+		ImGui::Property("Position");
+		ImGui::DragFloat2("##position", &Position.x);
+		ImGui::Property("Skew");
+		ImGui::DragFloat2("##skew", &Skew.x, 0.01, -0.5, 0.5);
+		ImGui::Property("Color");
+		ImGui::ColorEdit4("##color", &Color.x, ImGuiColorEditFlags_Float);
 
-		ImGui::DragFloat2("Position", &Position.x);
-		ImGui::DragFloat2("Skew", &Skew.x, 0.01, -0.5, 0.5);
-		ImGui::ColorEdit4("Color", &Color.x, ImGuiColorEditFlags_Float);
-
-		if (ImGui::InputFloat("Font Size", &FontSize, 0.1))
+		ImGui::Property("Font Size");
+		if (ImGui::InputFloat("##fontsize", &FontSize, 0.1))
 			SetFont(FontName);
 
 		const auto& fonts = AssetManager::FontNames;
-		if (ImGui::Combo("Font", &FontIndex, fonts))
+		ImGui::Property("Font");
+		if (ImGui::Combo("##font", &FontIndex, fonts))
 			SetFont(fonts[FontIndex]);
 
 		ImGui::ComboAlign(&AlignX, &AlignY);
 		ImGui::ComboAlignRect(&HorizontalAlign, &VerticalAlign);
 
-		ImGui::PopID();
+		ImGui::EndSection();
 	}
 
 	void Text::Render()
