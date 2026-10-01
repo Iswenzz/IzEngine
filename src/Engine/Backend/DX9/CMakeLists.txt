@@ -35,8 +35,12 @@ endif()
 
 if(BUILD_OPENXR)
 	target_sources(IzEngine PRIVATE
+		XRCapture.hpp
+		XRCapture.cpp
 		XRBridge.hpp
-		XRBridge.cpp)
+		XRBridge.cpp
+		XRD3D12Bridge.hpp
+		XRD3D12Bridge.cpp)
 endif()
 
 if(BUILD_OPENXR AND BUILD_VULKAN)

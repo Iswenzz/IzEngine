@@ -53,34 +53,12 @@ namespace IzEngine
 		SessionBinding.device = nullptr;
 	}
 
-	// The runtime composites on one GPU and only takes swapchain images made on that same one.
 	bool XRD3D11::CreateDevice(LUID adapter, D3D_FEATURE_LEVEL level, std::string& error)
 	{
 		if (Device)
 			return true;
 
-		IDXGIFactory1* factory = nullptr;
-		if (FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(&factory))))
-		{
-			error = "DXGI is unavailable";
-			return false;
-		}
-
-		IDXGIAdapter1* match = nullptr;
-		IDXGIAdapter1* candidate = nullptr;
-		for (UINT i = 0; factory->EnumAdapters1(i, &candidate) != DXGI_ERROR_NOT_FOUND; i++)
-		{
-			DXGI_ADAPTER_DESC1 desc = {};
-			candidate->GetDesc1(&desc);
-			if (desc.AdapterLuid.LowPart == adapter.LowPart && desc.AdapterLuid.HighPart == adapter.HighPart)
-			{
-				match = candidate;
-				break;
-			}
-			candidate->Release();
-		}
-		factory->Release();
-
+		IDXGIAdapter1* match = XRAdapter(adapter);
 		if (!match)
 		{
 			error = "the headset's GPU was not found";
