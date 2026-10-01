@@ -36,33 +36,61 @@ namespace IzEngine
 			if (!paths.is_object() || !paths.contains("runtime") || !paths["runtime"].is_array())
 				return {};
 
+#ifdef PLATFORM_32
+			constexpr const char* name = "steamxr_win32.json";
+#else
+			constexpr const char* name = "steamxr_win64.json";
+#endif
 			for (const auto& runtime : paths["runtime"])
 			{
 				if (!runtime.is_string())
 					continue;
 
 				std::error_code ec;
-				const std::filesystem::path manifest = std::filesystem::path(runtime.get<std::string>()) / "steamxr_win32.json";
+				const std::filesystem::path manifest = std::filesystem::path(runtime.get<std::string>()) / name;
 				if (std::filesystem::exists(manifest, ec))
 					return manifest;
 			}
 			return {};
 		}
+
+		// Holds the graphics queue across a runtime call that may submit to it.
+		class QueueLock
+		{
+		public:
+			QueueLock(XRGraphics* graphics) : Graphics(graphics)
+			{
+				if (Graphics)
+					Graphics->Lock();
+			}
+
+			~QueueLock()
+			{
+				if (Graphics)
+					Graphics->Unlock();
+			}
+
+		private:
+			XRGraphics* Graphics;
+		};
 	}
 
-	// Meta's 32-bit runtime takes the process down inside xrCreateSession, before it can return an
-	// error, so a Quest on Link goes through SteamVR's 32-bit runtime instead, which drives the same
-	// headset over Link. A manifest named in XR_RUNTIME_JSON is left alone.
+	// SteamVR's runtime is used when PreferSteamVR asks for it, and on a 32-bit process whose system runtime
+	// is Meta's, which takes the process down inside xrCreateSession before it can return an error. SteamVR
+	// drives the same headset over Link. A manifest named in XR_RUNTIME_JSON is left alone.
 	bool OpenXR::SelectRuntime(std::string& error)
 	{
-#ifdef PLATFORM_32
 		char named[MAX_PATH] = {};
 		if (!Redirected && GetEnvironmentVariableA(RuntimeVariable, named, sizeof(named)))
 			return true;
 
+		bool steamvr = PreferSteamVR;
+#ifdef PLATFORM_32
 		std::string active = ActiveRuntime();
 		std::ranges::transform(active, active.begin(), [](char c) { return static_cast<char>(std::tolower(c)); });
-		if (!active.contains("oculus"))
+		steamvr = steamvr || active.contains("oculus");
+#endif
+		if (!steamvr)
 		{
 			if (Redirected)
 				SetEnvironmentVariableA(RuntimeVariable, nullptr);
@@ -70,21 +98,74 @@ namespace IzEngine
 			return true;
 		}
 
-		const std::filesystem::path steamvr = SteamVRRuntime();
-		if (steamvr.empty())
+		const std::filesystem::path manifest = SteamVRRuntime();
+		if (manifest.empty())
 		{
-			error = "Meta's 32-bit OpenXR runtime cannot run this game, install SteamVR or use Virtual Desktop";
+			error = PreferSteamVR ? "SteamVR is not installed"
+								  : "Meta's 32-bit OpenXR runtime cannot run this game, install SteamVR or use Virtual Desktop";
 			return false;
 		}
-		Redirected = SetEnvironmentVariableA(RuntimeVariable, steamvr.string().c_str());
-#endif
+		Redirected = SetEnvironmentVariableA(RuntimeVariable, manifest.string().c_str());
 		return true;
 	}
 
+	// With WaitForHeadset, an instance that finds no headset is kept, and the next call only looks for the
+	// headset again. The instance stays with the runtime it was made on until Shutdown.
 	bool OpenXR::Initialize(XRGraphics& graphics, std::string& error)
 	{
-		if (Instance)
+		if (Instance && System != XR_NULL_SYSTEM_ID)
 			return true;
+		if (!Instance && !CreateInstance(graphics, error))
+			return false;
+
+		XrSystemGetInfo system{ XR_TYPE_SYSTEM_GET_INFO };
+		system.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
+		const XrResult result = xrGetSystem(Instance, &system, &System);
+		if (XR_FAILED(result))
+		{
+			System = XR_NULL_SYSTEM_ID;
+			const bool missing = result == XR_ERROR_FORM_FACTOR_UNAVAILABLE;
+			error = missing ? std::format("{} sees no headset, connect it and start the link first", Runtime)
+							: std::format("xrGetSystem failed ({})", static_cast<int>(result));
+			if (!missing || !WaitForHeadset)
+				Shutdown();
+			return false;
+		}
+
+		XrSystemProperties properties{ XR_TYPE_SYSTEM_PROPERTIES };
+		if (XR_SUCCEEDED(xrGetSystemProperties(Instance, System, &properties)))
+			Headset = properties.systemName;
+
+		uint32_t count = 0;
+		xrEnumerateViewConfigurationViews(Instance, System, ViewConfiguration, 0, &count, nullptr);
+		if (count != 2)
+		{
+			error = std::format("{} does not drive a stereo headset", Runtime);
+			Shutdown();
+			return false;
+		}
+		Configurations[0] = Configurations[1] = { XR_TYPE_VIEW_CONFIGURATION_VIEW };
+		xrEnumerateViewConfigurationViews(Instance, System, ViewConfiguration, count, &count, Configurations);
+
+		count = 0;
+		xrEnumerateEnvironmentBlendModes(Instance, System, ViewConfiguration, 0, &count, nullptr);
+		std::vector<XrEnvironmentBlendMode> modes(count);
+		xrEnumerateEnvironmentBlendModes(Instance, System, ViewConfiguration, count, &count, modes.data());
+		BlendMode = modes.empty() || std::ranges::contains(modes, XR_ENVIRONMENT_BLEND_MODE_OPAQUE)
+			? XR_ENVIRONMENT_BLEND_MODE_OPAQUE
+			: modes.front();
+
+		Graphics = &graphics;
+		if (!graphics.Initialize(Instance, System, error))
+		{
+			Shutdown();
+			return false;
+		}
+		return true;
+	}
+
+	bool OpenXR::CreateInstance(XRGraphics& graphics, std::string& error)
+	{
 		if (!SelectRuntime(error))
 			return false;
 
@@ -114,7 +195,7 @@ namespace IzEngine
 		info.enabledExtensionCount = 1;
 		info.enabledExtensionNames = enabled;
 
-		XrResult result = xrCreateInstance(&info, &Instance);
+		const XrResult result = xrCreateInstance(&info, &Instance);
 		if (XR_FAILED(result))
 		{
 			error = std::format("xrCreateInstance failed ({})", static_cast<int>(result));
@@ -125,44 +206,6 @@ namespace IzEngine
 		XrInstanceProperties properties{ XR_TYPE_INSTANCE_PROPERTIES };
 		if (XR_SUCCEEDED(xrGetInstanceProperties(Instance, &properties)))
 			Runtime = properties.runtimeName;
-
-		XrSystemGetInfo system{ XR_TYPE_SYSTEM_GET_INFO };
-		system.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
-		result = xrGetSystem(Instance, &system, &System);
-		if (XR_FAILED(result))
-		{
-			error = result == XR_ERROR_FORM_FACTOR_UNAVAILABLE
-				? std::format("{} sees no headset, connect it and start the link first", Runtime)
-				: std::format("xrGetSystem failed ({})", static_cast<int>(result));
-			Shutdown();
-			return false;
-		}
-
-		count = 0;
-		xrEnumerateViewConfigurationViews(Instance, System, ViewConfiguration, 0, &count, nullptr);
-		if (count != 2)
-		{
-			error = std::format("{} does not drive a stereo headset", Runtime);
-			Shutdown();
-			return false;
-		}
-		Configurations[0] = Configurations[1] = { XR_TYPE_VIEW_CONFIGURATION_VIEW };
-		xrEnumerateViewConfigurationViews(Instance, System, ViewConfiguration, count, &count, Configurations);
-
-		count = 0;
-		xrEnumerateEnvironmentBlendModes(Instance, System, ViewConfiguration, 0, &count, nullptr);
-		std::vector<XrEnvironmentBlendMode> modes(count);
-		xrEnumerateEnvironmentBlendModes(Instance, System, ViewConfiguration, count, &count, modes.data());
-		BlendMode = modes.empty() || std::ranges::contains(modes, XR_ENVIRONMENT_BLEND_MODE_OPAQUE)
-			? XR_ENVIRONMENT_BLEND_MODE_OPAQUE
-			: modes.front();
-
-		Graphics = &graphics;
-		if (!graphics.Initialize(Instance, System, error))
-		{
-			Shutdown();
-			return false;
-		}
 		return true;
 	}
 
@@ -183,6 +226,7 @@ namespace IzEngine
 			xrDestroyInstance(Instance);
 		Instance = XR_NULL_HANDLE;
 		System = XR_NULL_SYSTEM_ID;
+		Headset.clear();
 		Exiting = false;
 	}
 
@@ -197,7 +241,11 @@ namespace IzEngine
 		info.next = Graphics->Binding();
 		info.systemId = System;
 
-		XrResult result = xrCreateSession(Instance, &info, &Session);
+		XrResult result = XR_SUCCESS;
+		{
+			QueueLock lock(Graphics);
+			result = xrCreateSession(Instance, &info, &Session);
+		}
 		if (XR_FAILED(result))
 		{
 			error = std::format("xrCreateSession failed ({})", static_cast<int>(result));
@@ -286,7 +334,10 @@ namespace IzEngine
 
 		// Destroying a running session is allowed, and what a device restart needs: waiting for the
 		// runtime to walk it down to stopping would hold the restart for however long that takes.
-		xrDestroySession(Session);
+		{
+			QueueLock lock(Graphics);
+			xrDestroySession(Session);
+		}
 		Session = XR_NULL_HANDLE;
 		State = XR_SESSION_STATE_UNKNOWN;
 		Started = false;
@@ -307,7 +358,12 @@ namespace IzEngine
 		info.arraySize = 1;
 		info.mipCount = 1;
 
-		if (!Check(xrCreateSwapchain(Session, &info, &swapchain.Handle), "xrCreateSwapchain"))
+		XrResult result = XR_SUCCESS;
+		{
+			QueueLock lock(Graphics);
+			result = xrCreateSwapchain(Session, &info, &swapchain.Handle);
+		}
+		if (!Check(result, "xrCreateSwapchain"))
 		{
 			swapchain.Handle = XR_NULL_HANDLE;
 			return false;
@@ -321,7 +377,10 @@ namespace IzEngine
 	void OpenXR::DestroySwapchain(XRSwapchain& swapchain)
 	{
 		if (swapchain.Handle)
+		{
+			QueueLock lock(Graphics);
 			xrDestroySwapchain(swapchain.Handle);
+		}
 		swapchain = {};
 	}
 
@@ -465,6 +524,13 @@ namespace IzEngine
 				Started = false;
 				Exiting = true;
 			}
+			// The player recentred from the runtime's own menu, which moves the space the frame is in.
+			else if (event.type == XR_TYPE_EVENT_DATA_REFERENCE_SPACE_CHANGE_PENDING)
+			{
+				const auto& change = reinterpret_cast<const XrEventDataReferenceSpaceChangePending&>(event);
+				if (change.referenceSpaceType == XR_REFERENCE_SPACE_TYPE_LOCAL && OnRecentered)
+					OnRecentered();
+			}
 			event = { XR_TYPE_EVENT_DATA_BUFFER };
 		}
 	}
@@ -487,7 +553,12 @@ namespace IzEngine
 			return false;
 
 		XrFrameBeginInfo begin{ XR_TYPE_FRAME_BEGIN_INFO };
-		if (!Check(xrBeginFrame(Session, &begin), "xrBeginFrame"))
+		XrResult result = XR_SUCCESS;
+		{
+			QueueLock lock(Graphics);
+			result = xrBeginFrame(Session, &begin);
+		}
+		if (!Check(result, "xrBeginFrame"))
 			return false;
 
 		Open = true;
@@ -527,12 +598,12 @@ namespace IzEngine
 
 		if (layers.Panel && Frame.shouldRender)
 		{
-			quad.layerFlags = XR_COMPOSITION_LAYER_BLEND_TEXTURE_SOURCE_ALPHA_BIT;
-			quad.space = ViewSpace;
+			quad.layerFlags = layers.PanelAlpha ? XR_COMPOSITION_LAYER_BLEND_TEXTURE_SOURCE_ALPHA_BIT : 0;
+			quad.space = layers.PanelPose ? LocalSpace : ViewSpace;
 			quad.eyeVisibility = XR_EYE_VISIBILITY_BOTH;
 			quad.subImage.swapchain = PanelSwapchain.Handle;
 			quad.subImage.imageRect = { { 0, 0 }, { PanelSwapchain.Width, PanelSwapchain.Height } };
-			quad.pose = { { 0, 0, 0, 1 }, { 0, 0, -layers.PanelDistance } };
+			quad.pose = layers.PanelPose.value_or(XrPosef{ { 0, 0, 0, 1 }, { 0, 0, -layers.PanelDistance } });
 			quad.size = { layers.PanelSize.x, layers.PanelSize.y };
 			list.push_back(reinterpret_cast<const XrCompositionLayerBaseHeader*>(&quad));
 		}
@@ -542,6 +613,8 @@ namespace IzEngine
 		end.environmentBlendMode = BlendMode;
 		end.layerCount = static_cast<uint32_t>(list.size());
 		end.layers = list.empty() ? nullptr : list.data();
+
+		QueueLock lock(Graphics);
 		Check(xrEndFrame(Session, &end), "xrEndFrame");
 	}
 
@@ -552,7 +625,12 @@ namespace IzEngine
 
 		uint32_t index = 0;
 		XrSwapchainImageAcquireInfo acquire{ XR_TYPE_SWAPCHAIN_IMAGE_ACQUIRE_INFO };
-		if (!Check(xrAcquireSwapchainImage(swapchain.Handle, &acquire, &index), "xrAcquireSwapchainImage"))
+		XrResult result = XR_SUCCESS;
+		{
+			QueueLock lock(Graphics);
+			result = xrAcquireSwapchainImage(swapchain.Handle, &acquire, &index);
+		}
+		if (!Check(result, "xrAcquireSwapchainImage"))
 			return nullptr;
 
 		XrSwapchainImageWaitInfo wait{ XR_TYPE_SWAPCHAIN_IMAGE_WAIT_INFO };
@@ -568,6 +646,7 @@ namespace IzEngine
 	void OpenXR::Release(XRSwapchain& swapchain)
 	{
 		XrSwapchainImageReleaseInfo release{ XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO };
+		QueueLock lock(Graphics);
 		xrReleaseSwapchainImage(swapchain.Handle, &release);
 	}
 
@@ -678,6 +757,12 @@ namespace IzEngine
 		return Exiting;
 	}
 
+	// The session has begun and frames can be drawn for it.
+	bool OpenXR::Running()
+	{
+		return Started;
+	}
+
 	bool OpenXR::Focused()
 	{
 		return State == XR_SESSION_STATE_FOCUSED;
@@ -686,6 +771,12 @@ namespace IzEngine
 	bool OpenXR::FrameOpen()
 	{
 		return Open;
+	}
+
+	// The runtime shows the frame being drawn; it does not while the headset is off or shows something else.
+	bool OpenXR::ShouldRender()
+	{
+		return Open && Frame.shouldRender;
 	}
 
 	bool OpenXR::Located()
@@ -718,5 +809,10 @@ namespace IzEngine
 	const std::string& OpenXR::RuntimeName()
 	{
 		return Runtime;
+	}
+
+	const std::string& OpenXR::SystemName()
+	{
+		return Headset;
 	}
 }

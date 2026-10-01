@@ -18,7 +18,8 @@ namespace IzEngine
 		int Height = 0;
 	};
 
-	// What a frame hands back to the compositor: the eyes it drew, and a flat panel held in front of the head.
+	// What a frame hands back to the compositor: the eyes it drew, and a flat panel held in front of the head,
+	// or standing in the tracking space at PanelPose. An opaque panel ignores its alpha.
 	struct XRLayers
 	{
 		bool Eyes = false;
@@ -26,6 +27,8 @@ namespace IzEngine
 		bool Panel = false;
 		float PanelDistance = 1.5f;
 		vec2 PanelSize{ 1.0f, 1.0f };
+		std::optional<XrPosef> PanelPose;
+		bool PanelAlpha = true;
 	};
 
 	// A binding the interaction profile does not have fails the whole suggestion, so each profile only
@@ -45,7 +48,10 @@ namespace IzEngine
 		static inline XRSwapchain EyeSwapchains[2];
 		static inline XRSwapchain PanelSwapchain;
 		static inline bool Swizzle = false;
+		static inline bool PreferSteamVR = false;
+		static inline bool WaitForHeadset = false;
 		static inline std::function<void(XrSessionState)> OnStateChanged;
+		static inline std::function<void()> OnRecentered;
 
 		static bool Initialize(XRGraphics& graphics, std::string& error);
 		static void Shutdown();
@@ -66,14 +72,17 @@ namespace IzEngine
 		static void Release(XRSwapchain& swapchain);
 
 		static bool Ended();
+		static bool Running();
 		static bool Focused();
 		static bool FrameOpen();
+		static bool ShouldRender();
 		static bool Located();
 		static const XRView& View(int eye);
 		static const XrPosef& Head();
 		static glm::ivec2 RecommendedSize();
 		static glm::ivec2 MaximumSize();
 		static const std::string& RuntimeName();
+		static const std::string& SystemName();
 		static const char* StateName(XrSessionState state);
 		static PFN_xrVoidFunction Function(const char* name);
 
@@ -90,6 +99,7 @@ namespace IzEngine
 		static inline XrActionSet Actions = XR_NULL_HANDLE;
 		static inline std::vector<std::pair<XrAction, XrSpace>> PoseSpaces;
 		static inline std::string Runtime;
+		static inline std::string Headset;
 		static inline bool Redirected = false;
 
 		static inline bool Started = false;
@@ -102,6 +112,7 @@ namespace IzEngine
 		static inline bool HasPose = false;
 
 		static bool SelectRuntime(std::string& error);
+		static bool CreateInstance(XRGraphics& graphics, std::string& error);
 		static bool CreateSwapchain(XRSwapchain& swapchain, int64_t format, const glm::ivec2& size);
 		static void DestroySwapchain(XRSwapchain& swapchain);
 		static void Locate();

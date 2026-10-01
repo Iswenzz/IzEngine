@@ -24,5 +24,7 @@ namespace IzEngine
 		virtual const void* Binding() const = 0;
 		virtual std::span<const XRFormat> Formats() const = 0;
 		virtual bool Images(XrSwapchain swapchain, std::vector<void*>& images) = 0;
+		virtual void Lock();
+		virtual void Unlock();
 	};
 }

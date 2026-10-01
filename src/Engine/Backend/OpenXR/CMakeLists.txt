@@ -1,6 +1,7 @@
 target_sources(IzEngine PRIVATE
 	Base.hpp
 	Graphics.hpp
+	Graphics.cpp
 	OpenXR.hpp
 	OpenXR.cpp)
 
