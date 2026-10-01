@@ -15,6 +15,11 @@ if(BUILD_CEF)
 	list(APPEND VCPKG_MANIFEST_FEATURES "cef")
 endif()
 
+option(BUILD_OPENXR "Build OpenXR" OFF)
+if(BUILD_OPENXR)
+	list(APPEND VCPKG_MANIFEST_FEATURES "openxr")
+endif()
+
 option(BUILD_TESTING "Build Tests" OFF)
 if(BUILD_TESTING)
 	list(APPEND VCPKG_MANIFEST_FEATURES "tests")

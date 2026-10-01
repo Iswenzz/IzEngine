@@ -26,6 +26,10 @@ if(BUILD_CEF)
 	find_package(CEF REQUIRED)
 endif()
 
+if(BUILD_OPENXR)
+	find_package(OpenXR CONFIG REQUIRED)
+endif()
+
 # Tests
 if(BUILD_TESTING)
 	include(CTest)

@@ -32,3 +32,9 @@ target_sources(IzEngine PRIVATE
 if(BUILD_CEF)
 	target_sources(IzEngine PRIVATE Browser.cpp)
 endif()
+
+if(BUILD_OPENXR)
+	target_sources(IzEngine PRIVATE
+		XRBridge.hpp
+		XRBridge.cpp)
+endif()

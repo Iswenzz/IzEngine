@@ -21,6 +21,10 @@
 			"description": "Build CEF",
 			"dependencies": ["cef"]
 		},
+		"openxr": {
+			"description": "Build OpenXR",
+			"dependencies": ["openxr-loader"]
+		},
 		"tests": {
 			"description": "Build tests",
 			"dependencies": ["gtest"]
@@ -46,6 +50,7 @@
         { "name": "implot", "version": "0.16#1" },
 		{ "name": "libzippp", "version": "7.1-1.10.1"},
         { "name": "nlohmann-json", "version": "3.11.3" },
+		{ "name": "openxr-loader", "version": "1.0.22#3" },
         { "name": "polyhook2", "version": "2024-02-08" },
         { "name": "sentry-native", "version": "0.12.1" }
     ]
