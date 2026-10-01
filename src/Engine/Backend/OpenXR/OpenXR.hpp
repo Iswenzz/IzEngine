@@ -13,7 +13,7 @@ namespace IzEngine
 	struct XRSwapchain
 	{
 		XrSwapchain Handle = XR_NULL_HANDLE;
-		std::vector<void*> Images;
+		std::vector<uint64_t> Images;
 		int Width = 0;
 		int Height = 0;
 	};
@@ -68,7 +68,7 @@ namespace IzEngine
 		static void PollEvents();
 		static bool BeginFrame();
 		static void EndFrame(const XRLayers& layers);
-		static void* Acquire(XRSwapchain& swapchain);
+		static uint64_t Acquire(XRSwapchain& swapchain);
 		static void Release(XRSwapchain& swapchain);
 
 		static bool Ended();

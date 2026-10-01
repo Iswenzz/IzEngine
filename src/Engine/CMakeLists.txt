@@ -32,6 +32,7 @@ target_link_libraries(IzEngine PUBLIC
     $<$<BOOL:${BUILD_CEF}>:CEF::CEF>
     $<$<BOOL:${BUILD_OPENXR}>:OpenXR::headers>
     $<$<BOOL:${BUILD_OPENXR}>:OpenXR::openxr_loader>
+    $<$<BOOL:${BUILD_VULKAN}>:Vulkan::Headers>
     $<$<AND:$<BOOL:${BUILD_OPENXR}>,$<BOOL:${PLATFORM_WINDOWS}>>:d3d11>
     $<$<AND:$<BOOL:${BUILD_OPENXR}>,$<BOOL:${PLATFORM_WINDOWS}>>:dxgi>
     $<$<BOOL:${GRAPHICS_API_DX9}>:DirectX::SDK>

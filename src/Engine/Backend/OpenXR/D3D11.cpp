@@ -127,7 +127,7 @@ namespace IzEngine
 		return Preferred;
 	}
 
-	bool XRD3D11::Images(XrSwapchain swapchain, std::vector<void*>& images)
+	bool XRD3D11::Images(XrSwapchain swapchain, std::vector<uint64_t>& images)
 	{
 		uint32_t count = 0;
 		xrEnumerateSwapchainImages(swapchain, 0, &count, nullptr);
@@ -137,7 +137,7 @@ namespace IzEngine
 
 		images.clear();
 		for (const auto& image : list)
-			images.push_back(image.texture);
+			images.push_back(reinterpret_cast<uint64_t>(image.texture));
 		return !images.empty();
 	}
 }

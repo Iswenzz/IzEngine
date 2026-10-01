@@ -12,7 +12,8 @@ namespace IzEngine
 	};
 
 	// What OpenXR needs from one graphics API: the extension that binds it, a device on the headset's GPU,
-	// and the images behind the swapchains. One per API, as ImGui has one backend per API.
+	// and the images behind the swapchains. One per API, as ImGui has one backend per API. An image is
+	// handed over in 64 bits, which holds a pointer, and a Vulkan handle even in a 32-bit process.
 	class API XRGraphics
 	{
 	public:
@@ -23,7 +24,7 @@ namespace IzEngine
 		virtual void Shutdown() = 0;
 		virtual const void* Binding() const = 0;
 		virtual std::span<const XRFormat> Formats() const = 0;
-		virtual bool Images(XrSwapchain swapchain, std::vector<void*>& images) = 0;
+		virtual bool Images(XrSwapchain swapchain, std::vector<uint64_t>& images) = 0;
 		virtual void Lock();
 		virtual void Unlock();
 	};

@@ -25,6 +25,10 @@
 			"description": "Build OpenXR",
 			"dependencies": ["openxr-loader"]
 		},
+		"vulkan": {
+			"description": "Build Vulkan",
+			"dependencies": ["vulkan-headers"]
+		},
 		"tests": {
 			"description": "Build tests",
 			"dependencies": ["gtest"]
@@ -52,6 +56,7 @@
         { "name": "nlohmann-json", "version": "3.11.3" },
 		{ "name": "openxr-loader", "version": "1.0.22#3" },
         { "name": "polyhook2", "version": "2024-02-08" },
-        { "name": "sentry-native", "version": "0.12.1" }
+        { "name": "sentry-native", "version": "0.12.1" },
+		{ "name": "vulkan-headers", "version": "1.4.309.0" }
     ]
 }

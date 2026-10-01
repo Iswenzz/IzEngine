@@ -618,10 +618,11 @@ namespace IzEngine
 		Check(xrEndFrame(Session, &end), "xrEndFrame");
 	}
 
-	void* OpenXR::Acquire(XRSwapchain& swapchain)
+	// The image to draw into, or 0 when there is none.
+	uint64_t OpenXR::Acquire(XRSwapchain& swapchain)
 	{
 		if (!swapchain.Handle)
-			return nullptr;
+			return 0;
 
 		uint32_t index = 0;
 		XrSwapchainImageAcquireInfo acquire{ XR_TYPE_SWAPCHAIN_IMAGE_ACQUIRE_INFO };
@@ -631,16 +632,16 @@ namespace IzEngine
 			result = xrAcquireSwapchainImage(swapchain.Handle, &acquire, &index);
 		}
 		if (!Check(result, "xrAcquireSwapchainImage"))
-			return nullptr;
+			return 0;
 
 		XrSwapchainImageWaitInfo wait{ XR_TYPE_SWAPCHAIN_IMAGE_WAIT_INFO };
 		wait.timeout = XR_INFINITE_DURATION;
 		if (!Check(xrWaitSwapchainImage(swapchain.Handle, &wait), "xrWaitSwapchainImage"))
 		{
 			Release(swapchain);
-			return nullptr;
+			return 0;
 		}
-		return index < swapchain.Images.size() ? swapchain.Images[index] : nullptr;
+		return index < swapchain.Images.size() ? swapchain.Images[index] : 0;
 	}
 
 	void OpenXR::Release(XRSwapchain& swapchain)

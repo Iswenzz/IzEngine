@@ -38,3 +38,10 @@ if(BUILD_OPENXR)
 		XRBridge.hpp
 		XRBridge.cpp)
 endif()
+
+if(BUILD_OPENXR AND BUILD_VULKAN)
+	target_sources(IzEngine PRIVATE
+		DXVK.hpp
+		XRVulkanBridge.hpp
+		XRVulkanBridge.cpp)
+endif()

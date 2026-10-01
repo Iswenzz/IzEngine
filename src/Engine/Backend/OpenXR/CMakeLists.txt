@@ -10,3 +10,9 @@ if(PLATFORM_WINDOWS)
 		D3D11.hpp
 		D3D11.cpp)
 endif()
+
+if(BUILD_VULKAN)
+	target_sources(IzEngine PRIVATE
+		Vulkan.hpp
+		Vulkan.cpp)
+endif()

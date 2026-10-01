@@ -30,6 +30,10 @@ if(BUILD_OPENXR)
 	find_package(OpenXR CONFIG REQUIRED)
 endif()
 
+if(BUILD_VULKAN)
+	find_package(VulkanHeaders CONFIG REQUIRED)
+endif()
+
 # Tests
 if(BUILD_TESTING)
 	include(CTest)

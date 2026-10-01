@@ -20,6 +20,11 @@ if(BUILD_OPENXR)
 	list(APPEND VCPKG_MANIFEST_FEATURES "openxr")
 endif()
 
+option(BUILD_VULKAN "Build Vulkan" OFF)
+if(BUILD_VULKAN)
+	list(APPEND VCPKG_MANIFEST_FEATURES "vulkan")
+endif()
+
 option(BUILD_TESTING "Build Tests" OFF)
 if(BUILD_TESTING)
 	list(APPEND VCPKG_MANIFEST_FEATURES "tests")

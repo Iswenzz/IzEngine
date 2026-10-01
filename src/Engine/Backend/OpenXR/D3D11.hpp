@@ -21,7 +21,7 @@ namespace IzEngine
 		void Shutdown() override;
 		const void* Binding() const override;
 		std::span<const XRFormat> Formats() const override;
-		bool Images(XrSwapchain swapchain, std::vector<void*>& images) override;
+		bool Images(XrSwapchain swapchain, std::vector<uint64_t>& images) override;
 
 	private:
 		XrGraphicsBindingD3D11KHR SessionBinding{ XR_TYPE_GRAPHICS_BINDING_D3D11_KHR };

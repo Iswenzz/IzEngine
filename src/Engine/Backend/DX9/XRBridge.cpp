@@ -218,7 +218,7 @@ namespace IzEngine
 	// BGRA is the byte order of D3DFMT_A8R8G8B8 and copies straight across; RGBA needs its channels swapped.
 	bool DX9XRBridge::Upload(XRSwapchain& swapchain, IDirect3DSurface9* surface, int height)
 	{
-		auto* image = static_cast<ID3D11Texture2D*>(OpenXR::Acquire(swapchain));
+		auto* image = reinterpret_cast<ID3D11Texture2D*>(static_cast<uintptr_t>(OpenXR::Acquire(swapchain)));
 		if (!image)
 			return false;
 
