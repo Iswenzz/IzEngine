@@ -298,6 +298,8 @@ namespace IzEngine
 		if (target.Staging)
 		{
 			Wait();
+			if (target.Texture)
+				target.Texture->Release();
 			target.Staging->Release();
 		}
 		target = {};
@@ -335,13 +337,10 @@ namespace IzEngine
 			return false;
 		}
 
-		ID3D9VkInteropTexture* texture = nullptr;
 		VkImageCreateInfo info{ VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO };
-		const bool mapped = SUCCEEDED(
-								target.Staging->QueryInterface(__uuidof(ID3D9VkInteropTexture), reinterpret_cast<void**>(&texture)))
-			&& SUCCEEDED(texture->GetVulkanImageInfo(&target.Image, &target.Layout, &info));
-		if (texture)
-			texture->Release();
+		const bool mapped = SUCCEEDED(target.Staging->QueryInterface(__uuidof(ID3D9VkInteropTexture),
+								reinterpret_cast<void**>(&target.Texture)))
+			&& SUCCEEDED(target.Texture->GetVulkanImageInfo(nullptr, nullptr, &info));
 
 		const VkFormat expected = OpenXR::Swizzle ? VK_FORMAT_R8G8B8A8_UNORM : VK_FORMAT_B8G8R8A8_UNORM;
 		if (!mapped || info.format != expected || !(info.usage & VK_IMAGE_USAGE_TRANSFER_SRC_BIT))
@@ -368,14 +367,20 @@ namespace IzEngine
 		if (!image)
 			return false;
 
-		Record(target, copy->Commands, reinterpret_cast<VkImage>(image));
-
 		VkSubmitInfo submit{ VK_STRUCTURE_TYPE_SUBMIT_INFO };
 		submit.commandBufferCount = 1;
 		submit.pCommandBuffers = &copy->Commands;
 
+		// DXVK moves images to defragment memory, swapping the handle when a command list closes and freeing the
+		// old image once that list completes. Asked for after Submit's flush, under the lock, it is the live one.
 		Interop->LockSubmissionQueue();
-		copy->Submitted = Vk.QueueSubmit(Queue, 1, &submit, copy->Fence) == VK_SUCCESS;
+		VkImage staging = VK_NULL_HANDLE;
+		VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
+		if (SUCCEEDED(target.Texture->GetVulkanImageInfo(&staging, &layout, nullptr)))
+		{
+			Record(target, staging, layout, copy->Commands, reinterpret_cast<VkImage>(image));
+			copy->Submitted = Vk.QueueSubmit(Queue, 1, &submit, copy->Fence) == VK_SUCCESS;
+		}
 		Interop->ReleaseSubmissionQueue();
 
 		OpenXR::Release(swapchain);
@@ -384,7 +389,8 @@ namespace IzEngine
 
 	// Staging goes from DXVK's resting layout to a copy source and back, the runtime's image from colour
 	// attachment to copy destination and back, which is the layout OpenXR hands it over and takes it back in.
-	void DX9XRVulkanBridge::Record(const DX9VulkanTarget& target, VkCommandBuffer commands, VkImage image) const
+	void DX9XRVulkanBridge::Record(const DX9VulkanTarget& target, VkImage staging, VkImageLayout layout,
+		VkCommandBuffer commands, VkImage image) const
 	{
 		const VkImageSubresourceRange range = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
 
@@ -396,9 +402,9 @@ namespace IzEngine
 			{ VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER } };
 		before[0].srcAccessMask = VK_ACCESS_MEMORY_WRITE_BIT;
 		before[0].dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-		before[0].oldLayout = target.Layout;
+		before[0].oldLayout = layout;
 		before[0].newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-		before[0].image = target.Image;
+		before[0].image = staging;
 		before[1].dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 		before[1].oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 		before[1].newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
@@ -416,7 +422,7 @@ namespace IzEngine
 		region.srcSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
 		region.dstSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
 		region.extent = { static_cast<uint32_t>(target.Width), static_cast<uint32_t>(target.Height), 1 };
-		Vk.CmdCopyImage(commands, target.Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, image,
+		Vk.CmdCopyImage(commands, staging, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, image,
 			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
 
 		// ALL_COMMANDS as the destination orders DXVK's next write to the staging image after this read.
@@ -424,7 +430,7 @@ namespace IzEngine
 		after[0].srcAccessMask = 0;
 		after[0].dstAccessMask = VK_ACCESS_MEMORY_READ_BIT | VK_ACCESS_MEMORY_WRITE_BIT;
 		after[0].oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-		after[0].newLayout = target.Layout;
+		after[0].newLayout = layout;
 		after[1].srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
 		after[1].dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
 		after[1].oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;

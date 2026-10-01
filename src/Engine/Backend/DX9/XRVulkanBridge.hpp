@@ -34,12 +34,12 @@ namespace IzEngine
 		bool Submitted = false;
 	};
 
-	// What a swapchain is fed from: a DXVK render target of its size, holding the last capture.
+	// What a swapchain is fed from: a DXVK render target of its size, holding the last capture. Its VkImage is
+	// asked for at every copy, as DXVK may move the image to other memory.
 	struct DX9VulkanTarget
 	{
 		IDirect3DSurface9* Staging = nullptr;
-		VkImage Image = VK_NULL_HANDLE;
-		VkImageLayout Layout = VK_IMAGE_LAYOUT_UNDEFINED;
+		ID3D9VkInteropTexture* Texture = nullptr;
 		int Width = 0;
 		int Height = 0;
 		bool Captured = false;
@@ -82,7 +82,8 @@ namespace IzEngine
 		bool CreateStaging(DX9VulkanTarget& target, const XRSwapchain& swapchain);
 		void ReleaseTarget(DX9VulkanTarget& target);
 		bool Present(const DX9VulkanTarget& target, XRSwapchain& swapchain);
-		void Record(const DX9VulkanTarget& target, VkCommandBuffer commands, VkImage image) const;
+		void Record(const DX9VulkanTarget& target, VkImage staging, VkImageLayout layout, VkCommandBuffer commands,
+			VkImage image) const;
 		DX9VulkanCopy* NextCopy();
 		void Wait();
 	};
