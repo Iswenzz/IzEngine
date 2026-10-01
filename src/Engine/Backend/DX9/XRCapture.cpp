@@ -29,6 +29,7 @@ namespace IzEngine
 		GPUResource::UnregisterResource(this);
 		DX9XRCapture::ReleaseCaptures();
 		SafeRelease(Target);
+		SafeRelease(CanvasSurface);
 	}
 
 	// Everything in D3DPOOL_DEFAULT, which the device has to be rid of before a reset. The renderer has
@@ -37,6 +38,7 @@ namespace IzEngine
 	{
 		ReleaseCaptures();
 		SafeRelease(Target);
+		SafeRelease(CanvasSurface);
 	}
 
 	void DX9XRCapture::ReleaseCaptures()
@@ -189,6 +191,21 @@ namespace IzEngine
 		if (Target)
 			Target->AddRef();
 		return Target;
+	}
+
+	// A render target of the window's size, for whatever is laid out for the window when the back buffer
+	// is smaller than it. The caller does not take a reference.
+	IDirect3DSurface9* DX9XRCapture::Canvas(IDirect3DDevice9* device, const glm::ivec2& size)
+	{
+		if (CanvasSurface && CanvasSize == size)
+			return CanvasSurface;
+
+		SafeRelease(CanvasSurface);
+		if (FAILED(device->CreateRenderTarget(size.x, size.y, D3DFMT_A8R8G8B8, D3DMULTISAMPLE_NONE, 0, FALSE, &CanvasSurface,
+				nullptr)))
+			CanvasSurface = nullptr;
+		CanvasSize = CanvasSurface ? size : glm::ivec2{};
+		return CanvasSurface;
 	}
 
 	// Draws through the fixed function pipeline, bracketed by a state block so the device comes back

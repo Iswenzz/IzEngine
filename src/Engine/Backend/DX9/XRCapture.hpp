@@ -23,6 +23,7 @@ namespace IzEngine
 		void Mirror(IDirect3DSurface9* screen, IDirect3DSurface9* source);
 		IDirect3DSurface9* RenderTarget(IDirect3DDevice9* device, const glm::ivec2& size, D3DMULTISAMPLE_TYPE samples,
 			DWORD quality);
+		IDirect3DSurface9* Canvas(IDirect3DDevice9* device, const glm::ivec2& size);
 
 		virtual bool Attach(IDirect3DDevice9* device);
 		virtual bool Deliver(const XRLayers& layers, XRLayers& ready) = 0;
@@ -44,6 +45,8 @@ namespace IzEngine
 
 	private:
 		IDirect3DSurface9* Target = nullptr;
+		IDirect3DSurface9* CanvasSurface = nullptr;
+		glm::ivec2 CanvasSize{};
 		DX9StateBlock State;
 
 		RECT Fit(IDirect3DSurface9* screen, const glm::ivec2& size) const;
