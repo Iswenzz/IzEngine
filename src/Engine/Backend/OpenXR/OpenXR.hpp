@@ -55,15 +55,19 @@ namespace IzEngine
 
 		static bool Initialize(XRGraphics& graphics, std::string& error);
 		static void Shutdown();
+		static void RequestExtension(const char* name);
+		static bool HasExtension(const char* name);
 		static bool CreateSession(const glm::ivec2& eyeSize, const glm::ivec2& panelSize, std::string& error);
 		static void DestroySession();
 
 		static XrAction CreateAction(const char* name, const char* localized, XrActionType type);
 		static void SuggestBindings(const char* profile, std::initializer_list<XRBinding> bindings);
+		static void SuggestBindings(const char* profile, std::span<const XRBinding> bindings);
 		static bool GetBoolean(XrAction action);
 		static float GetFloat(XrAction action);
 		static vec2 GetVector2(XrAction action);
 		static bool GetPose(XrAction action, XrPosef& pose);
+		static bool FloorHeight(float& height);
 
 		static void PollEvents();
 		static bool BeginFrame();
@@ -92,6 +96,7 @@ namespace IzEngine
 		static inline XrSession Session = XR_NULL_HANDLE;
 		static inline XrSpace LocalSpace = XR_NULL_HANDLE;
 		static inline XrSpace ViewSpace = XR_NULL_HANDLE;
+		static inline XrSpace StageSpace = XR_NULL_HANDLE;
 		static inline XrSessionState State = XR_SESSION_STATE_UNKNOWN;
 		static inline XrEnvironmentBlendMode BlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
 		static inline XrViewConfigurationView Configurations[2] = {};
@@ -100,6 +105,8 @@ namespace IzEngine
 		static inline std::vector<std::pair<XrAction, XrSpace>> PoseSpaces;
 		static inline std::string Runtime;
 		static inline std::string Headset;
+		static inline std::vector<std::string> Requested;
+		static inline std::vector<std::string> Enabled;
 		static inline bool Redirected = false;
 
 		static inline bool Started = false;

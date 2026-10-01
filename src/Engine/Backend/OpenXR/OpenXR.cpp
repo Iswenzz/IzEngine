@@ -184,7 +184,19 @@ namespace IzEngine
 			return false;
 		}
 
-		const char* enabled[] = { binding };
+		// Optional extensions are only asked for when the runtime has them, which is then what HasExtension
+		// reports.
+		Enabled = { binding };
+		for (const std::string& name : Requested)
+		{
+			const bool available = std::ranges::any_of(extensions,
+				[&](const XrExtensionProperties& e) { return e.extensionName == name; });
+			if (available && !std::ranges::contains(Enabled, name))
+				Enabled.push_back(name);
+		}
+		std::vector<const char*> enabled;
+		for (const std::string& name : Enabled)
+			enabled.push_back(name.c_str());
 
 		XrInstanceCreateInfo info{ XR_TYPE_INSTANCE_CREATE_INFO };
 		strcpy_s(info.applicationInfo.applicationName, APPLICATION_ID);
@@ -192,8 +204,8 @@ namespace IzEngine
 		info.applicationInfo.applicationVersion = 1;
 		info.applicationInfo.engineVersion = 1;
 		info.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
-		info.enabledExtensionCount = 1;
-		info.enabledExtensionNames = enabled;
+		info.enabledExtensionCount = static_cast<uint32_t>(enabled.size());
+		info.enabledExtensionNames = enabled.data();
 
 		const XrResult result = xrCreateInstance(&info, &Instance);
 		if (XR_FAILED(result))
@@ -227,7 +239,20 @@ namespace IzEngine
 		Instance = XR_NULL_HANDLE;
 		System = XR_NULL_SYSTEM_ID;
 		Headset.clear();
+		Enabled.clear();
 		Exiting = false;
+	}
+
+	// Asked for at the next Initialize, and enabled there if the runtime has it.
+	void OpenXR::RequestExtension(const char* name)
+	{
+		if (!std::ranges::contains(Requested, name))
+			Requested.emplace_back(name);
+	}
+
+	bool OpenXR::HasExtension(const char* name)
+	{
+		return std::ranges::contains(Enabled, name);
 	}
 
 	// The actions have to be made and their bindings suggested before this, since the session takes
@@ -260,6 +285,11 @@ namespace IzEngine
 		xrCreateReferenceSpace(Session, &space, &LocalSpace);
 		space.referenceSpaceType = XR_REFERENCE_SPACE_TYPE_VIEW;
 		xrCreateReferenceSpace(Session, &space, &ViewSpace);
+
+		// Only a runtime that knows where the floor is has a stage.
+		space.referenceSpaceType = XR_REFERENCE_SPACE_TYPE_STAGE;
+		if (XR_FAILED(xrCreateReferenceSpace(Session, &space, &StageSpace)))
+			StageSpace = XR_NULL_HANDLE;
 
 		uint32_t count = 0;
 		xrEnumerateSwapchainFormats(Session, 0, &count, nullptr);
@@ -330,7 +360,9 @@ namespace IzEngine
 			xrDestroySpace(LocalSpace);
 		if (ViewSpace)
 			xrDestroySpace(ViewSpace);
-		LocalSpace = ViewSpace = XR_NULL_HANDLE;
+		if (StageSpace)
+			xrDestroySpace(StageSpace);
+		LocalSpace = ViewSpace = StageSpace = XR_NULL_HANDLE;
 
 		// Destroying a running session is allowed, and what a device restart needs: waiting for the
 		// runtime to walk it down to stopping would hold the restart for however long that takes.
@@ -416,6 +448,11 @@ namespace IzEngine
 
 	void OpenXR::SuggestBindings(const char* profile, std::initializer_list<XRBinding> bindings)
 	{
+		SuggestBindings(profile, std::span<const XRBinding>(bindings.begin(), bindings.size()));
+	}
+
+	void OpenXR::SuggestBindings(const char* profile, std::span<const XRBinding> bindings)
+	{
 		if (!Instance)
 			return;
 
@@ -482,6 +519,21 @@ namespace IzEngine
 			return false;
 
 		pose = location.pose;
+		return true;
+	}
+
+	// The floor's height in the space poses are reported in, for runtimes that know where it is.
+	bool OpenXR::FloorHeight(float& height)
+	{
+		if (!Open || !StageSpace)
+			return false;
+
+		XrSpaceLocation location{ XR_TYPE_SPACE_LOCATION };
+		if (XR_FAILED(xrLocateSpace(StageSpace, LocalSpace, Frame.predictedDisplayTime, &location))
+			|| !(location.locationFlags & XR_SPACE_LOCATION_POSITION_VALID_BIT))
+			return false;
+
+		height = location.pose.position.y;
 		return true;
 	}
 
