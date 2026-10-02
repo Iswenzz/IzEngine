@@ -15,6 +15,14 @@ namespace IzEngine
 			object = nullptr;
 		}
 
+		// Clicks go through to the window beneath, the game's.
+		LRESULT CALLBACK ChildProc(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
+		{
+			if (message == WM_NCHITTEST)
+				return HTTRANSPARENT;
+			return DefWindowProcA(window, message, wParam, lParam);
+		}
+
 		D3D12_RESOURCE_BARRIER Transition(ID3D12Resource* resource, D3D12_RESOURCE_STATES from, D3D12_RESOURCE_STATES to)
 		{
 			D3D12_RESOURCE_BARRIER barrier = {};
@@ -37,6 +45,10 @@ namespace IzEngine
 			SafeRelease(copy.List);
 			SafeRelease(copy.Allocator);
 		}
+		SafeRelease(Swapchain);
+		if (Child)
+			DestroyWindow(Child);
+		Child = nullptr;
 		SafeRelease(Flush);
 		SafeRelease(On12);
 		SafeRelease(Fence);
@@ -215,6 +227,115 @@ namespace IzEngine
 		if (ready.Panel)
 			ready.Panel = delivered(count - 1);
 		return ready.Eyes || ready.Panel;
+	}
+
+	// D3D9On12 presents a window's back buffer black past a size, so the canvas is shown instead through a
+	// swapchain of the session's own device, in a child window over the client area.
+	bool DX9XRD3D12Bridge::Present(HWND window)
+	{
+		RECT client = {};
+		if (!window || !CanvasTexture || !On12 || !Fence || !D3D9 || !GetClientRect(window, &client))
+			return false;
+		const glm::ivec2 size(client.right - client.left, client.bottom - client.top);
+		if (size.x <= 0 || size.y <= 0 || size != CanvasSize)
+			return false;
+
+		if (!Child)
+		{
+			WNDCLASSA type = {};
+			type.lpfnWndProc = ChildProc;
+			type.hInstance = GetModuleHandleA(nullptr);
+			type.lpszClassName = "IzEngineXRMirror";
+			RegisterClassA(&type);
+			Child = CreateWindowExA(0, type.lpszClassName, "", WS_CHILD | WS_VISIBLE, 0, 0, size.x, size.y, window, nullptr,
+				type.hInstance, nullptr);
+			if (!Child)
+				return false;
+		}
+		if (size != ChildSize)
+		{
+			SetWindowPos(Child, HWND_TOP, 0, 0, size.x, size.y, SWP_NOACTIVATE);
+			if (Swapchain)
+			{
+				Wait();
+				Swapchain->ResizeBuffers(0, size.x, size.y, DXGI_FORMAT_UNKNOWN, 0);
+			}
+			ChildSize = size;
+		}
+		if (!Swapchain)
+		{
+			IDXGIFactory2* factory = nullptr;
+			IDXGIFactory1* base = nullptr;
+			if (SUCCEEDED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(&base))))
+				base->QueryInterface(IID_PPV_ARGS(&factory));
+			SafeRelease(base);
+
+			DXGI_SWAP_CHAIN_DESC1 desc = {};
+			desc.Width = size.x;
+			desc.Height = size.y;
+			desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+			desc.SampleDesc.Count = 1;
+			desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+			desc.BufferCount = 2;
+			desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+			IDXGISwapChain1* created = nullptr;
+			if (factory)
+				factory->CreateSwapChainForHwnd(Graphics.Queue, Child, &desc, nullptr, nullptr, &created);
+			if (created)
+				created->QueryInterface(IID_PPV_ARGS(&Swapchain));
+			SafeRelease(created);
+			SafeRelease(factory);
+			if (!Swapchain)
+				return false;
+		}
+
+		DX9XRCopy* copy = NextCopy();
+		ID3D12Resource* source = nullptr;
+		ID3D12Resource* buffer = nullptr;
+		if (!copy || FAILED(On12->UnwrapUnderlyingResource(CanvasTexture, Graphics.Queue, IID_PPV_ARGS(&source))))
+			return false;
+		if (!Flush && FAILED(D3D9->CreateQuery(D3DQUERYTYPE_EVENT, &Flush)))
+			Flush = nullptr;
+		if (Flush)
+		{
+			Flush->Issue(D3DISSUE_END);
+			Flush->GetData(nullptr, 0, D3DGETDATA_FLUSH);
+		}
+		Swapchain->GetBuffer(Swapchain->GetCurrentBackBufferIndex(), IID_PPV_ARGS(&buffer));
+
+		copy->Allocator->Reset();
+		copy->List->Reset(copy->Allocator, nullptr);
+		if (buffer)
+		{
+			const D3D12_RESOURCE_BARRIER before[] = {
+				Transition(source, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_SOURCE),
+				Transition(buffer, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_COPY_DEST),
+			};
+			const D3D12_RESOURCE_BARRIER after[] = {
+				Transition(source, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_COMMON),
+				Transition(buffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PRESENT),
+			};
+			const D3D12_TEXTURE_COPY_LOCATION to = { buffer, D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX };
+			const D3D12_TEXTURE_COPY_LOCATION from = { source, D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX };
+			copy->List->ResourceBarrier(2, before);
+			copy->List->CopyTextureRegion(&to, 0, 0, 0, &from, nullptr);
+			copy->List->ResourceBarrier(2, after);
+		}
+		copy->List->Close();
+
+		ID3D12CommandList* lists[] = { copy->List };
+		Graphics.Queue->ExecuteCommandLists(1, lists);
+		Graphics.Queue->Signal(Fence, ++FenceValue);
+		copy->Done = FenceValue;
+		UINT64 value = FenceValue;
+		On12->ReturnUnderlyingResource(CanvasTexture, 1, &value, &Fence);
+		SafeRelease(source);
+		if (!buffer)
+			return false;
+
+		buffer->Release();
+		Swapchain->Present(0, 0);
+		return true;
 	}
 
 	// A frame's command list is recorded again only once the GPU is done with it, which three frames later

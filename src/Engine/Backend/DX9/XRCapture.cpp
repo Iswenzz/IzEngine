@@ -30,6 +30,7 @@ namespace IzEngine
 		DX9XRCapture::ReleaseCaptures();
 		SafeRelease(Target);
 		SafeRelease(CanvasSurface);
+		SafeRelease(CanvasTexture);
 	}
 
 	// Everything in D3DPOOL_DEFAULT, which the device has to be rid of before a reset. The renderer has
@@ -39,6 +40,7 @@ namespace IzEngine
 		ReleaseCaptures();
 		SafeRelease(Target);
 		SafeRelease(CanvasSurface);
+		SafeRelease(CanvasTexture);
 	}
 
 	void DX9XRCapture::ReleaseCaptures()
@@ -55,6 +57,12 @@ namespace IzEngine
 	}
 
 	void DX9XRCapture::Resized() { }
+
+	// Shows the canvas in the window by a way of the bridge's own; false leaves it to the device's back buffer.
+	bool DX9XRCapture::Present(HWND window)
+	{
+		return false;
+	}
 
 	// Whether the bridge can carry frames from this device.
 	bool DX9XRCapture::Attach(IDirect3DDevice9* device)
@@ -201,9 +209,14 @@ namespace IzEngine
 			return CanvasSurface;
 
 		SafeRelease(CanvasSurface);
-		if (FAILED(device->CreateRenderTarget(size.x, size.y, D3DFMT_A8R8G8B8, D3DMULTISAMPLE_NONE, 0, FALSE, &CanvasSurface,
-				nullptr)))
-			CanvasSurface = nullptr;
+		SafeRelease(CanvasTexture);
+		if (FAILED(device->CreateTexture(size.x, size.y, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT,
+				&CanvasTexture, nullptr))
+			|| FAILED(CanvasTexture->GetSurfaceLevel(0, &CanvasSurface)))
+		{
+			SafeRelease(CanvasSurface);
+			SafeRelease(CanvasTexture);
+		}
 		CanvasSize = CanvasSurface ? size : glm::ivec2{};
 		return CanvasSurface;
 	}

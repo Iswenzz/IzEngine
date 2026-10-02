@@ -27,6 +27,7 @@ namespace IzEngine
 
 		virtual bool Attach(IDirect3DDevice9* device);
 		virtual bool Deliver(const XRLayers& layers, XRLayers& ready) = 0;
+		virtual bool Present(HWND window);
 
 		void Release() override;
 
@@ -39,14 +40,15 @@ namespace IzEngine
 		glm::ivec2 EyeSize{};
 		glm::ivec2 PanelSize{};
 		bool Captured[3] = {};
+		IDirect3DTexture9* CanvasTexture = nullptr;
+		IDirect3DSurface9* CanvasSurface = nullptr;
+		glm::ivec2 CanvasSize{};
 
 		virtual void ReleaseCaptures();
 		virtual void Resized();
 
 	private:
 		IDirect3DSurface9* Target = nullptr;
-		IDirect3DSurface9* CanvasSurface = nullptr;
-		glm::ivec2 CanvasSize{};
 		DX9StateBlock State;
 
 		RECT Fit(IDirect3DSurface9* screen, const glm::ivec2& size) const;

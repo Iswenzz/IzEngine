@@ -28,6 +28,7 @@ namespace IzEngine
 
 		bool Attach(IDirect3DDevice9* device) override;
 		bool Deliver(const XRLayers& layers, XRLayers& ready) override;
+		bool Present(HWND window) override;
 
 	private:
 		XRD3D12& Graphics;
@@ -38,6 +39,9 @@ namespace IzEngine
 		UINT64 FenceValue = 0;
 		std::array<DX9XRCopy, 3> Copies;
 		size_t Next = 0;
+		HWND Child = nullptr;
+		IDXGISwapChain3* Swapchain = nullptr;
+		glm::ivec2 ChildSize{};
 
 		DX9XRCopy* NextCopy();
 		void Wait();
