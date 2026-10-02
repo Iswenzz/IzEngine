@@ -98,6 +98,53 @@ namespace
 		destroy(probe, nullptr);
 	}
 
+	// FXAA over the eye: luma edges from the four diagonals, then a blend along the edge across up to eight
+	// texels. The game's bytes are gamma encoded, which is the space FXAA's luma expects.
+	constexpr const char* FxaaSource = R"(
+sampler2D Source : register(s0);
+float4 Texel : register(c0);
+
+float Luma(float3 color)
+{
+	return dot(color, float3(0.299, 0.587, 0.114));
+}
+
+float3 Fetch(float2 uv)
+{
+	return tex2Dlod(Source, float4(uv, 0, 0)).rgb;
+}
+
+float4 main(float2 uv : TEXCOORD0) : COLOR0
+{
+	float3 m = Fetch(uv);
+	float lumaNW = Luma(Fetch(uv + float2(-1, -1) * Texel.xy));
+	float lumaNE = Luma(Fetch(uv + float2(1, -1) * Texel.xy));
+	float lumaSW = Luma(Fetch(uv + float2(-1, 1) * Texel.xy));
+	float lumaSE = Luma(Fetch(uv + float2(1, 1) * Texel.xy));
+	float lumaM = Luma(m);
+	float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
+	float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));
+
+	float2 dir;
+	dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
+	dir.y = (lumaNW + lumaSW) - (lumaNE + lumaSE);
+	float reduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * (0.25 / 8.0), 1.0 / 128.0);
+	float scale = 1.0 / (min(abs(dir.x), abs(dir.y)) + reduce);
+	dir = clamp(dir * scale, -8.0, 8.0) * Texel.xy;
+
+	float3 a = 0.5 * (Fetch(uv + dir * (1.0 / 3.0 - 0.5)) + Fetch(uv + dir * (2.0 / 3.0 - 0.5)));
+	float3 b = a * 0.5 + 0.25 * (Fetch(uv - dir * 0.5) + Fetch(uv + dir * 0.5));
+	float lumaB = Luma(b);
+	return float4((lumaB < lumaMin || lumaB > lumaMax) ? a : b, 1);
+}
+)";
+
+	struct FxaaVertex
+	{
+		float X, Y, Z, Rhw;
+		float U, V;
+	};
+
 	// DXVK's provider contract: space separated, NUL terminated, the size counted with the terminator, 0 for
 	// success. An empty list is a failure: DXVK would read the terminator as an extension named "".
 	int WriteExtensions(const std::vector<std::string>& names, uint32_t capacity, uint32_t* count, char* buffer)
@@ -176,6 +223,10 @@ namespace IzEngine
 	void DX9XRVulkanBridge::Detach()
 	{
 		Release();
+		if (Fxaa)
+			Fxaa->Release();
+		Fxaa = nullptr;
+		FxaaFailed = false;
 		Wait();
 		Graphics.Detach();
 
@@ -252,7 +303,21 @@ namespace IzEngine
 
 	bool DX9XRVulkanBridge::CaptureEye(int eye, IDirect3DSurface9* source)
 	{
-		return Capture(Targets[eye], OpenXR::EyeSwapchains[eye], source);
+		DX9VulkanTarget& target = Targets[eye];
+		if (!Antialiasing || FxaaFailed)
+			return Capture(target, OpenXR::EyeSwapchains[eye], source);
+
+		if (!D3D9 || !source || !OpenXR::EyeSwapchains[eye].Handle)
+			return false;
+		if (target.Staging
+			&& (target.Width != OpenXR::EyeSwapchains[eye].Width || target.Height != OpenXR::EyeSwapchains[eye].Height))
+			ReleaseTarget(target);
+		if (!target.Staging && !CreateStaging(target, OpenXR::EyeSwapchains[eye]))
+			return false;
+
+		if (Antialias(target, source))
+			return true;
+		return Capture(target, OpenXR::EyeSwapchains[eye], source);
 	}
 
 	bool DX9XRVulkanBridge::CapturePanel(IDirect3DSurface9* source)
@@ -291,6 +356,147 @@ namespace IzEngine
 	{
 		for (DX9VulkanTarget& target : Targets)
 			ReleaseTarget(target);
+
+		if (EdgesSurface)
+			EdgesSurface->Release();
+		if (Edges)
+			Edges->Release();
+		EdgesSurface = nullptr;
+		Edges = nullptr;
+	}
+
+	bool DX9XRVulkanBridge::CreateFxaa()
+	{
+		if (Fxaa)
+			return true;
+
+		ID3DBlob* bytecode = nullptr;
+		ID3DBlob* errors = nullptr;
+		const HRESULT hr = D3DCompile(FxaaSource, std::strlen(FxaaSource), "FXAA", nullptr, nullptr, "main", "ps_3_0",
+			D3DCOMPILE_OPTIMIZATION_LEVEL3, 0, &bytecode, &errors);
+		if (errors)
+		{
+			if (FAILED(hr))
+				Log::WriteLine(Channel::Error, "FXAA: {}", static_cast<const char*>(errors->GetBufferPointer()));
+			errors->Release();
+		}
+		if (FAILED(hr) || !bytecode)
+			return false;
+
+		const bool created =
+			SUCCEEDED(D3D9->CreatePixelShader(static_cast<const DWORD*>(bytecode->GetBufferPointer()), &Fxaa));
+		bytecode->Release();
+		return created;
+	}
+
+	// The frame goes through a texture of the eye's size, which FXAA samples, into the staging target. The
+	// device comes back as the renderer left it: its targets by hand, the rest through a state block.
+	bool DX9XRVulkanBridge::Antialias(DX9VulkanTarget& target, IDirect3DSurface9* source)
+	{
+		if (!CreateFxaa())
+		{
+			FxaaFailed = true;
+			LastError = "FXAA could not be compiled";
+			return false;
+		}
+
+		if (Edges)
+		{
+			D3DSURFACE_DESC current = {};
+			EdgesSurface->GetDesc(&current);
+			if (static_cast<int>(current.Width) != target.Width || static_cast<int>(current.Height) != target.Height)
+			{
+				EdgesSurface->Release();
+				Edges->Release();
+				EdgesSurface = nullptr;
+				Edges = nullptr;
+			}
+		}
+		if (!Edges)
+		{
+			if (FAILED(D3D9->CreateTexture(target.Width, target.Height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8,
+					D3DPOOL_DEFAULT, &Edges, nullptr))
+				|| FAILED(Edges->GetSurfaceLevel(0, &EdgesSurface)))
+			{
+				if (Edges)
+					Edges->Release();
+				Edges = nullptr;
+				EdgesSurface = nullptr;
+				return false;
+			}
+		}
+
+		D3DSURFACE_DESC desc = {};
+		source->GetDesc(&desc);
+		const bool scaled = static_cast<int>(desc.Width) != target.Width || static_cast<int>(desc.Height) != target.Height;
+		if (FAILED(D3D9->StretchRect(source, nullptr, EdgesSurface, nullptr, scaled ? D3DTEXF_LINEAR : D3DTEXF_NONE)))
+			return false;
+
+		IDirect3DSurface9* targets[4] = {};
+		for (DWORD i = 0; i < 4; i++)
+			D3D9->GetRenderTarget(i, &targets[i]);
+		IDirect3DSurface9* depth = nullptr;
+		D3D9->GetDepthStencilSurface(&depth);
+		State.Capture();
+
+		D3D9->SetRenderTarget(0, target.Staging);
+		for (DWORD i = 1; i < 4; i++)
+			D3D9->SetRenderTarget(i, nullptr);
+		D3D9->SetDepthStencilSurface(nullptr);
+
+		const D3DVIEWPORT9 viewport = { 0, 0, static_cast<DWORD>(target.Width), static_cast<DWORD>(target.Height), 0, 1 };
+		D3D9->SetViewport(&viewport);
+
+		const float texel[4] = { 1.0f / target.Width, 1.0f / target.Height, 0, 0 };
+		D3D9->SetVertexShader(nullptr);
+		D3D9->SetPixelShader(Fxaa);
+		D3D9->SetPixelShaderConstantF(0, texel, 1);
+		D3D9->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
+		D3D9->SetTexture(0, Edges);
+		D3D9->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+		D3D9->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+		D3D9->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+		D3D9->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+		D3D9->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+		D3D9->SetSamplerState(0, D3DSAMP_SRGBTEXTURE, FALSE);
+
+		D3D9->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		D3D9->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_STENCILENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		D3D9->SetRenderState(D3DRS_FOGENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_CLIPPLANEENABLE, 0);
+		D3D9->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		D3D9->SetRenderState(D3DRS_SRGBWRITEENABLE, FALSE);
+		D3D9->SetRenderState(D3DRS_COLORWRITEENABLE, 0xF);
+
+		const float right = target.Width - 0.5f;
+		const float bottom = target.Height - 0.5f;
+		const FxaaVertex quad[4] = {
+			{ -0.5f, -0.5f, 0, 1, 0, 0 },
+			{ right, -0.5f, 0, 1, 1, 0 },
+			{ -0.5f, bottom, 0, 1, 0, 1 },
+			{ right, bottom, 0, 1, 1, 1 },
+		};
+		const bool drawn = SUCCEEDED(D3D9->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, quad, sizeof(FxaaVertex)));
+
+		for (DWORD i = 0; i < 4; i++)
+		{
+			if (i == 0 || targets[i])
+				D3D9->SetRenderTarget(i, targets[i]);
+			if (targets[i])
+				targets[i]->Release();
+		}
+		D3D9->SetDepthStencilSurface(depth);
+		if (depth)
+			depth->Release();
+		State.Apply();
+
+		target.Captured = target.Captured || drawn;
+		return drawn;
 	}
 
 	void DX9XRVulkanBridge::ReleaseTarget(DX9VulkanTarget& target)

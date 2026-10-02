@@ -1,14 +1,5 @@
 #pragma once
-#include "Graphics.hpp"
-
-// The engine links no Vulkan loader; functions come from the one the application's device runs on.
-#ifndef VK_NO_PROTOTYPES
-	#define VK_NO_PROTOTYPES
-#endif
-#include <vulkan/vulkan.h>
-
-#define XR_USE_GRAPHICS_API_VULKAN
-#include <openxr/openxr_platform.h>
+#include "Platform.hpp"
 
 namespace IzEngine
 {

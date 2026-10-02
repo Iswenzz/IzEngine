@@ -1,6 +1,7 @@
 #pragma once
 #include "Base.hpp"
 #include "DXVK.hpp"
+#include "StateBlock.hpp"
 
 #include "Engine/Backend/OpenXR/OpenXR.hpp"
 #include "Engine/Renderer/Base/GPUResource.hpp"
@@ -51,6 +52,8 @@ namespace IzEngine
 	class API DX9XRVulkanBridge : public GPUResource
 	{
 	public:
+		bool Antialiasing = false;
+
 		DX9XRVulkanBridge(XRVulkan& graphics);
 		~DX9XRVulkanBridge() override;
 
@@ -76,10 +79,17 @@ namespace IzEngine
 		size_t Next = 0;
 		DX9VulkanTarget Targets[3];
 		std::string LastError;
+		IDirect3DTexture9* Edges = nullptr;
+		IDirect3DSurface9* EdgesSurface = nullptr;
+		IDirect3DPixelShader9* Fxaa = nullptr;
+		bool FxaaFailed = false;
+		DX9StateBlock State;
 
 		bool CreateCommands();
 		bool Capture(DX9VulkanTarget& target, const XRSwapchain& swapchain, IDirect3DSurface9* source);
 		bool CreateStaging(DX9VulkanTarget& target, const XRSwapchain& swapchain);
+		bool Antialias(DX9VulkanTarget& target, IDirect3DSurface9* source);
+		bool CreateFxaa();
 		void ReleaseTarget(DX9VulkanTarget& target);
 		bool Present(const DX9VulkanTarget& target, XRSwapchain& swapchain);
 		void Record(const DX9VulkanTarget& target, VkImage staging, VkImageLayout layout, VkCommandBuffer commands,
