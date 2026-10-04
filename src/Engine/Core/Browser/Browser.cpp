@@ -26,12 +26,12 @@ namespace IzEngine
 		settings.multi_threaded_message_loop = Multithreaded;
 		settings.windowless_rendering_enabled = true;
 		settings.no_sandbox = true;
-		CefString(&settings.resources_dir_path).FromString(pathResources.string());
-		CefString(&settings.locales_dir_path).FromString(pathLocales.string());
-		CefString(&settings.cache_path).FromString(pathCache.string());
-		CefString(&settings.root_cache_path).FromString(pathCache.string());
-		CefString(&settings.log_file).FromString(pathLog.string());
-		CefString(&settings.browser_subprocess_path).FromString(pathSubProcess.string());
+		CefString(&settings.resources_dir_path).FromWString(pathResources.wstring());
+		CefString(&settings.locales_dir_path).FromWString(pathLocales.wstring());
+		CefString(&settings.cache_path).FromWString(pathCache.wstring());
+		CefString(&settings.root_cache_path).FromWString(pathCache.wstring());
+		CefString(&settings.log_file).FromWString(pathLog.wstring());
+		CefString(&settings.browser_subprocess_path).FromWString(pathSubProcess.wstring());
 
 		if (!CefInitialize(args, settings, App, nullptr))
 			return;
