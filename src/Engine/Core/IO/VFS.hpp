@@ -16,7 +16,7 @@ namespace IzEngine
 		std::vector<std::string> Patterns;
 	};
 
-	class VFS
+	class API VFS
 	{
 	public:
 		static inline std::unordered_map<std::string, FileInfo> Tree;

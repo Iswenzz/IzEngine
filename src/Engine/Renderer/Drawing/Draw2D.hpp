@@ -6,6 +6,10 @@
 #include "Engine/Renderer/Base/Texture.hpp"
 #include "Engine/Renderer/Camera/Camera.hpp"
 
+// windows.h maps DrawText to DrawTextA, which renames the method below in any file that includes it
+// first, while the DX9 backend that defines it has already undone the macro.
+#undef DrawText
+
 namespace IzEngine
 {
 	struct Draw2DStatistics
