@@ -174,10 +174,15 @@ namespace IzEngine::UC
 			Default();
 
 		ImGui::Separator();
+		// Both editors name their tabs and fields alike: without a scope each, ImGui reports conflicting ids
+		ImGui::PushID("ImGui");
 		ImGui::ShowStyleEditor();
+		ImGui::PopID();
 
 		ImGui::Separator();
+		ImGui::PushID("ImPlot");
 		ImPlot::ShowStyleEditor();
+		ImGui::PopID();
 	}
 
 	void Themes::OnRender()
