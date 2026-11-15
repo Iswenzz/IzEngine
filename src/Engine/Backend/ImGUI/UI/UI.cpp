@@ -12,6 +12,22 @@
 
 namespace IzEngine
 {
+	// Only keys nothing else uses: a mouse button, a letter or Space as the menu key toggled the menu on every click or keystroke,
+	// the one meant to rebind it included
+	static bool IsMenuKey(InputEnum key)
+	{
+		switch (key)
+		{
+		case Key_F1: case Key_F2: case Key_F3: case Key_F4: case Key_F5: case Key_F6:
+		case Key_F7: case Key_F8: case Key_F9: case Key_F10: case Key_F11: case Key_F12:
+		case Key_Insert: case Key_Delete: case Key_Home: case Key_End: case Key_PageUp: case Key_PageDown:
+		case Key_ScrollLock: case Key_Pause:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 	void UI::Initialize()
 	{
 		IZ_ASSERT(!Active, "UI already initialized.");
@@ -30,6 +46,8 @@ namespace IzEngine
 		KeyOpen = Bind(Key_F10);
 		if (Serialized.contains("KeyOpen"))
 			KeyOpen = Serialized["KeyOpen"];
+		if (!IsMenuKey(KeyOpen.Input))
+			KeyOpen = Bind(Key_F10);
 
 		Add<UC::Themes>();
 		Add<UC::Memory>();
@@ -180,6 +198,9 @@ namespace IzEngine
 			if (Input::IsPressed(Key_Escape))
 				Open = false;
 
+			// A key bound in the settings that the menu cannot use goes back to F10 at once
+			if (!IsMenuKey(KeyOpen.Input))
+				KeyOpen = Bind(Key_F10);
 			if (KeyOpen.IsPressed())
 				Open = !Open;
 		}

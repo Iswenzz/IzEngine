@@ -307,7 +307,8 @@ namespace ImGui
 			{
 				for (int k = Input_None + 1; k < Input_Count; k++)
 				{
-					if (!hovered && k >= Button_Left)
+					// Left Click is the UI's own click: bound to a key, every click would fire it
+					if (k == Button_Left || (!hovered && k >= Button_Left))
 						continue;
 					if (Input::IsPressed(static_cast<InputEnum>(k)))
 					{
