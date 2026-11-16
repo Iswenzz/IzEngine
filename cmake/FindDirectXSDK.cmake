@@ -1,4 +1,4 @@
-find_path(DXSDK_INCLUDE_DIRS "directxsdk/d3dx9.h")
+find_path(DXSDK_INCLUDE_DIRS "dxsdk-d3dx/d3dx9.h")
 find_library(D3DX9_LIB d3dx9)
 
 set(DXSDK_LIBS
@@ -8,7 +8,7 @@ set(DXSDK_LIBS
 
 set(DXSDK_INCLUDE_DIRS
 	${DXSDK_INCLUDE_DIRS}
-	${DXSDK_INCLUDE_DIRS}/directxsdk)
+	${DXSDK_INCLUDE_DIRS}/dxsdk-d3dx)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(DirectXSDK DEFAULT_MSG DXSDK_LIBS DXSDK_INCLUDE_DIRS)
