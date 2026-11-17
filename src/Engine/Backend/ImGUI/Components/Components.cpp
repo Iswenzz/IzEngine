@@ -267,15 +267,31 @@ namespace ImGui
 		if (!IsItemHovered())
 			return;
 
-		vec2 size = GetItemRectSize();
-		vec2 position = GetItemRectMin();
-		position.y += size.y + 2;
+		constexpr float padding = 6, margin = 8;
+		const ImGuiViewport* viewport = GetMainViewport();
+		const ImVec2 itemMin = GetItemRectMin(), itemMax = GetItemRectMax();
+		const ImVec2 areaMin = { viewport->WorkPos.x + margin, viewport->WorkPos.y + margin };
+		const ImVec2 areaMax = { viewport->WorkPos.x + viewport->WorkSize.x - margin,
+			viewport->WorkPos.y + viewport->WorkSize.y - margin };
+
+		// A position given to the tooltip turns off ImGui's own fitting, so the text wraps and the box is kept on screen here
+		const float wrap = std::max(1.0f, std::min(GetFontSize() * 34, areaMax.x - areaMin.x - padding * 2));
+		const ImVec2 text_size = CalcTextSize(text.c_str(), nullptr, false, wrap);
+		const ImVec2 box = { text_size.x + padding * 2, text_size.y + padding * 2 };
+
+		ImVec2 position = { itemMin.x, itemMax.y + 2 };
+		if (position.y + box.y > areaMax.y)
+			position.y = itemMin.y - box.y - 2;
+		position.x = std::max(areaMin.x, std::min(position.x, areaMax.x - box.x));
+		position.y = std::max(areaMin.y, position.y);
 
 		SetNextWindowPos(position);
-		PushStyleVar(ImGuiStyleVar_WindowPadding, { 6, 6 });
+		PushStyleVar(ImGuiStyleVar_WindowPadding, { padding, padding });
 
 		BeginTooltip();
+		PushTextWrapPos(GetCursorPosX() + wrap);
 		TextUnformatted(text.c_str());
+		PopTextWrapPos();
 		EndTooltip();
 
 		PopStyleVar();
